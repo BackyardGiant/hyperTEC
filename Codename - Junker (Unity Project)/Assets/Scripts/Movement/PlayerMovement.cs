@@ -36,6 +36,15 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody m_rbPlayer;
     #endregion
 
+    #region Slow Mo Manager
+    private Vector3 m_velocityBeforeSlow;
+    private Vector3 m_angleVelocityBeforeSlow;
+    private Vector3 m_velocityAfterSlow;
+    private Vector3 m_angleVelocityAfterSlow;
+    private float m_velocityDifferenceBetweenSlow;
+    private float m_angleVelocityDifferenceBetweenSlow;
+    #endregion
+
     private void Awake()
     {
         if (m_invertY)
@@ -86,7 +95,17 @@ public class PlayerMovement : MonoBehaviour
             m_negativeSpeed = 0;
         }
 
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            GameManager.Instance.SetSlowMo(0.5f);
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            GameManager.Instance.SetNormalSpeed();
+        }
+
     }
+
     private void FixedUpdate()
     {
         float _roll = Input.GetAxis("Horizontal");
@@ -110,12 +129,36 @@ public class PlayerMovement : MonoBehaviour
         torque += _yaw * m_yawSpeed * transform.up;
         // Add torque for the roll based on the roll input.
         torque += -_roll * m_rollSpeed * transform.forward;
-
+        
         // This takes the total torque of pitch, yaw and roll and applies it as a force to the player rigidbody
-        m_rbPlayer.AddTorque(torque);
+        m_rbPlayer.AddTorque(torque * GameManager.Instance.GameSpeed);
 
-        m_rbPlayer.AddForce(m_currentSpeed * transform.forward);
+        m_rbPlayer.AddForce(m_currentSpeed * transform.forward * GameManager.Instance.GameSpeed);
 
-        m_rbPlayer.AddForce(m_negativeSpeed * (-m_rbPlayer.velocity.normalized));
+        m_rbPlayer.AddForce(m_negativeSpeed * (-m_rbPlayer.velocity.normalized) * GameManager.Instance.GameSpeed);
+    }
+
+    public void RespondToPreSlowMo()
+    {
+        m_velocityBeforeSlow = m_rbPlayer.velocity;
+        m_angleVelocityBeforeSlow = m_rbPlayer.angularVelocity;
+    }
+
+    public void RespondToPostSlowMo()
+    {
+        m_rbPlayer.velocity *= GameManager.Instance.GameSpeed;
+        m_rbPlayer.angularVelocity *= GameManager.Instance.GameSpeed;
+
+        m_velocityAfterSlow = m_rbPlayer.velocity;
+        m_angleVelocityAfterSlow = m_rbPlayer.angularVelocity;
+
+        m_velocityDifferenceBetweenSlow = m_velocityBeforeSlow.magnitude - m_velocityAfterSlow.magnitude;
+        m_angleVelocityDifferenceBetweenSlow = m_angleVelocityBeforeSlow.magnitude - m_angleVelocityAfterSlow.magnitude;
+    }
+
+    public void RespondToNormalSpeed()
+    {
+        m_rbPlayer.velocity += m_rbPlayer.velocity.normalized * m_velocityDifferenceBetweenSlow;
+        m_rbPlayer.angularVelocity += m_rbPlayer.angularVelocity.normalized * m_angleVelocityDifferenceBetweenSlow;
     }
 }

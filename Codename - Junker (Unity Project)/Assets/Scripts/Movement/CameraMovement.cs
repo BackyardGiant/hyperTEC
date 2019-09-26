@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, Tooltip("The player object should go here")]
     private Transform m_trPlayerTransform; 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
