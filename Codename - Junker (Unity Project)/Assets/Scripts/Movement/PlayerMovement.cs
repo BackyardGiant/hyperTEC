@@ -111,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
         float _roll = Input.GetAxis("Horizontal");
         float _pitch = Input.GetAxis("Vertical");
         float _yaw = 0;
+        _yaw = Input.GetAxis("Yaw");
 
         if (Input.GetButton("Yaw+"))
         {
