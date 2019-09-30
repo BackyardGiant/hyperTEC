@@ -17,6 +17,7 @@ public class IncrementFlightChallenge : MonoBehaviour
     {
         float Distance = Vector3.Distance(transform.position, player.transform.position);
         int Score = Mathf.RoundToInt(100- (Distance/StartFlightTest.Instance.RingRadius * 100));
+
         Debug.Log("Player Scored " + Score);
 
         int CurrentScore = PlayerPrefs.GetInt("Score");

@@ -10,6 +10,7 @@ public class StartFlightTest : MonoBehaviour
 
     [HideInInspector]
     public float RingRadius;
+    [HideInInspector]
     public Transform nextTarget;
 
     private int nextTargetIndex = 1;
@@ -58,7 +59,7 @@ public class StartFlightTest : MonoBehaviour
         }
 
         //Calculate Radius of all rings
-        RingRadius = Vector3.Distance(transform.position, TargetHoops[1].transform.position);
+        RingRadius = Vector3.Distance(transform.position, TargetHoops[0].transform.position);
 
         //Reset Total Score
         PlayerPrefs.SetInt("Score", 0);
