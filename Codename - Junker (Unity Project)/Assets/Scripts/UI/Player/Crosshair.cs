@@ -4,25 +4,44 @@ using UnityEngine;
 
 public class Crosshair : MonoBehaviour
 {
-    public Texture2D crosshair;
-    private Rect position;
+    private Rect m_position;
+    private Rect m_playerPosition;
+    private Vector3 m_screenPos;
 
-    [SerializeField, Tooltip("Changes the height of the crosshair on screen")]
-    private float m_heightMod;
+    [SerializeField, Header("Neutral crosshair"), Tooltip("Changes the height of the crosshair on screen")]
+    private float m_heightScale;
+    private float m_heightMod = 1;
+    public Texture2D crosshairDot;
+
+    private Camera m_camera;
+    [SerializeField, Header("Player crosshair")]
+    private Transform playerLookTarget;
+    [SerializeField, Tooltip("Sets the size of the crosshair")]
+    private float m_crosshairScale;
+    public Texture2D crosshairCircle;
 
     private void Start()
     {
-        crosshair = Texture2D.whiteTexture;
+        crosshairDot = Texture2D.whiteTexture;
+        //crosshairCircle = Texture2D.whiteTexture;
+        m_camera = GetComponent<Camera>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        position = new Rect((Screen.width - crosshair.width) / 2, (Screen.height - crosshair.height + m_heightMod) / 2, crosshair.width, crosshair.height);
+        m_position = new Rect((Screen.width - crosshairDot.width) / 2, (Screen.height - crosshairDot.height) / 2, crosshairDot.width, crosshairDot.height);
+
+        m_screenPos = m_camera.WorldToScreenPoint(playerLookTarget.position);
+
+        m_playerPosition = new Rect(m_screenPos.x - (crosshairCircle.width * m_crosshairScale/ 2) , m_screenPos.y - (crosshairCircle.height * m_crosshairScale / 2), crosshairCircle.width * m_crosshairScale, crosshairCircle.height * m_crosshairScale);
+
     }
 
     void OnGUI()
     {
-        GUI.DrawTexture(position, crosshair);
+        GUI.DrawTexture(m_position, crosshairDot);
+
+        GUI.DrawTexture(m_playerPosition, crosshairCircle);
     }
 }
