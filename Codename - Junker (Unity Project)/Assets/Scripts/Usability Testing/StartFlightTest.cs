@@ -9,6 +9,7 @@ public class StartFlightTest : MonoBehaviour
 
     public GameObject player;
     public TextAsset resultsData;
+    public bool SaveResults;
 
     [HideInInspector]
     public float RingRadius;
@@ -95,13 +96,15 @@ public class StartFlightTest : MonoBehaviour
             float totalSeconds = (float)timeSpan.TotalSeconds;
             string difference = totalSeconds.ToString("F2");
 
+            if (SaveResults == true)
+            {
+                String Results = (score + "," + difference);
+                string path = "Assets/Testing Results/results.txt";
 
-            String Results = (score + "," + difference);
-            string path = "Assets/Testing Results/results.txt";
-
-            StreamWriter writer = new StreamWriter(path, true);
-            writer.WriteLine(Results);
-            writer.Close();
+                StreamWriter writer = new StreamWriter(path, true);
+                writer.WriteLine(Results);
+                writer.Close();
+            }
 
 
 
