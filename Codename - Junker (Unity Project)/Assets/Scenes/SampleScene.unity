@@ -836,7 +836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3de9616ce3924249bb8c292b3c38da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_maxSpeed: 30
+  m_maxSpeed: 40
   m_currentSpeed: 0
   m_negativeSpeed: 0
   m_acceleration: 1
@@ -844,6 +844,9 @@ MonoBehaviour:
   m_yawSpeed: 0.1
   m_pitchSpeed: 0.5
   m_invertY: 0
+  m_dampingSpeed: 0.1
+  m_correctionForce: 0.2
+  m_dampingAngleThreshold: 0.6
 --- !u!54 &1319583006
 Rigidbody:
   m_ObjectHideFlags: 0
