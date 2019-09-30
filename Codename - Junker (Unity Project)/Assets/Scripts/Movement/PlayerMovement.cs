@@ -36,6 +36,15 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody m_rbPlayer;
     #endregion
 
+    #region Damping
+    [SerializeField, Header("Damping"), Tooltip("The speed that damping is applied")]
+    private float m_dampingSpeed;
+    [SerializeField, Tooltip("The correction force to counter act damping in the posative direction")]
+    private float m_correctionForce;
+    [SerializeField, Tooltip("The of angle at which damping will be applied (1 is same direction)"), Range(0.5f, 1)]
+    private float m_dampingAngleThreshold;
+    #endregion
+
     #region Slow Mo Manager
     private Vector3 m_velocityBeforeSlow;
     private Vector3 m_angleVelocityBeforeSlow;
@@ -134,9 +143,24 @@ public class PlayerMovement : MonoBehaviour
         // This takes the total torque of pitch, yaw and roll and applies it as a force to the player rigidbody
         m_rbPlayer.AddTorque(torque * GameManager.Instance.GameSpeed);
 
+        ApplyDamping();
+
         m_rbPlayer.AddForce(m_currentSpeed * transform.forward * GameManager.Instance.GameSpeed);
 
         m_rbPlayer.AddForce(m_negativeSpeed * (-m_rbPlayer.velocity.normalized) * GameManager.Instance.GameSpeed);
+    }
+
+    private void ApplyDamping()
+    {
+        Vector3 _velcoity = m_rbPlayer.velocity;
+        Vector3 _targetVector = m_currentSpeed * transform.forward * GameManager.Instance.GameSpeed;
+        float _dotProduct = Vector3.Dot(_velcoity.normalized, _targetVector.normalized);
+
+        if(_dotProduct < m_dampingAngleThreshold)
+        {
+            m_rbPlayer.AddForce(m_dampingSpeed * -_velcoity * GameManager.Instance.GameSpeed);
+            m_rbPlayer.AddForce(m_correctionForce * transform.forward * GameManager.Instance.GameSpeed);
+        }
     }
 
     public void RespondToPreSlowMo()
