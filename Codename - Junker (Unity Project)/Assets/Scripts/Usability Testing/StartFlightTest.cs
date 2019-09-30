@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
+using System.IO;
 public class StartFlightTest : MonoBehaviour
 {
     private static StartFlightTest s_instance;
 
     public GameObject player;
+    public TextAsset resultsData;
 
     [HideInInspector]
     public float RingRadius;
@@ -14,8 +16,8 @@ public class StartFlightTest : MonoBehaviour
     public Transform nextTarget;
 
     private int nextTargetIndex = 1;
-
     private Transform[] TargetHoops;
+    private DateTime startTime;
 
 
     public static StartFlightTest Instance { get => s_instance; set => s_instance = value; }
@@ -87,8 +89,23 @@ public class StartFlightTest : MonoBehaviour
             float percentage = score / maxscore * 100;
             int percentageRound = Mathf.RoundToInt(percentage);
 
+            DateTime now = System.DateTime.Now;
 
-            Debug.Log("Course Finished! Total score was " + score + " : " + percentageRound + "%");
+            TimeSpan timeSpan = now - startTime;
+            float totalSeconds = (float)timeSpan.TotalSeconds;
+            string difference = totalSeconds.ToString("F2");
+
+
+            String Results = (score + "," + difference);
+            string path = "Assets/Testing Results/results.txt";
+
+            StreamWriter writer = new StreamWriter(path, true);
+            writer.WriteLine(Results);
+            writer.Close();
+
+
+
+            Debug.Log("Course Finished! Total score was " + score + " : " + percentageRound + "% of total possible. Completed in " + difference + " seconds.");
         }
     }
     void Update()
@@ -102,5 +119,11 @@ public class StartFlightTest : MonoBehaviour
                 Debug.DrawLine(TargetHoops[i].position, TargetHoops[i + 1].position, Color.green);
             }
         }
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        startTime = System.DateTime.Now;
     }
 }
