@@ -4,16 +4,33 @@ using UnityEngine;
 
 public class StartFlightTest : MonoBehaviour
 {
+    private static StartFlightTest s_instance;
+
     public GameObject player;
 
     [HideInInspector]
     public float RingRadius;
+    public Transform nextTarget;
 
     private int nextTargetIndex = 1;
 
     private Transform[] TargetHoops;
-    private Transform nextTarget;
 
+
+    public static StartFlightTest Instance { get => s_instance; set => s_instance = value; }
+
+    private void Awake()
+    {
+        if (s_instance == null)
+        {
+            s_instance = this;
+        }
+        else
+        {
+            Destroy(s_instance.gameObject);
+            s_instance = this;
+        }
+    }
 
 
     // Start is called before the first frame update
@@ -31,13 +48,17 @@ public class StartFlightTest : MonoBehaviour
         }
 
         //Assign first target ring
-        Debug.Log("Target Loop index is " + nextTargetIndex);
         nextTarget = TargetHoops[nextTargetIndex];
-        nextTarget.GetComponent<IncrementFlightChallenge>().RingActive = true;
+        try
+        {
+            nextTarget.GetComponent<IncrementFlightChallenge>().ActivateRing(TargetHoops[nextTargetIndex + 1]);
+        }
+        catch {
+            nextTarget.GetComponent<IncrementFlightChallenge>().ActivateFinalRing();
+        }
 
         //Calculate Radius of all rings
         RingRadius = Vector3.Distance(transform.position, TargetHoops[1].transform.position);
-        Debug.Log("Ring Radius is " + RingRadius);
 
         //Reset Total Score
         PlayerPrefs.SetInt("Score", 0);
@@ -48,25 +69,34 @@ public class StartFlightTest : MonoBehaviour
     {
         if (nextTargetIndex != TargetHoops.Length-1)
         {
-            Debug.Log("Target Hoops is " + TargetHoops.Length + " long.");
             nextTargetIndex++;
             nextTarget = TargetHoops[nextTargetIndex];
-            nextTarget.GetComponent<IncrementFlightChallenge>().RingActive = true;
+            try
+            {
+                nextTarget.GetComponent<IncrementFlightChallenge>().ActivateRing(TargetHoops[nextTargetIndex + 1]);
+            }
+            catch {
+                nextTarget.GetComponent<IncrementFlightChallenge>().ActivateFinalRing();
+            }
         }
         else
         {
-            Debug.Log("Course Finished! Total score was " + PlayerPrefs.GetInt("Score"));
+            int score = PlayerPrefs.GetInt("Score");
+            float maxscore = (TargetHoops.Length - 1)  * 100;
+            float percentage = score / maxscore * 100;
+            int percentageRound = Mathf.RoundToInt(percentage);
+
+
+            Debug.Log("Course Finished! Total score was " + score + " : " + percentageRound + "%");
         }
     }
     void Update()
     {
         Debug.DrawLine(player.transform.position, nextTarget.position, Color.blue);
+        Debug.DrawLine(transform.position, TargetHoops[1].transform.position,Color.green);
 
-
-        Debug.DrawLine(transform.position, TargetHoops[2].transform.position,Color.green);
-
-        if (TargetHoops.Length > 3){
-            for (int i = 1; i < TargetHoops.Length; i++)
+        if (TargetHoops.Length > 2){
+            for (int i = 1; i < TargetHoops.Length-1; i++)
             {
                 Debug.DrawLine(TargetHoops[i].position, TargetHoops[i + 1].position, Color.green);
             }
