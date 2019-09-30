@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\Scriptable Objects\GameEvent.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\GameEventListener.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\IntVariable.cs" />
+    <Compile Include="Assets\Scripts\UI\Player\Crosshair.cs" />
     <Compile Include="Assets\Scripts\Usability Testing\FlightTestRecordCollision.cs" />
     <Compile Include="Assets\Scripts\Usability Testing\IncrementFlightChallenge.cs" />
     <Compile Include="Assets\Scripts\Usability Testing\StartFlightTest.cs" />
