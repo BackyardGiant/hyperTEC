@@ -103,10 +103,6 @@ MonoBehaviour:
   m_cameraFollowPos: {x: 0, y: 6, z: -30}
   m_zSmooth: 0.1
   m_smoothTime: 0.09
-  m_followCamera: {fileID: 9078455122496417123}
-  m_lookAroundCamera: {fileID: 0}
-  m_focusObject: {fileID: 0}
-  m_crosshair: {fileID: 9078455123152224274}
 --- !u!114 &9078455123152224274
 MonoBehaviour:
   m_ObjectHideFlags: 0
