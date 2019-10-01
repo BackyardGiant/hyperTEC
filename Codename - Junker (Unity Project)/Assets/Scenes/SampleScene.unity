@@ -424,6 +424,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &378946903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2872460002776077785, guid: 5f833fa36dfcf7c41b867d1460102cf2,
+    type: 3}
+  m_PrefabInstance: {fileID: 2872460002807281699}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &673949939 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 673949939, guid: 5f833fa36dfcf7c41b867d1460102cf2,
@@ -613,6 +619,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1015863492 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1015863492, guid: 5f833fa36dfcf7c41b867d1460102cf2,
+    type: 3}
+  m_PrefabInstance: {fileID: 2872460002807281699}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1319583004 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2872460001895466303, guid: 5f833fa36dfcf7c41b867d1460102cf2,
@@ -1265,12 +1277,12 @@ PrefabInstance:
     - target: {fileID: 9078455122496417124, guid: 7d4f3ad5fb247d3479464cd51679dba0,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9078455122496417124, guid: 7d4f3ad5fb247d3479464cd51679dba0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9078455122496417124, guid: 7d4f3ad5fb247d3479464cd51679dba0,
         type: 3}
@@ -1317,6 +1329,16 @@ PrefabInstance:
       propertyPath: m_trPlayerTransform
       value: 
       objectReference: {fileID: 1319583004}
+    - target: {fileID: 9078455122496417125, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+        type: 3}
+      propertyPath: m_lookAroundCamera
+      value: 
+      objectReference: {fileID: 1015863492}
+    - target: {fileID: 9078455122496417125, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+        type: 3}
+      propertyPath: m_focusObject
+      value: 
+      objectReference: {fileID: 378946903}
     - target: {fileID: 9078455123152224274, guid: 7d4f3ad5fb247d3479464cd51679dba0,
         type: 3}
       propertyPath: playerLookTarget
