@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9078455122496417123}
   - component: {fileID: 9078455122496417122}
   - component: {fileID: 9078455122496417125}
+  - component: {fileID: 9078455123152224274}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: MainCamera
@@ -26,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9078455122496417121}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -57,7 +58,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 20000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -99,6 +100,25 @@ MonoBehaviour:
   m_cameraPosition: 0
   m_trPlayerTransform: {fileID: 0}
   m_offSet: {x: 0, y: 0, z: 0}
-  m_cameraFollowPos: {x: 0, y: 4.3, z: -20}
+  m_cameraFollowPos: {x: 0, y: 6, z: -30}
   m_zSmooth: 0.1
   m_smoothTime: 0.09
+--- !u!114 &9078455123152224274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9078455122496417121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b1434ec54b7794f9d8897695b610ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_heightScale: 0
+  m_nuetralOpacity: 0.4
+  crosshairDot: {fileID: 0}
+  playerLookTarget: {fileID: 0}
+  m_crosshairScale: 0.04
+  m_playerOpacity: 0.4
+  crosshairCircle: {fileID: 2800000, guid: df0af7b2d196f144b8e4262a3d406e42, type: 3}

@@ -10,6 +10,8 @@ public class Crosshair : MonoBehaviour
 
     [SerializeField, Header("Neutral crosshair"), Tooltip("Changes the height of the crosshair on screen")]
     private float m_heightScale;
+    [SerializeField, Tooltip("Opacity of the neutral crosshair")]
+    private float m_nuetralOpacity;
     private float m_heightMod = 1;
     public Texture2D crosshairDot;
 
@@ -18,6 +20,8 @@ public class Crosshair : MonoBehaviour
     private Transform playerLookTarget;
     [SerializeField, Tooltip("Sets the size of the crosshair")]
     private float m_crosshairScale;
+    [SerializeField, Tooltip("Opacity of the player crosshair")]
+    private float m_playerOpacity;
     public Texture2D crosshairCircle;
 
     private void Start()
@@ -40,7 +44,11 @@ public class Crosshair : MonoBehaviour
 
     void OnGUI()
     {
+        GUI.color = new Color(1,1,1,m_nuetralOpacity);
+
         GUI.DrawTexture(m_position, crosshairDot);
+
+        GUI.color = new Color(1, 1, 1, m_playerOpacity);
 
         GUI.DrawTexture(m_playerPosition, crosshairCircle);
     }

@@ -1990,6 +1990,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1913318634}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &320859104 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 673949939, guid: 5f833fa36dfcf7c41b867d1460102cf2,
+    type: 3}
+  m_PrefabInstance: {fileID: 975440486}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &321987915
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15844,11 +15850,11 @@ PrefabInstance:
       propertyPath: m_trPlayerTransform
       value: 
       objectReference: {fileID: 975440487}
-    - target: {fileID: 9078455122496417123, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+    - target: {fileID: 9078455123152224274, guid: 7d4f3ad5fb247d3479464cd51679dba0,
         type: 3}
-      propertyPath: far clip plane
-      value: 20000
-      objectReference: {fileID: 0}
+      propertyPath: playerLookTarget
+      value: 
+      objectReference: {fileID: 320859104}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4f3ad5fb247d3479464cd51679dba0, type: 3}
 --- !u!4 &2055961202 stripped
