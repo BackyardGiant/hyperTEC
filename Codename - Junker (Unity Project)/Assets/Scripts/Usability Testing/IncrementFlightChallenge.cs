@@ -7,16 +7,16 @@ public class IncrementFlightChallenge : MonoBehaviour
     [SerializeField]
     private GameObject pointerArrow, RingCollider;
 
-
-
-    
-
-
     private float CircleRadius;
     public void RecordPlayerScore(Transform player)
     {
         float Distance = Vector3.Distance(transform.position, player.transform.position);
         int Score = Mathf.RoundToInt(100- (Distance/StartFlightTest.Instance.RingRadius * 100));
+
+        if(Score < 0)
+        {
+            Score = Mathf.Abs(Score);
+        }
 
         Debug.Log("Player Scored " + Score);
 
