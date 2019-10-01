@@ -5,7 +5,7 @@ using UnityEngine;
 public class IncrementFlightChallenge : MonoBehaviour
 {
     [SerializeField]
-    private GameObject pointerArrow, RingCollider;
+    private GameObject pointerArrow, RingCollider, checkerBoard;
 
     private float CircleRadius;
     public void RecordPlayerScore(Transform player)
@@ -38,6 +38,8 @@ public class IncrementFlightChallenge : MonoBehaviour
     public void ActivateFinalRing()
     {
         RingCollider.SetActive(true);
+        checkerBoard.SetActive(true);
+
     }
 }
 
