@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Extensions\TransformExtensions.cs" />
     <Compile Include="Assets\Scripts\Management\GameManager.cs" />
     <Compile Include="Assets\Scripts\Movement\CameraMovement.cs" />
+    <Compile Include="Assets\Scripts\Movement\OrbitalCamera.cs" />
     <Compile Include="Assets\Scripts\Movement\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\ReferenceMovement.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\BoolVariable.cs" />
