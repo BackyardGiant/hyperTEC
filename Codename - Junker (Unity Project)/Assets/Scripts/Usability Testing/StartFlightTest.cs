@@ -98,7 +98,7 @@ public class StartFlightTest : MonoBehaviour
 
             if (SaveResults == true)
             {
-                String Results = (score + "," + difference);
+                String Results = (percentageRound + "," + difference);
                 string path = "Assets/Testing Results/results.txt";
 
                 StreamWriter writer = new StreamWriter(path, true);

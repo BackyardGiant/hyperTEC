@@ -136,12 +136,12 @@ MonoBehaviour:
   m_negativeSpeed: 0
   m_acceleration: 1
   m_rollSpeed: 0.5
-  m_yawSpeed: 0.1
+  m_yawSpeed: 0.2
   m_pitchSpeed: 0.5
   m_invertY: 0
   m_dampingSpeed: 1
-  m_correctionForce: 0.2
-  m_dampingAngleThreshold: 0.75
+  m_correctionForce: 0.4
+  m_dampingAngleThreshold: 0.95
 --- !u!54 &2872460001895466301
 Rigidbody:
   m_ObjectHideFlags: 0
