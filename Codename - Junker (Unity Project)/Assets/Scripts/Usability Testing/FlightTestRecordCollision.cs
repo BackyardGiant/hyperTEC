@@ -5,13 +5,13 @@ using UnityEngine;
 public class FlightTestRecordCollision : MonoBehaviour
 {
 
-    [SerializeField]
-    private IncrementFlightChallenge ParentRingController;
+    [SerializeField, Header("Ring controller"), Tooltip("The parent ring")]
+    private IncrementFlightChallenge m_parentRingController;
     void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
         {
-            ParentRingController.RecordPlayerScore(other.transform);
+            m_parentRingController.RecordPlayerScore(other.transform);
             //Deactivate ring after the player has passed through.
             gameObject.SetActive(false);
         }

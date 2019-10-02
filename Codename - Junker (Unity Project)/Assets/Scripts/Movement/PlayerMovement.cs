@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private float m_negativeSpeed;
     [SerializeField, Tooltip("The acceleration of the ship")]
     private float m_acceleration;
+    [SerializeField, Tooltip("The decleration of the ship")]
+    private float m_decleration;
     private float m_posativeClampedSpeed; // Forward force being applied
     private float m_negativeClampedSpeed; // Backwards force being applied
     #endregion
@@ -70,14 +72,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //float _roll = -Input.GetAxis("Horizontal");
-        //float _pitch = Input.GetAxis("Vertical");
-        //float _yaw = Input.GetAxis("Yaw");
-
-        //transform.Rotate(new Vector3(_pitch * (m_invertScale * m_pitchSpeed) * GameManager.Instance.GameSpeed, _yaw * m_yawSpeed * GameManager.Instance.GameSpeed, _roll * m_rollSpeed * GameManager.Instance.GameSpeed), Space.Self);
-
-        //float _clampedSpeed = (Input.GetAxis("Throttle") + 1) / 2;
-
         if(Input.GetButton("Throttle Up"))
         {
             m_posativeClampedSpeed += m_acceleration / 100;
@@ -87,12 +81,13 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetButton("Throttle Down"))
         {
-            m_negativeClampedSpeed += m_acceleration / 500;
+            m_negativeClampedSpeed += m_decleration / 100;
             m_negativeClampedSpeed = Mathf.Clamp(m_negativeClampedSpeed, 0, 1);
 
             m_negativeSpeed = m_negativeClampedSpeed * m_maxSpeed;
         }
 
+        // Restets posative force application to the ship (If you let go of go forwards it stops applying force)
         if(Input.GetButtonUp("Throttle Up"))
         {
             m_posativeClampedSpeed = 0;
@@ -104,6 +99,7 @@ public class PlayerMovement : MonoBehaviour
             m_negativeSpeed = 0;
         }
 
+
         if (Input.GetKeyDown(KeyCode.T))
         {
             GameManager.Instance.SetSlowMo(0.5f);
@@ -112,7 +108,6 @@ public class PlayerMovement : MonoBehaviour
         {
             GameManager.Instance.SetNormalSpeed();
         }
-
     }
 
     private void FixedUpdate()
@@ -158,17 +153,23 @@ public class PlayerMovement : MonoBehaviour
 
         if(_dotProduct < m_dampingAngleThreshold)
         {
-            m_rbPlayer.AddForce(m_dampingSpeed * -_velcoity * GameManager.Instance.GameSpeed);
-            m_rbPlayer.AddForce(m_correctionForce * transform.forward * GameManager.Instance.GameSpeed);
+            m_rbPlayer.AddForce(m_dampingSpeed * -_velcoity * GameManager.Instance.GameSpeed); //damping force
+            m_rbPlayer.AddForce(m_correctionForce * transform.forward * GameManager.Instance.GameSpeed); //correction force
         }
     }
 
+    /// <summary>
+    /// Saves forces before slow mo
+    /// </summary>
     public void RespondToPreSlowMo()
     {
         m_velocityBeforeSlow = m_rbPlayer.velocity;
         m_angleVelocityBeforeSlow = m_rbPlayer.angularVelocity;
     }
 
+    /// <summary>
+    /// Applies slow mo and saves forces after it has been applied
+    /// </summary>
     public void RespondToPostSlowMo()
     {
         m_rbPlayer.velocity *= GameManager.Instance.GameSpeed;
@@ -181,6 +182,9 @@ public class PlayerMovement : MonoBehaviour
         m_angleVelocityDifferenceBetweenSlow = m_angleVelocityBeforeSlow.magnitude - m_angleVelocityAfterSlow.magnitude;
     }
 
+    /// <summary>
+    /// Returns lost force to object using the difference between before and after slow mo
+    /// </summary>
     public void RespondToNormalSpeed()
     {
         m_rbPlayer.velocity += m_rbPlayer.velocity.normalized * m_velocityDifferenceBetweenSlow;

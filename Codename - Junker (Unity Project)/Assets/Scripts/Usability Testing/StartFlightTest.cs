@@ -7,18 +7,18 @@ public class StartFlightTest : MonoBehaviour
 {
     private static StartFlightTest s_instance;
 
-    public GameObject player;
-    public TextAsset resultsData;
+    public GameObject Player;
+    public TextAsset ResultsData;
     public bool SaveResults;
 
     [HideInInspector]
     public float RingRadius;
     [HideInInspector]
-    public Transform nextTarget;
+    public Transform NextTarget;
 
-    private int nextTargetIndex = 1;
-    private Transform[] TargetHoops;
-    private DateTime startTime;
+    private int m_nextTargetIndex = 1;
+    private Transform[] m_targetHoops;
+    private DateTime m_startTime;
 
 
     public static StartFlightTest Instance { get => s_instance; set => s_instance = value; }
@@ -42,27 +42,27 @@ public class StartFlightTest : MonoBehaviour
     {
         //Get all children of the StartTest object
         int childCount = transform.childCount;
-        TargetHoops = new Transform[childCount];
+        m_targetHoops = new Transform[childCount];
 
         int i = 0;
         foreach (Transform child in transform)
         {
-            TargetHoops[i] = child;
+            m_targetHoops[i] = child;
             i++;
         }
 
         //Assign first target ring
-        nextTarget = TargetHoops[nextTargetIndex];
+        NextTarget = m_targetHoops[m_nextTargetIndex];
         try
         {
-            nextTarget.GetComponent<IncrementFlightChallenge>().ActivateRing(TargetHoops[nextTargetIndex + 1]);
+            NextTarget.GetComponent<IncrementFlightChallenge>().ActivateRing(m_targetHoops[m_nextTargetIndex + 1]);
         }
         catch {
-            nextTarget.GetComponent<IncrementFlightChallenge>().ActivateFinalRing();
+            NextTarget.GetComponent<IncrementFlightChallenge>().ActivateFinalRing();
         }
 
         //Calculate Radius of all rings
-        RingRadius = Vector3.Distance(transform.position, TargetHoops[0].transform.position);
+        RingRadius = Vector3.Distance(transform.position, m_targetHoops[0].transform.position);
 
         //Reset Total Score
         PlayerPrefs.SetInt("Score", 0);
@@ -71,34 +71,34 @@ public class StartFlightTest : MonoBehaviour
     }
     public void ActivateNextRing()
     {
-        if (nextTargetIndex != TargetHoops.Length-1)
+        if (m_nextTargetIndex != m_targetHoops.Length-1)
         {
-            nextTargetIndex++;
-            nextTarget = TargetHoops[nextTargetIndex];
+            m_nextTargetIndex++;
+            NextTarget = m_targetHoops[m_nextTargetIndex];
             try
             {
-                nextTarget.GetComponent<IncrementFlightChallenge>().ActivateRing(TargetHoops[nextTargetIndex + 1]);
+                NextTarget.GetComponent<IncrementFlightChallenge>().ActivateRing(m_targetHoops[m_nextTargetIndex + 1]);
             }
             catch {
-                nextTarget.GetComponent<IncrementFlightChallenge>().ActivateFinalRing();
+                NextTarget.GetComponent<IncrementFlightChallenge>().ActivateFinalRing();
             }
         }
         else
         {
             int score = PlayerPrefs.GetInt("Score");
-            float maxscore = (TargetHoops.Length - 1)  * 100;
+            float maxscore = (m_targetHoops.Length - 1)  * 100;
             float percentage = score / maxscore * 100;
             int percentageRound = Mathf.RoundToInt(percentage);
 
             DateTime now = System.DateTime.Now;
 
-            TimeSpan timeSpan = now - startTime;
+            TimeSpan timeSpan = now - m_startTime;
             float totalSeconds = (float)timeSpan.TotalSeconds;
             string difference = totalSeconds.ToString("F2");
 
             if (SaveResults == true)
             {
-                String Results = (percentageRound + "," + difference);
+                String Results = (score + "," + difference);
                 string path = "Assets/Testing Results/results.txt";
 
                 StreamWriter writer = new StreamWriter(path, true);
@@ -113,13 +113,13 @@ public class StartFlightTest : MonoBehaviour
     }
     void Update()
     {
-        Debug.DrawLine(player.transform.position, nextTarget.position, Color.blue);
-        Debug.DrawLine(transform.position, TargetHoops[1].transform.position,Color.green);
+        Debug.DrawLine(Player.transform.position, NextTarget.position, Color.blue);
+        Debug.DrawLine(transform.position, m_targetHoops[1].transform.position,Color.green);
 
-        if (TargetHoops.Length > 2){
-            for (int i = 1; i < TargetHoops.Length-1; i++)
+        if (m_targetHoops.Length > 2){
+            for (int i = 1; i < m_targetHoops.Length-1; i++)
             {
-                Debug.DrawLine(TargetHoops[i].position, TargetHoops[i + 1].position, Color.green);
+                Debug.DrawLine(m_targetHoops[i].position, m_targetHoops[i + 1].position, Color.green);
             }
         }
     }
@@ -127,6 +127,6 @@ public class StartFlightTest : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        startTime = System.DateTime.Now;
+        m_startTime = System.DateTime.Now;
     }
 }
