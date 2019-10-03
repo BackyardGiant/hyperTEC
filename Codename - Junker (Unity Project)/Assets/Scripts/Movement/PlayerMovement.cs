@@ -147,6 +147,8 @@ public class PlayerMovement : MonoBehaviour
 
         m_rbPlayer.AddForce(m_currentSpeed * transform.forward * GameManager.Instance.GameSpeed);
 
+        m_rbPlayer.AddForce(m_currentSpeed * transform.up * GameManager.Instance.GameSpeed * 0.0034993f);
+
         m_rbPlayer.AddForce(m_negativeSpeed * (-m_rbPlayer.velocity.normalized) * GameManager.Instance.GameSpeed);
     }
 
