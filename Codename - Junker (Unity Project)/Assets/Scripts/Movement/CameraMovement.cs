@@ -34,7 +34,9 @@ public class CameraMovement : MonoBehaviour
 
         // Smoothly move the camera towards that target position
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref m_velocity, Mathf.Clamp((m_smoothTime - (targetDistance * 0.005f)) / (GameManager.Instance.GameSpeed), 0.07f, 0.12f));
-               
-        transform.localEulerAngles = m_trPlayerTransform.localEulerAngles + m_offSet;
+
+        //transform.eulerAngles = m_trPlayerTransform.eulerAngles + m_offSet;
+
+        transform.eulerAngles = m_trPlayerTransform.eulerAngles + m_trPlayerTransform.TransformDirection(m_offSet);
     }
 }

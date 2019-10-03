@@ -56,6 +56,9 @@ public class PlayerMovement : MonoBehaviour
     private float m_angleVelocityDifferenceBetweenSlow;
     #endregion
 
+    [SerializeField, Header("UI correction")]
+    private float m_uiCorrection;
+
     private void Awake()
     {
         if (m_invertY)
@@ -142,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
 
         m_rbPlayer.AddForce(m_currentSpeed * transform.forward * GameManager.Instance.GameSpeed);
 
-        m_rbPlayer.AddForce(m_currentSpeed * transform.up * GameManager.Instance.GameSpeed * 0.0034993f);
+        m_rbPlayer.AddForce(m_currentSpeed * transform.up * GameManager.Instance.GameSpeed * m_uiCorrection / 100f);
 
         m_rbPlayer.AddForce(m_negativeSpeed * (-m_rbPlayer.velocity.normalized) * GameManager.Instance.GameSpeed);
     }
