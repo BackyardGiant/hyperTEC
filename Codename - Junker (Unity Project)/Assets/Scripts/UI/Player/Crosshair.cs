@@ -12,12 +12,12 @@ public class Crosshair : MonoBehaviour
     private float m_heightScale;
     [SerializeField, Tooltip("Opacity of the neutral crosshair")]
     private float m_nuetralOpacity;
-    private float m_heightMod = 1;
+    private float m_heightMod = 1; // Fixed pixel version of height scale
     public Texture2D crosshairDot;
 
     private Camera m_camera;
     [SerializeField, Header("Player crosshair")]
-    private Transform playerLookTarget;
+    private Transform m_playerLookTarget;
     [SerializeField, Tooltip("Sets the size of the crosshair")]
     private float m_crosshairScale;
     [SerializeField, Tooltip("Opacity of the player crosshair")]
@@ -27,7 +27,6 @@ public class Crosshair : MonoBehaviour
     private void Start()
     {
         crosshairDot = Texture2D.whiteTexture;
-        //crosshairCircle = Texture2D.whiteTexture;
         m_camera = GetComponent<Camera>();
     }
 
@@ -36,9 +35,9 @@ public class Crosshair : MonoBehaviour
     {
         m_position = new Rect((Screen.width - crosshairDot.width) / 2, (Screen.height - crosshairDot.height) / 2, crosshairDot.width, crosshairDot.height);
 
-        m_screenPos = m_camera.WorldToScreenPoint(playerLookTarget.position);
+        m_screenPos = m_camera.WorldToScreenPoint(m_playerLookTarget.position); //returns vector for moving a 3d point into screen space 
 
-        m_playerPosition = new Rect(m_screenPos.x - (crosshairCircle.width * m_crosshairScale/ 2) , m_screenPos.y - (crosshairCircle.height * m_crosshairScale / 2), crosshairCircle.width * m_crosshairScale, crosshairCircle.height * m_crosshairScale);
+        m_playerPosition = new Rect(m_screenPos.x - (crosshairCircle.width * m_crosshairScale/ 2) , m_screenPos.y - (crosshairCircle.height * m_crosshairScale / 2), crosshairCircle.width * m_crosshairScale, crosshairCircle.height * m_crosshairScale); // Makes that vector a rect
 
     }
 

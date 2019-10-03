@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class IncrementFlightChallenge : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject pointerArrow, RingCollider, checkerBoard;
+    [SerializeField, Header("Ring content")]
+    private GameObject m_pointerArrow, m_ringCollider, m_checkerBoard;
 
-    private float CircleRadius;
     public void RecordPlayerScore(Transform player)
     {
         float Distance = Vector3.Distance(transform.position, player.transform.position);
@@ -22,23 +21,23 @@ public class IncrementFlightChallenge : MonoBehaviour
 
         int CurrentScore = PlayerPrefs.GetInt("Score");
         PlayerPrefs.SetInt("Score", CurrentScore + Score);
-        pointerArrow.SetActive(false);
+        m_pointerArrow.SetActive(false);
         StartFlightTest.Instance.ActivateNextRing();
 
     }
 
 
     public void ActivateRing(Transform arrowTarget)
-    { 
-        RingCollider.SetActive(true);
-        pointerArrow.SetActive(true);
-        pointerArrow.transform.LookAt(arrowTarget);
+    {
+        m_ringCollider.SetActive(true);
+        m_pointerArrow.SetActive(true);
+        m_pointerArrow.transform.LookAt(arrowTarget);
    }
 
     public void ActivateFinalRing()
     {
-        RingCollider.SetActive(true);
-        checkerBoard.SetActive(true);
+        m_ringCollider.SetActive(true);
+        m_checkerBoard.SetActive(true);
 
     }
 }

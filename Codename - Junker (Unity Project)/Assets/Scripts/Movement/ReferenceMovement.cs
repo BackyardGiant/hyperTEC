@@ -21,12 +21,18 @@ public class ReferenceMovement : MonoBehaviour
     }
 
     #region SlowMoObject
+    /// <summary>
+    /// Saves forces before slow mo
+    /// </summary>
     public void RespondToPreSlowMo()
     {
         m_velocityBeforeSlow = m_rbReferenceObject.velocity;
         m_angleVelocityBeforeSlow = m_rbReferenceObject.angularVelocity;
     }
 
+    /// <summary>
+    /// Applies slow mo and saves forces after it has been applied
+    /// </summary>
     public void RespondToPostSlowMo()
     {
         m_rbReferenceObject.velocity *= GameManager.Instance.GameSpeed;
@@ -39,6 +45,9 @@ public class ReferenceMovement : MonoBehaviour
         m_angleVelocityDifferenceBetweenSlow = m_angleVelocityBeforeSlow.magnitude - m_angleVelocityAfterSlow.magnitude;
     }
 
+    /// <summary>
+    /// Returns lost force to object using the difference between before and after slow mo
+    /// </summary>
     public void RespondToNormalSpeed()
     {
         m_rbReferenceObject.velocity += m_rbReferenceObject.velocity.normalized * m_velocityDifferenceBetweenSlow;
