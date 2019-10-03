@@ -9903,6 +9903,24 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1317942498}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1447823299 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9078455123152224274, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+    type: 3}
+  m_PrefabInstance: {fileID: 2052596422}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b1434ec54b7794f9d8897695b610ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!20 &1447823302 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 9078455122496417123, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+    type: 3}
+  m_PrefabInstance: {fileID: 2052596422}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1473378291 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 3c0eaff5758b2674bb6b154891ea4b1d,
@@ -15674,6 +15692,16 @@ PrefabInstance:
       propertyPath: m_cameraFollowPos.z
       value: -20
       objectReference: {fileID: 0}
+    - target: {fileID: 9078455122496417125, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+        type: 3}
+      propertyPath: m_followCamera
+      value: 
+      objectReference: {fileID: 1447823302}
+    - target: {fileID: 9078455122496417125, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+        type: 3}
+      propertyPath: m_crosshair
+      value: 
+      objectReference: {fileID: 1447823299}
     - target: {fileID: 9078455123152224274, guid: 7d4f3ad5fb247d3479464cd51679dba0,
         type: 3}
       propertyPath: playerLookTarget
