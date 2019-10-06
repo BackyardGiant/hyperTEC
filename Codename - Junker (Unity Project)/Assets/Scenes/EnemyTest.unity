@@ -292,6 +292,7 @@ GameObject:
   - component: {fileID: 1064631387}
   - component: {fileID: 1064631391}
   - component: {fileID: 1064631392}
+  - component: {fileID: 1064631393}
   m_Layer: 0
   m_Name: TestEnemy
   m_TagString: Untagged
@@ -405,6 +406,20 @@ MonoBehaviour:
   - {fileID: 1128766910}
   - {fileID: 1731260173}
   - {fileID: 221023998}
+--- !u!114 &1064631393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064631386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3111356654322c43a853b5c36a077fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_maxHealth: 10
+  m_currentHealth: 0
 --- !u!1001 &1066738688
 PrefabInstance:
   m_ObjectHideFlags: 0
