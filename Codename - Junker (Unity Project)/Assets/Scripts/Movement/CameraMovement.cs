@@ -42,7 +42,7 @@ public class CameraMovement : MonoBehaviour
             m_crosshair.enabled = false;
             FollowCameraMovement(m_orbitalCameraRig.position, true);
         }
-        else if (Vector3.Distance(m_trPlayerTransform.TransformPoint(m_cameraFollowPos), transform.position) > 25f)
+        else if (Vector3.Distance(m_trPlayerTransform.TransformPoint(m_cameraFollowPos), transform.position) > 25f && Vector3.Distance(m_trPlayerTransform.position, transform.position) < 25f)
         {
             m_crosshair.enabled = false;
             m_orbitalCameraRig.GetComponent<OrbitalCamera>().CurrentX = 0;
@@ -71,7 +71,7 @@ public class CameraMovement : MonoBehaviour
             float targetDistance = Vector3.Distance(transform.position, _targetPosition);
 
             // Smoothly move the camera towards that target position
-            transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref m_velocity, Mathf.Clamp((m_smoothTime) / (GameManager.Instance.GameSpeed), 0.07f, 0.12f));
+            transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref m_velocity, m_smoothTime);
 
             transform.eulerAngles = m_trPlayerTransform.eulerAngles + m_trPlayerTransform.TransformDirection(m_offSet);
         }
