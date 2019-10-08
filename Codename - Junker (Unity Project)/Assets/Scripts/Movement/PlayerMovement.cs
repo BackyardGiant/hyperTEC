@@ -56,6 +56,20 @@ public class PlayerMovement : MonoBehaviour
     private float m_angleVelocityDifferenceBetweenSlow;
     #endregion
 
+    #region Super Boost
+    [SerializeField, Header("Super Boost"), Tooltip("The speed of the massive boost")]
+    private float m_boostSpeed;
+    [SerializeField, Tooltip("The speed of the massive boost")]
+    private float m_boostDamping;
+    [SerializeField, Tooltip("The maximum velocity of the ship")]
+    private float m_maxBoost;
+    [SerializeField, Tooltip("The time the boost is active for")]
+    private float m_boostTime;
+    private bool m_killedEngine;
+    private bool m_engageBoost;
+    private bool m_boostOn;
+    #endregion
+
     [SerializeField, Header("UI correction")]
     private float m_uiCorrection;
 
@@ -75,21 +89,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButton("Throttle Up"))
-        {
-            m_posativeClampedSpeed += m_acceleration / 100;
-            m_posativeClampedSpeed = Mathf.Clamp(m_posativeClampedSpeed, 0, 1);
-
-            m_currentSpeed = m_posativeClampedSpeed * m_maxSpeed;
-        }
-        if (Input.GetButton("Throttle Down"))
-        {
-            m_negativeClampedSpeed += m_decleration / 100;
-            m_negativeClampedSpeed = Mathf.Clamp(m_negativeClampedSpeed, 0, 1);
-
-            m_negativeSpeed = m_negativeClampedSpeed * m_maxSpeed;
-        }
-
         // Restets posative force application to the ship (If you let go of go forwards it stops applying force)
         if(Input.GetButtonUp("Throttle Up"))
         {
@@ -102,6 +101,33 @@ public class PlayerMovement : MonoBehaviour
             m_negativeSpeed = 0;
         }
 
+        if (Input.GetAxis("MacroEngine") > 0.1f && m_killedEngine)
+        {
+            m_killedEngine = false;
+            m_engageBoost = true;
+        }
+
+        if (Input.GetAxis("MacroEngine") < -0.1f && !m_killedEngine && !m_boostOn && !m_engageBoost)
+        {
+            m_killedEngine = true;
+        }
+
+        if (Input.GetButton("Throttle Up"))
+        {
+            m_posativeClampedSpeed += m_acceleration / 100;
+            m_posativeClampedSpeed = Mathf.Clamp(m_posativeClampedSpeed, 0, 1);
+
+            m_currentSpeed = m_posativeClampedSpeed * m_maxSpeed;
+
+            m_killedEngine = false;
+        }
+        if (Input.GetButton("Throttle Down"))
+        {
+            m_negativeClampedSpeed += m_decleration / 100;
+            m_negativeClampedSpeed = Mathf.Clamp(m_negativeClampedSpeed, 0, 1);
+
+            m_negativeSpeed = m_negativeClampedSpeed * m_maxSpeed;
+        }
 
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -115,6 +141,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        if (m_engageBoost)
+        {
+            m_boostOn = true;
+            m_rbPlayer.velocity = new Vector3(0,0,0);
+            m_engageBoost = false;
+            StartCoroutine(boostTimer());
+        }
+
         float _roll = Input.GetAxis("Horizontal");
         float _pitch = Input.GetAxis("Vertical");
         float _yaw = 0;
@@ -137,17 +172,40 @@ public class PlayerMovement : MonoBehaviour
         torque += _yaw * m_yawSpeed * transform.up;
         // Add torque for the roll based on the roll input.
         torque += -_roll * m_rollSpeed * transform.forward;
-        
-        // This takes the total torque of pitch, yaw and roll and applies it as a force to the player rigidbody
-        m_rbPlayer.AddTorque(torque * GameManager.Instance.GameSpeed);
 
-        ApplyDamping();
+        if (m_boostOn)
+        {
+            Debug.Log(m_rbPlayer.velocity.magnitude);
+            if (m_rbPlayer.velocity.magnitude < m_maxBoost)
+            {
+                m_rbPlayer.AddForce(m_boostSpeed * transform.forward * GameManager.Instance.GameSpeed);
+            }
+            m_rbPlayer.AddForce(transform.up * GameManager.Instance.GameSpeed * m_uiCorrection / 80f);
+        }
 
-        m_rbPlayer.AddForce(m_currentSpeed * transform.forward * GameManager.Instance.GameSpeed);
+        if (!m_boostOn && !m_engageBoost)
+        {
+            // This takes the total torque of pitch, yaw and roll and applies it as a force to the player rigidbody
+            m_rbPlayer.AddTorque(torque * GameManager.Instance.GameSpeed);
+        }
 
-        m_rbPlayer.AddForce(transform.up * GameManager.Instance.GameSpeed * m_uiCorrection / 100f);
+        if (!m_boostOn && !m_killedEngine && !m_engageBoost)
+        {
+            ApplyDamping();
 
-        m_rbPlayer.AddForce(m_negativeSpeed * (-m_rbPlayer.velocity.normalized) * GameManager.Instance.GameSpeed);
+            if (m_rbPlayer.velocity.magnitude < 150f)
+            {
+                m_rbPlayer.AddForce(m_currentSpeed * transform.forward * GameManager.Instance.GameSpeed);
+            }
+            else if (m_rbPlayer.velocity.magnitude > 160f)
+            {
+                m_rbPlayer.AddForce(m_boostDamping * (-m_rbPlayer.velocity.normalized) * GameManager.Instance.GameSpeed);
+            }
+
+            m_rbPlayer.AddForce(transform.up * GameManager.Instance.GameSpeed * m_uiCorrection / 100f);
+
+            m_rbPlayer.AddForce(m_negativeSpeed * (-m_rbPlayer.velocity.normalized) * GameManager.Instance.GameSpeed);
+        }
     }
 
     private void ApplyDamping()
@@ -155,11 +213,13 @@ public class PlayerMovement : MonoBehaviour
         Vector3 _velcoity = m_rbPlayer.velocity;
         Vector3 _targetVector = m_currentSpeed * transform.forward * GameManager.Instance.GameSpeed;
         float _dotProduct = Vector3.Dot(_velcoity.normalized, _targetVector.normalized);
-
-        if(_dotProduct < m_dampingAngleThreshold)
+        if (_targetVector.magnitude > 0.1f)
         {
-            m_rbPlayer.AddForce(m_dampingSpeed * -_velcoity * GameManager.Instance.GameSpeed); //damping force
-            m_rbPlayer.AddForce(m_correctionForce * transform.forward * GameManager.Instance.GameSpeed); //correction force
+            if (_dotProduct < m_dampingAngleThreshold)
+            {
+                m_rbPlayer.AddForce(m_dampingSpeed * -_velcoity * GameManager.Instance.GameSpeed); //damping force
+                m_rbPlayer.AddForce(m_correctionForce * transform.forward * GameManager.Instance.GameSpeed); //correction force
+            }
         }
     }
 
@@ -194,5 +254,11 @@ public class PlayerMovement : MonoBehaviour
     {
         m_rbPlayer.velocity += m_rbPlayer.velocity.normalized * m_velocityDifferenceBetweenSlow;
         m_rbPlayer.angularVelocity += m_rbPlayer.angularVelocity.normalized * m_angleVelocityDifferenceBetweenSlow;
+    }
+
+    public IEnumerator boostTimer()
+    {
+        yield return new WaitForSeconds(m_boostTime);
+        m_boostOn = false;
     }
 }
