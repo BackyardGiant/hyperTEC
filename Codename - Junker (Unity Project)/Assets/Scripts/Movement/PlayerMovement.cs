@@ -89,21 +89,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButton("Throttle Up"))
-        {
-            m_posativeClampedSpeed += m_acceleration / 100;
-            m_posativeClampedSpeed = Mathf.Clamp(m_posativeClampedSpeed, 0, 1);
-
-            m_currentSpeed = m_posativeClampedSpeed * m_maxSpeed;
-        }
-        if (Input.GetButton("Throttle Down"))
-        {
-            m_negativeClampedSpeed += m_decleration / 100;
-            m_negativeClampedSpeed = Mathf.Clamp(m_negativeClampedSpeed, 0, 1);
-
-            m_negativeSpeed = m_negativeClampedSpeed * m_maxSpeed;
-        }
-
         // Restets posative force application to the ship (If you let go of go forwards it stops applying force)
         if(Input.GetButtonUp("Throttle Up"))
         {
@@ -125,6 +110,23 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetAxis("MacroEngine") < -0.1f && !m_killedEngine && !m_boostOn && !m_engageBoost)
         {
             m_killedEngine = true;
+        }
+
+        if (Input.GetButton("Throttle Up"))
+        {
+            m_posativeClampedSpeed += m_acceleration / 100;
+            m_posativeClampedSpeed = Mathf.Clamp(m_posativeClampedSpeed, 0, 1);
+
+            m_currentSpeed = m_posativeClampedSpeed * m_maxSpeed;
+
+            m_killedEngine = false;
+        }
+        if (Input.GetButton("Throttle Down"))
+        {
+            m_negativeClampedSpeed += m_decleration / 100;
+            m_negativeClampedSpeed = Mathf.Clamp(m_negativeClampedSpeed, 0, 1);
+
+            m_negativeSpeed = m_negativeClampedSpeed * m_maxSpeed;
         }
 
         if (Input.GetKeyDown(KeyCode.T))
