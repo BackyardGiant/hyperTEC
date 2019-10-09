@@ -8,7 +8,6 @@ public class EnemyDetection : MonoBehaviour
     private Vector3 m_screenPos;
     private Vector3 m_viewportPos;
     private Vector2 m_arrowDrawPos;
-    private float m_playerDistance;//Distance from enemy to player
 
     [Header ("")]
     public Camera Camera;
@@ -25,11 +24,11 @@ public class EnemyDetection : MonoBehaviour
     void Update()
     {
         //Set distance from enemy to player. Used to check if enemy is a target within valid distance
-        m_playerDistance = Vector3.Distance(Player.position, transform.position);
+        float m_playerDistance = Vector3.Distance(Player.position, transform.position);
 
         m_screenPos = Camera.WorldToScreenPoint(transform.position);
 
-        if (m_playerDistance < m_viewDistance)
+        if (m_playerDistance < HUDManager.Instance.ViewDistance)
         {
             if (IsVisibleFrom(GetComponent<Renderer>(), Camera.main))
             {
