@@ -239,6 +239,12 @@ PrefabInstance:
       objectReference: {fileID: 1066738691}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4f3ad5fb247d3479464cd51679dba0, type: 3}
+--- !u!20 &902419326 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 9078455122496417123, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+    type: 3}
+  m_PrefabInstance: {fileID: 322421865}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &918833035 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 673949939, guid: 5f833fa36dfcf7c41b867d1460102cf2,
@@ -293,6 +299,7 @@ GameObject:
   - component: {fileID: 1064631391}
   - component: {fileID: 1064631392}
   - component: {fileID: 1064631393}
+  - component: {fileID: 1064631394}
   m_Layer: 0
   m_Name: TestEnemy
   m_TagString: Untagged
@@ -420,6 +427,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_maxHealth: 10
   m_currentHealth: 0
+--- !u!114 &1064631394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064631386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fbb8254494264844994b612c52808d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Camera: {fileID: 902419326}
+  Player: {fileID: 1066738691}
+  enemyCrosshairSquare: {fileID: 2800000, guid: fe09d19df34d9a14ab487d97f8564d8c,
+    type: 3}
+  enemyPointerArrow: {fileID: 2800000, guid: e55822077ba4ae84c8db167e0e6e2713, type: 3}
+  m_crosshairColour: {r: 1, g: 0, b: 0, a: 1}
+  m_enemyCrosshairSize: 25
+  m_viewDistance: 200
+  m_arrowColour: {r: 1, g: 0, b: 0, a: 1}
+  m_arrowSize: 300
+  m_edgeBuffer: 10
 --- !u!1001 &1066738688
 PrefabInstance:
   m_ObjectHideFlags: 0
