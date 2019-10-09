@@ -10,27 +10,16 @@ public class EnemyDetection : MonoBehaviour
     private Vector2 m_arrowDrawPos;
     private float m_playerDistance;//Distance from enemy to player
 
+    [Header ("")]
     public Camera Camera;
     public Transform Player;
-    public Texture2D enemyCrosshairSquare;
-    public Texture2D enemyPointerArrow;
 
-    [SerializeField, Header("Enemy Detection Square Crosshair"), Tooltip("Color of the Enemy Detection Crosshair")]
-    private Color m_crosshairColour;
-    [SerializeField,Tooltip("Size of the Enemy Detection Crosshair")]
-    private float m_enemyCrosshairSize;
-    [SerializeField, Tooltip("Distance at which the crosshair should be visible. 200 seems appropriate")]
+    [SerializeField, Tooltip("Distance at which the crosshair should be visible. 350 seems appropriate")]
     private int m_viewDistance;
 
+    private GameObject m_target;
 
-    [SerializeField, Header("Enemy Pointer Arrow Crosshair"), Tooltip("Color of the Enemy Detection Arrow")]
-    private Color m_arrowColour;
-    [SerializeField, Tooltip("Size of the Enemy Detection Arrow")]
-    private float m_arrowSize;
-    [SerializeField, Tooltip("Gap between arrows and edge of screen")]
-    private float m_edgeBuffer;
-
-
+    public GameObject Target { get => m_target; set => m_target = value; }
 
     // Update is called once per frame
     void Update()
@@ -42,48 +31,24 @@ public class EnemyDetection : MonoBehaviour
 
         if (m_playerDistance < m_viewDistance)
         {
-            m_screenPos.y = Screen.height - m_screenPos.y - m_enemyCrosshairSize / 2;
-            m_screenPos.x = m_screenPos.x - m_enemyCrosshairSize / 2;
             if (IsVisibleFrom(GetComponent<Renderer>(), Camera.main))
             {
-                //Draw Rect for on screen enemy square
-                m_position = new Rect(m_screenPos, new Vector2(m_enemyCrosshairSize, m_enemyCrosshairSize));
+                //If player is visible and within range, draw the target. 
+                HUDManager.Instance.DrawEnemyTarget(m_screenPos, this);
             }
             else
             {
-                m_screenPos.y = Mathf.Clamp(m_screenPos.y, m_edgeBuffer, Screen.height - m_enemyCrosshairSize - m_edgeBuffer);
-                m_screenPos.x = Mathf.Clamp(m_screenPos.x, m_edgeBuffer, Screen.width - m_enemyCrosshairSize - m_edgeBuffer);
-                m_position = new Rect(m_screenPos, new Vector2(m_enemyCrosshairSize, m_enemyCrosshairSize));
+                //If it isn't visible, draw the arrow.
+                HUDManager.Instance.DrawEnemyArrow(m_screenPos, this);
+
 
             }
         }
-    }
-
-    void OnGUI()
-    {
-        //Draws regular square crosshair on enemy if it's within distance and view of player.
-        if (IsVisibleFrom(GetComponent<Renderer>(),Camera.main) && m_playerDistance < m_viewDistance)
+        else
         {
-            GUI.color = m_crosshairColour;
-            GUI.DrawTexture(m_position, enemyCrosshairSquare);
-        }
-        else if(m_playerDistance < m_viewDistance)
-        {
-
-            GUI.color = m_arrowColour;
-            float _angle = Vector2.Angle(new Vector2(Screen.width/2,Screen.height/2),m_screenPos);
-            
-
-            Matrix4x4 matrixBackup = GUI.matrix;
-            {
-                GUIUtility.RotateAroundPivot(_angle,m_screenPos);
-                GUI.DrawTexture(m_position, enemyPointerArrow);
-            }
-            GUI.matrix = matrixBackup;
-    
+            HUDManager.Instance.ClearEnemyDetection(this);
         }
     }
-
     private bool IsVisibleFrom(Renderer renderer, Camera camera)
     {
         //Creates planes emitting from selected camera to detect if object is visible. Returns true if it is.
