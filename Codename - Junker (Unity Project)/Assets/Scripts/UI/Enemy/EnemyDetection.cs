@@ -14,7 +14,7 @@ public class EnemyDetection : MonoBehaviour
     public Camera Camera;
     public Transform Player;
 
-    [SerializeField, Tooltip("Distance at which the crosshair should be visible. 200 seems appropriate")]
+    [SerializeField, Tooltip("Distance at which the crosshair should be visible. 350 seems appropriate")]
     private int m_viewDistance;
 
     private GameObject m_target;
@@ -39,9 +39,9 @@ public class EnemyDetection : MonoBehaviour
             else
             {
                 //If it isn't visible, draw the arrow.
-
-               
                 HUDManager.Instance.DrawEnemyArrow(m_screenPos, this);
+
+
             }
         }
         else

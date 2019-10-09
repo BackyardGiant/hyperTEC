@@ -9,7 +9,9 @@ public class HUDManager : MonoBehaviour
     private static HUDManager s_instance;
 
 
-    private Canvas m_HUDcanvas;   
+    private Canvas m_HUDcanvas;
+
+    public GameObject player;
 
     [Header ("Enemy Indicator System")]
     public Sprite enemyTarget;
@@ -20,6 +22,8 @@ public class HUDManager : MonoBehaviour
     private float m_enemyTargetSize;
     [SerializeField, Tooltip("Scale of the Arrow indicators")]
     private float m_enemyArrowSize;
+    [SerializeField, Tooltip("Angle from the player that the enemy has to be for the arrow to dissapear. 29 is the preferred value.")]
+    private float m_arrowClampAngle;
 
     public static HUDManager Instance { get => s_instance; set => s_instance = value; }
 
@@ -91,18 +95,36 @@ public class HUDManager : MonoBehaviour
             _enemy.Target = _target;
         }
 
+
+
         _targetImage.rectTransform.localScale = new Vector3(m_enemyArrowSize, m_enemyArrowSize, m_enemyArrowSize);
         _targetImage.sprite = enemyArrowPointer;
 
+        //Rotate Arrow towards enemy.
         Vector3 _difference = _screenPos - _targetImage.rectTransform.position;
         _difference.Normalize();
         float _rotZ = Mathf.Atan2(_difference.y, _difference.x) * Mathf.Rad2Deg;
         Quaternion _newRotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, _rotZ + 270f));
         _targetImage.rectTransform.rotation = _newRotation;
 
-        _screenPos.y = Mathf.Clamp(_screenPos.y, 0, Screen.height - 20);
-        _screenPos.x = Mathf.Clamp(_screenPos.x, 0, Screen.width - 20);
-        _targetImage.rectTransform.position = _screenPos;
+
+
+        //Clamp arrow position to edge of the screen.
+        _screenPos.y = Mathf.Clamp(_screenPos.y, 20, Screen.height - 20);
+        _screenPos.x = Mathf.Clamp(_screenPos.x, 20, Screen.width - 20);
+
+
+        Vector3 _enemyToPlayer = _enemy.transform.position - player.transform.position;
+        float _angleBehind = Vector3.Angle(_enemyToPlayer, -player.transform.forward);
+
+        if (_angleBehind > m_arrowClampAngle)
+        {
+            _targetImage.rectTransform.position = _screenPos;
+        }
+        else
+        {
+            ClearEnemyDetection(_enemy);
+        }
     }
 
     public void ClearEnemyDetection(EnemyDetection _enemy)
