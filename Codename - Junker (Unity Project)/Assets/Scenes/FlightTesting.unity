@@ -16309,13 +16309,23 @@ PrefabInstance:
     - target: {fileID: 7029987946895708831, guid: f0c6241c1f3d6f74faa46e2a0291f984,
         type: 3}
       propertyPath: SaveResults
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7029987946895708831, guid: f0c6241c1f3d6f74faa46e2a0291f984,
         type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7029987946895708831, guid: f0c6241c1f3d6f74faa46e2a0291f984,
+        type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 975440488}
+    - target: {fileID: 7029987946895708831, guid: f0c6241c1f3d6f74faa46e2a0291f984,
+        type: 3}
+      propertyPath: ResultsData
+      value: 
+      objectReference: {fileID: 4900000, guid: 677ae8b8a3b09a34085d791c84e07766, type: 3}
     - target: {fileID: 1946614992205298454, guid: f0c6241c1f3d6f74faa46e2a0291f984,
         type: 3}
       propertyPath: m_LocalScale.x
