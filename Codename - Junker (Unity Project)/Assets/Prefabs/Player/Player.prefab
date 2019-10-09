@@ -135,6 +135,7 @@ MonoBehaviour:
   m_currentSpeed: 0
   m_negativeSpeed: 0
   m_acceleration: 1
+  m_decleration: 1
   m_rollSpeed: 0.5
   m_yawSpeed: 0.2
   m_pitchSpeed: 0.5
@@ -142,6 +143,11 @@ MonoBehaviour:
   m_dampingSpeed: 1
   m_correctionForce: 0.4
   m_dampingAngleThreshold: 0.95
+  m_boostSpeed: 300
+  m_boostDamping: 50
+  m_maxBoost: 300
+  m_boostTime: 1
+  m_uiCorrection: 2.8
 --- !u!54 &2872460001895466301
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -318,22 +324,22 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.029610533
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0.7064865
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.029610533
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.7064865
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
@@ -353,7 +359,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -4.8
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}

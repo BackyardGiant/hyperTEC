@@ -26,14 +26,14 @@ public class Crosshair : MonoBehaviour
 
     private void Start()
     {
-        crosshairDot = Texture2D.whiteTexture;
+        //crosshairDot = Texture2D.whiteTexture;
         m_camera = GetComponent<Camera>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        m_position = new Rect((Screen.width - crosshairDot.width) / 2, (Screen.height - crosshairDot.height) / 2, crosshairDot.width, crosshairDot.height);
+        m_position = new Rect((Screen.width - crosshairDot.width * m_crosshairScale) / 2, (Screen.height - crosshairDot.height * m_crosshairScale) / 2, crosshairDot.width * m_crosshairScale, crosshairDot.height * m_crosshairScale);
 
         m_screenPos = m_camera.WorldToScreenPoint(m_playerLookTarget.position); //returns vector for moving a 3d point into screen space 
 
