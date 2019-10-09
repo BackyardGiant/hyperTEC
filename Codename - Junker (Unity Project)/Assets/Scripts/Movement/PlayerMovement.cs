@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Speed Settings")]
     [SerializeField, Tooltip("The maximum speed that the ship can fly")]
     private float m_maxSpeed;
+    [SerializeField, Tooltip("The maximum speed that the ship can accelerate")]
+    private float m_maxAcceleration;
     [SerializeField, Tooltip("The current speed of the ship, between 0 and Max Speed")]
     private float m_currentSpeed;
     [SerializeField, Tooltip("The current negative speed of the ship, between 0 and Max Speed")]
@@ -117,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
             m_posativeClampedSpeed += m_acceleration / 100;
             m_posativeClampedSpeed = Mathf.Clamp(m_posativeClampedSpeed, 0, 1);
 
-            m_currentSpeed = m_posativeClampedSpeed * m_maxSpeed;
+            m_currentSpeed = m_posativeClampedSpeed * m_maxAcceleration;
 
             m_killedEngine = false;
         }
@@ -126,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
             m_negativeClampedSpeed += m_decleration / 100;
             m_negativeClampedSpeed = Mathf.Clamp(m_negativeClampedSpeed, 0, 1);
 
-            m_negativeSpeed = m_negativeClampedSpeed * m_maxSpeed;
+            m_negativeSpeed = m_negativeClampedSpeed * m_maxAcceleration;
         }
 
         if (Input.GetKeyDown(KeyCode.T))
