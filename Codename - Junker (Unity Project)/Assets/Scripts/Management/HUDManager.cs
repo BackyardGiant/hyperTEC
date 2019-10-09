@@ -22,14 +22,24 @@ public class HUDManager : MonoBehaviour
     private float m_enemyTargetSize;
     [SerializeField, Tooltip("Scale of the Arrow indicators")]
     private float m_enemyArrowSize;
-    [SerializeField, Tooltip("Angle from the player that the enemy has to be for the arrow to dissapear. 29 is the preferred value.")]
+    [SerializeField, Tooltip("Distance at which enemies should be detected")]
+    private int m_viewDistance;
     private float m_arrowClampAngle;
 
+
     public static HUDManager Instance { get => s_instance; set => s_instance = value; }
+
+    public int ViewDistance { get => m_viewDistance; set => m_viewDistance = value; }
 
     private void Start()
     {
         m_HUDcanvas = GetComponent<Canvas>();
+
+       // m_arrowClampAngle = Mathf.Asin((Screen.height / 2) / Mathf.Sqrt((m_viewDistance * m_viewDistance) + (Screen.height / 2 * Screen.height / 2)));
+
+        m_arrowClampAngle = Mathf.Asin((Screen.height) / Mathf.Sqrt((m_viewDistance * m_viewDistance) + (Screen.height * Screen.height)));
+        m_arrowClampAngle = m_arrowClampAngle * Mathf.Rad2Deg;
+        Debug.Log(m_arrowClampAngle);
     }
     private void Awake()
     {
@@ -99,7 +109,12 @@ public class HUDManager : MonoBehaviour
 
 
 
+
         _targetImage.rectTransform.localScale = new Vector3(m_enemyArrowSize, m_enemyArrowSize, m_enemyArrowSize);
+
+
+
+
         _targetImage.sprite = enemyArrowPointer;
 
         //Rotate Arrow towards enemy.
@@ -118,6 +133,7 @@ public class HUDManager : MonoBehaviour
 
         Vector3 _enemyToPlayer = _enemy.transform.position - player.transform.position;
         float _angleBehind = Vector3.Angle(_enemyToPlayer, -player.transform.forward);
+
 
         if (_angleBehind > m_arrowClampAngle)
         {
