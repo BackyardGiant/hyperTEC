@@ -44,6 +44,7 @@ public class HUDManager : MonoBehaviour
         }
     }
 
+    // The argument enemy passed in is the same as the enemy calling the function so that the targets stay encapsulated
     public void DrawEnemyTarget(Vector2 _screenPos, EnemyDetection _enemy)
     {
         GameObject _target;
@@ -73,6 +74,7 @@ public class HUDManager : MonoBehaviour
         _targetImage.transform.localEulerAngles = Vector3.zero;
 
     }
+    // The argument enemy passed in is the same as the enemy calling the function so that the targets stay encapsulated
     public void DrawEnemyArrow(Vector3 _screenPos, EnemyDetection _enemy)
     {
         GameObject _target;

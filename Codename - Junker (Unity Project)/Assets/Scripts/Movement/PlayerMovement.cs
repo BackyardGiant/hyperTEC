@@ -175,7 +175,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_boostOn)
         {
-            Debug.Log(m_rbPlayer.velocity.magnitude);
             if (m_rbPlayer.velocity.magnitude < m_maxBoost)
             {
                 m_rbPlayer.AddForce(m_boostSpeed * transform.forward * GameManager.Instance.GameSpeed);
@@ -193,16 +192,19 @@ public class PlayerMovement : MonoBehaviour
         {
             ApplyDamping();
 
-            if (m_rbPlayer.velocity.magnitude < 150f)
+            if (m_rbPlayer.velocity.magnitude < m_maxSpeed)
             {
                 m_rbPlayer.AddForce(m_currentSpeed * transform.forward * GameManager.Instance.GameSpeed);
             }
-            else if (m_rbPlayer.velocity.magnitude > 160f)
+            else if (m_rbPlayer.velocity.magnitude > m_maxSpeed + 10f)
             {
                 m_rbPlayer.AddForce(m_boostDamping * (-m_rbPlayer.velocity.normalized) * GameManager.Instance.GameSpeed);
             }
 
-            m_rbPlayer.AddForce(transform.up * GameManager.Instance.GameSpeed * m_uiCorrection / 100f);
+            if (m_currentSpeed > 0)
+            {
+                m_rbPlayer.AddForce(transform.up * GameManager.Instance.GameSpeed * m_uiCorrection / 100f);
+            }
 
             m_rbPlayer.AddForce(m_negativeSpeed * (-m_rbPlayer.velocity.normalized) * GameManager.Instance.GameSpeed);
         }

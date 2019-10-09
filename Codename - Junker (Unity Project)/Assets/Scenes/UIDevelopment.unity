@@ -236,7 +236,7 @@ MonoBehaviour:
   enemyArrowPointer: {fileID: 21300000, guid: e55822077ba4ae84c8db167e0e6e2713, type: 3}
   m_enemyTargetColour: {r: 1, g: 0, b: 0, a: 1}
   m_enemyTargetSize: 0.2
-  m_enemyArrowSize: 0.2
+  m_enemyArrowSize: 0.1
   m_arrowClampAngle: 29
 --- !u!1 &151248529 stripped
 GameObject:

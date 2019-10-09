@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/UIDevelopment.unity
+- path: Assets/Scenes/FlightTesting.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

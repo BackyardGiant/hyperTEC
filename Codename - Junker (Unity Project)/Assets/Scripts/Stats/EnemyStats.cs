@@ -17,12 +17,6 @@ public class EnemyStats : MonoBehaviour
         m_currentHealth = m_maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void TakeDamage(float _damageTaken)
     {
         m_currentHealth -= _damageTaken;
