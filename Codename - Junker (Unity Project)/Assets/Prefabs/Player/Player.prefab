@@ -131,7 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3de9616ce3924249bb8c292b3c38da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_maxSpeed: 40
+  m_maxSpeed: 150
+  m_maxAcceleration: 40
   m_currentSpeed: 0
   m_negativeSpeed: 0
   m_acceleration: 1
@@ -143,10 +144,10 @@ MonoBehaviour:
   m_dampingSpeed: 1
   m_correctionForce: 0.4
   m_dampingAngleThreshold: 0.95
-  m_boostSpeed: 300
-  m_boostDamping: 50
-  m_maxBoost: 300
-  m_boostTime: 1
+  m_boostSpeed: 1000
+  m_boostDamping: 30
+  m_maxBoost: 200
+  m_boostTime: 0.5
   m_uiCorrection: 2.8
 --- !u!54 &2872460001895466301
 Rigidbody:
@@ -324,22 +325,22 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.029610533
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7064865
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.029610533
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7064865
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
@@ -359,7 +360,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -4.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b2190aba7b008f9478871ba3f35cfd28,
         type: 3}

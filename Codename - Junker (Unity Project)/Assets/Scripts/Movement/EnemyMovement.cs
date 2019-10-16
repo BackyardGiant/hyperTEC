@@ -18,6 +18,8 @@ public class EnemyMovement : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, m_targets[m_counter].position, m_speed * Time.deltaTime);
 
+            transform.LookAt(m_targets[m_counter]);
+
             if (Vector3.Distance(transform.position, m_targets[m_counter].position) < 0.2f)
             {
                 reachDestination();
