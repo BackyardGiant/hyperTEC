@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     private float m_decleration;
     private float m_posativeClampedSpeed; // Forward force being applied
     private float m_negativeClampedSpeed; // Backwards force being applied
+
+
     #endregion
 
     #region Pitch, Yaw and Roll
@@ -72,8 +74,17 @@ public class PlayerMovement : MonoBehaviour
     private bool m_boostOn;
     #endregion
 
+    #region Engine Particle System
+    [Header ("Particle System Events")]
+    public GameEvent boostOn;
+    public GameEvent engineOff;
+    #endregion
+
     [SerializeField, Header("UI correction")]
     private float m_uiCorrection;
+
+    public float CurrentSpeed { get => m_currentSpeed; }
+    public float MaxAcceleration { get => m_maxAcceleration; }
 
     private void Awake()
     {
@@ -111,6 +122,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetAxis("MacroEngine") < -0.1f && !m_killedEngine && !m_boostOn && !m_engageBoost)
         {
+            engineOff.Raise();
             m_killedEngine = true;
         }
 
@@ -146,6 +158,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_engageBoost)
         {
+            boostOn.Raise();
             m_boostOn = true;
             m_rbPlayer.velocity = new Vector3(0,0,0);
             m_engageBoost = false;
