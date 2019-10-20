@@ -35,6 +35,8 @@ public class CameraMovement : MonoBehaviour
     [SerializeField, Header("Crosshair")]
     private Crosshair m_crosshair;
 
+    public Vector3 OffSet { get => m_offSet; set => m_offSet = value; }
+
     void Update()
     {
         if (Mathf.Abs(Input.GetAxis("LookX")) > 0 || Mathf.Abs(Input.GetAxis("LookY")) > 0)

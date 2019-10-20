@@ -10,6 +10,11 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField, Header("Bullets"), Tooltip("Bullet prefab")]
     private GameObject m_bulletPrefab;
 
+    [SerializeField, Header("Camera"), Tooltip("This contains the main camera of the scene")]
+    private Camera m_aimingCamera;
+    [SerializeField, Header("Target")]
+    private Transform m_target;
+
     #region Cooldowns
     [SerializeField, Header("Cooldown"), Tooltip("The time taken for the right weapon to ready to fire")]
     private float m_rightWeaponCooldown;
@@ -18,15 +23,57 @@ public class PlayerShooting : MonoBehaviour
     private bool m_rightWeaponActive = true;
     private bool m_leftWeaponActive = true;
     #endregion
+
+    #region Stats
+    [SerializeField, Header("Stats"), Tooltip("The range that the bullets aim towards using the camera, 1000 is default")]
+    private uint m_range = 1000;
+    #endregion
+
+    private static PlayerShooting s_instance;
+
+    public static PlayerShooting Instance { get => s_instance; set => s_instance = value; }
+    public GameObject[] SpawnLocations { get => m_spawnLocations; set => m_spawnLocations = value; }
+
+    private void Awake()
+    {
+        if (s_instance == null)
+        {
+            s_instance = this;
+        }
+        else
+        {
+            Destroy(s_instance.gameObject);
+            s_instance = this;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_aimingCamera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
+        RaycastHit hit;
+        // Does the ray intersect any objects excluding the player layer
+        if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward), out hit, m_range))
+        {
+            Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            Debug.Log("Did Hit");
+            m_target.position = hit.transform.position;
+        }
+        else
+        {
+            Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range, Color.white);
+            Debug.Log("Did not Hit");
+            m_target.position = (m_aimingCamera.transform.position + (m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range));
+        }
+
+        m_spawnLocations[0].transform.LookAt(m_target);
+        m_spawnLocations[1].transform.LookAt(m_target);
+
         if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive)
         {
             SpawnBullet(0);
@@ -44,7 +91,7 @@ public class PlayerShooting : MonoBehaviour
 
     void SpawnBullet(int _side)
     {
-        GameObject newBullet = Instantiate(m_bulletPrefab, m_spawnLocations[_side].transform.position, m_spawnLocations[0].transform.rotation);
+        GameObject newBullet = Instantiate(m_bulletPrefab, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
         newBullet.GetComponent<BulletMovement>().LifeTime = 2f;
         newBullet.GetComponent<BulletMovement>().Instantiated();
     }
