@@ -12,8 +12,11 @@ public class PlayerShooting : MonoBehaviour
 
     [SerializeField, Header("Camera"), Tooltip("This contains the main camera of the scene")]
     private Camera m_aimingCamera;
+
     [SerializeField, Header("Target")]
     private Transform m_target;
+
+    private bool m_playerCanShoot = true;
 
     #region Cooldowns
     [SerializeField, Header("Cooldown"), Tooltip("The time taken for the right weapon to ready to fire")]
@@ -27,12 +30,15 @@ public class PlayerShooting : MonoBehaviour
     #region Stats
     [SerializeField, Header("Stats"), Tooltip("The range that the bullets aim towards using the camera, 1000 is default")]
     private uint m_range = 1000;
+    [SerializeField, Tooltip("The range that the bullets stay active for (Range of bullet)")]
+    private float bulletLifeTime;
     #endregion
 
     private static PlayerShooting s_instance;
 
     public static PlayerShooting Instance { get => s_instance; set => s_instance = value; }
     public GameObject[] SpawnLocations { get => m_spawnLocations; set => m_spawnLocations = value; }
+    public bool PlayerCanShoot { get => m_playerCanShoot; set => m_playerCanShoot = value; }
 
     private void Awake()
     {
@@ -57,7 +63,7 @@ public class PlayerShooting : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
+
         if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward), out hit, m_range))
         {
             Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
@@ -74,14 +80,14 @@ public class PlayerShooting : MonoBehaviour
         m_spawnLocations[0].transform.LookAt(m_target);
         m_spawnLocations[1].transform.LookAt(m_target);
 
-        if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive)
+        if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot)
         {
             SpawnBullet(0);
             m_rightWeaponActive = false;
             StartCoroutine(rightCooldown());
         }
 
-        if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive)
+        if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot)
         {
             SpawnBullet(1);
             m_leftWeaponActive = false;
@@ -92,7 +98,7 @@ public class PlayerShooting : MonoBehaviour
     void SpawnBullet(int _side)
     {
         GameObject newBullet = Instantiate(m_bulletPrefab, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
-        newBullet.GetComponent<BulletMovement>().LifeTime = 2f;
+        newBullet.GetComponent<BulletMovement>().LifeTime = bulletLifeTime;
         newBullet.GetComponent<BulletMovement>().Instantiated();
     }
 

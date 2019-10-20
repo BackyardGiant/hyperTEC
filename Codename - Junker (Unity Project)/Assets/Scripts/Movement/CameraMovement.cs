@@ -64,12 +64,16 @@ public class CameraMovement : MonoBehaviour
     {
         if (_lookAtPlayer)
         {
+            PlayerShooting.Instance.PlayerCanShoot = false;
+
             transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * 100);
 
             transform.eulerAngles = m_orbitalCameraRig.eulerAngles;
         }
         else
         {
+            PlayerShooting.Instance.PlayerCanShoot = true;
+
             float targetDistance = Vector3.Distance(transform.position, _targetPosition);
 
             // Smoothly move the camera towards that target position
