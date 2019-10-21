@@ -38,18 +38,19 @@ public class HUDManager : MonoBehaviour
     private int m_lootViewDistance;
     [SerializeField, Tooltip("How far away from the target that the loot display appears"),Range(0f,1f)]
     private float m_displayOffset = 0.1f;
-    [SerializeField, Tooltip("How quickly the scan and destroy occurs. Higher is faster."), Range(0.2f,1f)]
-    private float m_fillSpeed;
+    [SerializeField, Tooltip("How quickly the scan occurs. Higher is faster."), Range(0.2f,1f)]
+    private float m_scanningFillSpeed;
+    [SerializeField, Tooltip("How quickly the destroy occurs. Higher is faster."), Range(0.2f, 1f)]
+    private float m_destroyFillSpeed;
     #endregion
 
 
-    private Canvas m_HUDcanvas;
     private bool m_displayAnimated;
     private bool m_currentlyClosingScan = false;
     private bool m_currentlyScanning = false;
-    private bool m_buttonHolding = false;
     private GameObject m_displayDismissed;
     private GameObject m_currentLoot;
+    private GameObject m_prevLoot;
 
     #region Accessors
     public static HUDManager Instance { get => s_instance; set => s_instance = value; }
@@ -59,14 +60,14 @@ public class HUDManager : MonoBehaviour
 
     void Start()
     {
-        m_HUDcanvas = GetComponent<Canvas>();
+        //Calculate Clamp angle of arrow. This is equal to the angle at which the enemy is to the behind of the player. Working out this value prevents arrows floating around the screen.
         m_displayAnimated = false;
         m_arrowClampAngle = Mathf.Asin((Screen.height) / Mathf.Sqrt((m_viewDistance * m_viewDistance) + (Screen.height * Screen.height)));
         m_arrowClampAngle = m_arrowClampAngle * Mathf.Rad2Deg;
     }
     void Awake()
     {
-
+        //Singleton Implementation
         if (s_instance == null)
         {
             s_instance = this;
@@ -79,30 +80,37 @@ public class HUDManager : MonoBehaviour
     }
     void Update()
     {
+        //If player presses button, and Loot Display is active, start filling in the scan button.
         if (Input.GetButton("Interact") && LootDisplay.activeInHierarchy == true)
         {
-            m_buttonHolding = true;
-            Scanner.fillAmount += m_fillSpeed * Time.deltaTime;
+            Scanner.fillAmount += m_scanningFillSpeed * Time.deltaTime;
         }
+        //If the player lets go of the button while it's below 0.1f fill amount, the player has picked the item up.
         if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && LootDisplay.activeInHierarchy == true)
         {
             //Make pickup item code here
             //Gameobject _pickupLoot = m_currentLoot;
 
 
-            Debug.Log("Yay STUFF");
+            Debug.Log("Pickup Loot.");
             Scanner.fillAmount = 0;
         }
+
+        //If player lets go of the button and it's above 0.1f fill amount, clear the progress.
         if (Input.GetButtonUp("Interact") && Scanner.fillAmount > 0.1f && LootDisplay.activeInHierarchy == true)
         {
             Scanner.fillAmount = 0;
         }
+
+        //Full scan complete, open and animate display.
         if (Scanner.fillAmount == 1 && m_currentlyScanning == false)
         {
             m_currentlyScanning = true;
             LootDisplay.GetComponent<Animator>().Play("DisplayStats");
             Scanner.fillAmount = 0;
         }
+        
+        //Full close complete, close and animate display.
         if (Scanner.fillAmount == 1 && m_currentlyScanning == true)
         {
             LootDisplay.GetComponent<Animator>().Play("HideStats");
@@ -110,41 +118,36 @@ public class HUDManager : MonoBehaviour
             m_currentlyScanning = false;
             Scanner.fillAmount = 0;
         }
+
+        //Dismiss being held down fills in the button.
         if (Input.GetButton("Dismiss") && LootDisplay.activeInHierarchy == true)
         {
-            Destroyer.fillAmount += m_fillSpeed * Time.deltaTime;
+            Destroyer.fillAmount += m_destroyFillSpeed * Time.deltaTime;
         }
+
+        //Letting go of the Dismiss button clears the progress
         if (Input.GetButtonUp("Dismiss") && LootDisplay.activeInHierarchy == true)
         {
             Destroyer.fillAmount = 0;
         }
+
+        //Destroy the target object.
         if (Destroyer.fillAmount == 1 && LootDisplay.activeInHierarchy == true)
         {
 
             //Make it explode in here
             ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
-
-            Destroy(m_currentLoot);
-            if (m_currentlyScanning == true)
-            {
-                LootDisplay.GetComponent<Animator>().Play("CloseFromScanned");
-            }
-            else
-            {
-                LootDisplay.GetComponent<Animator>().Play("CloseFromUnscanned");
-            }
             m_displayAnimated = false;
-            m_currentlyScanning = false;
-            Invoke("DisableLootDisplay", 1.15f);
+            Destroy(m_currentLoot);
             Destroyer.fillAmount = 0;
+            m_currentlyScanning = false;
         }
 
 
     }
 
-
     #region Enemy Detection Methods
-    // The argument enemy passed in is the same as the enemy calling the function so that the targets stay encapsulated
+    // The argument enemy passed in is the same as the enemy calling the function so that the targets stay encapsulated.
     public void DrawEnemyTarget(Vector2 _screenPos, EnemyDetection _enemy)
     {
         GameObject _target;
@@ -174,7 +177,7 @@ public class HUDManager : MonoBehaviour
         _targetImage.transform.localEulerAngles = Vector3.zero;
 
     }
-    // The argument enemy passed in is the same as the enemy calling the function so that the targets stay encapsulated
+    // The argument enemy passed in is the same as the enemy calling the function so that the targets stay encapsulated.
     public void DrawEnemyArrow(Vector3 _screenPos, EnemyDetection _enemy)
     {
         GameObject _target;
@@ -234,12 +237,15 @@ public class HUDManager : MonoBehaviour
             ClearEnemyDetection(_enemy);
         }
     }
+    //Clears the target of the enemy.
     public void ClearEnemyDetection(EnemyDetection _enemy)
     {
         Destroy(_enemy.EnemyTarget);
     }
     #endregion
     #region Loot Detection Methods
+
+    //Draws the diamond on the screenspace position of the loot.
     public void DrawLootTarget(Vector2 _screenPos, LootDetection _loot)
     {
         GameObject _lootObject;
@@ -261,20 +267,36 @@ public class HUDManager : MonoBehaviour
             _targetImage.color = m_lootTargetColour;
             _loot.LootTarget = _lootObject;
         }
-
-        if(m_currentLoot == null)
-        {
-            m_currentLoot = _loot.gameObject;
-        }
         //moveit
         _targetImage.rectTransform.localScale = new Vector3(m_lootTargetSize, m_lootTargetSize, m_lootTargetSize);
         _targetImage.sprite = TargetSprite;
         _targetImage.transform.position = _screenPos;
         _targetImage.transform.localEulerAngles = Vector3.zero;
 
+
+        //Find all "component" tagged game objects
+        GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
+        m_currentLoot = ReturnTargetLoot(_lootObjects);
+
+        //If targeted loot has changed, reset LootDisplay.
+        if(m_prevLoot != m_currentLoot && m_currentlyScanning)
+        {
+            // Do stuff
+            m_displayAnimated = false;
+            m_currentlyScanning = false;
+        }
+       
+        m_prevLoot = m_currentLoot;
+
+
+        //Screenpos of loot, and LootDetection script. This will aid in automatically entering values from a piece of loot.
         _screenPos = Camera.WorldToScreenPoint(m_currentLoot.transform.position);
+        _loot = m_currentLoot.GetComponent<LootDetection>();
+
         DrawLootDisplay(_screenPos,_loot);
+
     }
+    //Clear the target for a loot. Also close/hide the Loot Display.
     public void ClearLootTarget(LootDetection _loot)
     {
         Destroy(_loot.LootTarget);
@@ -297,7 +319,30 @@ public class HUDManager : MonoBehaviour
         }
         m_currentlyScanning = false;
     }
-    public void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
+    //Returns the loot which is closest to the crosshair. This acts as automatic targetting of loot.
+    private GameObject ReturnTargetLoot(GameObject[] _visibleLoot)
+    {
+        GameObject _target = null;
+
+        float _currentDistance = 0f;
+        float _minimumDistance = Mathf.Infinity;
+
+        Vector2 _crosshairPosition = new Vector2(Screen.width / 2,Screen.height / 2);
+
+        foreach (GameObject _objTarget in _visibleLoot)
+        {
+            _currentDistance = Vector2.Distance(_crosshairPosition, Camera.WorldToScreenPoint(_objTarget.transform.position));
+            if (_currentDistance <_minimumDistance)
+            {
+                _target = _objTarget;
+                _minimumDistance = _currentDistance;
+            }
+        }
+
+        return _target;
+    }
+    //Draws the lootdisplay with appropriate offset based on the current function.
+    private void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
     {
         if (!m_displayAnimated)
         {
@@ -327,5 +372,4 @@ public class HUDManager : MonoBehaviour
         }
     }
     #endregion
-
 }
