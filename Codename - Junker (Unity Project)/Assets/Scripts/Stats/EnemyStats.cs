@@ -40,7 +40,11 @@ public class EnemyStats : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("I have died");
+        try
+        {
+            Destroy(GetComponent<EnemyDetection>().Target.gameObject);
+        }
+        catch { Debug.Log("No target assigned to destroyed object"); }
         Destroy(gameObject);
     }
 }

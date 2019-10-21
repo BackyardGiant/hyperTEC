@@ -35,20 +35,20 @@ public class Crosshair : MonoBehaviour
     {
         m_position = new Rect((Screen.width - crosshairDot.width * m_crosshairScale) / 2, (Screen.height - crosshairDot.height * m_crosshairScale) / 2, crosshairDot.width * m_crosshairScale, crosshairDot.height * m_crosshairScale);
 
-        m_screenPos = m_camera.WorldToScreenPoint(m_playerLookTarget.position); //returns vector for moving a 3d point into screen space 
+        //m_screenPos = m_camera.WorldToScreenPoint(m_playerLookTarget.position); //returns vector for moving a 3d point into screen space 
 
-        m_playerPosition = new Rect(m_screenPos.x - (crosshairCircle.width * m_crosshairScale/ 2) , m_screenPos.y - (crosshairCircle.height * m_crosshairScale / 2), crosshairCircle.width * m_crosshairScale, crosshairCircle.height * m_crosshairScale); // Makes that vector a rect
+        //m_playerPosition = new Rect(m_screenPos.x - (crosshairCircle.width * m_crosshairScale/ 2) , m_screenPos.y - (crosshairCircle.height * m_crosshairScale / 2), crosshairCircle.width * m_crosshairScale, crosshairCircle.height * m_crosshairScale); // Makes that vector a rect
 
     }
 
     void OnGUI()
     {
-        GUI.color = new Color(1,1,1,m_nuetralOpacity);
+        GUI.color = new Color(1, 1, 1, m_nuetralOpacity);
 
         GUI.DrawTexture(m_position, crosshairDot);
 
-        GUI.color = new Color(1, 1, 1, m_playerOpacity);
+        //GUI.color = new Color(1, 1, 1, m_playerOpacity);
 
-        GUI.DrawTexture(m_playerPosition, crosshairCircle);
+        //GUI.DrawTexture(m_playerPosition, crosshairCircle);
     }
 }

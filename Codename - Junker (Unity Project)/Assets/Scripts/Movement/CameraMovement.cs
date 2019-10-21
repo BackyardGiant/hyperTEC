@@ -35,6 +35,8 @@ public class CameraMovement : MonoBehaviour
     [SerializeField, Header("Crosshair")]
     private Crosshair m_crosshair;
 
+    public Vector3 OffSet { get => m_offSet; set => m_offSet = value; }
+
     void Update()
     {
         if (Mathf.Abs(Input.GetAxis("LookX")) > 0 || Mathf.Abs(Input.GetAxis("LookY")) > 0)
@@ -62,12 +64,16 @@ public class CameraMovement : MonoBehaviour
     {
         if (_lookAtPlayer)
         {
+            PlayerShooting.Instance.PlayerCanShoot = false;
+
             transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * 100);
 
             transform.eulerAngles = m_orbitalCameraRig.eulerAngles;
         }
         else
         {
+            PlayerShooting.Instance.PlayerCanShoot = true;
+
             float targetDistance = Vector3.Distance(transform.position, _targetPosition);
 
             // Smoothly move the camera towards that target position

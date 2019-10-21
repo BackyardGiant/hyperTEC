@@ -115,6 +115,7 @@
     <Compile Include="Assets\Scripts\Management\DustManager.cs" />
     <Compile Include="Assets\Scripts\Management\GameManager.cs" />
     <Compile Include="Assets\Scripts\Management\HUDManager.cs" />
+    <Compile Include="Assets\Scripts\Movement\BulletMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\EnemyMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\OrbitalCamera.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Assets\Scripts\Scriptable Objects\GameEvent.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\GameEventListener.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\IntVariable.cs" />
+    <Compile Include="Assets\Scripts\Shooting\PlayerShooting.cs" />
     <Compile Include="Assets\Scripts\Stats\EnemyStats.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\EnemyDetection.cs" />
     <Compile Include="Assets\Scripts\UI\Player\Crosshair.cs" />
