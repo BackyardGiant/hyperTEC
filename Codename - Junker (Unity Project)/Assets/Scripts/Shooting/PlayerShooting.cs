@@ -31,7 +31,11 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField, Header("Stats"), Tooltip("The range that the bullets aim towards using the camera, 1000 is default")]
     private uint m_range = 1000;
     [SerializeField, Tooltip("The range that the bullets stay active for (Range of bullet)")]
-    private float bulletLifeTime;
+    private float m_bulletLifeTime;
+    [SerializeField, Tooltip("The speed that the projectile moves at")]
+    private float m_bulletSpeed;
+    [SerializeField, Tooltip("The damage that the projectile deals")]
+    private float m_bulletDamage;
     #endregion
 
     private static PlayerShooting s_instance;
@@ -39,6 +43,7 @@ public class PlayerShooting : MonoBehaviour
     public static PlayerShooting Instance { get => s_instance; set => s_instance = value; }
     public GameObject[] SpawnLocations { get => m_spawnLocations; set => m_spawnLocations = value; }
     public bool PlayerCanShoot { get => m_playerCanShoot; set => m_playerCanShoot = value; }
+    public float BulletSpeed { get => m_bulletSpeed; set => m_bulletSpeed = value; }
 
     private void Awake()
     {
@@ -98,7 +103,9 @@ public class PlayerShooting : MonoBehaviour
     void SpawnBullet(int _side)
     {
         GameObject newBullet = Instantiate(m_bulletPrefab, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
-        newBullet.GetComponent<BulletMovement>().LifeTime = bulletLifeTime;
+        newBullet.GetComponent<BulletMovement>().LifeTime = m_bulletLifeTime;
+        newBullet.GetComponent<BulletMovement>().Damage = m_bulletDamage;
+        newBullet.GetComponent<Rigidbody>().AddForce(newBullet.transform.forward * m_bulletSpeed, ForceMode.Impulse);
         newBullet.GetComponent<BulletMovement>().Instantiated();
     }
 
