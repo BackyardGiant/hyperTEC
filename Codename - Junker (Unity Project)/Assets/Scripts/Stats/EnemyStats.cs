@@ -42,7 +42,7 @@ public class EnemyStats : MonoBehaviour
     {
         try
         {
-            Destroy(GetComponent<EnemyDetection>().Target.gameObject);
+            Destroy(GetComponent<EnemyDetection>().EnemyTarget.gameObject);
         }
         catch { Debug.Log("No target assigned to destroyed object"); }
         Destroy(gameObject);
