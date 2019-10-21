@@ -8,9 +8,8 @@ public class HUDManager : MonoBehaviour
 {
     private static HUDManager s_instance;
     public GameObject Player;
+    public Camera Camera;
     public Sprite TargetSprite;
-    public GameObject LootDisplay;
-    public Image Scanner;
 
     #region EnemyIndicators
     [Header ("Enemy Indicator System")]
@@ -27,7 +26,11 @@ public class HUDManager : MonoBehaviour
     #endregion
 
     #region LootIndicators
-    [Header("Loot Indicator System"),SerializeField, Tooltip("Colour of the loot indicators")]
+    [Header("Loot Indicator System")]
+    public GameObject LootDisplay;
+    public Image Scanner;
+    public Image Destroyer;
+    [SerializeField, Tooltip("Colour of the loot indicators")]
     private Color m_lootTargetColour;
     [SerializeField, Tooltip("Scale of the loot indicators")]
     private float m_lootTargetSize;
@@ -35,18 +38,24 @@ public class HUDManager : MonoBehaviour
     private int m_lootViewDistance;
     [SerializeField, Tooltip("How far away from the target that the loot display appears"),Range(0f,1f)]
     private float m_displayOffset = 0.1f;
-    [SerializeField, Tooltip("How quickly the scan occurs. Higher is faster."), Range(0.2f,1f)]
+    [SerializeField, Tooltip("How quickly the scan and destroy occurs. Higher is faster."), Range(0.2f,1f)]
     private float m_fillSpeed;
     #endregion
 
 
     private Canvas m_HUDcanvas;
     private bool m_displayAnimated;
+    private bool m_currentlyClosingScan = false;
     private bool m_currentlyScanning = false;
-    private GameObject m_DisplayDismissed;
+    private bool m_buttonHolding = false;
+    private GameObject m_displayDismissed;
+    private GameObject m_currentLoot;
+
+    #region Accessors
     public static HUDManager Instance { get => s_instance; set => s_instance = value; }
     public int ViewDistance { get => m_viewDistance; }
     public int LootViewDistance { get => m_lootViewDistance; }
+    #endregion
 
     void Start()
     {
@@ -57,7 +66,6 @@ public class HUDManager : MonoBehaviour
     }
     void Awake()
     {
-        LootDisplay.SetActive(false);
 
         if (s_instance == null)
         {
@@ -73,34 +81,66 @@ public class HUDManager : MonoBehaviour
     {
         if (Input.GetButton("Interact") && LootDisplay.activeInHierarchy == true)
         {
+            m_buttonHolding = true;
             Scanner.fillAmount += m_fillSpeed * Time.deltaTime;
         }
-        if (Input.GetButtonUp("Interact") && LootDisplay.activeInHierarchy == true)
+        if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && LootDisplay.activeInHierarchy == true)
+        {
+            //Make pickup item code here
+            //Gameobject _pickupLoot = m_currentLoot;
+
+
+            Debug.Log("Yay STUFF");
+            Scanner.fillAmount = 0;
+        }
+        if (Input.GetButtonUp("Interact") && Scanner.fillAmount > 0.1f && LootDisplay.activeInHierarchy == true)
         {
             Scanner.fillAmount = 0;
         }
         if (Scanner.fillAmount == 1 && m_currentlyScanning == false)
         {
-            LootDisplay.GetComponent<Animator>().Play("DisplayStats");
             m_currentlyScanning = true;
+            LootDisplay.GetComponent<Animator>().Play("DisplayStats");
             Scanner.fillAmount = 0;
         }
         if (Scanner.fillAmount == 1 && m_currentlyScanning == true)
         {
             LootDisplay.GetComponent<Animator>().Play("HideStats");
+            m_currentlyClosingScan = true;
             m_currentlyScanning = false;
             Scanner.fillAmount = 0;
         }
-        //if (Input.GetButton("Dismiss") && LootDisplay.activeInHierarchy == true)
-        //{
-        //    Scanner.fillAmount = 0;
-        //    m_currentlyScanning = false;
-        //    LootDisplay.SetActive(false);
-        //}
+        if (Input.GetButton("Dismiss") && LootDisplay.activeInHierarchy == true)
+        {
+            Destroyer.fillAmount += m_fillSpeed * Time.deltaTime;
+        }
+        if (Input.GetButtonUp("Dismiss") && LootDisplay.activeInHierarchy == true)
+        {
+            Destroyer.fillAmount = 0;
+        }
+        if (Destroyer.fillAmount == 1 && LootDisplay.activeInHierarchy == true)
+        {
+
+            //Make it explode in here
+            ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
+
+            Destroy(m_currentLoot);
+            if (m_currentlyScanning == true)
+            {
+                LootDisplay.GetComponent<Animator>().Play("CloseFromScanned");
+            }
+            else
+            {
+                LootDisplay.GetComponent<Animator>().Play("CloseFromUnscanned");
+            }
+            m_displayAnimated = false;
+            m_currentlyScanning = false;
+            Invoke("DisableLootDisplay", 1.15f);
+            Destroyer.fillAmount = 0;
+        }
 
 
     }
-
 
 
     #region Enemy Detection Methods
@@ -222,34 +262,70 @@ public class HUDManager : MonoBehaviour
             _loot.LootTarget = _lootObject;
         }
 
+        if(m_currentLoot == null)
+        {
+            m_currentLoot = _loot.gameObject;
+        }
         //moveit
         _targetImage.rectTransform.localScale = new Vector3(m_lootTargetSize, m_lootTargetSize, m_lootTargetSize);
         _targetImage.sprite = TargetSprite;
         _targetImage.transform.position = _screenPos;
         _targetImage.transform.localEulerAngles = Vector3.zero;
 
+        _screenPos = Camera.WorldToScreenPoint(m_currentLoot.transform.position);
         DrawLootDisplay(_screenPos,_loot);
     }
     public void ClearLootTarget(LootDetection _loot)
     {
         Destroy(_loot.LootTarget);
         m_displayAnimated = false;
-        Scanner.fillAmount = 0;
-        LootDisplay.SetActive(false);
+        m_currentlyClosingScan = false;
+        Transform[] children = this.GetComponentsInChildren<Transform>();
+        foreach (Transform transform in children){
+            if (transform.name == "LootTarget")
+            {
+                return;
+            }
+        }
+        if (m_currentlyScanning == true)
+        {
+            LootDisplay.GetComponent<Animator>().Play("CloseFromScanned");
+        }
+        else
+        {
+            LootDisplay.GetComponent<Animator>().Play("CloseFromUnscanned");
+        }
+        m_currentlyScanning = false;
     }
-    private void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
+    public void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
     {
-        LootDisplay.SetActive(true);
         if (!m_displayAnimated)
         {
             LootDisplay.GetComponent<Animator>().Play("ShowLoot");
             m_displayAnimated = true;
         }
         Vector3 _displayTargetPos;
-        _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
-        LootDisplay.GetComponent<RectTransform>().position = _displayTargetPos;
-    }
+        if (m_currentlyScanning)
+        {
+            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height * 2.5f);
+            LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.2f);
 
+        }
+        else if (m_currentlyClosingScan)
+        {
+            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
+            LootDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.000001f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
+            if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 20f)
+            {
+                m_currentlyClosingScan = false;
+            }
+        }
+        else
+        {
+            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
+            LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.25f);
+        }
+    }
     #endregion
 
 }
