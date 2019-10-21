@@ -130,6 +130,8 @@
     <Compile Include="Assets\Scripts\Stats\EnemyStats.cs" />
     <Compile Include="Assets\Scripts\Temporary Scripts\TestModularShip.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\EnemyDetection.cs" />
+    <Compile Include="Assets\Scripts\UI\LootDetection.cs" />
+    <Compile Include="Assets\Scripts\UI\LootDisplayConfiguration.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\DisplayOptions.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\SelectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Player\Crosshair.cs" />
@@ -138,6 +140,8 @@
     <Compile Include="Assets\Scripts\Usability Testing\StartFlightTest.cs" />
     <Compile Include="Assets\ThrustEffectController.cs" />
     <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\PostProcessing\Resources\Shaders\MotionBlur.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Fog.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\ParadeRender.shader" />
@@ -148,9 +152,11 @@
     <None Include="Assets\PostProcessing\Utilities\CustomMotionTexture\Shaders\CustomMotionVectorTexture.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\ACES.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\UberSecondPass.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Tonemapping.cginc" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\HistogramCompute.compute" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Uber.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Blit.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformRender.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\VectorscopeCompute.compute" />
@@ -162,48 +168,71 @@
     <None Include="Assets\PostProcessing\Resources\Shaders\Common.cginc" />
     <None Include="Assets\PostProcessing\Resources\Bluenoise64\COPYING.txt" />
     <None Include="Assets\Testing Results\results.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\PostProcessing\Editor Resources\UI\Trackball.shader" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Bloom.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\TAA.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\EyeHistogram.compute" />
     <None Include="Assets\PostProcessing\Resources\Shaders\TAA.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\EyeAdaptation.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\GrainGen.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\FXAA.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\DiskKernels.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.cginc" />
+    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\PostProcessing\Resources\Shaders\ScreenSpaceRaytrace.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Bloom.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\VectorscopeRender.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\EyeAdaptation.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\ColorGrading.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\AmbientOcclusion.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformCompute.compute" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="Unity.Timeline.Editor">
+      <HintPath>C:/Users/jgriffiths6/Documents/repomeepo/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
       <HintPath>C:/Users/awebb4/Documents/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
+      <HintPath>C:/Users/jgriffiths6/Documents/repomeepo/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
       <HintPath>C:/Users/awebb4/Documents/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
+      <HintPath>C:/Users/jgriffiths6/Documents/repomeepo/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
       <HintPath>C:/Users/awebb4/Documents/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
+      <HintPath>C:/Users/jgriffiths6/Documents/repomeepo/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
       <HintPath>C:/Users/awebb4/Documents/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
+      <HintPath>C:/Users/jgriffiths6/Documents/repomeepo/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
       <HintPath>C:/Users/awebb4/Documents/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
+      <HintPath>C:/Users/jgriffiths6/Documents/repomeepo/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
       <HintPath>C:/Users/awebb4/Documents/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
+      <HintPath>C:/Users/jgriffiths6/Documents/repomeepo/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
       <HintPath>C:/Users/awebb4/Documents/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
+      <HintPath>C:/Users/jgriffiths6/Documents/repomeepo/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
       <HintPath>C:/Users/awebb4/Documents/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
+      <HintPath>C:/Users/jgriffiths6/Documents/repomeepo/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
       <HintPath>C:/Users/awebb4/Documents/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">

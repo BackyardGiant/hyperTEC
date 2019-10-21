@@ -5,30 +5,33 @@ using UnityEngine;
 public class EnemyDetection : MonoBehaviour
 {
     private Rect m_position;
-    private Vector3 m_screenPos;
-    private Vector3 m_viewportPos;
-    private Vector2 m_arrowDrawPos;
+    private Vector2 m_screenPos;
 
-    [Header ("")]
-    public Camera Camera;
-    public Transform Player;
+    private Camera m_camera;
+    private Transform m_player;
 
     [SerializeField, Tooltip("Distance at which the crosshair should be visible. 350 seems appropriate")]
     private int m_viewDistance;
 
-    private GameObject m_target;
+    private GameObject m_enemyTarget;
 
-    public GameObject Target { get => m_target; set => m_target = value; }
+    public GameObject EnemyTarget { get => m_enemyTarget; set => m_enemyTarget = value; }
+
+    private void Start()
+    {
+        m_camera = Camera.main;
+        m_player = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<Transform>();
+    }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         //Set distance from enemy to player. Used to check if enemy is a target within valid distance
-        float m_playerDistance = Vector3.Distance(Player.position, transform.position);
+        float _playerDistance = Vector3.Distance(m_player.position, transform.position);
 
-        m_screenPos = Camera.WorldToScreenPoint(transform.position);
+        m_screenPos = m_camera.WorldToScreenPoint(transform.position);
 
-        if (m_playerDistance < HUDManager.Instance.ViewDistance)
+        if (_playerDistance < HUDManager.Instance.ViewDistance)
         {
             if (IsVisibleFrom(GetComponent<Renderer>(), Camera.main))
             {
