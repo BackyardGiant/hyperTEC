@@ -128,6 +128,8 @@
     <Compile Include="Assets\Scripts\Stats\EnemyStats.cs" />
     <Compile Include="Assets\Scripts\Temporary Scripts\TestModularShip.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\EnemyDetection.cs" />
+    <Compile Include="Assets\Scripts\UI\ModularShip\DisplayOptions.cs" />
+    <Compile Include="Assets\Scripts\UI\ModularShip\SelectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Player\Crosshair.cs" />
     <Compile Include="Assets\Scripts\Usability Testing\FlightTestRecordCollision.cs" />
     <Compile Include="Assets\Scripts\Usability Testing\IncrementFlightChallenge.cs" />
