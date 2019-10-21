@@ -352,7 +352,8 @@ MonoBehaviour:
   m_leftWeaponCooldown: 0.2
   m_range: 500
   m_bulletLifeTime: 2
-  m_bulletSpeed: 100
+  m_bulletSpeed: 1000
+  m_bulletDamage: 10
 --- !u!1 &2872460002776077785
 GameObject:
   m_ObjectHideFlags: 0
