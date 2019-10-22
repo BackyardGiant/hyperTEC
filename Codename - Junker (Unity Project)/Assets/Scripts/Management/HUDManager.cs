@@ -73,6 +73,8 @@ public class HUDManager : MonoBehaviour
         m_arrowClampAngle = Mathf.Asin((Screen.height) / Mathf.Sqrt((m_viewDistance * m_viewDistance) + (Screen.height * Screen.height)));
         m_arrowClampAngle = m_arrowClampAngle * Mathf.Rad2Deg;
         m_crosshairPosition = new Vector2(Screen.width / 2, Screen.height / 2);
+        Destroyer.fillAmount = 0;
+        Scanner.fillAmount = 0;
     }
     void Awake()
     {
@@ -96,7 +98,7 @@ public class HUDManager : MonoBehaviour
             Scanner.fillAmount += m_scanningFillSpeed * Time.deltaTime;
         }
         //If the player lets go of the button while it's below 0.1f fill amount, the player has picked the item up.
-        if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && LootDisplay.activeInHierarchy == true)
+        if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && m_displayAnimated == true)
         {
             //Make pickup item code here
             //Gameobject _pickupLoot = m_currentLoot;
@@ -107,7 +109,7 @@ public class HUDManager : MonoBehaviour
         }
 
         //If player lets go of the button and it's above 0.1f fill amount, clear the progress.
-        if (Input.GetButtonUp("Interact") && Scanner.fillAmount > 0.1f && LootDisplay.activeInHierarchy == true)
+        if (Input.GetButtonUp("Interact") && Scanner.fillAmount > 0.1f && m_displayAnimated == true)
         {
             Scanner.fillAmount = 0;
         }
@@ -115,18 +117,18 @@ public class HUDManager : MonoBehaviour
         //Full scan complete, open and animate display.
         if (Scanner.fillAmount == 1 && m_currentlyScanning == false)
         {
-            m_currentlyScanning = true;
-            LootDisplay.GetComponent<Animator>().Play("DisplayStats");
             Scanner.fillAmount = 0;
+            LootDisplay.GetComponent<Animator>().Play("DisplayStats");
+            m_currentlyScanning = true;
         }
         
         //Full close complete, close and animate display.
         if (Scanner.fillAmount == 1 && m_currentlyScanning == true)
         {
+            Scanner.fillAmount = 0;
             LootDisplay.GetComponent<Animator>().Play("HideStats");
             m_currentlyClosingScan = true;
             m_currentlyScanning = false;
-            Scanner.fillAmount = 0;
         }
 
         //Dismiss being held down fills in the button.
@@ -144,13 +146,12 @@ public class HUDManager : MonoBehaviour
         //Destroy the target object.
         if (Destroyer.fillAmount == 1 && LootDisplay.activeInHierarchy == true)
         {
-
             //Make it explode in here
-            ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
-            m_displayAnimated = false;
-            Destroy(m_currentLoot);
             Destroyer.fillAmount = 0;
-            m_currentlyScanning = false;
+            ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
+            Destroy(m_currentLoot);
+            ClearLootDisplay();
+
         }
         #endregion
 
@@ -301,15 +302,14 @@ public class HUDManager : MonoBehaviour
         m_currentLoot = ReturnTargetLoot(_lootObjects);
 
         //If targeted loot has changed, reset LootDisplay.
-        if(m_prevLoot != m_currentLoot && m_currentlyScanning)
+        if(m_prevLoot != m_currentLoot)
         {
-            // Do stuff
+            // Swapping over the LootDisplays to a different object
             m_displayAnimated = false;
             m_currentlyScanning = false;
             Destroyer.fillAmount = 0;
             Scanner.fillAmount = 0;
         }
-       
         m_prevLoot = m_currentLoot;
 
 
@@ -324,33 +324,40 @@ public class HUDManager : MonoBehaviour
     public void ClearLootTarget(LootDetection _loot)
     {
         Destroy(_loot.LootTarget);
+        //Need to make it clear the loot Display if there isn't any loot left on screen.
+        Debug.Log(countTargets());
+        if (countTargets() == 0)
+        {
+            ClearLootDisplay();
+        }
+    }
+    //Clears the Loot Display
+    private void ClearLootDisplay()
+    {
+
         m_displayAnimated = false;
         m_currentlyClosingScan = false;
-        Transform[] children = this.GetComponentsInChildren<Transform>();
-        foreach (Transform transform in children){
-            if (transform.name == "LootTarget")
-            {
-                return;
-            }
-        }
         if (m_currentlyScanning == true)
         {
             LootDisplay.GetComponent<Animator>().Play("CloseFromScanned");
+            m_displayAnimated = false;
+            m_currentlyClosingScan = false;
+            m_currentlyScanning = false;
         }
         else
         {
             LootDisplay.GetComponent<Animator>().Play("CloseFromUnscanned");
+            m_displayAnimated = false;
+            m_currentlyClosingScan = false;
+            m_currentlyScanning = false;
         }
-        m_currentlyScanning = false;
     }
     //Returns the loot which is closest to the crosshair. This acts as automatic targetting of loot.
     private GameObject ReturnTargetLoot(GameObject[] _visibleLoot)
     {
         GameObject _target = null;
-
         float _currentDistance = 0f;
         float _minimumDistance = Mathf.Infinity;
-
         Vector2 _crosshairPosition = new Vector2(Screen.width / 2,Screen.height / 2);
 
         foreach (GameObject _objTarget in _visibleLoot)
@@ -365,17 +372,30 @@ public class HUDManager : MonoBehaviour
 
         return _target;
     }
+    private int countTargets()
+    {
+        int _targetCount = 0;
+        GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
+        List<GameObject> _visibleLootObjects = new List<GameObject>();
+
+        for(int i = 0; i < _lootObjects.Length; i++)
+        {
+            if (_lootObjects[i].GetComponent<Renderer>().isVisible)
+            {
+                _visibleLootObjects.Add(_lootObjects[i]);
+            }
+        }
+        _targetCount = _visibleLootObjects.Count;
+        return _targetCount;
+    }
     //Draws the lootdisplay with appropriate offset based on the current function.
     private void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
     {
-        if (!m_displayAnimated && m_currentLoot != null)
+        if (!m_displayAnimated)
         {
             LootDisplay.GetComponent<Animator>().Play("ShowLoot");
             m_displayAnimated = true;
         }
-
-
-
         Vector3 _displayTargetPos;
         if (m_currentlyScanning)
         {
@@ -386,8 +406,8 @@ public class HUDManager : MonoBehaviour
         else if (m_currentlyClosingScan)
         {
             _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
-            LootDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.000001f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
-            if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 5f)
+            LootDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.00001f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
+            if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 40)
             {
                 m_currentlyClosingScan = false;
             }
@@ -395,7 +415,7 @@ public class HUDManager : MonoBehaviour
         else
         {
             _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
-            LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.25f);
+            LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.2f);
         }
     }
     #endregion
