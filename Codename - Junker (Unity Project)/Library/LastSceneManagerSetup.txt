@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/LootDetection.unity
+- path: Assets/Scenes/EngineParticles.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
