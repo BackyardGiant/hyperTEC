@@ -12,9 +12,12 @@ public class PlayerShooting : MonoBehaviour
 
     [SerializeField, Header("Camera"), Tooltip("This contains the main camera of the scene")]
     private Camera m_aimingCamera;
+    [SerializeField, Tooltip("Contains the crosshair attached to the player camera")]
+    private Crosshair m_aimingCrosshair;
 
     [SerializeField, Header("Target")]
     private Transform m_target;
+    private Vector3 m_targetPosition;
 
     private bool m_playerCanShoot = true;
 
@@ -36,6 +39,8 @@ public class PlayerShooting : MonoBehaviour
     private float m_bulletSpeed;
     [SerializeField, Tooltip("The damage that the projectile deals")]
     private float m_bulletDamage;
+    [SerializeField, Tooltip("The auto aim range, around 3")]
+    private float m_autoAimDistance;
     #endregion
 
     private static PlayerShooting s_instance;
@@ -56,6 +61,8 @@ public class PlayerShooting : MonoBehaviour
             Destroy(s_instance.gameObject);
             s_instance = this;
         }
+
+        m_autoAimDistance *= Mathf.Pow((Screen.height * Screen.width), 1f / 5f);
     }
 
     // Start is called before the first frame update
@@ -67,6 +74,7 @@ public class PlayerShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         RaycastHit hit;
 
         if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward), out hit, m_range))
@@ -81,6 +89,22 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("Did not Hit");
             m_target.position = (m_aimingCamera.transform.position + (m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range));
         }
+
+        if (HUDManager.Instance.ClosetEnemy != null)
+        {
+            if (Vector2.Distance(HUDManager.Instance.ClosetEnemyScreenPos, new Vector2(Screen.width / 2, Screen.height / 2)) < m_autoAimDistance)
+            {
+                m_aimingCrosshair.HasTarget = true;
+                m_targetPosition = HUDManager.Instance.ClosetEnemy.transform.position;
+                m_aimingCrosshair.TargetPosition = new Vector2(HUDManager.Instance.ClosetEnemyScreenPos.x, HUDManager.Instance.ClosetEnemyScreenPos.y);
+                m_target.position = m_targetPosition;
+            }
+            else
+            {
+                m_aimingCrosshair.HasTarget = false;
+            }
+        }
+        Debug.Log(Vector2.Distance(HUDManager.Instance.ClosetEnemyScreenPos, new Vector2(Screen.width / 2, Screen.height / 2)));
 
         m_spawnLocations[0].transform.LookAt(m_target);
         m_spawnLocations[1].transform.LookAt(m_target);
@@ -98,6 +122,8 @@ public class PlayerShooting : MonoBehaviour
             m_leftWeaponActive = false;
             StartCoroutine(leftCooldown());
         }
+
+
     }
 
     void SpawnBullet(int _side)
@@ -105,7 +131,8 @@ public class PlayerShooting : MonoBehaviour
         GameObject newBullet = Instantiate(m_bulletPrefab, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
         newBullet.GetComponent<BulletMovement>().LifeTime = m_bulletLifeTime;
         newBullet.GetComponent<BulletMovement>().Damage = m_bulletDamage;
-        newBullet.GetComponent<Rigidbody>().AddForce(newBullet.transform.forward * m_bulletSpeed, ForceMode.Impulse);
+        newBullet.GetComponent<BulletMovement>().Speed = m_bulletSpeed;
+        newBullet.GetComponent<Rigidbody>().AddForce(newBullet.transform.forward * m_bulletSpeed * GameManager.Instance.GameSpeed, ForceMode.Impulse);
         newBullet.GetComponent<BulletMovement>().Instantiated();
     }
 

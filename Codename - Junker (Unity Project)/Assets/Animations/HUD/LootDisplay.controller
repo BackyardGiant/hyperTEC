@@ -194,10 +194,10 @@ AnimatorStateMachine:
     m_Position: {x: 450, y: 270, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4024719723293612767}
-    m_Position: {x: 240, y: 110, z: 0}
+    m_Position: {x: 240, y: 170, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1181308597554437073}
-    m_Position: {x: 320, y: 160, z: 0}
+    m_Position: {x: 450, y: 170, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 316947645112406922}
     m_Position: {x: 30, y: 160, z: 0}
@@ -219,7 +219,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CloseFromUnscanned
-  m_Speed: 5
+  m_Speed: -5
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -231,7 +231,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 1f60e2e6d44d3344a9efe61b6f2c77ac, type: 2}
+  m_Motion: {fileID: 7400000, guid: d7d1edd3e18eb2548b550bc33ca363e0, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

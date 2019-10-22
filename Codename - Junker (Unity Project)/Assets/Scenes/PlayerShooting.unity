@@ -121,6 +121,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &16314435 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 16314435, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1706699861}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &22776553 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8459654149570001464, guid: 82be529dad4c9b74383a9563517a1f61,
@@ -233,6 +239,7 @@ GameObject:
   - component: {fileID: 175862363}
   - component: {fileID: 175862362}
   - component: {fileID: 175862366}
+  - component: {fileID: 175862367}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Enemy
@@ -327,6 +334,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_maxHealth: 30
   m_currentHealth: 0
+--- !u!114 &175862367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175862361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fbb8254494264844994b612c52808d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_viewDistance: 350
 --- !u!1001 &185757603
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -603,6 +623,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82be529dad4c9b74383a9563517a1f61, type: 3}
+--- !u!114 &270667617 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9078455123152224274, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1988057984}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b1434ec54b7794f9d8897695b610ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &275396561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2905,6 +2937,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7552080781785832936, guid: 5f833fa36dfcf7c41b867d1460102cf2,
+        type: 3}
+      propertyPath: m_aimingCrosshair
+      value: 
+      objectReference: {fileID: 270667617}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f833fa36dfcf7c41b867d1460102cf2, type: 3}
 --- !u!1 &1608534288 stripped
@@ -3032,24 +3069,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
         type: 3}
-      propertyPath: player
+      propertyPath: Player
       value: 
       objectReference: {fileID: 1807098149}
     - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
         type: 3}
-      propertyPath: m_arrowClampAngle
-      value: 29
-      objectReference: {fileID: 0}
-    - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
-        type: 3}
-      propertyPath: m_viewDistance
-      value: 700
-      objectReference: {fileID: 0}
-    - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
-        type: 3}
-      propertyPath: m_enemyTargetColour.a
-      value: 0.6156863
-      objectReference: {fileID: 0}
+      propertyPath: Camera
+      value: 
+      objectReference: {fileID: 1039152537}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
 --- !u!1001 &1754617376
@@ -3480,6 +3507,11 @@ PrefabInstance:
       propertyPath: m_playerLookTarget
       value: 
       objectReference: {fileID: 132567577}
+    - target: {fileID: 9078455123152224274, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+        type: 3}
+      propertyPath: hudImage
+      value: 
+      objectReference: {fileID: 16314435}
     - target: {fileID: 9078455122496417124, guid: 7d4f3ad5fb247d3479464cd51679dba0,
         type: 3}
       propertyPath: m_LocalPosition.x

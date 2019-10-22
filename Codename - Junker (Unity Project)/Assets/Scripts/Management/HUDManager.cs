@@ -44,6 +44,11 @@ public class HUDManager : MonoBehaviour
     private float m_destroyFillSpeed;
     #endregion
 
+    #region AutoAim
+    private GameObject m_closetEnemy;
+    private Vector2 m_closetEnemyScreenPos;
+    #endregion
+
 
     private bool m_displayAnimated;
     private bool m_currentlyClosingScan = false;
@@ -51,11 +56,14 @@ public class HUDManager : MonoBehaviour
     private GameObject m_displayDismissed;
     private GameObject m_currentLoot;
     private GameObject m_prevLoot;
+    private Vector2 m_crosshairPosition;
 
     #region Accessors
     public static HUDManager Instance { get => s_instance; set => s_instance = value; }
     public int ViewDistance { get => m_viewDistance; }
     public int LootViewDistance { get => m_lootViewDistance; }
+    public GameObject ClosetEnemy { get => m_closetEnemy; set => m_closetEnemy = value; }
+    public Vector2 ClosetEnemyScreenPos { get => m_closetEnemyScreenPos; set => m_closetEnemyScreenPos = value; }
     #endregion
 
     void Start()
@@ -64,6 +72,7 @@ public class HUDManager : MonoBehaviour
         m_displayAnimated = false;
         m_arrowClampAngle = Mathf.Asin((Screen.height) / Mathf.Sqrt((m_viewDistance * m_viewDistance) + (Screen.height * Screen.height)));
         m_arrowClampAngle = m_arrowClampAngle * Mathf.Rad2Deg;
+        m_crosshairPosition = new Vector2(Screen.width / 2, Screen.height / 2);
     }
     void Awake()
     {
@@ -80,6 +89,7 @@ public class HUDManager : MonoBehaviour
     }
     void Update()
     {
+        #region LootInteraction
         //If player presses button, and Loot Display is active, start filling in the scan button.
         if (Input.GetButton("Interact") && LootDisplay.activeInHierarchy == true)
         {
@@ -142,6 +152,7 @@ public class HUDManager : MonoBehaviour
             Destroyer.fillAmount = 0;
             m_currentlyScanning = false;
         }
+        #endregion
 
 
     }
@@ -175,6 +186,17 @@ public class HUDManager : MonoBehaviour
         _targetImage.sprite =TargetSprite;
         _targetImage.transform.position = _screenPos;
         _targetImage.transform.localEulerAngles = Vector3.zero;
+
+        if(m_closetEnemy == null || Vector2.Distance(_screenPos, m_crosshairPosition) < Vector2.Distance(m_closetEnemyScreenPos, m_crosshairPosition))
+        {
+            m_closetEnemy = _enemy.gameObject;
+            m_closetEnemyScreenPos = _screenPos;
+        }
+
+        if (m_closetEnemy == _enemy.gameObject)
+        {
+            m_closetEnemyScreenPos = _screenPos;
+        }
 
     }
     // The argument enemy passed in is the same as the enemy calling the function so that the targets stay encapsulated.
@@ -284,6 +306,8 @@ public class HUDManager : MonoBehaviour
             // Do stuff
             m_displayAnimated = false;
             m_currentlyScanning = false;
+            Destroyer.fillAmount = 0;
+            Scanner.fillAmount = 0;
         }
        
         m_prevLoot = m_currentLoot;
@@ -344,11 +368,14 @@ public class HUDManager : MonoBehaviour
     //Draws the lootdisplay with appropriate offset based on the current function.
     private void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
     {
-        if (!m_displayAnimated)
+        if (!m_displayAnimated && m_currentLoot != null)
         {
             LootDisplay.GetComponent<Animator>().Play("ShowLoot");
             m_displayAnimated = true;
         }
+
+
+
         Vector3 _displayTargetPos;
         if (m_currentlyScanning)
         {
@@ -360,7 +387,7 @@ public class HUDManager : MonoBehaviour
         {
             _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
             LootDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.000001f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
-            if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 20f)
+            if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 5f)
             {
                 m_currentlyClosingScan = false;
             }
