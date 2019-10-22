@@ -212,6 +212,8 @@ MonoBehaviour:
   m_boostDamping: 30
   m_maxBoost: 200
   m_boostTime: 0.5
+  boostOn: {fileID: 0}
+  engineOff: {fileID: 0}
   m_uiCorrection: 2.8
 --- !u!54 &2872460001895466301
 Rigidbody:
@@ -347,6 +349,7 @@ MonoBehaviour:
   m_bulletPrefab: {fileID: 1168512049321899429, guid: 3339b4fdbe70bdb408cdd242f0c47830,
     type: 3}
   m_aimingCamera: {fileID: 0}
+  m_aimingCrosshair: {fileID: 0}
   m_target: {fileID: 6754279457850745871}
   m_rightWeaponCooldown: 0.2
   m_leftWeaponCooldown: 0.2
@@ -354,6 +357,7 @@ MonoBehaviour:
   m_bulletLifeTime: 2
   m_bulletSpeed: 1000
   m_bulletDamage: 10
+  m_autoAimDistance: 3
 --- !u!1 &2872460002776077785
 GameObject:
   m_ObjectHideFlags: 0
