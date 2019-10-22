@@ -133,7 +133,6 @@ public class PlayerMovement : MonoBehaviour
 
             m_currentSpeed = m_posativeClampedSpeed * m_maxAcceleration;
 
-            m_killedEngine = false;
         }
         if (Input.GetButton("Throttle Down"))
         {

@@ -121,6 +121,7 @@
     <Compile Include="Assets\Scripts\Movement\OrbitalCamera.cs" />
     <Compile Include="Assets\Scripts\Movement\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\ReferenceMovement.cs" />
+    <Compile Include="Assets\Scripts\Movement\ThrustEffectController.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\BoolVariable.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\FloatVariable.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\GameEvent.cs" />
@@ -138,7 +139,6 @@
     <Compile Include="Assets\Scripts\Usability Testing\FlightTestRecordCollision.cs" />
     <Compile Include="Assets\Scripts\Usability Testing\IncrementFlightChallenge.cs" />
     <Compile Include="Assets\Scripts\Usability Testing\StartFlightTest.cs" />
-    <Compile Include="Assets\ThrustEffectController.cs" />
     <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
