@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletMovement : MonoBehaviour
+public class BulletBehaviour : MonoBehaviour
 {
     private float m_lifeTime;
     private float m_speed;

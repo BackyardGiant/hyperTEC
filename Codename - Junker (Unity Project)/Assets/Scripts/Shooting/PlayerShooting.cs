@@ -75,18 +75,16 @@ public class PlayerShooting : MonoBehaviour
     void Update()
     {
 
-        RaycastHit hit;
+        RaycastHit _hit;
 
-        if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward), out hit, m_range))
+        if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward), out _hit, m_range))
         {
-            Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            Debug.Log("Did Hit");
-            m_target.position = hit.transform.position;
+            Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * _hit.distance, Color.yellow);
+            m_target.position = _hit.transform.position;
         }
         else
         {
             Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range, Color.white);
-            Debug.Log("Did not Hit");
             m_target.position = (m_aimingCamera.transform.position + (m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range));
         }
 
@@ -125,14 +123,15 @@ public class PlayerShooting : MonoBehaviour
 
     }
 
+    // 0 means right hand side, 1 means left hand side
     void SpawnBullet(int _side)
     {
         GameObject newBullet = Instantiate(m_bulletPrefab, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
-        newBullet.GetComponent<BulletMovement>().LifeTime = m_bulletLifeTime;
-        newBullet.GetComponent<BulletMovement>().Damage = m_bulletDamage;
-        newBullet.GetComponent<BulletMovement>().Speed = m_bulletSpeed;
+        newBullet.GetComponent<BulletBehaviour>().LifeTime = m_bulletLifeTime;
+        newBullet.GetComponent<BulletBehaviour>().Damage = m_bulletDamage;
+        newBullet.GetComponent<BulletBehaviour>().Speed = m_bulletSpeed;
         newBullet.GetComponent<Rigidbody>().AddForce(newBullet.transform.forward * m_bulletSpeed * GameManager.Instance.GameSpeed, ForceMode.Impulse);
-        newBullet.GetComponent<BulletMovement>().Instantiated();
+        newBullet.GetComponent<BulletBehaviour>().Instantiated();
     }
 
     IEnumerator rightCooldown()

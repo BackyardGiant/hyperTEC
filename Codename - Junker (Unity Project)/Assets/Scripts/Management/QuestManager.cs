@@ -36,9 +36,9 @@ public class QuestManager : MonoBehaviour
         m_currentQuests.Add(newKillQuest);
     }
 
-    public void CreateCollectQuest(GameObject _objectToCollect)
+    public void CreateCollectQuest(GameObject _objectToCollect, string _name, string _description)
     {
-        Quest newCollectQuest = new Quest(QuestType.collect, _objectToCollect);
+        Quest newCollectQuest = new Quest(QuestType.collect, _objectToCollect, _name, _description);
         m_currentQuests.Add(newCollectQuest);
     }
 

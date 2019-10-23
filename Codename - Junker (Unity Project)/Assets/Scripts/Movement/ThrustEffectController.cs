@@ -146,7 +146,6 @@ public class ThrustEffectController : MonoBehaviour
 
     public void EngineOff()
     {
-        Debug.Log("Engine Off");
         m_engineOff = true;
 
 

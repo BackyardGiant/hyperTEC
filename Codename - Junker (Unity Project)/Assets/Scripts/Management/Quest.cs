@@ -29,9 +29,11 @@ public class Quest
         m_description = _description;
     }
 
-    public Quest(QuestType _questType, GameObject _objective)
+    public Quest(QuestType _questType, GameObject _objective, string _name, string _description)
     {
         m_questType = _questType;
+        m_name = _name;
+        m_description = _description;
     }
 
     public void QuestIncriment(int _incriment)

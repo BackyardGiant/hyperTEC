@@ -117,7 +117,7 @@
     <Compile Include="Assets\Scripts\Management\HUDManager.cs" />
     <Compile Include="Assets\Scripts\Management\Quest.cs" />
     <Compile Include="Assets\Scripts\Management\QuestManager.cs" />
-    <Compile Include="Assets\Scripts\Movement\BulletMovement.cs" />
+    <Compile Include="Assets\Scripts\Movement\BulletBehaviour.cs" />
     <Compile Include="Assets\Scripts\Movement\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\EnemyMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\OrbitalCamera.cs" />
@@ -134,7 +134,6 @@
     <Compile Include="Assets\Scripts\Temporary Scripts\TestModularShip.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\EnemyDetection.cs" />
     <Compile Include="Assets\Scripts\UI\LootDetection.cs" />
-    <Compile Include="Assets\Scripts\UI\LootDisplayConfiguration.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\DisplayOptions.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\SelectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Player\Crosshair.cs" />
