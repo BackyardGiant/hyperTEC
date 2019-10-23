@@ -138,10 +138,7 @@ MonoBehaviour:
   m_heightScale: 0
   m_nuetralOpacity: 0.4
   crosshairDot: {fileID: 2800000, guid: df0af7b2d196f144b8e4262a3d406e42, type: 3}
-  m_playerLookTarget: {fileID: 0}
-  m_crosshairScale: 0.04
-  m_playerOpacity: 0
-  crosshairCircle: {fileID: 2800000, guid: df0af7b2d196f144b8e4262a3d406e42, type: 3}
+  hudImage: {fileID: 0}
 --- !u!1001 &656077619
 PrefabInstance:
   m_ObjectHideFlags: 0

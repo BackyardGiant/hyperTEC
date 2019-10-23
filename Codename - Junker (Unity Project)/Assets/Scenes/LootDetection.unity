@@ -208,12 +208,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 610077954}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &132567577 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 673949939, guid: 5f833fa36dfcf7c41b867d1460102cf2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1608534287}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &185757603
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2604,6 +2598,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 563292369}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1873140227 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 16314435, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1706699861}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1952952063 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8459654149570001464, guid: 82be529dad4c9b74383a9563517a1f61,
@@ -2790,9 +2790,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9078455123152224274, guid: 7d4f3ad5fb247d3479464cd51679dba0,
         type: 3}
-      propertyPath: m_playerLookTarget
+      propertyPath: hudImage
       value: 
-      objectReference: {fileID: 132567577}
+      objectReference: {fileID: 1873140227}
     - target: {fileID: 9078455122496417124, guid: 7d4f3ad5fb247d3479464cd51679dba0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2850,6 +2850,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9078455122496417125, guid: 7d4f3ad5fb247d3479464cd51679dba0,
         type: 3}
+      propertyPath: m_trPlayerTransform
+      value: 
+      objectReference: {fileID: 863916015}
+    - target: {fileID: 9078455122496417125, guid: 7d4f3ad5fb247d3479464cd51679dba0,
+        type: 3}
       propertyPath: m_orbitalCameraRig
       value: 
       objectReference: {fileID: 1119060600}
@@ -2858,11 +2863,6 @@ PrefabInstance:
       propertyPath: m_focusObject
       value: 
       objectReference: {fileID: 1608534288}
-    - target: {fileID: 9078455122496417125, guid: 7d4f3ad5fb247d3479464cd51679dba0,
-        type: 3}
-      propertyPath: m_trPlayerTransform
-      value: 
-      objectReference: {fileID: 863916015}
     - target: {fileID: 2055354407, guid: 7d4f3ad5fb247d3479464cd51679dba0, type: 3}
       propertyPath: m_rbPlayer
       value: 

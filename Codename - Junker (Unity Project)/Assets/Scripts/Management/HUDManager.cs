@@ -334,7 +334,8 @@ public class HUDManager : MonoBehaviour
     //Clears the Loot Display
     private void ClearLootDisplay()
     {
-
+        Scanner.fillAmount = 0;
+        Destroyer.fillAmount = 0;
         m_displayAnimated = false;
         m_currentlyClosingScan = false;
         if (m_currentlyScanning == true)
