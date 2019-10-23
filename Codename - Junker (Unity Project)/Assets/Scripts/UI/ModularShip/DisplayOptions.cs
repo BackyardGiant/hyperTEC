@@ -6,28 +6,26 @@ using UnityEngine.UI;
 public class DisplayOptions : MonoBehaviour
 {
     public RectTransform contentPanel;
-    public GameObject listItemPrefab;
-
     public RectTransform highlight;
 
     [SerializeField]
-    private List<GameObject> modulesList;
+    private List<GameObject> m_modulesList;
 
-    public List<GameObject> ModulesList { get => modulesList; set => modulesList = value; }
+    public List<GameObject> ModulesList { get => m_modulesList; set => m_modulesList = value; }
 
     private void Awake()
     {
-        for (int i = 0; i < modulesList.Count; i++)
+        for (int i = 0; i < m_modulesList.Count; i++)
         {
-            GameObject newModule = GameObject.Instantiate(modulesList[i]);
-            newModule.transform.SetParent(contentPanel);
-            modulesList[i] = newModule;
+            GameObject _newModule = GameObject.Instantiate(m_modulesList[i]);
+            _newModule.transform.SetParent(contentPanel);
+            m_modulesList[i] = _newModule;
         }
     }
 
     public void UpdateHighlightPosition(int index)
     {
-        highlight.position = modulesList[index].transform.position;
+        highlight.position = m_modulesList[index].transform.position;
     }
 
 
