@@ -115,6 +115,8 @@
     <Compile Include="Assets\Scripts\Management\DustManager.cs" />
     <Compile Include="Assets\Scripts\Management\GameManager.cs" />
     <Compile Include="Assets\Scripts\Management\HUDManager.cs" />
+    <Compile Include="Assets\Scripts\Management\Quest.cs" />
+    <Compile Include="Assets\Scripts\Management\QuestManager.cs" />
     <Compile Include="Assets\Scripts\Movement\BulletMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\EnemyMovement.cs" />

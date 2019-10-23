@@ -12210,26 +12210,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
-        type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1807098149}
-    - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
-        type: 3}
-      propertyPath: m_arrowClampAngle
-      value: 29
-      objectReference: {fileID: 0}
-    - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
-        type: 3}
-      propertyPath: m_viewDistance
-      value: 700
-      objectReference: {fileID: 0}
-    - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
-        type: 3}
-      propertyPath: m_enemyTargetColour.a
-      value: 0.6156863
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
 --- !u!1 &1741496934
@@ -12379,12 +12359,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82be529dad4c9b74383a9563517a1f61, type: 3}
---- !u!1 &1807098149 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2872460001895466296, guid: 5f833fa36dfcf7c41b867d1460102cf2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1608534287}
-  m_PrefabAsset: {fileID: 0}
 --- !u!54 &1807098154 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 2872460001895466301, guid: 5f833fa36dfcf7c41b867d1460102cf2,
@@ -12397,7 +12371,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1608534287}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1807098149}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3de9616ce3924249bb8c292b3c38da1, type: 3}
