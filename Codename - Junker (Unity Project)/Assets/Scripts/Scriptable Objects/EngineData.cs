@@ -1,0 +1,37 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu]
+public class EngineData : ScriptableObject
+{
+    [SerializeField]
+    private string name, description;
+
+    private enum moduleType
+    {
+        weapon, engine
+    }
+
+    private moduleType currentModuleType = moduleType.engine;
+
+    [SerializeField]
+    private Sprite thumbnail;
+
+    [SerializeField]
+    private float value, topSpeed, acceleration, boostPower, handling;
+
+    [SerializeField]
+    private GameObject engineModel;
+
+    public string Name { get => name; set => name = value; }
+    public string Description { get => description; set => description = value; }
+    public Sprite Thumbnail { get => thumbnail; set => thumbnail = value; }
+    public float Value { get => value; set => this.value = value; }
+    public float TopSpeed { get => topSpeed; set => topSpeed = value; }
+    public float Acceleration { get => acceleration; set => acceleration = value; }
+    public float Acceleration1 { get => acceleration; set => acceleration = value; }
+    public float Handling { get => handling; set => handling = value; }
+    private moduleType CurrentModuleType { get => currentModuleType; }
+    public GameObject EngineModel { get => engineModel; set => engineModel = value; }
+}
