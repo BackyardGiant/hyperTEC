@@ -104,7 +104,6 @@ public class PlayerShooting : MonoBehaviour
                 m_aimingCrosshair.HasTarget = false;
             }
         }
-        Debug.Log(Vector2.Distance(HUDManager.Instance.ClosetEnemyScreenPos, new Vector2(Screen.width / 2, Screen.height / 2)));
 
         m_spawnLocations[0].transform.LookAt(m_target);
         m_spawnLocations[1].transform.LookAt(m_target);

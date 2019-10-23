@@ -8,6 +8,8 @@ public class EnemyStats : MonoBehaviour
     private float m_maxHealth;
     [SerializeField, Tooltip("Current enemy HP")]
     private float m_currentHealth;
+    [SerializeField]
+    private GameEvent m_death;
 
     public float CurrentHealth { get => m_currentHealth; }
 
@@ -45,6 +47,7 @@ public class EnemyStats : MonoBehaviour
             Destroy(GetComponent<EnemyDetection>().EnemyTarget.gameObject);
         }
         catch { Debug.Log("No target assigned to destroyed object"); }
+        m_death.Raise();
         Destroy(gameObject);
     }
 }

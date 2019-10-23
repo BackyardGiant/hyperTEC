@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 773733add3546f44aafc00b8ab927a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_speed: 10
+  m_speed: 30
   m_targets:
   - {fileID: 0}
   - {fileID: 0}
@@ -84,6 +84,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_maxHealth: 10
   m_currentHealth: 0
+  m_death: {fileID: 11400000, guid: 2b8b5d87f1895814a9d089bb729a47ab, type: 2}
 --- !u!114 &5610633641536775820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,8 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbb8254494264844994b612c52808d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 0}
-  Player: {fileID: 0}
   m_viewDistance: 350
 --- !u!23 &4451069387247855723
 MeshRenderer:
@@ -157,6 +156,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5610633641536775856}
     m_Modifications:
+    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+        type: 3}
+      propertyPath: m_Name
+      value: ConstructionShip#1
+      objectReference: {fileID: 0}
     - target: {fileID: 5731347806934350786, guid: 1fc09b7b7908b39428b358b3cfaf6225,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -211,11 +215,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
-        type: 3}
-      propertyPath: m_Name
-      value: ConstructionShip#1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fc09b7b7908b39428b358b3cfaf6225, type: 3}
