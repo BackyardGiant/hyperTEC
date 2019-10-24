@@ -154,13 +154,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contentPanel: {fileID: 1180102190}
-  listItemPrefab: {fileID: 711247163643628042, guid: da41e4c7d01899a419e95e68a46412ba,
-    type: 3}
   highlight: {fileID: 1016470377}
-  modulesList:
-  - {fileID: 711247163643628042, guid: 84c5eaaa908ebae4abed23920829910e, type: 3}
-  - {fileID: 711247163643628042, guid: fb14fcb099c663d459e0bd2fbe99f3a2, type: 3}
-  - {fileID: 711247163643628042, guid: 384b4c1c8fcad944187dd61729d11ffb, type: 3}
+  m_modulesList:
+  - {fileID: 4369712147853546786, guid: e75c7378b6b8f844eb289727151a8d86, type: 3}
+  - {fileID: 6045565830776923231, guid: 57a6fe27f648887438558737483664cc, type: 3}
+  - {fileID: 6045565830776923231, guid: 5737235c0e4af6043b03ae5ac883fe24, type: 3}
 --- !u!114 &365754498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,9 +252,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   display: {fileID: 365754497}
-  shipEngineSnap: {fileID: 1052345515}
-  shipLeftSnap: {fileID: 1653063468}
-  shipRightSnap: {fileID: 560616353}
+  goShipEngineSnap: {fileID: 1052345515}
+  goShipLeftSnap: {fileID: 1653063468}
+  goShipRightSnap: {fileID: 560616353}
 --- !u!1 &560616353
 GameObject:
   m_ObjectHideFlags: 0
@@ -684,7 +682,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000091552734}
+  m_AnchoredPosition: {x: 0, y: -0.00042209998}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1180102191
