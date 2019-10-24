@@ -19,6 +19,11 @@ public class SelectionManager : MonoBehaviour
         m_equippedEngineIndex = -1;
         m_equippedLeftIndex = -1;
         m_equippedRightIndex = -1;
+
+        display.UpdateHighlightPosition(0);
+        display.UpdateEquipped(m_takenIndexes);
+
+        PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
     }
 
     private void Update()
@@ -42,13 +47,9 @@ public class SelectionManager : MonoBehaviour
                     m_currentlySelectedIndex++;
                 }
 
-                // Only allow a new item to be previewed if it is not already equipped
-                if(!CheckIfAlreadyEquipped())
-                {
-                    RemovePreviousModule();
-                    DisplayEquipped();
-                    PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
-                }
+                RemovePreviousModule();
+                DisplayEquipped();
+                PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
 
                 display.UpdateHighlightPosition(m_currentlySelectedIndex);
                 m_readyForInput = false;
@@ -65,12 +66,9 @@ public class SelectionManager : MonoBehaviour
                     m_currentlySelectedIndex--;
                 }
 
-                if (!CheckIfAlreadyEquipped())
-                {
-                    RemovePreviousModule();
-                    DisplayEquipped();
-                    PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
-                }
+                RemovePreviousModule();
+                DisplayEquipped();
+                PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
 
                 display.UpdateHighlightPosition(m_currentlySelectedIndex);
                 m_readyForInput = false;
@@ -83,12 +81,12 @@ public class SelectionManager : MonoBehaviour
             m_leftSideSelected = !m_leftSideSelected;
             Debug.Log("Left side selected? : " + m_leftSideSelected);
 
-            if(!CheckIfAlreadyEquipped())
+            if (!CheckIfAlreadyEquipped())
             {
                 RemovePreviousModule();
                 DisplayEquipped();
                 PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
-            }          
+            }
         }
 
         // Equip an option from the inventory
@@ -96,27 +94,64 @@ public class SelectionManager : MonoBehaviour
         {
             GameObject selected = display.ModulesList[m_currentlySelectedIndex];
 
-            if (selected.GetComponent<EngineStatManager>() && m_equippedEngineIndex != m_currentlySelectedIndex)
+            
+
+            if (selected.GetComponent<EngineStatManager>())
             {
-                m_equippedEngineIndex = m_currentlySelectedIndex;
-                m_takenIndexes[0] = (int)m_equippedEngineIndex;
-                Debug.Log("Equipped engine " + m_equippedEngineIndex);
+                if (m_equippedEngineIndex != m_currentlySelectedIndex)
+                {
+                    m_equippedEngineIndex = m_currentlySelectedIndex;
+                    m_takenIndexes[0] = (int)m_equippedEngineIndex;
+                    Debug.Log("Equipped engine " + m_equippedEngineIndex);
+                }
+                else
+                {
+                    m_equippedEngineIndex = -1;
+                    m_takenIndexes[0] = -1;
+                }
             }
-            else if (selected.GetComponent<WeaponStatManager>())
+
+            if (selected.GetComponent<WeaponStatManager>())
             {
-                if (m_leftSideSelected && m_equippedLeftIndex != m_currentlySelectedIndex)
+                if (display.ModulesList[m_currentlySelectedIndex].GetComponent<ToggleElements>().IsEquipped())
                 {
-                    m_equippedLeftIndex = m_currentlySelectedIndex;
-                    m_takenIndexes[1] = (int)m_equippedLeftIndex;
-                    Debug.Log("Equipped left gun " + m_equippedLeftIndex);
+                    if (m_equippedRightIndex == m_currentlySelectedIndex)
+                    {
+                        m_equippedRightIndex = -1;
+                        m_takenIndexes[2] = -1;
+                        RemoveRight();
+                    }
+
+                    if (m_equippedLeftIndex == m_currentlySelectedIndex)
+                    {
+                        m_equippedLeftIndex = -1;
+                        m_takenIndexes[1] = -1;
+                        RemoveLeft();
+                    }
                 }
-                else if(!m_leftSideSelected && m_equippedRightIndex != m_currentlySelectedIndex)
+                else
                 {
-                    m_equippedRightIndex = m_currentlySelectedIndex;
-                    m_takenIndexes[2] = (int)m_equippedRightIndex;
-                    Debug.Log("Equipped right gun " + m_equippedRightIndex);
+                    if (m_equippedLeftIndex != m_currentlySelectedIndex && m_leftSideSelected)
+                    {
+                        m_equippedLeftIndex = m_currentlySelectedIndex;
+                        m_takenIndexes[1] = (int)m_equippedLeftIndex;
+                        Debug.Log("Equipped left gun " + m_equippedLeftIndex);
+                    }
+
+                    if (m_equippedRightIndex != m_currentlySelectedIndex && !m_leftSideSelected)
+                    {
+                        m_equippedRightIndex = m_currentlySelectedIndex;
+                        m_takenIndexes[2] = (int)m_equippedRightIndex;
+                        Debug.Log("Equipped right gun " + m_equippedRightIndex);
+                    }
                 }
-            }           
+                
+
+                
+            }
+
+            PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+            display.UpdateEquipped(m_takenIndexes);
         }
     }
 
@@ -149,6 +184,10 @@ public class SelectionManager : MonoBehaviour
             tempEngine.transform.position = goShipEngineSnap.transform.position;
             tempEngine.transform.rotation = goShipEngineSnap.transform.rotation;
         }
+        else
+        {
+            RemoveEngine();
+        }
 
         if(m_equippedLeftIndex != -1)
         {
@@ -159,6 +198,12 @@ public class SelectionManager : MonoBehaviour
             tempWeapon.transform.position = goShipLeftSnap.transform.position;
             tempWeapon.transform.rotation = goShipLeftSnap.transform.rotation;
             tempWeapon.transform.localScale = new Vector3(0.5f, 0.5f, -0.5f);
+
+            Debug.Log("Instantiated from equipped" + statBlock.Name);
+        }
+        else
+        {
+            RemoveLeft();
         }
 
         if(m_equippedRightIndex != -1)
@@ -171,6 +216,10 @@ public class SelectionManager : MonoBehaviour
             tempWeapon.transform.rotation = goShipRightSnap.transform.rotation;
             tempWeapon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         }
+        else
+        {
+            RemoveRight();
+        }
     }
 
     /// <summary>
@@ -179,36 +228,49 @@ public class SelectionManager : MonoBehaviour
     /// <param name="selectedObject"> The object which is being previewed </param>
     private void PreviewSelected(GameObject selectedObject)
     {
-        if (selectedObject.GetComponent<EngineStatManager>())
+        if(!CheckIfAlreadyEquipped())
         {
-            EngineData _statBlock = selectedObject.GetComponent<EngineStatManager>().Data;
-            GameObject _tempEngine = Instantiate(_statBlock.EngineModel);
-
-            _tempEngine.transform.SetParent(goShipEngineSnap.transform);
-            _tempEngine.transform.position = goShipEngineSnap.transform.position;
-            _tempEngine.transform.rotation = goShipEngineSnap.transform.rotation;
-        }
-        else if (selectedObject.GetComponent<WeaponStatManager>())
-        {
-            WeaponData _statBlock = selectedObject.GetComponent<WeaponStatManager>().Data;
-            GameObject _tempWeapon = Instantiate(_statBlock.WeaponModel);
-
-            if (m_leftSideSelected)
+            if (selectedObject.GetComponent<EngineStatManager>())
             {
-                _tempWeapon.transform.SetParent(goShipLeftSnap.transform);
-                _tempWeapon.transform.position = goShipLeftSnap.transform.position;
-                _tempWeapon.transform.rotation = goShipLeftSnap.transform.rotation;
-                _tempWeapon.transform.localScale = new Vector3(0.5f, 0.5f, -0.5f);
-            }
-            else
-            {
-                _tempWeapon.transform.SetParent(goShipRightSnap.transform);
-                _tempWeapon.transform.position = goShipRightSnap.transform.position;
-                _tempWeapon.transform.rotation = goShipRightSnap.transform.rotation;
-                _tempWeapon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            }
+                EngineData _statBlock = selectedObject.GetComponent<EngineStatManager>().Data;
+                GameObject _tempEngine = Instantiate(_statBlock.EngineModel);
 
-        }
+                _tempEngine.transform.SetParent(goShipEngineSnap.transform);
+                _tempEngine.transform.position = goShipEngineSnap.transform.position;
+                _tempEngine.transform.rotation = goShipEngineSnap.transform.rotation;
+            }
+            else if (selectedObject.GetComponent<WeaponStatManager>())
+            {
+                if(m_leftSideSelected)
+                {
+                    RemoveLeft();
+                }
+                else
+                {
+                    RemoveRight();
+                }
+
+                WeaponData _statBlock = selectedObject.GetComponent<WeaponStatManager>().Data;
+                GameObject _tempWeapon = Instantiate(_statBlock.WeaponModel);
+                Debug.Log("Instantiated gun" + _statBlock.Name);
+
+                if (m_leftSideSelected)
+                {
+                    _tempWeapon.transform.SetParent(goShipLeftSnap.transform);
+                    _tempWeapon.transform.position = goShipLeftSnap.transform.position;
+                    _tempWeapon.transform.rotation = goShipLeftSnap.transform.rotation;
+                    _tempWeapon.transform.localScale = new Vector3(0.5f, 0.5f, -0.5f);
+                }
+                else
+                {
+                    _tempWeapon.transform.SetParent(goShipRightSnap.transform);
+                    _tempWeapon.transform.position = goShipRightSnap.transform.position;
+                    _tempWeapon.transform.rotation = goShipRightSnap.transform.rotation;
+                    _tempWeapon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                }
+
+            }
+        }     
     }
 
     /// <summary>
@@ -216,36 +278,50 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     private void RemovePreviousModule()
     {
-        int _tempChildrenCount;
+        RemoveEngine();
+        RemoveLeft();
+        RemoveRight();
+    }
 
-        _tempChildrenCount = goShipEngineSnap.transform.childCount;
-
-        if (_tempChildrenCount != 0)
-        {
-            for (int i = 0; i < _tempChildrenCount; i++)
-            {
-                GameObject.Destroy(goShipEngineSnap.transform.GetChild(i).gameObject);
-            }
-        }
-
-        _tempChildrenCount = goShipLeftSnap.transform.childCount;
+    #region specific removal
+    private void RemoveEngine()
+    {
+        int _tempChildrenCount = goShipEngineSnap.transform.childCount;
 
         if (_tempChildrenCount != 0)
         {
             for (int i = 0; i < _tempChildrenCount; i++)
             {
-                GameObject.Destroy(goShipLeftSnap.transform.GetChild(i).gameObject);
-            }
-        }
-
-        _tempChildrenCount = goShipRightSnap.transform.childCount;
-
-        if (_tempChildrenCount != 0)
-        {
-            for (int i = 0; i < _tempChildrenCount; i++)
-            {
-                GameObject.Destroy(goShipRightSnap.transform.GetChild(i).gameObject);
+                Destroy(goShipEngineSnap.transform.GetChild(i).gameObject);
             }
         }
     }
+
+    private void RemoveLeft()
+    {
+        int _tempChildrenCount = goShipLeftSnap.transform.childCount;
+
+        if (_tempChildrenCount != 0)
+        {
+            for (int i = 0; i < _tempChildrenCount; i++)
+            {
+                Destroy(goShipLeftSnap.transform.GetChild(i).gameObject);
+                Debug.Log("removing left");
+            }
+        }
+    }
+
+    private void RemoveRight()
+    {
+        int _tempChildrenCount = goShipRightSnap.transform.childCount;
+
+        if (_tempChildrenCount != 0)
+        {
+            for (int i = 0; i < _tempChildrenCount; i++)
+            {
+                Destroy(goShipRightSnap.transform.GetChild(i).gameObject);
+            }
+        }
+    }
+    #endregion
 }

@@ -17,15 +17,42 @@ public class DisplayOptions : MonoBehaviour
     {
         for (int i = 0; i < m_modulesList.Count; i++)
         {
-            GameObject _newModule = GameObject.Instantiate(m_modulesList[i]);
-            _newModule.transform.SetParent(contentPanel);
-            m_modulesList[i] = _newModule;
+            GameObject _goNewModule = GameObject.Instantiate(m_modulesList[i]);
+            _goNewModule.transform.SetParent(contentPanel);
+            m_modulesList[i] = _goNewModule;
         }
     }
 
     public void UpdateHighlightPosition(int index)
     {
-        highlight.position = m_modulesList[index].transform.position;
+        m_modulesList[index].GetComponent<ToggleElements>().HighlightOn();
+
+        for (int i = 0; i < ModulesList.Count; i++)
+        {
+            if(i != index)
+            {
+                ModulesList[i].GetComponent<ToggleElements>().HighlightOff();
+            }
+        }
+    }
+
+    public void UpdateEquipped(int[] equippedIndexes)
+    {
+        for (int i = 0; i < m_modulesList.Count; i++)
+        {
+            for (int j = 0; j < equippedIndexes.Length; j++)
+            {
+                if(i == equippedIndexes[j])
+                {
+                    ModulesList[i].GetComponent<ToggleElements>().EquippedOn();
+                    break;
+                }
+                else
+                {
+                    ModulesList[i].GetComponent<ToggleElements>().EquippedOff();
+                }
+            }
+        }
     }
 
 
