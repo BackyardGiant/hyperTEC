@@ -126,6 +126,7 @@ public class MovementUsabilityTestingManager : MonoBehaviour
         {
             resetValues();
         }
+        m_displayPanel.SetActive(false);
     }
     public void resetValues()
     {
