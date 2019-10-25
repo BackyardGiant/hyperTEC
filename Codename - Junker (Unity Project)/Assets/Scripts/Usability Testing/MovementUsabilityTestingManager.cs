@@ -23,6 +23,8 @@ public class MovementUsabilityTestingManager : MonoBehaviour
     private float m_maximumMultiplier;
     [SerializeField, Tooltip("Response Text")]
     private GameObject m_responseText;
+    [SerializeField]
+    private string BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc2P23z1TFQ4UZMUfm4YGQWZ4LXAAkZbrzmrvus0I0PfYHqew/formResponse";
     [SerializeField, Header("Sliders")]
     private Slider m_maxSpeedSlider;
     [SerializeField]
@@ -31,6 +33,9 @@ public class MovementUsabilityTestingManager : MonoBehaviour
     private TextMeshProUGUI m_maxSpeedText;
     [SerializeField]
     private TextMeshProUGUI m_accelerationText, m_dampingText, m_rollText, m_pitchText, m_yawText;
+
+
+
 
     private float m_maxSpeed, m_acceleration, m_damping, m_rollSpeed, m_pitchSpeed, m_yawSpeed;
     private bool m_showingVariables;
@@ -63,7 +68,22 @@ public class MovementUsabilityTestingManager : MonoBehaviour
         m_yawSlider.maxValue = m_maximumMultiplier;
     }
 
-        // Update is called once per frame
+    IEnumerator Post(float maxspeed, float acceleration, float damping, float rollspeed, float pitchspeed, float yawspeed)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("entry.1419638895", maxspeed.ToString());
+        form.AddField("entry.231350589", acceleration.ToString());
+        form.AddField("entry.873326976", damping.ToString());
+        form.AddField("entry.1235456469", rollspeed.ToString());
+        form.AddField("entry.624428431", pitchspeed.ToString());
+        form.AddField("entry.2000891573", yawspeed.ToString());
+        byte[] rawData = form.data;
+        WWW www = new WWW(BASE_URL,rawData);
+        yield return www;
+
+    }
+
+    // Update is called once per frame
     void Update()
     {
         m_maxSpeed = m_maxSpeedSlider.value;
@@ -99,13 +119,9 @@ public class MovementUsabilityTestingManager : MonoBehaviour
     }
     public void SaveValues(bool _reset)
     {
-        string _results = m_maxSpeed + "," + m_acceleration + "," + m_damping + "," + m_rollSpeed + "," + m_pitchSpeed + "," + m_yawSpeed;
-        string path = "Assets/Testing Results/MovementSystemTesting.txt";
+        StartCoroutine(Post(m_maxSpeed, m_acceleration, m_damping, m_rollSpeed, m_pitchSpeed, m_yawSpeed));
         m_responseText.GetComponent<TextMeshProUGUI>().text = "Thank you for testing!";
         m_responseText.GetComponent<Animator>().Play("UsabilityTestingTextResponse");
-        StreamWriter writer = new StreamWriter(path, true);
-         writer.WriteLine(_results);
-         writer.Close();
         if(_reset == true)
         {
             resetValues();
