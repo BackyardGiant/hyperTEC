@@ -22,13 +22,18 @@ public class AdvancedEnemyMovement : MonoBehaviour
     private float m_maxSpeed;
     [SerializeField, Tooltip("The distance that the enemy will detect obsticles")]
     private float m_detectionRange;
+    private float m_detectedRange;
     private GameObject m_closestObsticle;
+    private Vector3 m_closestObsticleIntersect = new Vector3(0,0,0);
     #endregion
 
     #region
     [Header("Behaviour")]
     [SerializeField, Tooltip("Is the enemy fleeing the player")]
     private bool m_fleeing;
+    [SerializeField, Tooltip("The strength of the enemies avoidence force")]
+    private float m_avoidenceForce;
+    private Vector3 m_steering;
     #endregion
 
     private Rigidbody m_rb;
@@ -57,65 +62,77 @@ public class AdvancedEnemyMovement : MonoBehaviour
         {
             Debug.DrawRay(transform.position + transform.forward * 3, transform.forward * m_detectionRange, Color.yellow);
             m_closestObsticle = _hit.transform.gameObject;
+            CalculateDetectionRange(m_detectionRange);
         }
-        else if (Physics.Raycast(transform.position - transform.up * 3, transform.forward, out _hit, m_detectionRange / 2))
+        else if (Physics.Raycast(transform.position - transform.up * 3, transform.forward, out _hit, m_detectionRange / 1.2f))
         {
-            Debug.DrawRay(transform.position - transform.up * 3, transform.forward * m_detectionRange / 2, Color.yellow);
+            Debug.DrawRay(transform.position - transform.up * 3, transform.forward * m_detectionRange / 1.2f, Color.yellow);
             m_closestObsticle = _hit.transform.gameObject;
+            CalculateDetectionRange(m_detectionRange/ 1.2f);
         }
-        else if (Physics.Raycast(transform.position + transform.up * 3, transform.forward, out _hit, m_detectionRange / 2))
+        else if (Physics.Raycast(transform.position + transform.up * 3, transform.forward, out _hit, m_detectionRange / 1.2f))
         {
-            Debug.DrawRay(transform.position - transform.up * 3, transform.forward * m_detectionRange / 2, Color.yellow);
+            Debug.DrawRay(transform.position + transform.up * 3, transform.forward * m_detectionRange / 1.2f, Color.yellow);
             m_closestObsticle = _hit.transform.gameObject;
+            CalculateDetectionRange(m_detectionRange / 1.2f);
         }
-        else if (Physics.Raycast(transform.position + transform.right * 5, transform.forward, out _hit, m_detectionRange / 2))
+        else if (Physics.Raycast(transform.position + transform.right * 5, transform.forward, out _hit, m_detectionRange / 1.2f))
         {
-            Debug.DrawRay(transform.position + transform.right * 5, transform.forward * m_detectionRange / 2, Color.yellow);
+            Debug.DrawRay(transform.position + transform.right * 5, transform.forward * m_detectionRange / 1.2f, Color.yellow);
             m_closestObsticle = _hit.transform.gameObject;
+            CalculateDetectionRange(m_detectionRange / 1.2f);
         }
-        else if (Physics.Raycast(transform.position - transform.right * 5, transform.forward, out _hit, m_detectionRange / 2))
+        else if (Physics.Raycast(transform.position - transform.right * 5, transform.forward, out _hit, m_detectionRange / 1.2f))
         {
-            Debug.DrawRay(transform.position - transform.right * 5, transform.forward * m_detectionRange / 2, Color.yellow);
+            Debug.DrawRay(transform.position - transform.right * 5, transform.forward * m_detectionRange / 1.2f, Color.yellow);
             m_closestObsticle = _hit.transform.gameObject;
+            CalculateDetectionRange(m_detectionRange / 1.2f);
+        }
+
+        if (m_closestObsticle != null)
+        {
+            m_closestObsticleIntersect = _hit.point;
         }
 
 
         else
         {
             Debug.DrawRay(transform.position + transform.forward * 3, transform.forward * m_detectionRange, Color.white);
-            Debug.DrawRay(transform.position + transform.right * 5, transform.forward * m_detectionRange / 2, Color.white);
-            Debug.DrawRay(transform.position - transform.up * 3, transform.forward * m_detectionRange / 2, Color.white);
-            Debug.DrawRay(transform.position + transform.up * 3, transform.forward * m_detectionRange / 2, Color.white);
-            Debug.DrawRay(transform.position - transform.right * 5, transform.forward * m_detectionRange / 2, Color.white);
+            Debug.DrawRay(transform.position + transform.right * 5, transform.forward * m_detectionRange / 1.2f, Color.white);
+            Debug.DrawRay(transform.position - transform.up * 3, transform.forward * m_detectionRange / 1.2f, Color.white);
+            Debug.DrawRay(transform.position + transform.up * 3, transform.forward * m_detectionRange / 1.2f, Color.white);
+            Debug.DrawRay(transform.position - transform.right * 5, transform.forward * m_detectionRange / 1.2f, Color.white);
         }
     }
 
     private void FixedUpdate()
     {
-        Vector3 _steering = new Vector3();
+        m_steering = new Vector3(0,0,0);
+
+        m_steering += collisionAvoidance();
 
         if (m_fleeing)
         {
-            _steering = FleePlayer();
+            m_steering += FleePlayer();
         }
         else
         {
-            _steering = PursuePlayer();
+            m_steering += PursuePlayer();
         }
 
-        if (Vector3.Angle(_steering.normalized, m_rb.velocity.normalized) > m_flipAngle)
+        if (Vector3.Angle(m_steering.normalized, m_rb.velocity.normalized) > m_flipAngle)
         {
-            _steering += transform.right * 100;
+            m_steering += transform.right * 100;
         }
 
-        m_rb.AddForce(_steering * m_acceleration * GameManager.Instance.GameSpeed);
+        m_rb.AddForce(m_steering * m_acceleration * GameManager.Instance.GameSpeed);
 
         if (m_rb.velocity.magnitude > m_maxSpeed)
         {
-            m_rb.AddForce((-_steering) * (m_rb.velocity.magnitude - m_maxSpeed));
+            m_rb.AddForce((-m_steering) * (m_rb.velocity.magnitude - m_maxSpeed));
         }
 
-        transform.forward = Vector3.Lerp(transform.forward, _steering, 0.0005f);
+        transform.forward = Vector3.Lerp(transform.forward, m_steering, 0.0002f);
     }
 
     private Vector3 Seek(Vector3 _target)
@@ -150,5 +167,33 @@ public class AdvancedEnemyMovement : MonoBehaviour
         return _steering;
     }
 
+    private Vector3 collisionAvoidance()
+    {
+        Vector3 _avoidence = new Vector3(0,0,0);
+        float _avoidenceX = 0;
+        float _avoidenceY = 0;
+        float _avoidenceZ = 0;
 
+        if(m_closestObsticle != null)
+        {
+            _avoidenceX = m_closestObsticleIntersect.x - m_closestObsticle.transform.position.x;
+            _avoidenceY = m_closestObsticleIntersect.y - m_closestObsticle.transform.position.y;
+            _avoidenceZ = m_closestObsticleIntersect.z - m_closestObsticle.transform.position.z;
+
+            _avoidence = new Vector3(_avoidenceX, _avoidenceY, _avoidenceZ);
+            _avoidence = _avoidence.normalized;
+            _avoidence *= m_avoidenceForce;
+        }
+        else
+        {
+            _avoidence = new Vector3(0, 0, 0);
+        }
+
+        return _avoidence;
+    }
+
+    private void CalculateDetectionRange(float _detectionRange)
+    {
+        m_detectedRange = _detectionRange;
+    }
 }

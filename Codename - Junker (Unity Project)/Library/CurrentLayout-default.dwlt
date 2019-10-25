@@ -44,7 +44,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 5}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 544}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -65,8 +65,8 @@ MonoBehaviour:
     y: 0
     width: 2560
     height: 1400
-  m_MinSize: {x: 100, y: 120}
-  m_MaxSize: {x: 4000, y: 4020}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 120}
   m_MaxSize: {x: 4000, y: 4020}
   vertical: 0
-  controlID: 170
+  controlID: 12
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -184,10 +184,10 @@ MonoBehaviour:
     y: 30
     width: 2560
     height: 1307
-  m_MinSize: {x: 683, y: 344}
-  m_MaxSize: {x: 12008, y: 8044}
+  m_MinSize: {x: 683, y: 494}
+  m_MaxSize: {x: 14004, y: 14044}
   vertical: 0
-  controlID: 36
+  controlID: 109
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -209,10 +209,10 @@ MonoBehaviour:
     y: 0
     width: 2063
     height: 1307
-  m_MinSize: {x: 406, y: 344}
-  m_MaxSize: {x: 8006, y: 8044}
+  m_MinSize: {x: 406, y: 494}
+  m_MaxSize: {x: 10002, y: 14044}
   vertical: 1
-  controlID: 37
+  controlID: 110
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -237,7 +237,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 222}
   m_MaxSize: {x: 8006, y: 4022}
   vertical: 0
-  controlID: 38
+  controlID: 87
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -257,8 +257,8 @@ MonoBehaviour:
     y: 0
     width: 426
     height: 924
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 222}
+  m_MaxSize: {x: 4002, y: 4022}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -283,8 +283,8 @@ MonoBehaviour:
     y: 0
     width: 1637
     height: 924
-  m_MinSize: {x: 204, y: 222}
-  m_MaxSize: {x: 4004, y: 4022}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 17}
@@ -310,15 +310,15 @@ MonoBehaviour:
     y: 924
     width: 2063
     height: 383
-  m_MinSize: {x: 102, y: 122}
-  m_MaxSize: {x: 4002, y: 4022}
-  m_ActualView: {fileID: 20}
+  m_MinSize: {x: 232, y: 272}
+  m_MaxSize: {x: 10002, y: 10022}
+  m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
   - {fileID: 20}
   - {fileID: 21}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -456,20 +456,20 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 0a17f2ff
-      m_LastClickedID: -911606
-      m_ExpandedIDs: 4ac7ffff98deffff4ce1ffff
+      m_SelectedIDs: ea10feff
+      m_LastClickedID: -126742
+      m_ExpandedIDs: 1e12feff1e20feff4835feff66fbffff6c350000928c0000d28c0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: TestEnemy
-        m_OriginalName: TestEnemy
+        m_Name: TestEnemyAdvanced
+        m_OriginalName: TestEnemyAdvanced
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 17756
+        m_UserData: 35986
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
         m_OriginalEventType: 0
@@ -544,9 +544,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 2.1892223, y: 8.499422, z: -404.2115}
+    m_Target: {x: 25.931576, y: -37.53412, z: 294.11636}
     speed: 2
-    m_Value: {x: 2.1892223, y: 8.499422, z: -404.2115}
+    m_Value: {x: 25.931576, y: -37.53412, z: 294.11636}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -575,13 +575,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.0020242133, y: 0.9855983, z: -0.16867737, w: 0.011827796}
+    m_Target: {x: 0.15500934, y: 0.06725242, z: -0.010579412, w: 0.98557115}
     speed: 2
-    m_Value: {x: 0.0020064693, y: 0.9858502, z: -0.16719879, w: 0.011830819}
+    m_Value: {x: 0.15485139, y: 0.080550574, z: -0.012670928, w: 0.98456705}
   m_Size:
-    m_Target: 70.04291
+    m_Target: 623.75806
     speed: 2
-    m_Value: 67.0267
+    m_Value: 623.75806
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -646,11 +646,11 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Movement
+    - Assets/Scenes
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scripts/Movement
+  - Assets/Scenes
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\jjbrewer\Documents\GitKraken\CodeName-Star-Wars\Codename
     - Junker (Unity Project)
@@ -658,9 +658,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 88}
-    m_SelectedIDs: 5c410000
-    m_LastClickedID: 16732
-    m_ExpandedIDs: 000000000a400000324000008e400000c0400000fc4000001c420000384200005a4200009a420000ca420000ec420000224300006e430000744300007a43000000ca9a3b
+    m_SelectedIDs: 84310000
+    m_LastClickedID: 12676
+    m_ExpandedIDs: 00000000302e0000682e0000f02e0000362f00008c2f000076310000a2310000d83100004832000090320000be32000016330000a2330000ac330000b833000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -688,7 +688,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000a400000324000007a4000008e400000c0400000fc4000001c420000384200005a4200009a420000ca420000ec420000224300004e4300006e430000744300007a430000b2430000
+    m_ExpandedIDs: 00000000302e0000682e0000f02e0000362f00008c2f000076310000a2310000d83100004832000090320000be32000016330000a2330000ac330000b8330000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -713,24 +713,24 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 4ac7ffff
-    m_LastClickedInstanceID: -14518
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000249a0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: AdvancedEnemyMovement
-      m_OriginalName: AdvancedEnemyMovement
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 18428
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 13}
     m_CreateAssetUtility:
@@ -798,7 +798,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -911606
+  m_LastSelectedObjectID: -126742
 --- !u!114 &22
 MonoBehaviour:
   m_ObjectHideFlags: 52
