@@ -1344,8 +1344,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255369
-  m_fontColor: {r: 0.038105488, g: 1, b: 0, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3105,8 +3105,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255369
-  m_fontColor: {r: 0.038105488, g: 1, b: 0, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3423,8 +3423,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255369
-  m_fontColor: {r: 0.038105488, g: 1, b: 0, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3617,8 +3617,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255369
-  m_fontColor: {r: 0.038105488, g: 1, b: 0, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4454,8 +4454,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255369
-  m_fontColor: {r: 0.038105488, g: 1, b: 0, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6234,8 +6234,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255369
-  m_fontColor: {r: 0.038105488, g: 1, b: 0, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7401,9 +7401,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_displayPanel: {fileID: 8552956484421855574}
+  m_saveData: 0
   m_maximumMultiplier: 2
   m_responseText: {fileID: 1134033781}
-  BASE_URL: https://docs.google.com/forms/d/e/1FAIpQLSc2P23z1TFQ4UZMUfm4YGQWZ4LXAAkZbrzmrvus0I0PfYHqew/formResponse
   m_maxSpeedSlider: {fileID: 8552956483954040305}
   m_accelerationSlider: {fileID: 8552956484716526743}
   m_dampingSlider: {fileID: 8552956484591865323}
