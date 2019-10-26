@@ -19,11 +19,13 @@ public class MovementUsabilityTestingManager : MonoBehaviour
     
     [SerializeField, Header("Configuration")]
     private GameObject m_displayPanel;
+    [SerializeField]
+    private bool m_saveData;
     [SerializeField, Tooltip ("How high the multiplier. Default is 2.")]
     private float m_maximumMultiplier;
     [SerializeField, Tooltip("Response Text")]
     private GameObject m_responseText;
-    [SerializeField]
+
     private string BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc2P23z1TFQ4UZMUfm4YGQWZ4LXAAkZbrzmrvus0I0PfYHqew/formResponse";
     [SerializeField, Header("Sliders")]
     private Slider m_maxSpeedSlider;
@@ -66,6 +68,15 @@ public class MovementUsabilityTestingManager : MonoBehaviour
         m_rollSlider.maxValue = m_maximumMultiplier;
         m_pitchSlider.maxValue = m_maximumMultiplier;
         m_yawSlider.maxValue = m_maximumMultiplier;
+
+        if(m_saveData == false)
+        {
+            Debug.Log("<color=red><b>Note:</b></color>Usability data is <b>NOT</b> saving to spreadsheet");
+        }
+        else
+        {
+            Debug.Log("<color=green><b>Note:</b></color>Usability data <b>IS</b> saving to spreadsheet");
+        }
     }
 
     IEnumerator Post(float maxspeed, float acceleration, float damping, float rollspeed, float pitchspeed, float yawspeed)
@@ -119,14 +130,26 @@ public class MovementUsabilityTestingManager : MonoBehaviour
     }
     public void SaveValues(bool _reset)
     {
-        StartCoroutine(Post(m_maxSpeed, m_acceleration, m_damping, m_rollSpeed, m_pitchSpeed, m_yawSpeed));
-        m_responseText.GetComponent<TextMeshProUGUI>().text = "Thank you for testing!";
-        m_responseText.GetComponent<Animator>().Play("UsabilityTestingTextResponse");
-        if(_reset == true)
+
+        if (m_saveData == false)
+        {
+            m_responseText.GetComponent<TextMeshProUGUI>().text = "Thank you for testing! Data has not been saved";
+            m_responseText.GetComponent<TextMeshProUGUI>().fontSize = 15;
+            m_responseText.GetComponent<Animator>().Play("UsabilityTestingTextResponse");
+        }
+        else
+        {
+            StartCoroutine(Post(m_maxSpeed, m_acceleration, m_damping, m_rollSpeed, m_pitchSpeed, m_yawSpeed));
+            m_responseText.GetComponent<TextMeshProUGUI>().text = "Thank you for testing!";
+            m_responseText.GetComponent<TextMeshProUGUI>().fontSize = 36;
+            m_responseText.GetComponent<Animator>().Play("UsabilityTestingTextResponse");
+        }
+        if (_reset == true)
         {
             resetValues();
         }
         m_displayPanel.SetActive(false);
+        m_showingVariables = false;
     }
     public void resetValues()
     {

@@ -111,7 +111,7 @@ MonoBehaviour:
     y: 30
     width: 2544
     height: 1291
-  m_MinSize: {x: 683, y: 494}
+  m_MinSize: {x: 681, y: 494}
   m_MaxSize: {x: 14004, y: 14044}
   vertical: 0
   controlID: 61
@@ -136,7 +136,7 @@ MonoBehaviour:
     y: 0
     width: 2050
     height: 1291
-  m_MinSize: {x: 406, y: 494}
+  m_MinSize: {x: 404, y: 494}
   m_MaxSize: {x: 10002, y: 14044}
   vertical: 1
   controlID: 62
@@ -161,8 +161,8 @@ MonoBehaviour:
     y: 0
     width: 2050
     height: 913
-  m_MinSize: {x: 406, y: 222}
-  m_MaxSize: {x: 8006, y: 4022}
+  m_MinSize: {x: 404, y: 222}
+  m_MaxSize: {x: 8004, y: 4022}
   vertical: 0
   controlID: 63
 --- !u!114 &8
@@ -184,8 +184,8 @@ MonoBehaviour:
     y: 0
     width: 423
     height: 913
-  m_MinSize: {x: 202, y: 222}
-  m_MaxSize: {x: 4002, y: 4022}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -421,9 +421,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 5631ffff5431ffff
-      m_LastClickedID: -52908
-      m_ExpandedIDs: f8ecffff2eedffff78fbffff
+      m_SelectedIDs: 62f9ffff4ef9ffff52f9ffff
+      m_LastClickedID: -1710
+      m_ExpandedIDs: 8cf5ffff78f8ffff7cf8ffff88f8ffff94f8ffff96f8ffffaef8ffffc2f8ffff1ef9ffff92f9ffffbcf9ffff78fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -509,9 +509,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 405.5067, y: 267.7803, z: 117.3394}
+    m_Target: {x: 298.43552, y: 821.7389, z: -669.9582}
     speed: 2
-    m_Value: {x: 405.5067, y: 267.7803, z: 117.3394}
+    m_Value: {x: 298.43552, y: 821.7389, z: -669.9582}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -540,9 +540,9 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.0086383335, y: 0.99035454, z: -0.104264475, w: 0.091801785}
+    m_Target: {x: -0.008860252, y: 0.123819, z: -0.000064567444, w: -0.9923576}
     speed: 2
-    m_Value: {x: 0.008637576, y: 0.99026775, z: -0.10425534, w: 0.091793746}
+    m_Value: {x: -0.00885944, y: 0.123807654, z: -0.00006456153, w: -0.99226665}
   m_Size:
     m_Target: 2.8578837
     speed: 2
@@ -611,11 +611,11 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/PostProcessing
+    - Assets/Art/UserInterface/Fonts
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/PostProcessing
+  - Assets/Art/UserInterface/Fonts
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\jack-\Documents\Current Repository\CodeName-Star-Wars\Codename
     - Junker (Unity Project)
@@ -623,9 +623,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 54300000
-    m_LastClickedID: 12372
-    m_ExpandedIDs: 00000000e02d0000182e0000a62e0000ec2e0000ce300000043200006a3300007633000000ca9a3b
+    m_SelectedIDs: 2e330000
+    m_LastClickedID: 13102
+    m_ExpandedIDs: 00000000e02d00001a2e0000a82e0000ee2e0000da30000010320000823300008c330000983300000034000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -653,7 +653,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000182e0000a62e0000ec2e0000303100005c310000043200004e3200007c3200006a330000
+    m_ExpandedIDs: 00000000e02d00001a2e0000a82e0000ee2e0000da300000103200008c33000098330000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -684,18 +684,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: c6230000249a0100c83c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: Fonts
+      m_OriginalName: Fonts
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 13102
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 10}
     m_CreateAssetUtility:
