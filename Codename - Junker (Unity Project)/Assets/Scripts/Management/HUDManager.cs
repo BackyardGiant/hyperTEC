@@ -325,7 +325,6 @@ public class HUDManager : MonoBehaviour
     {
         Destroy(_loot.LootTarget);
         //Need to make it clear the loot Display if there isn't any loot left on screen.
-        Debug.Log(countTargets());
         if (countTargets() == 0)
         {
             ClearLootDisplay();

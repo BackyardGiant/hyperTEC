@@ -1,5 +1,9 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/EnemyMovement.unity
+=======
+- path: Assets/Scenes/MovementUsabilityTesting.unity
+>>>>>>> MovementUsabilityTesting-Griff
   isLoaded: 1
   isActive: 1
   isSubScene: 0
