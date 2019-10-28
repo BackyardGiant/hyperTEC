@@ -62,6 +62,8 @@ public class MovementUsabilityTestingManager : MonoBehaviour
         m_showingVariables = false;
         m_displayPanel.SetActive(false);
 
+        ResetValues();
+
         m_maxSpeedSlider.maxValue = m_maximumMultiplier;
         m_accelerationSlider.maxValue = m_maximumMultiplier;
         m_dampingSlider.maxValue = m_maximumMultiplier;
@@ -146,23 +148,23 @@ public class MovementUsabilityTestingManager : MonoBehaviour
         }
         if (_reset == true)
         {
-            resetValues();
+            ResetValues();
         }
         m_displayPanel.SetActive(false);
         m_showingVariables = false;
     }
-    public void resetValues()
+    public void ResetValues()
     {
-        m_maxSpeedSlider.value = 1;
+        m_maxSpeedSlider.value = 0.1f;
 
-        m_accelerationSlider.value = 1;
+        m_accelerationSlider.value = 0.1f;
 
-        m_dampingSlider.value = 1;
+        m_dampingSlider.value = 0.1f;
 
-        m_rollSlider.value = 1;
+        m_rollSlider.value = 0.1f;
 
-        m_pitchSlider.value = 1;
+        m_pitchSlider.value = 0.1f;
 
-        m_yawSlider.value = 1;
+        m_yawSlider.value = 0.1f;
     }
 }

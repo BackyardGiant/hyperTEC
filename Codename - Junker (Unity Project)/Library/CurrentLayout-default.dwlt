@@ -21,7 +21,7 @@ MonoBehaviour:
   m_ShowMode: 0
   m_Title: 
   m_RootView: {fileID: 4}
-  m_MinSize: {x: 100, y: 120}
+  m_MinSize: {x: 200, y: 220}
   m_MaxSize: {x: 4000, y: 4020}
 --- !u!114 &2
 MonoBehaviour:
@@ -37,19 +37,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 8
-    y: 51
-    width: 2544
-    height: 1341
+    x: 0
+    y: 43
+    width: 2560
+    height: 1357
   m_ShowMode: 4
   m_Title: 
-<<<<<<< HEAD
-  m_RootView: {fileID: 5}
-  m_MinSize: {x: 950, y: 544}
-=======
-  m_RootView: {fileID: 2}
+  m_RootView: {fileID: 9}
   m_MinSize: {x: 950, y: 394}
->>>>>>> MovementUsabilityTesting-Griff
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -70,11 +65,11 @@ MonoBehaviour:
     y: 0
     width: 2560
     height: 1400
-  m_MinSize: {x: 100, y: 120}
-  m_MaxSize: {x: 4000, y: 4020}
-  m_ActualView: {fileID: 15}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 20}
   m_Panes:
-  - {fileID: 15}
+  - {fileID: 20}
   m_Selected: 0
   m_LastSelected: 0
 --- !u!114 &4
@@ -97,11 +92,115 @@ MonoBehaviour:
     y: 0
     width: 2560
     height: 1400
-  m_MinSize: {x: 100, y: 120}
+  m_MinSize: {x: 200, y: 220}
   m_MaxSize: {x: 4000, y: 4020}
   vertical: 0
-  controlID: 12
+  controlID: 395
 --- !u!114 &5
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children:
+  - {fileID: 12}
+  - {fileID: 6}
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 30
+    width: 2560
+    height: 1307
+  m_MinSize: {x: 683, y: 344}
+  m_MaxSize: {x: 12008, y: 8044}
+  vertical: 0
+  controlID: 50
+--- !u!114 &6
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 2041
+    y: 0
+    width: 519
+    height: 1307
+  m_MinSize: {x: 277, y: 72}
+  m_MaxSize: {x: 4002, y: 4022}
+  m_ActualView: {fileID: 17}
+  m_Panes:
+  - {fileID: 17}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &7
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 417
+    height: 790
+  m_MinSize: {x: 202, y: 222}
+  m_MaxSize: {x: 4002, y: 4022}
+  m_ActualView: {fileID: 18}
+  m_Panes:
+  - {fileID: 18}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &8
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 790
+    width: 2041
+    height: 517
+  m_MinSize: {x: 102, y: 122}
+  m_MaxSize: {x: 4002, y: 4022}
+  m_ActualView: {fileID: 21}
+  m_Panes:
+  - {fileID: 16}
+  - {fileID: 21}
+  m_Selected: 1
+  m_LastSelected: 0
+--- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,28 +213,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 6}
-  - {fileID: 8}
-  - {fileID: 7}
+  - {fileID: 10}
+  - {fileID: 5}
+  - {fileID: 11}
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
-<<<<<<< HEAD
     width: 2560
     height: 1357
-<<<<<<< HEAD
-  m_MinSize: {x: 950, y: 544}
-=======
-  m_MinSize: {x: 950, y: 300}
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-    width: 2544
-    height: 1341
   m_MinSize: {x: 950, y: 394}
->>>>>>> MovementUsabilityTesting-Griff
   m_MaxSize: {x: 10000, y: 10000}
---- !u!114 &6
+--- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,12 +241,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 2544
+    width: 2560
     height: 30
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
   m_LastLoadedLayoutName: 
---- !u!114 &7
+--- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,12 +262,12 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 1321
-    width: 2544
+    y: 1337
+    width: 2560
     height: 20
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
---- !u!114 &8
+--- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -191,62 +280,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 9}
-  - {fileID: 14}
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 30
-    width: 2544
-    height: 1291
-  m_MinSize: {x: 683, y: 344}
-  m_MaxSize: {x: 12008, y: 8044}
-  vertical: 0
-<<<<<<< HEAD
-<<<<<<< HEAD
-  controlID: 125
-=======
-  controlID: 144
->>>>>>> MovementUsabilityTesting-Griff
---- !u!114 &6
-=======
-  controlID: 156
---- !u!114 &9
->>>>>>> AdvancedEnemyMovement-Jack
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children:
-  - {fileID: 10}
   - {fileID: 13}
+  - {fileID: 8}
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 2050
-    height: 1291
+    width: 2041
+    height: 1307
   m_MinSize: {x: 406, y: 344}
   m_MaxSize: {x: 8006, y: 8044}
   vertical: 1
-<<<<<<< HEAD
-<<<<<<< HEAD
-  controlID: 101
-=======
-  controlID: 62
->>>>>>> MovementUsabilityTesting-Griff
---- !u!114 &7
-=======
-  controlID: 86
---- !u!114 &10
->>>>>>> AdvancedEnemyMovement-Jack
+  controlID: 51
+--- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -259,28 +305,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 11}
-  - {fileID: 12}
+  - {fileID: 7}
+  - {fileID: 14}
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 2050
-    height: 913
+    width: 2041
+    height: 790
   m_MinSize: {x: 406, y: 222}
   m_MaxSize: {x: 8006, y: 4022}
   vertical: 0
-<<<<<<< HEAD
-<<<<<<< HEAD
-  controlID: 102
-=======
-  controlID: 63
->>>>>>> MovementUsabilityTesting-Griff
---- !u!114 &8
-=======
-  controlID: 87
---- !u!114 &11
->>>>>>> AdvancedEnemyMovement-Jack
+  controlID: 52
+--- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,415 +332,19 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 0
+    x: 417
     y: 0
-    width: 423
-    height: 913
-  m_MinSize: {x: 202, y: 222}
-  m_MaxSize: {x: 4002, y: 4022}
-<<<<<<< HEAD
-<<<<<<< HEAD
-  m_ActualView: {fileID: 13}
-=======
-  m_ActualView: {fileID: 16}
->>>>>>> AdvancedEnemyMovement-Jack
-  m_Panes:
-  - {fileID: 16}
-=======
-  m_ActualView: {fileID: 14}
-  m_Panes:
-  - {fileID: 14}
->>>>>>> MovementUsabilityTesting-Griff
-  m_Selected: 0
-  m_LastSelected: 0
---- !u!114 &12
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children: []
-  m_Position:
-    serializedVersion: 2
-    x: 423
-    y: 0
-<<<<<<< HEAD
-    width: 1637
-    height: 924
-<<<<<<< HEAD
+    width: 1624
+    height: 790
   m_MinSize: {x: 204, y: 222}
   m_MaxSize: {x: 4004, y: 4022}
-  m_ActualView: {fileID: 15}
-=======
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 18}
->>>>>>> AdvancedEnemyMovement-Jack
+  m_ActualView: {fileID: 19}
   m_Panes:
-  - {fileID: 17}
-  - {fileID: 18}
-=======
-    width: 1627
-    height: 913
-  m_MinSize: {x: 204, y: 222}
-  m_MaxSize: {x: 4004, y: 4022}
-  m_ActualView: {fileID: 16}
-  m_Panes:
+  - {fileID: 19}
   - {fileID: 15}
-  - {fileID: 16}
-  - {fileID: 13}
->>>>>>> MovementUsabilityTesting-Griff
-  m_Selected: 1
-  m_LastSelected: 1
---- !u!114 &13
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children: []
-  m_Position:
-    serializedVersion: 2
-    x: 0
-<<<<<<< HEAD
-    y: 924
-    width: 2063
-    height: 383
-  m_MinSize: {x: 232, y: 272}
-  m_MaxSize: {x: 10002, y: 10022}
-  m_ActualView: {fileID: 19}
-  m_Panes:
-  - {fileID: 19}
-  - {fileID: 20}
-  - {fileID: 21}
   m_Selected: 0
-  m_LastSelected: 1
---- !u!114 &14
-=======
-    y: 913
-    width: 2050
-    height: 378
-  m_MinSize: {x: 102, y: 122}
-  m_MaxSize: {x: 4002, y: 4022}
-  m_ActualView: {fileID: 18}
-  m_Panes:
-  - {fileID: 17}
-  - {fileID: 18}
-  - {fileID: 19}
-  m_Selected: 1
   m_LastSelected: 0
---- !u!114 &11
->>>>>>> MovementUsabilityTesting-Griff
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children: []
-  m_Position:
-    serializedVersion: 2
-    x: 2050
-    y: 0
-    width: 494
-    height: 1291
-  m_MinSize: {x: 277, y: 72}
-  m_MaxSize: {x: 4002, y: 4022}
-<<<<<<< HEAD
-<<<<<<< HEAD
-  m_ActualView: {fileID: 19}
-=======
-  m_ActualView: {fileID: 22}
->>>>>>> AdvancedEnemyMovement-Jack
-  m_Panes:
-  - {fileID: 22}
-  - {fileID: 23}
-  m_Selected: 0
-  m_LastSelected: 1
 --- !u!114 &15
-=======
-  m_ActualView: {fileID: 20}
-  m_Panes:
-  - {fileID: 20}
-  - {fileID: 21}
-  - {fileID: 12}
-  m_Selected: 0
-  m_LastSelected: 2
---- !u!114 &12
->>>>>>> MovementUsabilityTesting-Griff
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 12019, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 275, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Inspector
-    m_Image: {fileID: -6905738622615590433, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 2058
-    y: 81
-    width: 492
-    height: 1272
-  m_ViewDataDictionary: {fileID: 0}
-  m_OpenAddComponentMenu: 0
-  m_ObjectsLockedBeforeSerialization: []
-  m_InstanceIDsLockedBeforeSerialization: 
-  m_LockTracker:
-    m_IsLocked: 0
-  m_PreviewResizer:
-    m_CachedPref: 189
-    m_ControlHash: 1412526313
-    m_PrefName: Preview_InspectorPreview
-  m_PreviewWindow: {fileID: 0}
---- !u!114 &13
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 12015, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Game
-    m_Image: {fileID: -2087823869225018852, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-<<<<<<< HEAD
-<<<<<<< HEAD
-    x: 426
-    y: 73
-    width: 1635
-    height: 905
-=======
-    x: -2560
-    y: 0
-    width: 2560
-    height: 1379
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-    x: 431
-    y: 81
-    width: 1625
-    height: 894
->>>>>>> MovementUsabilityTesting-Griff
-  m_ViewDataDictionary: {fileID: 0}
-  m_VSyncEnabled: 0
-  m_MaximizeOnPlay: 0
-  m_Gizmos: 0
-  m_Stats: 0
-  m_SelectedSizes: 05000000000000000000000000000000000000000000000000000000000000000000000000000000
-  m_TargetDisplay: 0
-  m_ZoomArea:
-    m_HRangeLocked: 0
-    m_VRangeLocked: 0
-    hZoomLockedByDefault: 0
-    vZoomLockedByDefault: 0
-<<<<<<< HEAD
-<<<<<<< HEAD
-    m_HBaseRangeMin: -789.5
-    m_HBaseRangeMax: 789.5
-    m_VBaseRangeMin: -444
-    m_VBaseRangeMax: 444
-=======
-    m_HBaseRangeMin: -1210.5
-    m_HBaseRangeMax: 1210.5
-    m_VBaseRangeMin: -681
-    m_VBaseRangeMax: 681
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-    m_HBaseRangeMin: -779.5
-    m_HBaseRangeMax: 779.5
-    m_VBaseRangeMin: -438.5
-    m_VBaseRangeMax: 438.5
->>>>>>> MovementUsabilityTesting-Griff
-    m_HAllowExceedBaseRangeMin: 1
-    m_HAllowExceedBaseRangeMax: 1
-    m_VAllowExceedBaseRangeMin: 1
-    m_VAllowExceedBaseRangeMax: 1
-    m_ScaleWithWindow: 0
-    m_HSlider: 0
-    m_VSlider: 0
-    m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
-    m_EnableSliderZoomHorizontal: 0
-    m_EnableSliderZoomVertical: 0
-    m_UniformScale: 1
-    m_UpDirection: 1
-    m_DrawArea:
-      serializedVersion: 2
-      x: 0
-      y: 17
-<<<<<<< HEAD
-<<<<<<< HEAD
-      width: 1635
-      height: 888
-    m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 817.5, y: 444}
-=======
-      width: 2560
-      height: 1362
-    m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 1280, y: 681}
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-      width: 1625
-      height: 877
-    m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 812.5, y: 438.5}
->>>>>>> MovementUsabilityTesting-Griff
-    m_MarginLeft: 0
-    m_MarginRight: 0
-    m_MarginTop: 0
-    m_MarginBottom: 0
-    m_LastShownAreaInsideMargins:
-      serializedVersion: 2
-<<<<<<< HEAD
-<<<<<<< HEAD
-      x: -817.5
-      y: -444
-      width: 1635
-      height: 888
-=======
-      x: -1280
-      y: -681
-      width: 2560
-      height: 1362
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-      x: -812.5
-      y: -438.5
-      width: 1625
-      height: 877
->>>>>>> MovementUsabilityTesting-Griff
-    m_MinimalGUI: 1
-  m_defaultScale: 1
-  m_TargetTexture: {fileID: 0}
-  m_CurrentColorSpace: 0
-<<<<<<< HEAD
-<<<<<<< HEAD
-  m_LastWindowPixelSize: {x: 1635, y: 905}
-=======
-  m_LastWindowPixelSize: {x: 2560, y: 1379}
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-  m_LastWindowPixelSize: {x: 1625, y: 894}
->>>>>>> MovementUsabilityTesting-Griff
-  m_ClearInEditMode: 1
-  m_NoCameraWarning: 1
-  m_LowResolutionForAspectRatios: 01000000000000000000
-  m_XRRenderMode: 0
-<<<<<<< HEAD
---- !u!114 &16
-=======
---- !u!114 &14
->>>>>>> MovementUsabilityTesting-Griff
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12061, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Hierarchy
-    m_Image: {fileID: -590624980919486359, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 8
-    y: 81
-    width: 423
-    height: 894
-  m_ViewDataDictionary: {fileID: 0}
-  m_SceneHierarchy:
-    m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
-      m_SelectedIDs: cc3a0000
-      m_LastClickedID: 0
-      m_ExpandedIDs: 2c09ffff5009ffffe20affff36d8ffff9cdeffff204400002e44000032440000584400006c4400007644000084440000
-=======
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 06dcffff46e1ffff5e400000
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-      m_SelectedIDs: bcf9ffff
-      m_LastClickedID: -1604
-      m_ExpandedIDs: bcf9ffff78fbffff
->>>>>>> MovementUsabilityTesting-Griff
-      m_RenameOverlay:
-        m_UserAcceptedRename: 0
-        m_Name: TestEnemyAdvanced
-        m_OriginalName: TestEnemyAdvanced
-        m_EditFieldRect:
-          serializedVersion: 2
-          x: 0
-          y: 0
-          width: 0
-          height: 0
-        m_UserData: 16478
-        m_IsWaitingForDelay: 0
-        m_IsRenaming: 0
-        m_OriginalEventType: 0
-        m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 11}
-      m_SearchString: 
-    m_ExpandedScenes: []
-    m_CurrenRootInstanceID: 0
-    m_LockTracker:
-      m_IsLocked: 0
-    m_CurrentSortingName: TransformSorting
-  m_WindowGUID: 602d7d8a5d036594bb1d74f0f1ca294a
-<<<<<<< HEAD
---- !u!114 &17
-=======
---- !u!114 &15
->>>>>>> MovementUsabilityTesting-Griff
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -719,21 +360,245 @@ MonoBehaviour:
   m_MaxSize: {x: 2048, y: 2048}
   m_TitleContent:
     m_Text: Asset Store
-    m_Image: {fileID: 357073275683767465, guid: 0000000000000000d000000000000000,
+    m_Image: {fileID: -8693916549880196297, guid: 0000000000000000d000000000000000,
       type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 426
-    y: 73
-    width: 1635
-    height: 905
+    x: 468
+    y: 181
+    width: 973
+    height: 501
   m_ViewDataDictionary: {fileID: 0}
-<<<<<<< HEAD
---- !u!114 &18
-=======
 --- !u!114 &16
->>>>>>> MovementUsabilityTesting-Griff
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12014, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 230, y: 250}
+  m_MaxSize: {x: 10000, y: 10000}
+  m_TitleContent:
+    m_Text: Project
+    m_Image: {fileID: -5467254957812901981, guid: 0000000000000000d000000000000000,
+      type: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 0
+    y: 863
+    width: 2041
+    height: 498
+  m_ViewDataDictionary: {fileID: 0}
+  m_SearchFilter:
+    m_NameFilter: 
+    m_ClassNames: []
+    m_AssetLabels: []
+    m_AssetBundleNames: []
+    m_VersionControlStates: []
+    m_SoftLockControlStates: []
+    m_ReferencingInstanceIDs: 
+    m_SceneHandles: 
+    m_ShowAllHits: 0
+    m_SkipHidden: 0
+    m_SearchArea: 1
+    m_Folders:
+    - Assets/Scripts/Management
+  m_ViewMode: 1
+  m_StartGridSize: 64
+  m_LastFolders:
+  - Assets/Scripts/Management
+  m_LastFoldersGridSize: -1
+  m_LastProjectPath: C:\Users\jjbrewer\Documents\GitKraken\CodeName-Star-Wars\Codename
+    - Junker (Unity Project)
+  m_LockTracker:
+    m_IsLocked: 0
+  m_FolderTreeState:
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 223f0000
+    m_LastClickedID: 16162
+    m_ExpandedIDs: 00000000ae3a0000e23a0000663b0000ac3b0000023c0000c03d0000ec3d00001e3e0000823e0000ca3e0000f63e0000443f0000c63f0000d03f0000dc3f000000ca9a3b
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 1
+      m_ClientGUIView: {fileID: 0}
+    m_SearchString: 
+    m_CreateAssetUtility:
+      m_EndAction: {fileID: 0}
+      m_InstanceID: 0
+      m_Path: 
+      m_Icon: {fileID: 0}
+      m_ResourceFile: 
+  m_AssetTreeState:
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: 00000000ae3a0000e23a0000463b0000663b0000ac3b0000023c0000c03d0000ec3d00001e3e0000823e0000ca3e0000f63e0000c63f0000d03f0000dc3f0000
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 1
+      m_ClientGUIView: {fileID: 0}
+    m_SearchString: 
+    m_CreateAssetUtility:
+      m_EndAction: {fileID: 0}
+      m_InstanceID: 0
+      m_Path: 
+      m_Icon: {fileID: 0}
+      m_ResourceFile: 
+  m_ListAreaState:
+    m_SelectedInstanceIDs: 9c440100
+    m_LastClickedInstanceID: 83100
+    m_HadKeyboardFocusLastEvent: 1
+    m_ExpandedInstanceIDs: c6230000
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 1
+      m_ClientGUIView: {fileID: 8}
+    m_CreateAssetUtility:
+      m_EndAction: {fileID: 0}
+      m_InstanceID: 0
+      m_Path: 
+      m_Icon: {fileID: 0}
+      m_ResourceFile: 
+    m_NewAssetIndexInList: -1
+    m_ScrollPosition: {x: 0, y: 0}
+    m_GridSize: 64
+  m_SkipHiddenPackages: 0
+  m_DirectoriesAreaWidth: 115
+--- !u!114 &17
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12019, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Inspector
+    m_Image: {fileID: -2667387946076563598, guid: 0000000000000000d000000000000000,
+      type: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 2041
+    y: 73
+    width: 517
+    height: 1288
+  m_ViewDataDictionary: {fileID: 0}
+  m_OpenAddComponentMenu: 0
+  m_ObjectsLockedBeforeSerialization: []
+  m_InstanceIDsLockedBeforeSerialization: 
+  m_LockTracker:
+    m_IsLocked: 0
+  m_PreviewResizer:
+    m_CachedPref: 160
+    m_ControlHash: -371814159
+    m_PrefName: Preview_InspectorPreview
+  m_PreviewWindow: {fileID: 0}
+--- !u!114 &18
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12061, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Hierarchy
+    m_Image: {fileID: 7966133145522015247, guid: 0000000000000000d000000000000000,
+      type: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 0
+    y: 73
+    width: 417
+    height: 771
+  m_ViewDataDictionary: {fileID: 0}
+  m_SceneHierarchy:
+    m_TreeViewState:
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: 9c440100
+      m_LastClickedID: 83100
+      m_ExpandedIDs: 9c0affff724affff6e5effff1c6effffb27dffff287effffc28dffff289cffff9cabffff10baffff76c8ffff16cdffffe8f1ffff02f2ffff22f2ffff82f2ffff02f3ffffcef4ffff9af5ffff
+      m_RenameOverlay:
+        m_UserAcceptedRename: 0
+        m_Name: 
+        m_OriginalName: 
+        m_EditFieldRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        m_UserData: 0
+        m_IsWaitingForDelay: 0
+        m_IsRenaming: 0
+        m_OriginalEventType: 11
+        m_IsRenamingFilename: 0
+        m_ClientGUIView: {fileID: 7}
+      m_SearchString: 
+    m_ExpandedScenes: []
+    m_CurrenRootInstanceID: 0
+    m_LockTracker:
+      m_IsLocked: 0
+    m_CurrentSortingName: TransformSorting
+  m_WindowGUID: da41dca967ad2394fb041bbf64602204
+--- !u!114 &19
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -749,41 +614,29 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Scene
-    m_Image: {fileID: 2318424515335265636, guid: 0000000000000000d000000000000000,
+    m_Image: {fileID: 2593428753322112591, guid: 0000000000000000d000000000000000,
       type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 431
-    y: 81
-    width: 1625
-    height: 894
+    x: 417
+    y: 73
+    width: 1622
+    height: 771
   m_ViewDataDictionary: {fileID: 0}
   m_ShowContextualTools: 0
-  m_WindowGUID: 7ebd1eb588f543b4e9b408d5400501e8
+  m_WindowGUID: 94e4262afcc5e3a44a0b58c077fdc27d
   m_Gizmos: 1
-  m_SceneIsLit: 0
+  m_SceneIsLit: 1
   m_SceneLighting: 1
   m_2DMode: 0
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-<<<<<<< HEAD
-<<<<<<< HEAD
-    m_Target: {x: -110.04907, y: 521.4785, z: 155.28894}
+    m_Target: {x: 626.97437, y: 345.39294, z: 816.4778}
     speed: 2
-    m_Value: {x: -110.04907, y: 521.4785, z: 155.28894}
-=======
-    m_Target: {x: -41.743797, y: 11.076279, z: 98.0338}
-    speed: 2
-    m_Value: {x: -41.743797, y: 11.076279, z: 98.0338}
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-    m_Target: {x: 338.7127, y: 349.64844, z: -153.7859}
-    speed: 2
-    m_Value: {x: 338.7127, y: 349.64844, z: -153.7859}
->>>>>>> MovementUsabilityTesting-Griff
+    m_Value: {x: 626.97437, y: 345.39294, z: 816.4778}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -812,38 +665,20 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-<<<<<<< HEAD
-<<<<<<< HEAD
-    m_Target: {x: 0.08244769, y: -0.2620417, z: 0.021471482, w: 0.9612906}
-=======
-    m_Target: {x: -0.008860252, y: 0.123819, z: -0.000064567444, w: -0.9923576}
->>>>>>> MovementUsabilityTesting-Griff
+    m_Target: {x: 0.17188783, y: -0.026599314, z: 0.0046432023, w: 0.9847485}
     speed: 2
-    m_Value: {x: -0.00885944, y: 0.123807654, z: -0.00006456153, w: -0.99226665}
+    m_Value: {x: 0.17188749, y: -0.02659926, z: 0.004643193, w: 0.9847465}
   m_Size:
-    m_Target: 1992.5408
+    m_Target: 3813.5928
     speed: 2
-<<<<<<< HEAD
-    m_Value: 2311.9465
-=======
-    m_Target: {x: -0.27345207, y: -0.17826183, z: 0.051671516, w: -0.943861}
-    speed: 2
-    m_Value: {x: -0.27343884, y: -0.1782532, z: 0.051669016, w: -0.94381535}
-  m_Size:
-    m_Target: 793.4595
-    speed: 2
-    m_Value: 759.2914
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-    m_Value: 1992.5408
->>>>>>> MovementUsabilityTesting-Griff
+    m_Value: 3813.5928
   m_Ortho:
     m_Target: 0
     speed: 2
     m_Value: 0
   m_CameraSettings:
-    m_Speed: 0.9
-    m_SpeedNormalized: 0.47
+    m_Speed: 1
+    m_SpeedNormalized: 0.5
     m_SpeedMin: 0.01
     m_SpeedMax: 2
     m_EasingEnabled: 1
@@ -855,18 +690,14 @@ MonoBehaviour:
     m_DynamicClip: 1
     m_OcclusionCulling: 0
   m_ShowGlobalGrid: 1
-  m_LastSceneViewRotation: {x: 0.25478008, y: 0.06984879, z: -0.01845874, w: 0.96430165}
+  m_LastSceneViewRotation: {x: 0, y: 0, z: 0, w: 0}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
   m_SceneVisActive: 1
   m_LastLockedObject: {fileID: 0}
   m_ViewIsLockedToObject: 0
-<<<<<<< HEAD
---- !u!114 &19
-=======
---- !u!114 &17
->>>>>>> MovementUsabilityTesting-Griff
+--- !u!114 &20
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -875,187 +706,79 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
-  m_Script: {fileID: 12014, guid: 0000000000000000e000000000000000, type: 0}
+  m_Script: {fileID: 12015, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MinSize: {x: 230, y: 250}
-  m_MaxSize: {x: 10000, y: 10000}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
-    m_Text: Project
-    m_Image: {fileID: -7501376956915960154, guid: 0000000000000000d000000000000000,
+    m_Text: Game
+    m_Image: {fileID: -6423792434712278376, guid: 0000000000000000d000000000000000,
       type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 8
-    y: 994
-    width: 2050
-    height: 359
+    x: -2560
+    y: 0
+    width: 2560
+    height: 1379
   m_ViewDataDictionary: {fileID: 0}
-  m_SearchFilter:
-    m_NameFilter: 
-    m_ClassNames: []
-    m_AssetLabels: []
-    m_AssetBundleNames: []
-    m_VersionControlStates: []
-    m_SoftLockControlStates: []
-    m_ReferencingInstanceIDs: 
-    m_SceneHandles: 
-    m_ShowAllHits: 0
-    m_SkipHidden: 0
-    m_SearchArea: 1
-    m_Folders:
-<<<<<<< HEAD
-    - Assets/Prefabs/Enemy
-  m_ViewMode: 1
-  m_StartGridSize: 16
-  m_LastFolders:
-  - Assets/Prefabs/Enemy
-  m_LastFoldersGridSize: 16
-<<<<<<< HEAD
-  m_LastProjectPath: C:\Users\awebb4\Documents\CodeName-Star-Wars\Codename - Junker
-    (Unity Project)
-  m_LockTracker:
-    m_IsLocked: 0
-  m_FolderTreeState:
-    scrollPos: {x: 0, y: 479}
-    m_SelectedIDs: 82410000
-    m_LastClickedID: 16770
-    m_ExpandedIDs: 000000006c3f0000983f0000ee3f0000084000004040000084400000c4400000d4410000f64100001c4200006042000096420000ba420000f842000028430000564300005e43000068430000ae43000000ca9a3b
-=======
-  m_LastProjectPath: C:\Users\jjbrewer.SOCNET\Documents\GitKraken\hyperTEC\Codename
-    - Junker (Unity Project)
-  m_LockTracker:
-    m_IsLocked: 0
-  m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 123b0000
-    m_LastClickedID: 15122
-    m_ExpandedIDs: 00000000e63a0000143b00006a3b0000843b0000bc3b0000003c0000583d00007a3d0000a03d0000e43d00001a3e00003e3e0000da3e0000e23e0000ec3e000000ca9a3b
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-    - Assets/Art/UserInterface/Fonts
-  m_ViewMode: 1
-  m_StartGridSize: 16
-  m_LastFolders:
-  - Assets/Art/UserInterface/Fonts
-  m_LastFoldersGridSize: 16
-  m_LastProjectPath: C:\Users\jack-\Documents\Current Repository\CodeName-Star-Wars\Codename
-    - Junker (Unity Project)
-  m_LockTracker:
-    m_IsLocked: 0
-  m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 2e330000
-    m_LastClickedID: 13102
-    m_ExpandedIDs: 00000000e02d00001a2e0000a82e0000ee2e0000da30000010320000823300008c330000983300000034000000ca9a3b
->>>>>>> MovementUsabilityTesting-Griff
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 0
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
-      m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 13}
-    m_SearchString: 
-    m_CreateAssetUtility:
-      m_EndAction: {fileID: 0}
-      m_InstanceID: 0
-      m_Path: 
-      m_Icon: {fileID: 0}
-      m_ResourceFile: 
-  m_AssetTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
-    m_LastClickedID: 0
-<<<<<<< HEAD
-<<<<<<< HEAD
-    m_ExpandedIDs: 000000006c3f0000983f0000ee3f0000084000004040000084400000d4410000f64100001c4200006042000096420000ba420000f842000028430000564300005e43000068430000ae430000
-=======
-    m_ExpandedIDs: 00000000e63a0000143b0000843b0000bc3b0000003c0000583d00007a3d0000a03d0000e43d00001a3e00003e3e00007c3e0000da3e0000e23e0000ec3e0000
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-    m_ExpandedIDs: 00000000e02d00001a2e0000a82e0000ee2e0000da300000103200008c33000098330000
->>>>>>> MovementUsabilityTesting-Griff
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 0
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
-      m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 0}
-    m_SearchString: 
-    m_CreateAssetUtility:
-      m_EndAction: {fileID: 0}
-      m_InstanceID: 0
-      m_Path: 
-      m_Icon: {fileID: 0}
-      m_ResourceFile: 
-  m_ListAreaState:
-<<<<<<< HEAD
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
-<<<<<<< HEAD
-=======
-    m_SelectedInstanceIDs: bcf9ffff
-    m_LastClickedInstanceID: -1604
-    m_HadKeyboardFocusLastEvent: 0
->>>>>>> MovementUsabilityTesting-Griff
-    m_ExpandedInstanceIDs: c6230000249a0100c83c0000
-=======
-    m_ExpandedInstanceIDs: c6230000249a0100
->>>>>>> AdvancedEnemyMovement-Jack
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 0
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
-      m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 13}
-    m_CreateAssetUtility:
-      m_EndAction: {fileID: 0}
-      m_InstanceID: 0
-      m_Path: 
-      m_Icon: {fileID: 0}
-      m_ResourceFile: 
-    m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
-    m_GridSize: 16
-  m_SkipHiddenPackages: 0
-  m_DirectoriesAreaWidth: 199
-<<<<<<< HEAD
---- !u!114 &20
-=======
---- !u!114 &18
->>>>>>> MovementUsabilityTesting-Griff
+  m_VSyncEnabled: 0
+  m_MaximizeOnPlay: 0
+  m_Gizmos: 0
+  m_Stats: 0
+  m_SelectedSizes: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
+  m_TargetDisplay: 0
+  m_ZoomArea:
+    m_HRangeLocked: 0
+    m_VRangeLocked: 0
+    hZoomLockedByDefault: 0
+    vZoomLockedByDefault: 0
+    m_HBaseRangeMin: -1280
+    m_HBaseRangeMax: 1280
+    m_VBaseRangeMin: -681
+    m_VBaseRangeMax: 681
+    m_HAllowExceedBaseRangeMin: 1
+    m_HAllowExceedBaseRangeMax: 1
+    m_VAllowExceedBaseRangeMin: 1
+    m_VAllowExceedBaseRangeMax: 1
+    m_ScaleWithWindow: 0
+    m_HSlider: 0
+    m_VSlider: 0
+    m_IgnoreScrollWheelUntilClicked: 0
+    m_EnableMouseInput: 1
+    m_EnableSliderZoomHorizontal: 0
+    m_EnableSliderZoomVertical: 0
+    m_UniformScale: 1
+    m_UpDirection: 1
+    m_DrawArea:
+      serializedVersion: 2
+      x: 0
+      y: 17
+      width: 2560
+      height: 1362
+    m_Scale: {x: 1, y: 1}
+    m_Translation: {x: 1280, y: 681}
+    m_MarginLeft: 0
+    m_MarginRight: 0
+    m_MarginTop: 0
+    m_MarginBottom: 0
+    m_LastShownAreaInsideMargins:
+      serializedVersion: 2
+      x: -1280
+      y: -681
+      width: 2560
+      height: 1362
+    m_MinimalGUI: 1
+  m_defaultScale: 1
+  m_TargetTexture: {fileID: 0}
+  m_CurrentColorSpace: 0
+  m_LastWindowPixelSize: {x: 2560, y: 1379}
+  m_ClearInEditMode: 1
+  m_NoCameraWarning: 1
+  m_LowResolutionForAspectRatios: 01000000000000000000
+  m_XRRenderMode: 0
+--- !u!114 &21
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1071,122 +794,13 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Console
-    m_Image: {fileID: 111653112392082826, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 8
-    y: 994
-    width: 2050
-    height: 359
-  m_ViewDataDictionary: {fileID: 0}
-<<<<<<< HEAD
---- !u!114 &21
-=======
---- !u!114 &19
->>>>>>> MovementUsabilityTesting-Griff
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 12071, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Animation
-    m_Image: {fileID: 1561878555887300916, guid: 0000000000000000d000000000000000,
+    m_Image: {fileID: -4327648978806127646, guid: 0000000000000000d000000000000000,
       type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 748
-    width: 1120
-    height: 253
-  m_ViewDataDictionary: {fileID: 0}
-  m_LockTracker:
-    m_IsLocked: 0
-<<<<<<< HEAD
-<<<<<<< HEAD
-  m_LastSelectedObjectID: 23214
---- !u!114 &19
-=======
-  m_LastSelectedObjectID: -9338
---- !u!114 &22
->>>>>>> AdvancedEnemyMovement-Jack
-=======
-  m_LastSelectedObjectID: -1654
---- !u!114 &20
->>>>>>> MovementUsabilityTesting-Griff
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12019, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Inspector
-    m_Image: {fileID: -6905738622615590433, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 2058
-    y: 81
-    width: 492
-    height: 1272
-  m_ViewDataDictionary: {fileID: 0}
-  m_OpenAddComponentMenu: 0
-  m_ObjectsLockedBeforeSerialization: []
-  m_InstanceIDsLockedBeforeSerialization: 
-  m_LockTracker:
-    m_IsLocked: 0
-  m_PreviewResizer:
-    m_CachedPref: 240
-    m_ControlHash: -371814159
-    m_PrefName: Preview_InspectorPreview
-  m_PreviewWindow: {fileID: 0}
-<<<<<<< HEAD
---- !u!114 &23
-=======
---- !u!114 &21
->>>>>>> MovementUsabilityTesting-Griff
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 12079, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 390, y: 390}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Lighting
-    m_Image: {fileID: 8394858894532624064, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 1638
-    y: 81
-    width: 912
-    height: 1272
+    y: 863
+    width: 2041
+    height: 498
   m_ViewDataDictionary: {fileID: 0}

@@ -155,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        UpdateValues();
 
         if (m_engageBoost)
         {
@@ -277,5 +278,17 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(m_boostTime);
         m_boostOn = false;
+    }
+
+    //Used for user testing
+    private void UpdateValues()
+    {
+        m_maxSpeed = MovementUsabilityTestingManager.Instance.MaxSpeed * 150;
+        m_maxAcceleration = MovementUsabilityTestingManager.Instance.Acceleration * 40;
+        m_dampingSpeed = MovementUsabilityTestingManager.Instance.Damping * 1;
+
+        m_rollSpeed = MovementUsabilityTestingManager.Instance.RollSpeed * 0.5f;
+        m_pitchSpeed = MovementUsabilityTestingManager.Instance.PitchSpeed * 0.5f;
+        m_yawSpeed = MovementUsabilityTestingManager.Instance.YawSpeed * 0.5f;
     }
 }
