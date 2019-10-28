@@ -26,15 +26,6 @@ public class WeaponGenerator : MonoBehaviour
         GenerateGun();
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            ClearCurrentGun();
-            GenerateGun();
-        }
-    }
-
     private void GenerateGun()
     {
         SelectBarrel();
