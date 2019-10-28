@@ -125,6 +125,7 @@
     <Compile Include="Assets\Scripts\Movement\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\ReferenceMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\ThrustEffectController.cs" />
+    <Compile Include="Assets\Scripts\ProcGen\WeaponGenerator.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\BoolVariable.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\EngineData.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\FloatVariable.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Assets\Scripts\Scriptable Objects\WeaponData.cs" />
     <Compile Include="Assets\Scripts\Shooting\PlayerShooting.cs" />
     <Compile Include="Assets\Scripts\Stats\EnemyStats.cs" />
+    <Compile Include="Assets\Scripts\Temporary Scripts\TempGeneration.cs" />
     <Compile Include="Assets\Scripts\Temporary Scripts\TestModularShip.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\EnemyDetection.cs" />
     <Compile Include="Assets\Scripts\UI\LootDetection.cs" />

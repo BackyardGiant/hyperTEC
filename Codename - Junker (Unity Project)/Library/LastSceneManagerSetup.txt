@@ -1,5 +1,9 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/UserTesting.unity
+=======
+- path: Assets/Scenes/ModularWeapons.unity
+>>>>>>> ModularWeaponGeneration-Aden
   isLoaded: 1
   isActive: 1
   isSubScene: 0
