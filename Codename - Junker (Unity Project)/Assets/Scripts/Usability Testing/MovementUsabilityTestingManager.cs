@@ -145,6 +145,13 @@ public class MovementUsabilityTestingManager : MonoBehaviour
             m_responseText.GetComponent<TextMeshProUGUI>().text = "Thank you for testing!";
             m_responseText.GetComponent<TextMeshProUGUI>().fontSize = 36;
             m_responseText.GetComponent<Animator>().Play("UsabilityTestingTextResponse");
+			
+			//Backup Data Storage
+			string _results = m_maxSpeed + "," + m_acceleration + "," + m_damping + "," + m_rollSpeed + "," + m_pitchSpeed + "," + m_yawSpeed;
+			string path = "Assets/Testing Results/MovementSystemTesting.txt";
+			StreamWriter writer = new StreamWriter(path, true);
+			writer.WriteLine(_results);
+			writer.Close();
         }
         if (_reset == true)
         {
