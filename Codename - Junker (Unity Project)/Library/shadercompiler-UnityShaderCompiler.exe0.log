@@ -54,6 +54,11 @@ Cmd: compileSnippet
   api=4 type=1 insize=2671 outsize=806 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
 Cmd: preprocessCompute
   insize=1431 outsize=1435 ok=1
+<<<<<<< HEAD
+=======
+Cmd: compileComputeKernel
+  api=4 insize=1435 outsize=1557 ok=1
+>>>>>>> AdvancedEnemyMovement-Jack
 Cmd: preprocess
   insize=3606 outsize=1310 ok=1
 Cmd: compileSnippet
@@ -91,7 +96,11 @@ Cmd: compileSnippet
 Cmd: preprocessCompute
   insize=3267 outsize=3273 ok=1
 Cmd: compileComputeKernel
+<<<<<<< HEAD
   api=4 insize=3273 outsize=2262 ok=1
+=======
+  api=4 insize=3273 outsize=1916 ok=1
+>>>>>>> AdvancedEnemyMovement-Jack
 Cmd: preprocess
   insize=2264 outsize=298 ok=1
 Cmd: compileSnippet
@@ -304,6 +313,11 @@ Cmd: compileSnippet
   api=4 type=1 insize=4017 outsize=1398 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
 Cmd: preprocessCompute
   insize=1522 outsize=1526 ok=1
+<<<<<<< HEAD
+=======
+Cmd: compileComputeKernel
+  api=4 insize=1526 outsize=1520 ok=1
+>>>>>>> AdvancedEnemyMovement-Jack
 Cmd: preprocess
   insize=7844 outsize=2494 ok=1
 Cmd: compileSnippet
@@ -412,8 +426,11 @@ Cmd: compileSnippet
   api=4 type=1 insize=7317 outsize=1562 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
 Cmd: preprocessCompute
   insize=2341 outsize=2343 ok=1
+<<<<<<< HEAD
 Cmd: compileComputeKernel
   api=4 insize=2343 outsize=1334 ok=1
+=======
+>>>>>>> AdvancedEnemyMovement-Jack
 Cmd: preprocess
   insize=3433 outsize=1527 ok=1
 Cmd: compileSnippet
