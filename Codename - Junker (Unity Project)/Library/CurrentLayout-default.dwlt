@@ -65,8 +65,8 @@ MonoBehaviour:
     y: 0
     width: 2560
     height: 1400
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 100, y: 120}
+  m_MaxSize: {x: 4000, y: 4020}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_MinSize: {x: 683, y: 494}
   m_MaxSize: {x: 14004, y: 14044}
   vertical: 0
-  controlID: 109
+  controlID: 156
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 494}
   m_MaxSize: {x: 10002, y: 14044}
   vertical: 1
-  controlID: 110
+  controlID: 86
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -456,9 +456,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: ea10feff
-      m_LastClickedID: -126742
-      m_ExpandedIDs: 1e12feff1e20feff4835feff66fbffff6c350000928c0000d28c0000
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 06dcffff46e1ffff5e400000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: TestEnemyAdvanced
@@ -469,7 +469,7 @@ MonoBehaviour:
           y: 0
           width: 0
           height: 0
-        m_UserData: 35986
+        m_UserData: 16478
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
         m_OriginalEventType: 0
@@ -544,9 +544,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 25.931576, y: -37.53412, z: 294.11636}
+    m_Target: {x: -41.743797, y: 11.076279, z: 98.0338}
     speed: 2
-    m_Value: {x: 25.931576, y: -37.53412, z: 294.11636}
+    m_Value: {x: -41.743797, y: 11.076279, z: 98.0338}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -575,13 +575,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.15500934, y: 0.06725242, z: -0.010579412, w: 0.98557115}
+    m_Target: {x: -0.27345207, y: -0.17826183, z: 0.051671516, w: -0.943861}
     speed: 2
-    m_Value: {x: 0.15485139, y: 0.080550574, z: -0.012670928, w: 0.98456705}
+    m_Value: {x: -0.27343884, y: -0.1782532, z: 0.051669016, w: -0.94381535}
   m_Size:
-    m_Target: 623.75806
+    m_Target: 793.4595
     speed: 2
-    m_Value: 623.75806
+    m_Value: 759.2914
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -646,21 +646,21 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Prefabs/Enemy
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Prefabs/Enemy
   m_LastFoldersGridSize: 16
-  m_LastProjectPath: C:\Users\jjbrewer\Documents\GitKraken\CodeName-Star-Wars\Codename
+  m_LastProjectPath: C:\Users\jjbrewer.SOCNET\Documents\GitKraken\hyperTEC\Codename
     - Junker (Unity Project)
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 88}
-    m_SelectedIDs: 84310000
-    m_LastClickedID: 12676
-    m_ExpandedIDs: 00000000302e0000682e0000f02e0000362f00008c2f000076310000a2310000d83100004832000090320000be32000016330000a2330000ac330000b833000000ca9a3b
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 123b0000
+    m_LastClickedID: 15122
+    m_ExpandedIDs: 00000000e63a0000143b00006a3b0000843b0000bc3b0000003c0000583d00007a3d0000a03d0000e43d00001a3e00003e3e0000da3e0000e23e0000ec3e000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -688,7 +688,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000302e0000682e0000f02e0000362f00008c2f000076310000a2310000d83100004832000090320000be32000016330000a2330000ac330000b8330000
+    m_ExpandedIDs: 00000000e63a0000143b0000843b0000bc3b0000003c0000583d00007a3d0000a03d0000e43d00001a3e00003e3e00007c3e0000da3e0000e23e0000ec3e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -798,7 +798,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -126742
+  m_LastSelectedObjectID: -9338
 --- !u!114 &22
 MonoBehaviour:
   m_ObjectHideFlags: 52
