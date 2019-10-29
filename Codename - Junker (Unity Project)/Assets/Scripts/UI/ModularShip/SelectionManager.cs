@@ -178,7 +178,7 @@ public class SelectionManager : MonoBehaviour
         if(m_equippedEngineIndex != -1)
         {
             EngineData statBlock = display.ModulesList[(int)m_equippedEngineIndex].GetComponent<EngineStatManager>().Data;
-            GameObject tempEngine = Instantiate(statBlock.EngineModel);
+            GameObject tempEngine = Instantiate(ModuleManager.Instance.GenerateEngine(statBlock));
 
             tempEngine.transform.SetParent(goShipEngineSnap.transform);
             tempEngine.transform.position = goShipEngineSnap.transform.position;
@@ -192,7 +192,7 @@ public class SelectionManager : MonoBehaviour
         if(m_equippedLeftIndex != -1)
         {
             WeaponData statBlock = display.ModulesList[(int)m_equippedLeftIndex].GetComponent<WeaponStatManager>().Data;
-            GameObject tempWeapon = Instantiate(statBlock.WeaponModel);
+            GameObject tempWeapon = Instantiate(ModuleManager.Instance.GenerateWeapon(statBlock));
 
             tempWeapon.transform.SetParent(goShipLeftSnap.transform);
             tempWeapon.transform.position = goShipLeftSnap.transform.position;
@@ -209,7 +209,7 @@ public class SelectionManager : MonoBehaviour
         if(m_equippedRightIndex != -1)
         {
             WeaponData statBlock = display.ModulesList[(int)m_equippedRightIndex].GetComponent<WeaponStatManager>().Data;
-            GameObject tempWeapon = Instantiate(statBlock.WeaponModel);
+            GameObject tempWeapon = Instantiate(ModuleManager.Instance.GenerateWeapon(statBlock));
 
             tempWeapon.transform.SetParent(goShipRightSnap.transform);
             tempWeapon.transform.position = goShipRightSnap.transform.position;
@@ -233,7 +233,7 @@ public class SelectionManager : MonoBehaviour
             if (selectedObject.GetComponent<EngineStatManager>())
             {
                 EngineData _statBlock = selectedObject.GetComponent<EngineStatManager>().Data;
-                GameObject _tempEngine = Instantiate(_statBlock.EngineModel);
+                GameObject _tempEngine = Instantiate(ModuleManager.Instance.GenerateEngine(_statBlock));
 
                 _tempEngine.transform.SetParent(goShipEngineSnap.transform);
                 _tempEngine.transform.position = goShipEngineSnap.transform.position;
@@ -251,7 +251,7 @@ public class SelectionManager : MonoBehaviour
                 }
 
                 WeaponData _statBlock = selectedObject.GetComponent<WeaponStatManager>().Data;
-                GameObject _tempWeapon = Instantiate(_statBlock.WeaponModel);
+                GameObject _tempWeapon = Instantiate(ModuleManager.Instance.GenerateWeapon(_statBlock));
                 Debug.Log("Instantiated gun" + _statBlock.Name);
 
                 if (m_leftSideSelected)
