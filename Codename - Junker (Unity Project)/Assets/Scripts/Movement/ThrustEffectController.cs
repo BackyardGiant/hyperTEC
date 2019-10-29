@@ -20,9 +20,11 @@ public class ThrustEffectController : MonoBehaviour
     private float[] m_maxHighSpeedEmission;
     private float[] m_emissionLifetime;
     private float[] m_highSpeedEmissionLifetime;
+    private Material[] m_planeMaterial;
+
+
 
     private float m_lerpSpeed = 0.4f;
-    private Material m_planeMaterial;
     private float m_maximumEnginePower;
     private float m_currentEnginePower;
     private float m_currentAcceleration;
@@ -39,16 +41,21 @@ public class ThrustEffectController : MonoBehaviour
         m_maxHighSpeedEmission = new float[m_highSpeedEngineParticles.Length];
         m_emissionLifetime = new float[m_engineParticles.Length];
         m_highSpeedEmissionLifetime = new float[m_highSpeedEngineParticles.Length];
+        m_planeMaterial = new Material[m_emissionPlane.Length];
 
 
 
 
         //Set Plane Material and make it almost transparent.
-        m_planeMaterial = m_emissionPlane[0].GetComponent<MeshRenderer>().material;
-        m_planeMaterial.color = new Color(m_planeMaterial.color.r, m_planeMaterial.color.g, m_planeMaterial.color.b, 2);
+        for (int i = 0; i < m_emissionPlane.Length; i++)
+        {
+            m_planeMaterial[i] = m_emissionPlane[i].GetComponent<MeshRenderer>().material;
+            m_planeMaterial[i].color = new Color(m_planeMaterial[i].color.r, m_planeMaterial[i].color.g, m_planeMaterial[i].color.b, 2);
+        }
 
-        //Save the light intensity of all lights.
-        for (int i = 0; i < m_engineGlow.Length; i++)
+
+            //Save the light intensity of all lights.
+            for (int i = 0; i < m_engineGlow.Length; i++)
         {
             Debug.Log("", m_engineGlow[i]);
             m_maxLightIntensity[i] = m_engineGlow[i].intensity;
@@ -170,26 +177,35 @@ public class ThrustEffectController : MonoBehaviour
 
 
             //Lerp colour of Blue Panel. Charging engine up animates quicker than cooling down.
-            Color _emissionColour = m_planeMaterial.color;
-            float _transparency = 2 + _powerPercentage * 255;
-            Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
-            Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _transparency);
-            if (_emissionColour.a <= _transparency)
+            for (int i = 0; i < m_emissionPlane.Length; i++)
             {
-                m_planeMaterial.color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed);
+                Color _emissionColour = m_planeMaterial[i].color;
+                float _transparency = 2 + _powerPercentage * 255;
+                Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
+                Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _transparency);
+                if (_emissionColour.a <= _transparency)
+                {
+                    m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed);
+                }
+                else
+                {
+                    m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.4f);
+                }
+
             }
-            else
-            {
-                m_planeMaterial.color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.4f);
-            }
+
+
         }
 
         if( m_engineOff == true)
         {
-            Color _emissionColour = m_planeMaterial.color;
-            Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
-            Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, 0);
-            m_planeMaterial.color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.5f);
+            for (int i = 0; i < m_emissionPlane.Length; i++)
+            {
+                Color _emissionColour = m_planeMaterial[i].color;
+                Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
+                Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, 0);
+                m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.5f);
+            }
         }
             #endregion
     }
@@ -258,13 +274,17 @@ public class ThrustEffectController : MonoBehaviour
         }
 
         //make panel super blue
-        Color _emissionColour = m_planeMaterial.color;
-        Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
-        Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, 255);
-        m_planeMaterial.color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed);
+        for (int i = 0; i < m_emissionPlane.Length; i++)
+        {
+            Color _emissionColour = m_planeMaterial[i].color;
+            Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
+            Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, 255);
+            m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed);
+        }
 
-        //Reset everything to normal once boost is done.
-        Invoke("ResetParticles", 0.6f);
+
+            //Reset everything to normal once boost is done.
+            Invoke("ResetParticles", 0.6f);
     }
 
     private void ResetParticles()
