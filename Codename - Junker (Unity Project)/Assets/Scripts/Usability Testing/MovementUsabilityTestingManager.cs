@@ -62,7 +62,7 @@ public class MovementUsabilityTestingManager : MonoBehaviour
         m_showingVariables = false;
         m_displayPanel.SetActive(false);
 
-        ResetValues();
+        SetValues();
 
         m_maxSpeedSlider.maxValue = m_maximumMultiplier;
         m_accelerationSlider.maxValue = m_maximumMultiplier;
@@ -173,5 +173,30 @@ public class MovementUsabilityTestingManager : MonoBehaviour
         m_pitchSlider.value = 0.1f;
 
         m_yawSlider.value = 0.1f;
+    }
+
+    public void SetValues()
+    {
+        m_maxSpeedSlider.value = PlayerPrefs.GetFloat("maxSpeed", 0.1f);
+
+        m_accelerationSlider.value = PlayerPrefs.GetFloat("accleration", 0.1f);
+
+        m_dampingSlider.value = PlayerPrefs.GetFloat("damping", 0.1f);
+
+        m_rollSlider.value = PlayerPrefs.GetFloat("rollForce", 0.1f);
+
+        m_pitchSlider.value = PlayerPrefs.GetFloat("pitchForce", 0.1f);
+
+        m_yawSlider.value = PlayerPrefs.GetFloat("yawForce", 0.1f);
+    }
+
+    public void SaveValues()
+    {
+        PlayerPrefs.SetFloat("maxSpeed", m_maxSpeed);
+        PlayerPrefs.SetFloat("accleration", m_acceleration);
+        PlayerPrefs.SetFloat("damping", m_damping);
+        PlayerPrefs.SetFloat("rollForce", m_rollSpeed);
+        PlayerPrefs.SetFloat("pitchForce", m_pitchSpeed);
+        PlayerPrefs.SetFloat("yawForce", m_yawSpeed);
     }
 }

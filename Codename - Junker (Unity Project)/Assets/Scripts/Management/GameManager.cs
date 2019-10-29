@@ -31,6 +31,13 @@ public class GameManager : MonoBehaviour
             s_instance = this;
         }
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            PlayerPrefs.DeleteAll();
+        }
+    }
 
     public void SetSlowMo(float _newSpeed)
     {
@@ -63,6 +70,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetScene()
     {
+        MovementUsabilityTestingManager.Instance.SaveValues();
         SceneManager.LoadScene("UserTesting");
     }
 }
