@@ -113,6 +113,7 @@
     <Compile Include="Assets\Scripts\Extensions\ObjectExtensions.cs" />
     <Compile Include="Assets\Scripts\Extensions\TransformExtensions.cs" />
     <Compile Include="Assets\Scripts\Management\DustManager.cs" />
+    <Compile Include="Assets\Scripts\Management\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Management\GameManager.cs" />
     <Compile Include="Assets\Scripts\Management\HUDManager.cs" />
     <Compile Include="Assets\Scripts\Management\Quest.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Assets\Scripts\Scriptable Objects\GameEventListener.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\IntVariable.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\WeaponData.cs" />
+    <Compile Include="Assets\Scripts\Shooting\EnemyShooting.cs" />
     <Compile Include="Assets\Scripts\Shooting\PlayerShooting.cs" />
     <Compile Include="Assets\Scripts\Stats\EnemyStats.cs" />
     <Compile Include="Assets\Scripts\Temporary Scripts\TempGeneration.cs" />

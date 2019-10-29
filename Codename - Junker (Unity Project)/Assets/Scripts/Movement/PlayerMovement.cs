@@ -75,13 +75,16 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Engine Particle System
-    [Header ("Particle System Events")]
+    [Header("Particle System Events")]
     public GameEvent boostOn;
     public GameEvent engineOff;
     #endregion
 
     [SerializeField, Header("UI correction")]
     private float m_uiCorrection;
+
+    [SerializeField]
+    private bool m_inUserTesting;
 
     public float CurrentSpeed { get => m_currentSpeed; }
     public float MaxAcceleration { get => m_maxAcceleration; }
@@ -155,7 +158,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdateValues();
+        if (m_inUserTesting)
+        {
+            UpdateValues();
+        }
 
         if (m_engageBoost)
         {

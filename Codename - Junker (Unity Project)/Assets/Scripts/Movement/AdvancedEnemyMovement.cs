@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyManager))]
 public class AdvancedEnemyMovement : MonoBehaviour
 {
     #region Target
@@ -40,7 +41,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
     private float m_dampingAngleThreshold;
     #endregion
 
-    #region
+    #region Behaviour
     [Header("Behaviour")]
     [SerializeField, Tooltip("Is the enemy fleeing the player")]
     private bool m_fleeing;
@@ -49,6 +50,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
     [SerializeField, Tooltip("The strength of the enemies avoidence force")]
     private float m_avoidenceForce;
     private Vector3 m_steering;
+    private Vector3 m_steeringWithAvoidence;
     private Vector3 m_wanderDirection;
     [SerializeField, Tooltip("The distance from the oragin that the enemy will fly before tunring around and seeking back to the centre")]
     private float m_wanderRange;
@@ -57,11 +59,14 @@ public class AdvancedEnemyMovement : MonoBehaviour
 
     private Rigidbody m_rb;
 
+    private EnemyManager m_manager;
+
     private void Awake()
     {
-        m_player = GameObject.FindGameObjectWithTag("Player");
+        m_manager = GetComponent<EnemyManager>();
+        m_player = m_manager.Player;
         m_rb = GetComponent<Rigidbody>();
-        m_target = m_player;
+        m_target = m_manager.Target;
         m_rb.inertiaTensor = new Vector3(0.2f, 0.2f, 0.2f);
     }
 
@@ -114,17 +119,23 @@ public class AdvancedEnemyMovement : MonoBehaviour
     private void FixedUpdate()
     {
 
+        m_target = m_manager.Target;
+        m_attacking = m_manager.AttackingPlayer;
+
         if (Vector3.Distance(transform.position, Vector3.zero) < m_wanderRange)
         {
             if (m_attacking)
             {
-                if (m_fleeing)
+                if (m_target != null)
                 {
-                    m_steering = FleeTarget(m_target.transform);
-                }
-                else
-                {
-                    m_steering = PursueTarget(m_target.transform);
+                    if (m_fleeing)
+                    {
+                        m_steering = FleeTarget(m_target.transform);
+                    }
+                    else
+                    {
+                        m_steering = PursueTarget(m_target.transform);
+                    }
                 }
             }
             else
@@ -134,7 +145,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
         }
         else
         {
-            if (m_attacking)
+            if (m_target != null)
             {
                 if (m_fleeing)
                 {
@@ -151,23 +162,23 @@ public class AdvancedEnemyMovement : MonoBehaviour
             }
         }
 
-        m_steering += collisionAvoidance();
+        m_steeringWithAvoidence = collisionAvoidance() + m_steering;
 
         ApplyDamping();
 
-        if (Vector3.Angle(m_steering.normalized, m_rb.velocity.normalized) > m_flipAngle)
+        if (Vector3.Angle(m_steeringWithAvoidence.normalized, m_rb.velocity.normalized) > m_flipAngle)
         {
-            m_steering += transform.right * 100;
+            m_steeringWithAvoidence += transform.right * 100;
         }
 
-        m_rb.AddForce(m_steering * m_acceleration * GameManager.Instance.GameSpeed);
+        m_rb.AddForce(m_steeringWithAvoidence * m_acceleration * GameManager.Instance.GameSpeed);
 
         if (m_rb.velocity.magnitude > m_maxSpeed)
         {
-            m_rb.AddForce((-m_steering) * (m_rb.velocity.magnitude - m_maxSpeed));
+            m_rb.AddForce((-m_steeringWithAvoidence) * (m_rb.velocity.magnitude - m_maxSpeed));
         }
 
-        transform.forward = Vector3.Lerp(transform.forward, m_steering.normalized * m_maxSpeed, 0.0002f);
+        transform.forward = Vector3.Lerp(transform.forward, m_steeringWithAvoidence.normalized * m_maxSpeed, 0.0002f);
         //transform.forward = m_steering;
     }
 
