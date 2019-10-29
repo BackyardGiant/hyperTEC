@@ -20,8 +20,8 @@ public class SelectionManager : MonoBehaviour
         m_equippedLeftIndex = -1;
         m_equippedRightIndex = -1;
 
-        display.UpdateHighlightPosition(0);
-        display.UpdateEquipped(m_takenIndexes);
+        //display.UpdateHighlightPosition(0);
+        //display.UpdateEquipped(m_takenIndexes);
 
         PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
     }

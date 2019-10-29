@@ -13,7 +13,7 @@ public class DisplayOptions : MonoBehaviour
     public List<EngineData> availableEngines;
     public List<WeaponData> availableWeapons;
 
-    private List<GameObject> m_modulesList;
+    private List<GameObject> m_modulesList = new List<GameObject>();
 
     public List<GameObject> ModulesList { get => m_modulesList; set => m_modulesList = value; }
 
@@ -22,26 +22,28 @@ public class DisplayOptions : MonoBehaviour
         // this bit might need to change
         for (int i = 0; i < availableEngines.Count; i++)
         {
-            GameObject _goTempUiElement = Instantiate(goTemplateUiElement);
+            GameObject _goTempUiElement = Instantiate(goTemplateUiElement, contentPanel);
+            _goTempUiElement.name = "engine" + i.ToString();
             _goTempUiElement.GetComponent<EngineStatManager>().Data = availableEngines[i];
-            _goTempUiElement.GetComponent<EngineStatManager>().PopulateData();
+            //_goTempUiElement.GetComponent<EngineStatManager>().PopulateData();
             m_modulesList.Add(_goTempUiElement);
         }
 
         for (int i = 0; i < availableWeapons.Count; i++)
         {
-            GameObject _goTempUiElement = Instantiate(goTemplateUiElement);
+            GameObject _goTempUiElement = Instantiate(goTemplateUiElement, contentPanel);
+            _goTempUiElement.name = "weapon" + i.ToString();
             _goTempUiElement.GetComponent<WeaponStatManager>().Data = availableWeapons[i];
-            _goTempUiElement.GetComponent<WeaponStatManager>().PopulateData();
+            //_goTempUiElement.GetComponent<WeaponStatManager>().PopulateData();
             m_modulesList.Add(_goTempUiElement);
         }
 
-        for (int i = 0; i < m_modulesList.Count; i++)
-        {
-            GameObject _goNewModule = GameObject.Instantiate(m_modulesList[i]);
-            _goNewModule.transform.SetParent(contentPanel);
-            m_modulesList[i] = _goNewModule;
-        }
+        //for (int i = 0; i < m_modulesList.Count; i++)
+        //{
+        //    GameObject _goNewModule = GameObject.Instantiate(m_modulesList[i]);
+        //    _goNewModule.transform.SetParent(contentPanel);
+        //    m_modulesList[i] = _goNewModule;
+        //}
     }
 
     public void UpdateHighlightPosition(int index)

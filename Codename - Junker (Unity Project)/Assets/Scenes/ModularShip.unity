@@ -155,9 +155,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contentPanel: {fileID: 1180102190}
   highlight: {fileID: 0}
-  goTemplateUiElement: {fileID: 0}
-  availableEngines: []
-  availableWeapons: []
+  goTemplateUiElement: {fileID: 7404423240624051477, guid: 1a1770c636020114db917d2b71a8287e,
+    type: 3}
+  availableEngines:
+  - {fileID: 11400000, guid: 4dedf83ea5f577d418fc344807642b86, type: 2}
+  availableWeapons:
+  - {fileID: 11400000, guid: ddc084afdf289d0438e7637aa142ac26, type: 2}
+  - {fileID: 11400000, guid: 9d2ccd2bc9225b04ea0f52fbef8e1fbf, type: 2}
+  - {fileID: 11400000, guid: b6141b440126b1145a506d1ea9fc078e, type: 2}
 --- !u!114 &365754498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,7 +626,8 @@ MonoBehaviour:
   - {fileID: 7798602798951907493, guid: 252f8755b2e4cde4d81d5855e4865790, type: 3}
   - {fileID: 3250931294493663760, guid: b3ce835660718b54fab719f6abfb53cb, type: 3}
   explorerEngines: []
-  defaultEngines: []
+  defaultEngines:
+  - {fileID: 4369712147853546786, guid: e75c7378b6b8f844eb289727151a8d86, type: 3}
   traderEngines: []
   constructEngine: []
   goExplorerGunBase: {fileID: 5485475073022544966, guid: 80b011937c0941e4a914a8d1483a5fb1,
