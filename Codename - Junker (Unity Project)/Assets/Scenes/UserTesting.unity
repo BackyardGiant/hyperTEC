@@ -3489,6 +3489,11 @@ PrefabInstance:
       propertyPath: m_margin.z
       value: 6.9413266
       objectReference: {fileID: 0}
+    - target: {fileID: 8552956484775975412, guid: 2c250b83de52e1d4d92f868c831cabfb,
+        type: 3}
+      propertyPath: m_saveData
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c250b83de52e1d4d92f868c831cabfb, type: 3}
 --- !u!4 &1832243931 stripped

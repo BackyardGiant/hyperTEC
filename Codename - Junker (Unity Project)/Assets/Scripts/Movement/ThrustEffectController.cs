@@ -6,52 +6,85 @@ public class ThrustEffectController : MonoBehaviour
 {
     public PlayerMovement player;
 
-    [SerializeField ,Header ("Engine Effect Elements")]
-    private GameObject m_emissionPlane;
-    [SerializeField]
-    private Light m_engineGlow;
-    [SerializeField]
-    private ParticleSystem m_engineParticles;
-    [SerializeField]
-    private ParticleSystem m_highspeedEngineParticles;
-    [SerializeField,Range (0.01f,2f),Tooltip ("Speed at which animations lerp to next value")]
-    private float m_lerpSpeed;
+    [SerializeField,Header ("Engine Panels")]
+    private GameObject[] m_emissionPlane;
+    [SerializeField, Header("Engine Light Effects")]
+    private Light[] m_engineGlow;
+    [SerializeField, Header("Normal Particle Effects")]
+    private ParticleSystem[] m_engineParticles;
+    [SerializeField, Header("High Speed Particle Effects")]
+    private ParticleSystem[] m_highSpeedEngineParticles;
 
-    private float m_maxAcceleration;
-    private float m_maxLightIntensity;
-    private float m_maxEmission;
-    private float m_maxHighSpeedEmission;
+    private float[] m_maxLightIntensity;
+    private float[] m_maxEmission;
+    private float[] m_maxHighSpeedEmission;
+    private float[] m_emissionLifetime;
+    private float[] m_highSpeedEmissionLifetime;
+
+    private float m_lerpSpeed = 0.4f;
     private Material m_planeMaterial;
     private float m_maximumEnginePower;
     private float m_currentEnginePower;
     private float m_currentAcceleration;
+    private float m_maxAcceleration;
     private bool m_engineOff;
-    private float m_emissionLifetime;
-    private float m_highSpeedEmissionLifetime;
 
 
-    private void Start()
+    void Start()
     {
         m_engineOff = false;
-        m_maxLightIntensity = m_engineGlow.intensity;
-        m_maxEmission = m_engineParticles.emission.rateOverTime.constant;
-        m_maxHighSpeedEmission = m_highspeedEngineParticles.emission.rateOverTime.constant;
-        m_emissionLifetime = m_engineParticles.main.startLifetime.constant;
-        m_highSpeedEmissionLifetime = m_highspeedEngineParticles.main.startLifetime.constant;
-        m_planeMaterial = m_emissionPlane.GetComponent<MeshRenderer>().material;
 
+        m_maxLightIntensity = new float[m_engineGlow.Length];
+        m_maxEmission = new float[m_engineParticles.Length];
+        m_maxHighSpeedEmission = new float[m_highSpeedEngineParticles.Length];
+        m_emissionLifetime = new float[m_engineParticles.Length];
+        m_highSpeedEmissionLifetime = new float[m_highSpeedEngineParticles.Length];
+
+
+
+
+        //Set Plane Material and make it almost transparent.
+        m_planeMaterial = m_emissionPlane[0].GetComponent<MeshRenderer>().material;
+        m_planeMaterial.color = new Color(m_planeMaterial.color.r, m_planeMaterial.color.g, m_planeMaterial.color.b, 2);
+
+        //Save the light intensity of all lights.
+        for (int i = 0; i < m_engineGlow.Length; i++)
+        {
+            Debug.Log("", m_engineGlow[i]);
+            m_maxLightIntensity[i] = m_engineGlow[i].intensity;
+            m_engineGlow[i].intensity = 0;
+        }
+
+
+        //Set the max emission and lifetime of all normal particle systems
+        var _emission = m_engineParticles[0].emission;
+        for (int i=0; i < m_engineParticles.Length; i++)
+        {
+            m_maxEmission[i] = m_engineParticles[i].emission.rateOverTime.constant;
+            m_emissionLifetime[i] = m_engineParticles[i].main.startLifetime.constant;
+
+            //Set emission to 0
+            _emission = m_engineParticles[i].emission;
+            _emission.rateOverTime = 0;
+        }
+
+        //Set the max emission of all high speed particle systems
+        var _highSpeedEmission = m_highSpeedEngineParticles[0].emission;
+        for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
+        {
+            m_maxHighSpeedEmission[i] = m_highSpeedEngineParticles[i].emission.rateOverTime.constant;
+            m_highSpeedEmissionLifetime[i] = m_highSpeedEngineParticles[i].main.startLifetime.constant;
+
+            //Set emission to 0
+            _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
+            _highSpeedEmission.rateOverTime = 0;
+
+        }
+
+        //Set the max acceleration to 
         m_maxAcceleration = player.MaxAcceleration;
         m_maximumEnginePower = player.MaxAcceleration * 100f;
         m_currentAcceleration = 0;
-
-        //Set Everything to 0
-        var _emission = m_engineParticles.emission;
-        var _highSpeedEmission = m_highspeedEngineParticles.emission;
-        _emission.rateOverTime = 0;
-        _highSpeedEmission.rateOverTime = 0;
-
-        m_engineGlow.intensity = 0;
-        m_planeMaterial.color = new Color(m_planeMaterial.color.r, m_planeMaterial.color.g, m_planeMaterial.color.b, 2);
 
     }
 
@@ -60,6 +93,7 @@ public class ThrustEffectController : MonoBehaviour
     void Update()
     {
         float _currentAcceleration = player.CurrentSpeed;
+
         //Simulates a new cap of the highest possible power. This lengthens the time that the charging up animation occurs.
         if (_currentAcceleration > 0 && m_currentEnginePower < m_maximumEnginePower)
         {
@@ -75,48 +109,63 @@ public class ThrustEffectController : MonoBehaviour
             }
         float _powerPercentage = m_currentEnginePower / m_maximumEnginePower;
 
-
         #region Engine VFX
         if (m_engineOff == false)
         {
             //Lerp colour of Blue Light. Charging engine up animates quicker than cooling down.
-            float _intensity = m_maxLightIntensity * _powerPercentage;
-            if (m_engineGlow.intensity <= _intensity)
+            float _intensity;
+            for (int i=0; i< m_engineGlow.Length; i++)
             {
-                m_engineGlow.intensity = Mathf.Lerp(m_engineGlow.intensity, _intensity, m_lerpSpeed);
+                _intensity = m_maxLightIntensity[i] * _powerPercentage;
+                if (m_engineGlow[i].intensity <= _intensity)
+                {
+                    m_engineGlow[i].intensity = Mathf.Lerp(m_engineGlow[i].intensity, _intensity, m_lerpSpeed);
+                }
+                else
+                {
+                    m_engineGlow[i].intensity = Mathf.Lerp(m_engineGlow[i].intensity, _intensity, m_lerpSpeed * 0.4f);
+                }
             }
-            else
+
+
+
+            //Lerp the normal particle system. Charging up engine has a higher increase than cooling down.
+            var _emission = m_engineParticles[0].emission;
+            
+            for (int i = 0; i < m_engineParticles.Length; i++)
             {
-                m_engineGlow.intensity = Mathf.Lerp(m_engineGlow.intensity, _intensity, m_lerpSpeed * 0.4f);
+                _emission = m_engineParticles[i].emission;
+                float _currentEmissionRate = _emission.rateOverTime.constant;
+                float _targetEmissionRate = m_maxEmission[i] * _powerPercentage;
+                _emission.rateOverTime = Mathf.Lerp(_emission.rateOverTime.constant, m_maxEmission[i] * _powerPercentage, m_lerpSpeed);
+                if (_currentEmissionRate <= _targetEmissionRate)
+                {
+                    _emission.rateOverTime = Mathf.Lerp(_currentEmissionRate, _targetEmissionRate, m_lerpSpeed);
+                }
+                else
+                {
+                    _emission.rateOverTime = Mathf.Lerp(_currentEmissionRate, _targetEmissionRate, m_lerpSpeed * 0.4f);
+                }
+
             }
 
-            //Lerp the particle system. Charging up engine has a higher increase than cooling down.
-            var _emission = m_engineParticles.emission;
-            var _highSpeedEmission = m_highspeedEngineParticles.emission;
 
-            float _currentEmissionRate = _emission.rateOverTime.constant;
-            float _currentHighSpeedEmissionRate = _highSpeedEmission.rateOverTime.constant;
+            //Lerp the high speed particle system. Charging up engine has a higher increase than cooling down.
+            var _highSpeedEmission = m_highSpeedEngineParticles[0].emission;
 
-            float _targetEmissionRate = m_maxEmission * _powerPercentage;
-            float _targetHighSpeedEmissionRate = m_maxHighSpeedEmission * (_powerPercentage - 0.5f);
-
-            _emission.rateOverTime = Mathf.Lerp(_emission.rateOverTime.constant, m_maxEmission * _powerPercentage, m_lerpSpeed);
-
-
-            if (_currentEmissionRate <= _targetEmissionRate)
+            for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
             {
-
-                _emission.rateOverTime = Mathf.Lerp(_currentEmissionRate, _targetEmissionRate, m_lerpSpeed);
-                if (_powerPercentage > 0.5)
+                _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
+                float _currentHighSpeedEmissionRate = _highSpeedEmission.rateOverTime.constant;
+                float _targetHighSpeedEmissionRate = m_maxHighSpeedEmission[i] * (_powerPercentage - 0.5f);
+                if (_currentHighSpeedEmissionRate <= _targetHighSpeedEmissionRate && _powerPercentage > 0.5)
                 {
                     _highSpeedEmission.rateOverTime = Mathf.Lerp(_currentHighSpeedEmissionRate, _targetHighSpeedEmissionRate, m_lerpSpeed);
                 }
-            }
-            else
-            {
-
-                _emission.rateOverTime = Mathf.Lerp(_currentEmissionRate, _targetEmissionRate, m_lerpSpeed * 0.4f);
-                _highSpeedEmission.rateOverTime = Mathf.Lerp(_currentHighSpeedEmissionRate, _targetHighSpeedEmissionRate, m_lerpSpeed * 0.4f);
+                else
+                {
+                    _highSpeedEmission.rateOverTime = Mathf.Lerp(_currentHighSpeedEmissionRate, _targetHighSpeedEmissionRate, m_lerpSpeed * 0.4f);
+                }
             }
 
 
@@ -134,6 +183,7 @@ public class ThrustEffectController : MonoBehaviour
                 m_planeMaterial.color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.4f);
             }
         }
+
         if( m_engineOff == true)
         {
             Color _emissionColour = m_planeMaterial.color;
@@ -149,48 +199,94 @@ public class ThrustEffectController : MonoBehaviour
         m_engineOff = true;
 
 
-        var _emission = m_engineParticles.emission;
-        var _highSpeedEmission = m_highspeedEngineParticles.emission;
-        _emission.rateOverTime = 0;
-        _highSpeedEmission.rateOverTime = 0;
+        var _emission = m_engineParticles[0].emission;
+        for (int i = 0; i < m_engineParticles.Length; i++)
+        {
+            //Set emission to 0
+            _emission = m_engineParticles[i].emission;
+            _emission.rateOverTime = 0;
+        }
 
-        m_engineGlow.intensity = Mathf.Lerp(m_engineGlow.intensity, 0, m_lerpSpeed * 3);
+
+
+        var _highSpeedEmission = m_highSpeedEngineParticles[0].emission;
+        for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
+        {
+            //Set emission to 0
+            _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
+            _highSpeedEmission.rateOverTime = 0;
+
+        }
+
+
+        for (int i = 0; i< m_engineGlow.Length; i++)
+        {
+            m_engineGlow[i].intensity = Mathf.Lerp(m_engineGlow[i].intensity, 0, m_lerpSpeed * 3);
+        }
     }
 
     public void BoostOn()
     {
-        m_engineGlow.intensity = Mathf.Lerp(m_engineGlow.intensity, 50000,0.1f);
-
-        var _emission = m_engineParticles.emission;
-        var _highSpeedEmission = m_highspeedEngineParticles.emission;
-        var _emissionMain = m_engineParticles.main;
-        var _highSpeedEmissionMain = m_highspeedEngineParticles.main;
+        for (int i = 0; i < m_engineGlow.Length; i++)
+        {
+            m_engineGlow[i].intensity = Mathf.Lerp(m_engineGlow[i].intensity, 50000, 0.1f);
+        }
 
 
-        _emission.rateOverTime = 1000;
-        _emissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
-        _emissionMain.simulationSpeed = 2.5f;
+        //Boost normal Particles
+        var _emission = m_engineParticles[0].emission;
+        var _emissionMain = m_engineParticles[0].main;
+        for(int i = 0;i <m_engineParticles.Length; i++)
+        {
+            _emission = m_engineParticles[i].emission;
+            _emissionMain = m_engineParticles[i].main;
+            _emission.rateOverTime = 1000;
+            _emissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
+            _emissionMain.simulationSpeed = 2.5f;
+        }
 
+        //Boost High speed 
+        var _highSpeedEmission = m_highSpeedEngineParticles[0].emission;
+        var _highSpeedEmissionMain = m_highSpeedEngineParticles[0].main;
+        for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
+        {
+            _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
+            _highSpeedEmissionMain = m_highSpeedEngineParticles[i].main;
+            _highSpeedEmission.rateOverTime = 800;
+            _highSpeedEmissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
+            _highSpeedEmissionMain.simulationSpeed = 2.5f;
+        }
+
+        //make panel super blue
         Color _emissionColour = m_planeMaterial.color;
         Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
         Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, 255);
         m_planeMaterial.color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed);
 
-        _highSpeedEmission.rateOverTime = 800;
-        _highSpeedEmissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
-        _highSpeedEmissionMain.simulationSpeed = 2.5f;
-
+        //Reset everything to normal once boost is done.
         Invoke("ResetParticles", 0.6f);
     }
 
     private void ResetParticles()
     {
         m_engineOff = false;
-        var _emissionMain = m_engineParticles.main;
-        var _highSpeedEmissionMain = m_highspeedEngineParticles.main;
-        _emissionMain.simulationSpeed = 1f;
-        _highSpeedEmissionMain.simulationSpeed = 1f;
-        _emissionMain.startLifetime = m_emissionLifetime;
-        _highSpeedEmissionMain.startLifetime = m_highSpeedEmissionLifetime;
+
+        var _emissionMain = m_engineParticles[0].main;
+        for (int i = 0; i < m_engineParticles.Length; i++)
+        {
+            _emissionMain = m_engineParticles[i].main;
+            _emissionMain.simulationSpeed = 1f;
+            _emissionMain.startLifetime = m_emissionLifetime[i];
+        }
+
+        //Boost High speed 
+        var _highSpeedEmissionMain = m_highSpeedEngineParticles[0].main;
+        for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
+        {
+            _highSpeedEmissionMain = m_highSpeedEngineParticles[i].main;
+            _highSpeedEmissionMain.simulationSpeed = 1f;
+            _highSpeedEmissionMain.startLifetime = m_highSpeedEmissionLifetime[i];
+        }
+
     }
 }
