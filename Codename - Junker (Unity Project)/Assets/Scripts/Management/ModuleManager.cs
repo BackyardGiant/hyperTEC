@@ -60,10 +60,10 @@ public class ModuleManager : MonoBehaviour
             case WeaponData.faction.trader:
                 _goTempGun = Instantiate(goTraderGunBase);
 
-                _barrelSnap = _goTempGun.transform.Find("BarrelSnap");
-                _magSnap = _goTempGun.transform.Find("MagSnap");
-                _batterySnap = _goTempGun.transform.Find("BatterySnap");
-                _targetSnap = _goTempGun.transform.Find("TargetSnap");
+                _barrelSnap = _goTempGun.transform.Find("Body").Find("BarrelSnap");
+                _magSnap = _goTempGun.transform.Find("Body").Find("MagSnap");
+                _batterySnap = _goTempGun.transform.Find("Body").Find("BatterySnap");
+                _targetSnap = _goTempGun.transform.Find("Body").Find("TargetSnap");
 
                 InstantiateBarrel(traderBarrels[data.BarrelId], _barrelSnap);
                 InstantiateBattery(traderBatteries[data.BatteryId], _batterySnap);
@@ -75,10 +75,10 @@ public class ModuleManager : MonoBehaviour
             case WeaponData.faction.construction:
                 _goTempGun = Instantiate(goConstructionGunBase);
 
-                _barrelSnap = _goTempGun.transform.Find("BarrelSnap");
-                _magSnap = _goTempGun.transform.Find("MagSnap");
-                _batterySnap = _goTempGun.transform.Find("BatterySnap");
-                _targetSnap = _goTempGun.transform.Find("TargetSnap");
+                _barrelSnap = _goTempGun.transform.Find("Body").Find("BarrelSnap");
+                _magSnap = _goTempGun.transform.Find("Body").Find("MagSnap");
+                _batterySnap = _goTempGun.transform.Find("Body").Find("BatterySnap");
+                _targetSnap = _goTempGun.transform.Find("Body").Find("TargetSnap");
 
                 InstantiateBarrel(constructBarrels[data.BarrelId], _barrelSnap);
                 InstantiateBattery(constructBatteries[data.BatteryId], _batterySnap);
@@ -90,10 +90,10 @@ public class ModuleManager : MonoBehaviour
             case WeaponData.faction.explorer:
                 _goTempGun = Instantiate(goExplorerGunBase);
 
-                _barrelSnap = _goTempGun.transform.Find("BarrelSnap");
-                _magSnap = _goTempGun.transform.Find("MagSnap");
-                _batterySnap = _goTempGun.transform.Find("BatterySnap");
-                _targetSnap = _goTempGun.transform.Find("TargetSnap");
+                _barrelSnap = _goTempGun.transform.Find("Body").Find("BarrelSnap");
+                _magSnap = _goTempGun.transform.Find("Body").Find("MagSnap");
+                _batterySnap = _goTempGun.transform.Find("Body").Find("BatterySnap");
+                _targetSnap = _goTempGun.transform.Find("Body").Find("TargetSnap");
 
                 InstantiateBarrel(explorerBarrels[data.BarrelId], _barrelSnap);
                 InstantiateBattery(explorerBatteries[data.BatteryId], _batterySnap);
@@ -105,10 +105,10 @@ public class ModuleManager : MonoBehaviour
             case WeaponData.faction.initial:
                 _goTempGun = Instantiate(goInitialGunBase);
 
-                _barrelSnap = _goTempGun.transform.Find("BarrelSnap");
-                _magSnap = _goTempGun.transform.Find("MagSnap");
-                _batterySnap = _goTempGun.transform.Find("BatterySnap");
-                _targetSnap = _goTempGun.transform.Find("TargetSnap");
+                _barrelSnap = _goTempGun.transform.Find("Body").Find("BarrelSnap");
+                _magSnap = _goTempGun.transform.Find("Body").Find("MagSnap");
+                _batterySnap = _goTempGun.transform.Find("Body").Find("BatterySnap");
+                _targetSnap = _goTempGun.transform.Find("Body").Find("TargetSnap");
 
                 InstantiateBarrel(defaultBarrels[data.BarrelId], _barrelSnap);
                 InstantiateBattery(defaultBatteries[data.BatteryId], _batterySnap);

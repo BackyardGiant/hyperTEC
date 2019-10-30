@@ -588,13 +588,13 @@ MonoBehaviour:
   - {fileID: 4369712147853546786, guid: e75c7378b6b8f844eb289727151a8d86, type: 3}
   traderEngines: []
   constructEngine: []
-  goExplorerGunBase: {fileID: 5485475073022544966, guid: 80b011937c0941e4a914a8d1483a5fb1,
+  goExplorerGunBase: {fileID: 173963497452463579, guid: 8452c1851d0c8374993be696c40f7126,
     type: 3}
-  goInitialGunBase: {fileID: 3904644098002867448, guid: 9c4ef893c31cd4646a6a0ef79721638a,
+  goInitialGunBase: {fileID: 5249147796776496907, guid: 80d801963cbfc3c4dab3be1c1a08bdc2,
     type: 3}
-  goConstructionGunBase: {fileID: 8558867405498479086, guid: 401ba287ae1d20c4fb8c125a50992079,
+  goConstructionGunBase: {fileID: 708598718380990553, guid: 183753e1580848f41acf64fc1efa3f98,
     type: 3}
-  goTraderGunBase: {fileID: 4352124564210840528, guid: 0e6cf0e4b86ce6d41826e9552f7dc858,
+  goTraderGunBase: {fileID: 7986433555038933874, guid: 9121d4f8b76cb984b8bb69e447c1e086,
     type: 3}
 --- !u!4 &915096481
 Transform:

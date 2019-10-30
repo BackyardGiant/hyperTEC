@@ -197,6 +197,7 @@ public class SelectionManager : MonoBehaviour
             tempWeapon.transform.SetParent(goShipLeftSnap.transform);
             tempWeapon.transform.position = goShipLeftSnap.transform.position;
             tempWeapon.transform.rotation = goShipLeftSnap.transform.rotation;
+            tempWeapon.transform.localScale = new Vector3(1, 1, -1);
 
             Debug.Log("Instantiated from equipped" + statBlock.Name);
         }
@@ -213,6 +214,7 @@ public class SelectionManager : MonoBehaviour
             tempWeapon.transform.SetParent(goShipRightSnap.transform);
             tempWeapon.transform.position = goShipRightSnap.transform.position;
             tempWeapon.transform.rotation = goShipRightSnap.transform.rotation;
+            tempWeapon.transform.localScale = new Vector3(1, 1, 1);
         }
         else
         {
@@ -257,12 +259,15 @@ public class SelectionManager : MonoBehaviour
                     _tempWeapon.transform.SetParent(goShipLeftSnap.transform);
                     _tempWeapon.transform.position = goShipLeftSnap.transform.position;
                     _tempWeapon.transform.rotation = goShipLeftSnap.transform.rotation;
+                    _tempWeapon.transform.localScale = new Vector3(1, 1, -1);
+
                 }
                 else
                 {
                     _tempWeapon.transform.SetParent(goShipRightSnap.transform);
                     _tempWeapon.transform.position = goShipRightSnap.transform.position;
                     _tempWeapon.transform.rotation = goShipRightSnap.transform.rotation;
+                    _tempWeapon.transform.localScale = new Vector3(1, 1, 1);
                 }
 
             }
