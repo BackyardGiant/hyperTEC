@@ -12,8 +12,15 @@ public class EngineData : ScriptableObject
     {
         weapon, engine
     }
+    public enum faction
+    {
+        explorer, initial, trader, construction
+    }
 
     private moduleType currentModuleType = moduleType.engine;
+
+    [SerializeField]
+    private faction currentFaction;
 
     [SerializeField]
     private Sprite thumbnail;
@@ -22,7 +29,7 @@ public class EngineData : ScriptableObject
     private float value, topSpeed, acceleration, boostPower, handling;
 
     [SerializeField]
-    private GameObject engineModel;
+    private int engineId;
 
     public string Name { get => name; set => name = value; }
     public string Description { get => description; set => description = value; }
@@ -33,5 +40,6 @@ public class EngineData : ScriptableObject
     public float Acceleration1 { get => acceleration; set => acceleration = value; }
     public float Handling { get => handling; set => handling = value; }
     private moduleType CurrentModuleType { get => currentModuleType; }
-    public GameObject EngineModel { get => engineModel; set => engineModel = value; }
+    public int EngineId { get => engineId; set => engineId = value; }
+    public faction CurrentFaction { get => currentFaction; set => currentFaction = value; }
 }
