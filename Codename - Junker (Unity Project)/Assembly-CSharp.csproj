@@ -215,7 +215,11 @@
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformCompute.compute" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="Unity.Timeline.Editor">
+<<<<<<< HEAD
       <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+=======
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+>>>>>>> Staging
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
@@ -239,7 +243,11 @@
       <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
+<<<<<<< HEAD
       <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+=======
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+>>>>>>> Staging
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
