@@ -17,7 +17,7 @@ public class WeaponData : ScriptableObject
         explorer, initial, trader, construction
     }
 
-    private moduleType currentModuleType = moduleType.engine;
+    private moduleType currentModuleType = moduleType.weapon;
 
     [SerializeField]
     private faction currentFaction;
@@ -31,7 +31,7 @@ public class WeaponData : ScriptableObject
     [SerializeField]
     private int barrelId, magazineId, batteryId, targetId;
 
-    public string Name { get => name; set => name = value; }
+    public string Name { get => name; }
     public string Description { get => description; set => description = value; }
     public Sprite Thumbnail { get => thumbnail; set => thumbnail = value; }
     public float Value { get => value; set => this.value = value; }

@@ -20,8 +20,8 @@ public class SelectionManager : MonoBehaviour
         m_equippedLeftIndex = -1;
         m_equippedRightIndex = -1;
 
-        //display.UpdateHighlightPosition(0);
-        //display.UpdateEquipped(m_takenIndexes);
+        display.UpdateHighlightPosition(0);
+        display.UpdateEquipped(m_takenIndexes);
 
         PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
     }
@@ -192,12 +192,11 @@ public class SelectionManager : MonoBehaviour
         if(m_equippedLeftIndex != -1)
         {
             WeaponData statBlock = display.ModulesList[(int)m_equippedLeftIndex].GetComponent<WeaponStatManager>().Data;
-            GameObject tempWeapon = Instantiate(ModuleManager.Instance.GenerateWeapon(statBlock));
+            GameObject tempWeapon = ModuleManager.Instance.GenerateWeapon(statBlock);
 
             tempWeapon.transform.SetParent(goShipLeftSnap.transform);
             tempWeapon.transform.position = goShipLeftSnap.transform.position;
             tempWeapon.transform.rotation = goShipLeftSnap.transform.rotation;
-            tempWeapon.transform.localScale = new Vector3(0.5f, 0.5f, -0.5f);
 
             Debug.Log("Instantiated from equipped" + statBlock.Name);
         }
@@ -209,12 +208,11 @@ public class SelectionManager : MonoBehaviour
         if(m_equippedRightIndex != -1)
         {
             WeaponData statBlock = display.ModulesList[(int)m_equippedRightIndex].GetComponent<WeaponStatManager>().Data;
-            GameObject tempWeapon = Instantiate(ModuleManager.Instance.GenerateWeapon(statBlock));
+            GameObject tempWeapon = ModuleManager.Instance.GenerateWeapon(statBlock);
 
             tempWeapon.transform.SetParent(goShipRightSnap.transform);
             tempWeapon.transform.position = goShipRightSnap.transform.position;
             tempWeapon.transform.rotation = goShipRightSnap.transform.rotation;
-            tempWeapon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         }
         else
         {
@@ -251,7 +249,7 @@ public class SelectionManager : MonoBehaviour
                 }
 
                 WeaponData _statBlock = selectedObject.GetComponent<WeaponStatManager>().Data;
-                GameObject _tempWeapon = Instantiate(ModuleManager.Instance.GenerateWeapon(_statBlock));
+                GameObject _tempWeapon = ModuleManager.Instance.GenerateWeapon(_statBlock);
                 Debug.Log("Instantiated gun" + _statBlock.Name);
 
                 if (m_leftSideSelected)
@@ -259,14 +257,12 @@ public class SelectionManager : MonoBehaviour
                     _tempWeapon.transform.SetParent(goShipLeftSnap.transform);
                     _tempWeapon.transform.position = goShipLeftSnap.transform.position;
                     _tempWeapon.transform.rotation = goShipLeftSnap.transform.rotation;
-                    _tempWeapon.transform.localScale = new Vector3(0.5f, 0.5f, -0.5f);
                 }
                 else
                 {
                     _tempWeapon.transform.SetParent(goShipRightSnap.transform);
                     _tempWeapon.transform.position = goShipRightSnap.transform.position;
                     _tempWeapon.transform.rotation = goShipRightSnap.transform.rotation;
-                    _tempWeapon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 }
 
             }

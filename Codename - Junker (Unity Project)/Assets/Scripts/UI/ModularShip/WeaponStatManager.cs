@@ -14,7 +14,7 @@ public class WeaponStatManager : MonoBehaviour
 
     public void PopulateData()
     {
-        data.Name = name.text;
+        name.text = data.Name;
         thumbnail.sprite = data.Thumbnail;
     }
 }

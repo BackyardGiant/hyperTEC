@@ -14,7 +14,7 @@ public class EngineStatManager : MonoBehaviour
 
     public void PopulateData()
     {
-        data.Name = name.text;
+        name.text = data.name;
         thumbnail.sprite = data.Thumbnail;
     }
 }

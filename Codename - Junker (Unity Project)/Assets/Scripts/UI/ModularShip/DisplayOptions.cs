@@ -8,7 +8,7 @@ public class DisplayOptions : MonoBehaviour
     public RectTransform contentPanel;
     public RectTransform highlight;
 
-    public GameObject goTemplateUiElement;
+    public GameObject goTemplateEngineElement, goTemplateWeaponElement;
 
     public List<EngineData> availableEngines;
     public List<WeaponData> availableWeapons;
@@ -22,20 +22,20 @@ public class DisplayOptions : MonoBehaviour
         // this bit might need to change
         for (int i = 0; i < availableEngines.Count; i++)
         {
-            GameObject _goTempUiElement = Instantiate(goTemplateUiElement, contentPanel);
-            _goTempUiElement.name = "engine" + i.ToString();
-            _goTempUiElement.GetComponent<EngineStatManager>().Data = availableEngines[i];
-            //_goTempUiElement.GetComponent<EngineStatManager>().PopulateData();
-            m_modulesList.Add(_goTempUiElement);
+            GameObject _goTempEngineElement = Instantiate(goTemplateEngineElement, contentPanel);
+            _goTempEngineElement.name = "engine" + i.ToString();
+            _goTempEngineElement.GetComponent<EngineStatManager>().Data = availableEngines[i];
+            _goTempEngineElement.GetComponent<EngineStatManager>().PopulateData();
+            m_modulesList.Add(_goTempEngineElement);
         }
 
         for (int i = 0; i < availableWeapons.Count; i++)
         {
-            GameObject _goTempUiElement = Instantiate(goTemplateUiElement, contentPanel);
-            _goTempUiElement.name = "weapon" + i.ToString();
-            _goTempUiElement.GetComponent<WeaponStatManager>().Data = availableWeapons[i];
-            //_goTempUiElement.GetComponent<WeaponStatManager>().PopulateData();
-            m_modulesList.Add(_goTempUiElement);
+            GameObject _goTempWeaponElement = Instantiate(goTemplateWeaponElement, contentPanel);
+            _goTempWeaponElement.name = "weapon" + i.ToString();
+            _goTempWeaponElement.GetComponent<WeaponStatManager>().Data = availableWeapons[i];
+            _goTempWeaponElement.GetComponent<WeaponStatManager>().PopulateData();
+            m_modulesList.Add(_goTempWeaponElement);
         }
 
         //for (int i = 0; i < m_modulesList.Count; i++)

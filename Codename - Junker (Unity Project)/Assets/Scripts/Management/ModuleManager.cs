@@ -153,8 +153,6 @@ public class ModuleManager : MonoBehaviour
         _tempBattery.transform.localPosition = Vector3.zero;
     }
 
-
-
     #endregion
 
 
