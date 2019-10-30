@@ -12,8 +12,15 @@ public class WeaponData : ScriptableObject
     {
         weapon, engine
     }
+    public enum faction
+    {
+        explorer, initial, trader, construction
+    }
 
     private moduleType currentModuleType = moduleType.engine;
+
+    [SerializeField]
+    private faction currentFaction;
 
     [SerializeField]
     private Sprite thumbnail;
@@ -22,7 +29,7 @@ public class WeaponData : ScriptableObject
     private float value, damage, reloadTime, fireRate, accuracy;
 
     [SerializeField]
-    private GameObject weaponModel;
+    private int barrelId, magazineId, batteryId, targetId;
 
     public string Name { get => name; set => name = value; }
     public string Description { get => description; set => description = value; }
@@ -33,5 +40,9 @@ public class WeaponData : ScriptableObject
     public float FireRate { get => fireRate; set => fireRate = value; }
     public float Accuracy { get => accuracy; set => accuracy = value; }
     private moduleType CurrentModuleType { get => currentModuleType; }
-    public GameObject WeaponModel { get => weaponModel; set => weaponModel = value; }
+    public faction CurrentFaction { get => currentFaction; set => currentFaction = value; }
+    public int BarrelId { get => barrelId; set => barrelId = value; }
+    public int MagazineId { get => magazineId; set => magazineId = value; }
+    public int BatteryId { get => batteryId; set => batteryId = value; }
+    public int TargetId { get => targetId; set => targetId = value; }
 }

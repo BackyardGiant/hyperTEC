@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 8825660380506373717}
   - component: {fileID: 513425630534894691}
   - component: {fileID: 6060864949496248474}
-  - component: {fileID: 4540120548483241293}
   m_Layer: 0
   m_Name: ExplorerBody1
   m_TagString: gun
@@ -203,35 +202,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &4540120548483241293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5485475073022544966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1ebf6752892d40439c0437c19a5a704, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BarrelList:
-  - {fileID: 8768775633691627828, guid: 621be9a3d7b445f428130e1ddc6b31dd, type: 3}
-  - {fileID: 3111606428765493189, guid: 13c7ebd5f72710244bbbc652c4630605, type: 3}
-  - {fileID: 1201150280766204971, guid: 40bc0efd0f5cef6478b30d611cb571ef, type: 3}
-  BatteryList:
-  - {fileID: 7836984886398535312, guid: 4a25a845627edee4585292b05c6eec4f, type: 3}
-  - {fileID: 3243845052922451671, guid: b133e91707ec5fd43b73781b6575db87, type: 3}
-  - {fileID: 1719534030076791746, guid: bdad26956a5a2c344b5b719e99d79bca, type: 3}
-  TargetingList:
-  - {fileID: 4813602359715738455, guid: 7e0b68f8aba60c24eb36a79e3bab0024, type: 3}
-  - {fileID: 7669902625002876696, guid: 62554a63fc9eeb642aa590c4c342b15f, type: 3}
-  - {fileID: 6936198057782927266, guid: 08d0ad583c06c3f439f4ae1dca20d096, type: 3}
-  MagazineList:
-  - {fileID: 2972609875544010787, guid: d8315c14c87be774384ec139f14e7208, type: 3}
-  - {fileID: 3775940206757647820, guid: 80d21fae773fd7a4f88169148251d78b, type: 3}
-  - {fileID: 4915283573353173027, guid: d41144d2ca0e93640958ea816fcaa1d9, type: 3}
-  BarrelSnap: {fileID: 4540120548384751216}
-  BatterySnap: {fileID: 4540120549703479589}
-  TargetingSnap: {fileID: 4540120549918151540}
-  MagazineSnap: {fileID: 4540120548464074374}

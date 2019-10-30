@@ -21,11 +21,6 @@ public class WeaponGenerator : MonoBehaviour
 
     private GameObject m_selectedBarrel, m_selectedMagazine, m_selectedBattery, m_selectedTargeting;
 
-    private void Start()
-    {
-        GenerateGun();
-    }
-
     private void GenerateGun()
     {
         SelectBarrel();
