@@ -61,11 +61,10 @@ public class EnemyShooting : MonoBehaviour
 
             RaycastHit _hit;
 
-            m_lookAtPlayer.transform.LookAt(m_target.transform);
+            m_lookAtPlayer.transform.LookAt(m_target.transform); // Game object that always looks towards the target
 
             if (Vector3.Angle(m_target.transform.position - transform.position, transform.forward) < m_attackAngle && Physics.Raycast(m_lookAtPlayer.transform.position + (m_lookAtPlayer.transform.forward * 30), m_lookAtPlayer.transform.forward, out _hit, Mathf.Infinity))
             {
-                Debug.Log("Hit");
                 if (_hit.transform.gameObject == m_target)
                 {
                     m_targetInSight = true;

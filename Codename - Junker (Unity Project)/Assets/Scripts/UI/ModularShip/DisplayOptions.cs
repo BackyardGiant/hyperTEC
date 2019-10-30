@@ -19,7 +19,6 @@ public class DisplayOptions : MonoBehaviour
 
     private void Awake()
     {
-        // this bit might need to change
         for (int i = 0; i < availableEngines.Count; i++)
         {
             GameObject _goTempEngineElement = Instantiate(goTemplateEngineElement, contentPanel);
@@ -37,13 +36,6 @@ public class DisplayOptions : MonoBehaviour
             _goTempWeaponElement.GetComponent<WeaponStatManager>().PopulateData();
             m_modulesList.Add(_goTempWeaponElement);
         }
-
-        //for (int i = 0; i < m_modulesList.Count; i++)
-        //{
-        //    GameObject _goNewModule = GameObject.Instantiate(m_modulesList[i]);
-        //    _goNewModule.transform.SetParent(contentPanel);
-        //    m_modulesList[i] = _goNewModule;
-        //}
     }
 
     public void UpdateHighlightPosition(int index)

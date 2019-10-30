@@ -54,10 +54,9 @@ public class ThrustEffectController : MonoBehaviour
         }
 
 
-            //Save the light intensity of all lights.
-            for (int i = 0; i < m_engineGlow.Length; i++)
+        //Save the light intensity of all lights.
+        for (int i = 0; i < m_engineGlow.Length; i++)
         {
-
             m_maxLightIntensity[i] = m_engineGlow[i].intensity;
             m_engineGlow[i].intensity = 0;
         }
