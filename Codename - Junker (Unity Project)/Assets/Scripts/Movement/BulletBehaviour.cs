@@ -7,6 +7,9 @@ public class BulletBehaviour : MonoBehaviour
     private float m_lifeTime;
     private float m_speed;
     private float m_damage;
+    [SerializeField]
+    private string m_target;
+    private GameObject m_spawnedBy;
     private Rigidbody m_rbBullet;
     private bool m_hadPreSloMo;
 
@@ -22,20 +25,29 @@ public class BulletBehaviour : MonoBehaviour
     public float LifeTime { get => m_lifeTime; set => m_lifeTime = value; }
     public float Speed { get => m_speed; set => m_speed = value; }
     public float Damage { get => m_damage; set => m_damage = value; }
+    public string Target { get => m_target; set => m_target = value; }
+    public GameObject SpawnedBy { get => m_spawnedBy; set => m_spawnedBy = value; }
+
 
     // Start is called before the first frame update
     void Start()
     {
         m_rbBullet = gameObject.GetComponent<Rigidbody>();
     }
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.transform.tag == "Enemy")
+        if (other.transform.tag == m_target)
         {
-            collision.transform.GetComponent<EnemyStats>().TakeDamage(m_damage);
+            if (m_target == "Enemy")
+            {
+                other.transform.GetComponent<EnemyStats>().TakeDamage(m_damage);
+            }
+            else if(m_target == "Player")
+            {
+                //Do stuff to player here
+            }
         }
-        if (collision.transform.tag != "Bullet")
+        if (other.transform.tag != "Bullet" && other.gameObject != m_spawnedBy)
         {
             Destroy(gameObject);
         }

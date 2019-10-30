@@ -127,6 +127,7 @@ public class PlayerShooting : MonoBehaviour
     void SpawnBullet(int _side)
     {
         GameObject newBullet = Instantiate(m_bulletPrefab, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
+        newBullet.GetComponent<BulletBehaviour>().SpawnedBy = gameObject;
         newBullet.GetComponent<BulletBehaviour>().LifeTime = m_bulletLifeTime;
         newBullet.GetComponent<BulletBehaviour>().Damage = m_bulletDamage;
         newBullet.GetComponent<BulletBehaviour>().Speed = m_bulletSpeed;

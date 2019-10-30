@@ -113,36 +113,49 @@
     <Compile Include="Assets\Scripts\Extensions\ObjectExtensions.cs" />
     <Compile Include="Assets\Scripts\Extensions\TransformExtensions.cs" />
     <Compile Include="Assets\Scripts\Management\DustManager.cs" />
+    <Compile Include="Assets\Scripts\Management\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Management\GameManager.cs" />
     <Compile Include="Assets\Scripts\Management\HUDManager.cs" />
+    <Compile Include="Assets\Scripts\Management\ModuleManager.cs" />
     <Compile Include="Assets\Scripts\Management\Quest.cs" />
     <Compile Include="Assets\Scripts\Management\QuestManager.cs" />
+    <Compile Include="Assets\Scripts\Movement\AdvancedEnemyMovement.cs" />
+    <Compile Include="Assets\Scripts\Movement\BasicEnemyMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\BulletBehaviour.cs" />
     <Compile Include="Assets\Scripts\Movement\CameraMovement.cs" />
-    <Compile Include="Assets\Scripts\Movement\EnemyMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\OrbitalCamera.cs" />
     <Compile Include="Assets\Scripts\Movement\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\ReferenceMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\ThrustEffectController.cs" />
+    <Compile Include="Assets\Scripts\ProcGen\WeaponGenerator.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\BoolVariable.cs" />
+    <Compile Include="Assets\Scripts\Scriptable Objects\EngineData.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\FloatVariable.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\GameEvent.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\GameEventListener.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\IntVariable.cs" />
+    <Compile Include="Assets\Scripts\Scriptable Objects\WeaponData.cs" />
+    <Compile Include="Assets\Scripts\Shooting\EnemyShooting.cs" />
     <Compile Include="Assets\Scripts\Shooting\PlayerShooting.cs" />
     <Compile Include="Assets\Scripts\Stats\EnemyStats.cs" />
+    <Compile Include="Assets\Scripts\Temporary Scripts\TempGeneration.cs" />
     <Compile Include="Assets\Scripts\Temporary Scripts\TestModularShip.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\EnemyDetection.cs" />
     <Compile Include="Assets\Scripts\UI\LootDetection.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\DisplayOptions.cs" />
+    <Compile Include="Assets\Scripts\UI\ModularShip\EngineStatManager.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\SelectionManager.cs" />
+    <Compile Include="Assets\Scripts\UI\ModularShip\ToggleElements.cs" />
+    <Compile Include="Assets\Scripts\UI\ModularShip\WeaponStatManager.cs" />
     <Compile Include="Assets\Scripts\UI\Player\Crosshair.cs" />
     <Compile Include="Assets\Scripts\Usability Testing\FlightTestRecordCollision.cs" />
     <Compile Include="Assets\Scripts\Usability Testing\IncrementFlightChallenge.cs" />
+    <Compile Include="Assets\Scripts\Usability Testing\MovementUsabilityTestingManager.cs" />
     <Compile Include="Assets\Scripts\Usability Testing\StartFlightTest.cs" />
     <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\Testing Results\MovementSystemTesting.txt" />
     <None Include="Assets\PostProcessing\Resources\Shaders\MotionBlur.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Fog.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\ParadeRender.shader" />
@@ -168,7 +181,7 @@
     <None Include="Assets\PostProcessing\Resources\Shaders\BuiltinDebugViews.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Common.cginc" />
     <None Include="Assets\PostProcessing\Resources\Bluenoise64\COPYING.txt" />
-    <None Include="Assets\Testing Results\results.txt" />
+    <None Include="Assets\Testing Results\FlightRingResults.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\PostProcessing\Editor Resources\UI\Trackball.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
@@ -201,31 +214,31 @@
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformCompute.compute" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/jjbrewer.SOCNET/Documents/Gitkraken/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/jjbrewer.SOCNET/Documents/Gitkraken/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/jjbrewer.SOCNET/Documents/Gitkraken/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/jjbrewer.SOCNET/Documents/Gitkraken/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/jjbrewer.SOCNET/Documents/Gitkraken/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/jjbrewer.SOCNET/Documents/Gitkraken/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/jjbrewer.SOCNET/Documents/Gitkraken/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/jjbrewer.SOCNET/Documents/Gitkraken/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/jjbrewer.SOCNET/Documents/Gitkraken/CodeName-Star-Wars/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

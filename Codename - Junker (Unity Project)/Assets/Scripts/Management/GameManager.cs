@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,6 +29,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(s_instance.gameObject);
             s_instance = this;
+        }
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            PlayerPrefs.DeleteAll();
         }
     }
 
@@ -58,5 +66,11 @@ public class GameManager : MonoBehaviour
 
         m_gameSpeed = m_passedSpeed;
         postSlowDown.Raise();
+    }
+
+    public void ResetScene()
+    {
+        MovementUsabilityTestingManager.Instance.SaveValues();
+        SceneManager.LoadScene("UserTesting");
     }
 }

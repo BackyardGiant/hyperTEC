@@ -75,13 +75,16 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Engine Particle System
-    [Header ("Particle System Events")]
+    [Header("Particle System Events")]
     public GameEvent boostOn;
     public GameEvent engineOff;
     #endregion
 
     [SerializeField, Header("UI correction")]
     private float m_uiCorrection;
+
+    [SerializeField]
+    private bool m_inUserTesting;
 
     public float CurrentSpeed { get => m_currentSpeed; }
     public float MaxAcceleration { get => m_maxAcceleration; }
@@ -155,6 +158,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (m_inUserTesting)
+        {
+            UpdateValues();
+        }
 
         if (m_engageBoost)
         {
@@ -277,5 +284,17 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(m_boostTime);
         m_boostOn = false;
+    }
+
+    //Used for user testing
+    private void UpdateValues()
+    {
+        m_maxSpeed = MovementUsabilityTestingManager.Instance.MaxSpeed * 150;
+        m_maxAcceleration = MovementUsabilityTestingManager.Instance.Acceleration * 40;
+        m_dampingSpeed = MovementUsabilityTestingManager.Instance.Damping * 1;
+
+        m_rollSpeed = MovementUsabilityTestingManager.Instance.RollSpeed * 0.5f;
+        m_pitchSpeed = MovementUsabilityTestingManager.Instance.PitchSpeed * 0.5f;
+        m_yawSpeed = MovementUsabilityTestingManager.Instance.YawSpeed * 0.5f;
     }
 }

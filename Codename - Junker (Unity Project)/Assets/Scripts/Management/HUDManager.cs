@@ -312,6 +312,10 @@ public class HUDManager : MonoBehaviour
         }
         m_prevLoot = m_currentLoot;
 
+        if (m_currentLoot == null)
+        {
+            Debug.Log("<color=red> Current Loot is null. </color> Do all loot objects have the component tag?");
+        }
 
         //Screenpos of loot, and LootDetection script. This will aid in automatically entering values from a piece of loot.
         _screenPos = Camera.WorldToScreenPoint(m_currentLoot.transform.position);
@@ -325,7 +329,6 @@ public class HUDManager : MonoBehaviour
     {
         Destroy(_loot.LootTarget);
         //Need to make it clear the loot Display if there isn't any loot left on screen.
-        Debug.Log(countTargets());
         if (countTargets() == 0)
         {
             ClearLootDisplay();
