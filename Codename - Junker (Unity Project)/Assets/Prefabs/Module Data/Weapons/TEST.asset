@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 820d90254e49d8c46ad17dcd6b6bc871, type: 3}
   m_Name: TEST
   m_EditorClassIdentifier: 
-  name: weapon1
-  description: adadada
-  currentFaction: 3
+  name: AdenWeapon
+  description: I am a gun
+  currentFaction: 0
   thumbnail: {fileID: 21300000, guid: 2641cf159bbfe6942bebc4529cec7020, type: 3}
   value: 0
   damage: 0

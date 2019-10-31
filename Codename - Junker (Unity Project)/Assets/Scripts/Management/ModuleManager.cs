@@ -18,6 +18,8 @@ public class ModuleManager : MonoBehaviour
     private Vector3 m_defaultVector = new Vector3(1, 1, 1);
     private Vector3 m_magRotation = new Vector3(0, 90, 0);
 
+    private GameObject _tempComponent;
+
     public static ModuleManager Instance { get => s_instance; set => s_instance = value; }
 
     private void Awake()
@@ -151,6 +153,178 @@ public class ModuleManager : MonoBehaviour
         GameObject _tempBattery = Instantiate(_battery, _batterySnap);
         _tempBattery.transform.localScale = m_defaultVector;
         _tempBattery.transform.localPosition = Vector3.zero;
+    }
+
+    #endregion
+
+    #region ComponentSelection
+
+    public GameObject SelectTargeting(bool _random, WeaponData _statBlock)
+    {
+        if (!_random)
+        {
+            switch (_statBlock.CurrentFaction)
+            {
+                case WeaponData.faction.construction:
+                    _tempComponent = constructTargeting[_statBlock.TargetId];
+                    break;
+                case WeaponData.faction.explorer:
+                    _tempComponent = explorerTargeting[_statBlock.TargetId];
+                    break;
+                case WeaponData.faction.initial:
+                    _tempComponent = defaultTargeting[_statBlock.TargetId];
+                    break;
+                case WeaponData.faction.trader:
+                    _tempComponent = traderTargeting[_statBlock.TargetId];
+                    break;
+            }
+        }
+        else
+        {
+            switch (_statBlock.CurrentFaction)
+            {
+                case WeaponData.faction.construction:
+                    _tempComponent = constructTargeting[Random.Range(0, constructTargeting.Count)];
+                    break;
+                case WeaponData.faction.explorer:
+                    _tempComponent = explorerTargeting[Random.Range(0, explorerTargeting.Count)];
+                    break;
+                case WeaponData.faction.initial:
+                    _tempComponent = defaultTargeting[Random.Range(0, defaultTargeting.Count)];
+                    break;
+                case WeaponData.faction.trader:
+                    _tempComponent = traderTargeting[Random.Range(0, traderTargeting.Count)];
+                    break;
+            }
+        }
+
+        return _tempComponent;
+    }
+
+    public GameObject SelectBarrel(bool _random, WeaponData _statBlock)
+    {
+        if (!_random)
+        {
+            switch (_statBlock.CurrentFaction)
+            {
+                case WeaponData.faction.construction:
+                    _tempComponent = constructBarrels[_statBlock.BarrelId];
+                    break;
+                case WeaponData.faction.explorer:
+                    _tempComponent = explorerBarrels[_statBlock.BarrelId];
+                    break;
+                case WeaponData.faction.initial:
+                    _tempComponent = defaultBarrels[_statBlock.BarrelId];
+                    break;
+                case WeaponData.faction.trader:
+                    _tempComponent = traderBarrels[_statBlock.BarrelId];
+                    break;
+            }
+        }
+        else
+        {
+            switch (_statBlock.CurrentFaction)
+            {
+                case WeaponData.faction.construction:
+                    _tempComponent = constructBarrels[Random.Range(0, constructBarrels.Count)];
+                    break;
+                case WeaponData.faction.explorer:
+                    _tempComponent = explorerBarrels[Random.Range(0, explorerBarrels.Count)];
+                    break;
+                case WeaponData.faction.initial:
+                    _tempComponent = defaultBarrels[Random.Range(0, defaultBarrels.Count)];
+                    break;
+                case WeaponData.faction.trader:
+                    _tempComponent = traderBarrels[Random.Range(0, traderBarrels.Count)];
+                    break;
+            }
+        }
+
+        return _tempComponent;
+    }
+
+    public GameObject SelectBattery(bool _random, WeaponData _statBlock)
+    {
+        if (!_random)
+        {
+            switch (_statBlock.CurrentFaction)
+            {
+                case WeaponData.faction.construction:
+                    _tempComponent = constructBatteries[_statBlock.BatteryId];
+                    break;
+                case WeaponData.faction.explorer:
+                    _tempComponent = explorerBatteries[_statBlock.BatteryId];
+                    break;
+                case WeaponData.faction.initial:
+                    _tempComponent = defaultBatteries[_statBlock.BatteryId];
+                    break;
+                case WeaponData.faction.trader:
+                    _tempComponent = traderBatteries[_statBlock.BatteryId];
+                    break;
+            }
+        }
+        else
+        {
+            switch (_statBlock.CurrentFaction)
+            {
+                case WeaponData.faction.construction:
+                    _tempComponent = constructBatteries[Random.Range(0, constructBatteries.Count)];
+                    break;
+                case WeaponData.faction.explorer:
+                    _tempComponent = explorerBatteries[Random.Range(0, explorerBatteries.Count)];
+                    break;
+                case WeaponData.faction.initial:
+                    _tempComponent = defaultBatteries[Random.Range(0, defaultBatteries.Count)];
+                    break;
+                case WeaponData.faction.trader:
+                    _tempComponent = traderBatteries[Random.Range(0, traderBatteries.Count)];
+                    break;
+            }
+        }
+
+        return _tempComponent;
+    }
+
+    public GameObject SelectMagazine(bool _random, WeaponData _statBlock)
+    {
+        if (!_random)
+        {
+            switch (_statBlock.CurrentFaction)
+            {
+                case WeaponData.faction.construction:
+                    _tempComponent = constructMag[_statBlock.MagazineId];
+                    break;
+                case WeaponData.faction.explorer:
+                    _tempComponent = explorerMag[_statBlock.MagazineId];
+                    break;
+                case WeaponData.faction.initial:
+                    _tempComponent = defaultMag[_statBlock.MagazineId];
+                    break;
+                case WeaponData.faction.trader:
+                    _tempComponent = traderMag[_statBlock.MagazineId];
+                    break;
+            }
+        }
+        else
+        {
+            switch (_statBlock.CurrentFaction)
+            {
+                case WeaponData.faction.construction:
+                    _tempComponent = constructMag[Random.Range(0, constructMag.Count)];
+                    break;
+                case WeaponData.faction.explorer:
+                    _tempComponent = explorerMag[Random.Range(0, explorerMag.Count)];
+                    break;
+                case WeaponData.faction.initial:
+                    _tempComponent = defaultMag[Random.Range(0, defaultMag.Count)];
+                    break;
+                case WeaponData.faction.trader:
+                    _tempComponent = traderMag[Random.Range(0, traderMag.Count)];
+                    break;
+            }
+        }
+
+        return _tempComponent;
     }
 
     #endregion
