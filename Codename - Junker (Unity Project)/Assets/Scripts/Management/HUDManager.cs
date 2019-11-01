@@ -339,8 +339,6 @@ public class HUDManager : MonoBehaviour
     {
         Scanner.fillAmount = 0;
         Destroyer.fillAmount = 0;
-        m_displayAnimated = false;
-        m_currentlyClosingScan = false;
         if (m_currentlyScanning == true)
         {
             LootDisplay.GetComponent<Animator>().Play("CloseFromScanned");
@@ -384,7 +382,7 @@ public class HUDManager : MonoBehaviour
 
         for(int i = 0; i < _lootObjects.Length; i++)
         {
-            if (_lootObjects[i].GetComponent<Renderer>().isVisible)
+            if (IsVisibleFrom(_lootObjects[i].GetComponent<Renderer>(), Camera))
             {
                 _visibleLootObjects.Add(_lootObjects[i]);
             }
@@ -395,19 +393,23 @@ public class HUDManager : MonoBehaviour
     //Draws the lootdisplay with appropriate offset based on the current function.
     private void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
     {
-        if (!m_displayAnimated)
-        {
-            LootDisplay.GetComponent<Animator>().Play("ShowLoot");
-            m_displayAnimated = true;
-        }
+        //Check player is going slow enough to look at it.
         Vector3 _displayTargetPos;
-        if (m_currentlyScanning)
+        if (Player.GetComponent<PlayerMovement>().CurrentSpeed/Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
         {
-            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height * 2.5f);
-            LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.2f);
+            if (!m_displayAnimated)
+            {
+                LootDisplay.GetComponent<Animator>().Play("ShowLoot");
+                m_displayAnimated = true;
+            }
+            if (m_currentlyScanning)
+            {
+                _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height * 2.5f);
+                LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.2f);
 
+            }
         }
-        else if (m_currentlyClosingScan)
+        if (m_currentlyClosingScan)
         {
             _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
             LootDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.00001f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
@@ -423,4 +425,11 @@ public class HUDManager : MonoBehaviour
         }
     }
     #endregion
+
+    private bool IsVisibleFrom(Renderer renderer, Camera camera)
+    {
+        //Creates planes emitting from selected camera to detect if object is visible. Returns true if it is.
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
+        return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);
+    }
 }
