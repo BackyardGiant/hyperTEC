@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private enum ControlType { YawLeftAxis, RollLeftAxis }
+
     #region Speed
     [Header("Speed Settings")]
     [SerializeField, Tooltip("The maximum speed that the ship can fly")]
@@ -79,6 +81,9 @@ public class PlayerMovement : MonoBehaviour
     public GameEvent boostOn;
     public GameEvent engineOff;
     #endregion
+
+    [SerializeField, Header("Controls")]
+    private ControlType m_controlScheme;
 
     [SerializeField, Header("UI correction")]
     private float m_uiCorrection;
@@ -172,18 +177,41 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(boostTimer());
         }
 
-        float _roll = Input.GetAxis("Horizontal");
-        float _pitch = Input.GetAxis("Vertical");
+        float _pitch = 0;
         float _yaw = 0;
-        _yaw = Input.GetAxis("Yaw");
+        float _roll = 0;
 
-        if (Input.GetButton("Yaw+"))
+        switch (m_controlScheme)
         {
-            _yaw += 1;
-        }
-        if (Input.GetButton("Yaw-"))
-        {
-            _yaw -= 1;
+            case ControlType.YawLeftAxis:
+                _pitch = Input.GetAxis("Vertical");
+                _yaw = Input.GetAxis("Horizontal");
+                _roll = Input.GetAxis("Axis12");
+
+                if (Input.GetButton("RightBumper"))
+                {
+                    _roll += 1;
+                }
+                if (Input.GetButton("LeftBumper"))
+                {
+                    _roll -= 1;
+                }
+                break;
+            case ControlType.RollLeftAxis:
+                _pitch = Input.GetAxis("Vertical");
+                _roll = Input.GetAxis("Horizontal");
+                _yaw = Input.GetAxis("Axis12");
+
+                if (Input.GetButton("RightBumper"))
+                {
+                    _yaw += 1;
+                }
+                if (Input.GetButton("LeftBumper"))
+                {
+                    _yaw -= 1;
+                }
+                break;
+
         }
 
         // We accumulate torque forces into this variable:
