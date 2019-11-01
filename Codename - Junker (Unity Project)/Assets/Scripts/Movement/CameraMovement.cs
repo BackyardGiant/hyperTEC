@@ -14,8 +14,6 @@ public class CameraMovement : MonoBehaviour
 
     [SerializeField, Header("Player"), Tooltip("The player object should go here")]
     private Transform m_trPlayerTransform;
-    [SerializeField, Tooltip("The offset of the angels")]
-    private Vector3 m_offSet;
     [SerializeField, Tooltip("Camera distances")]
     private Vector3 m_cameraFollowPos;
 
@@ -34,8 +32,6 @@ public class CameraMovement : MonoBehaviour
 
     [SerializeField, Header("Crosshair")]
     private Crosshair m_crosshair;
-
-    public Vector3 OffSet { get => m_offSet; set => m_offSet = value; }
 
     void Update()
     {
@@ -79,7 +75,7 @@ public class CameraMovement : MonoBehaviour
             // Smoothly move the camera towards that target position
             transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref m_velocity, m_smoothTime);
 
-            transform.eulerAngles = m_trPlayerTransform.eulerAngles + m_trPlayerTransform.TransformDirection(m_offSet);
+            transform.eulerAngles = m_trPlayerTransform.eulerAngles;
         }
     }
 }
