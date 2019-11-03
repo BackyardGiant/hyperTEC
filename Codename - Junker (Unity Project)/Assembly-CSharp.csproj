@@ -114,13 +114,16 @@
     <Compile Include="Assets\Scripts\Extensions\TransformExtensions.cs" />
     <Compile Include="Assets\Scripts\Management\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Management\DustManager.cs" />
+    <Compile Include="Assets\Scripts\Management\EndPlaysessionController.cs" />
     <Compile Include="Assets\Scripts\Management\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Management\GameManager.cs" />
     <Compile Include="Assets\Scripts\Management\HUDManager.cs" />
+    <Compile Include="Assets\Scripts\Management\MainMenuManagement.cs" />
     <Compile Include="Assets\Scripts\Management\ModuleManager.cs" />
     <Compile Include="Assets\Scripts\Management\Quest.cs" />
     <Compile Include="Assets\Scripts\Management\QuestManager.cs" />
     <Compile Include="Assets\Scripts\Management\Sound.cs" />
+    <Compile Include="Assets\Scripts\Management\StartGameControls.cs" />
     <Compile Include="Assets\Scripts\Movement\AdvancedEnemyMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\BasicEnemyMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\BulletBehaviour.cs" />

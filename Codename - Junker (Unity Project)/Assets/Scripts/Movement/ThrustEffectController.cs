@@ -219,11 +219,12 @@ public class ThrustEffectController : MonoBehaviour
         #endregion
 
         #region EngineSoundFX
-        float _idleVolume = 0.4f + (0.2f * _powerPercentage);
-        float _idlePitch = 0.3f + (0.2f * _powerPercentage);
-        float _backingVolume = 0.08f * (_powerPercentage - 0.7f);
-        float _acceleratingVolume = 0.04f * _powerPercentage;
-        float _overworkingVolume = 0.04f * (_powerPercentage - 0.5f);
+        float _idleVolume = 0.2f + (0.3f * _powerPercentage);
+        float _idlePitch = 0.3f + (0.1f * _powerPercentage);
+
+        float _backingVolume = 0.1f * (_powerPercentage - 0.7f);
+        float _acceleratingVolume = 0.1f * _powerPercentage;
+        float _overworkingVolume = 0.05f * (_powerPercentage - 0.5f);
 
         float _engineIdleVolume = AudioManager.Instance.getVolume("EngineIdle");
         float _engineIdlePitch = AudioManager.Instance.getPitch("EngineIdle");
@@ -286,6 +287,8 @@ public class ThrustEffectController : MonoBehaviour
 
     public void BoostOn()
     {
+        int _boostedCount = PlayerPrefs.GetInt("BoostedCount");
+        PlayerPrefs.SetInt("BoostedCount", _boostedCount + 1);
         m_currentlyBoosting = true;
         AudioManager.Instance.Play("EngineBoost");
 
