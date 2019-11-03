@@ -276,6 +276,7 @@ public class HUDManager : MonoBehaviour
     public void ClearEnemyDetection(EnemyDetection _enemy)
     {
         Destroy(_enemy.EnemyTarget);
+        m_closetEnemy = null;
     }
     #endregion
     #region Loot Detection Methods
