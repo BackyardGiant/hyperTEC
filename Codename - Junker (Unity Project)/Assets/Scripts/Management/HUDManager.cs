@@ -12,7 +12,7 @@ public class HUDManager : MonoBehaviour
     public Sprite TargetSprite;
 
     #region EnemyIndicators
-    [Header ("Enemy Indicator System")]
+    [Header ("Enemy Indicator System"), Space(40)]
     public Sprite enemyArrowPointer;
     [SerializeField, Tooltip("Colour of the enemy indicators")]
     private Color m_enemyTargetColour;
@@ -26,7 +26,7 @@ public class HUDManager : MonoBehaviour
     #endregion
 
     #region LootIndicators
-    [Header("Loot Indicator System")]
+    [Header("Loot Indicator System"),Space(40)]
     public GameObject LootDisplay;
     public Image Scanner;
     public Image Destroyer;
@@ -183,7 +183,19 @@ public class HUDManager : MonoBehaviour
         }
 
         //moveit
-        _targetImage.rectTransform.localScale = new Vector3(m_enemyTargetSize, m_enemyTargetSize, m_enemyTargetSize);
+        float _distancePercentage =  1 - Vector3.Distance(Player.transform.position, _enemy.GetComponent<Transform>().position) / m_viewDistance;
+        float _finalSize = 0.1f + _distancePercentage * m_enemyTargetSize ;
+
+
+
+
+
+        _targetImage.rectTransform.localScale = new Vector3(_finalSize,_finalSize,_finalSize);
+
+        Debug.Log("Distance Percentage is " + _distancePercentage + " Size is " + _finalSize);
+
+
+
         _targetImage.sprite =TargetSprite;
         _targetImage.transform.position = _screenPos;
         _targetImage.transform.localEulerAngles = Vector3.zero;
