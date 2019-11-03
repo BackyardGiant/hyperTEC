@@ -192,7 +192,6 @@ public class HUDManager : MonoBehaviour
 
         _targetImage.rectTransform.localScale = new Vector3(_finalSize,_finalSize,_finalSize);
 
-        Debug.Log("Distance Percentage is " + _distancePercentage + " Size is " + _finalSize);
 
 
 
