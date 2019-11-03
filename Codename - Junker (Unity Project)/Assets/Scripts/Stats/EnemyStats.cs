@@ -49,5 +49,7 @@ public class EnemyStats : MonoBehaviour
         catch { Debug.Log("No target assigned to destroyed object"); }
         m_death.Raise();
         Destroy(gameObject);
+        int _value = PlayerPrefs.GetInt("EnemiesKilled");
+        PlayerPrefs.SetInt("EnemiesKilled", _value + 1);
     }
 }

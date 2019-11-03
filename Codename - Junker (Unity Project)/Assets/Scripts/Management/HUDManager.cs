@@ -103,7 +103,7 @@ public class HUDManager : MonoBehaviour
             //Make pickup item code here
             //Gameobject _pickupLoot = m_currentLoot;
 
-
+            IncrementPlayerPref("WeaponsCollected");
             Debug.Log("Pickup Loot.");
             Scanner.fillAmount = 0;
         }
@@ -117,6 +117,7 @@ public class HUDManager : MonoBehaviour
         //Full scan complete, open and animate display.
         if (Scanner.fillAmount == 1 && m_currentlyScanning == false)
         {
+            IncrementPlayerPref("WeaponsScanned");
             Scanner.fillAmount = 0;
             LootDisplay.GetComponent<Animator>().Play("DisplayStats");
             m_currentlyScanning = true;
@@ -150,6 +151,7 @@ public class HUDManager : MonoBehaviour
             Destroyer.fillAmount = 0;
             ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
             Destroy(m_currentLoot);
+            IncrementPlayerPref("WeaponsDestroyed");
             ClearLootDisplay();
 
         }
@@ -443,5 +445,11 @@ public class HUDManager : MonoBehaviour
         //Creates planes emitting from selected camera to detect if object is visible. Returns true if it is.
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
         return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);
+    }
+
+    private void IncrementPlayerPref(string _name)
+    {
+        int _value = PlayerPrefs.GetInt(_name);
+        PlayerPrefs.SetInt(_name, _value + 1);
     }
 }

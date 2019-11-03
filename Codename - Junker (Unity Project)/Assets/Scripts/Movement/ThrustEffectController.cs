@@ -287,6 +287,8 @@ public class ThrustEffectController : MonoBehaviour
 
     public void BoostOn()
     {
+        int _boostedCount = PlayerPrefs.GetInt("BoostedCount");
+        PlayerPrefs.SetInt("BoostedCount", _boostedCount + 1);
         m_currentlyBoosting = true;
         AudioManager.Instance.Play("EngineBoost");
 
