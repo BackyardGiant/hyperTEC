@@ -219,11 +219,11 @@ public class ThrustEffectController : MonoBehaviour
         #endregion
 
         #region EngineSoundFX
-        float _idleVolume = 0.4f + (0.3f * _powerPercentage);
+        float _idleVolume = 0.4f + (0.2f * _powerPercentage);
         float _idlePitch = 0.3f + (0.2f * _powerPercentage);
-        float _backingVolume = 0.2f * (_powerPercentage - 0.7f);
-        float _acceleratingVolume = 0.2f * _powerPercentage;
-        float _overworkingVolume = 0.1f * (_powerPercentage - 0.5f);
+        float _backingVolume = 0.08f * (_powerPercentage - 0.7f);
+        float _acceleratingVolume = 0.04f * _powerPercentage;
+        float _overworkingVolume = 0.04f * (_powerPercentage - 0.5f);
 
         float _engineIdleVolume = AudioManager.Instance.getVolume("EngineIdle");
         float _engineIdlePitch = AudioManager.Instance.getPitch("EngineIdle");
@@ -258,11 +258,6 @@ public class ThrustEffectController : MonoBehaviour
     public void EngineOff()
     {
         m_engineOff = true;
-        //AudioManager.Instance.Pause("EngineIdle");
-        //AudioManager.Instance.Pause("EngineAccelerating");
-        //AudioManager.Instance.Pause("EngineOverworking");
-        //AudioManager.Instance.Pause("EngineBacking");
-        //AudioManager.Instance.Play("EngineOff");
         var _emission = m_engineParticles[0].emission;
         for (int i = 0; i < m_engineParticles.Length; i++)
         {
@@ -293,12 +288,6 @@ public class ThrustEffectController : MonoBehaviour
     {
         m_currentlyBoosting = true;
         AudioManager.Instance.Play("EngineBoost");
-        AudioManager.Instance.Volume("EngineIdle", 0.3f);
-        AudioManager.Instance.Pitch("EngineIdle", 0.3f);
-        AudioManager.Instance.Volume("EngineBacking", 0.3f);
-        AudioManager.Instance.Pitch("EngineBacking", 0.5f);
-        AudioManager.Instance.Volume("EngineAccelerating", 0.5f);
-        AudioManager.Instance.Volume("EngineOverworking", 0.5f);
 
         for (int i = 0; i < m_engineGlow.Length; i++)
         {
