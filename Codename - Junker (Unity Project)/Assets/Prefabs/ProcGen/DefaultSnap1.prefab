@@ -250,5 +250,5 @@ MonoBehaviour:
   BatterySnap: {fileID: 3844098129557451787}
   TargetingSnap: {fileID: 3844098129494000199}
   MagazineSnap: {fileID: 3844098128817414135}
-  statBlock: {fileID: 0}
-  isRandom: 0
+  statBlock: {fileID: 11400000, guid: 47ae063256074974c9572bcbd785efe1, type: 2}
+  isRandom: 1
