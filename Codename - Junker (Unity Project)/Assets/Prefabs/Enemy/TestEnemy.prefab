@@ -248,6 +248,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftSnap: {fileID: 33173457477444034}
   rightSnap: {fileID: 5911650556500961526}
+  lootItemParent: {fileID: 5742531039650702400, guid: 341df5633658ae74189c875277192328,
+    type: 3}
 --- !u!1 &6899699368863158309
 GameObject:
   m_ObjectHideFlags: 0
