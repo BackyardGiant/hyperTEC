@@ -10,6 +10,8 @@ public class EnemyStats : MonoBehaviour
     private float m_currentHealth;
     [SerializeField]
     private GameEvent m_death;
+    [SerializeField]
+    private GameObject m_explosion;
 
     public float CurrentHealth { get => m_currentHealth; }
 
@@ -48,6 +50,7 @@ public class EnemyStats : MonoBehaviour
         }
         catch { Debug.Log("No target assigned to destroyed object"); }
         m_death.Raise();
+        Instantiate(m_explosion,transform.position,transform.rotation);
         Destroy(gameObject);
         int _value = PlayerPrefs.GetInt("EnemiesKilled");
         PlayerPrefs.SetInt("EnemiesKilled", _value + 1);
