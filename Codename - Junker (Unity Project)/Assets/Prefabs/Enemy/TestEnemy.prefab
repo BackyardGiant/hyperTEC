@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_target: {fileID: 0}
-  m_attackingPlayer: 1
+  m_attackingPlayer: 0
 --- !u!114 &679149894
 MonoBehaviour:
   m_ObjectHideFlags: 0
