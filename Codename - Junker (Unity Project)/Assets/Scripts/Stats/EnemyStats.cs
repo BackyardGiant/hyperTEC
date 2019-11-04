@@ -53,8 +53,15 @@ public class EnemyStats : MonoBehaviour
         }
         catch { Debug.Log("No target assigned to destroyed object"); }
         m_death.Raise();
+
+
+
+
         m_dropWeaponsScript.Drop();
         Instantiate(m_explosion,transform.position,transform.rotation);
+        int _random = Random.Range(1, 4);
+        AudioManager.Instance.PlayWorld("ExplosionLong" + _random, this.gameObject, true, true);
+
         Destroy(gameObject);
         int _value = PlayerPrefs.GetInt("EnemiesKilled");
         PlayerPrefs.SetInt("EnemiesKilled", _value + 1);

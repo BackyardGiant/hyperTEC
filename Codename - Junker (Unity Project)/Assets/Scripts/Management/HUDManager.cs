@@ -10,6 +10,7 @@ public class HUDManager : MonoBehaviour
     public GameObject Player;
     public Camera Camera;
     public Sprite TargetSprite;
+    public GameObject Explosion;
 
     public Inventory playerInv;
 
@@ -53,6 +54,7 @@ public class HUDManager : MonoBehaviour
 
 
     private bool m_displayAnimated;
+    private bool m_enablePickup;
     private bool m_currentlyClosingScan = false;
     private bool m_currentlyScanning = false;
     private GameObject m_displayDismissed;
@@ -70,6 +72,7 @@ public class HUDManager : MonoBehaviour
 
     void Start()
     {
+        m_enablePickup = true;
         //Calculate Clamp angle of arrow. This is equal to the angle at which the enemy is to the behind of the player. Working out this value prevents arrows floating around the screen.
         m_displayAnimated = false;
         m_arrowClampAngle = Mathf.Asin((Screen.height) / Mathf.Sqrt((m_viewDistance * m_viewDistance) + (Screen.height * Screen.height)));
@@ -100,7 +103,7 @@ public class HUDManager : MonoBehaviour
             Scanner.fillAmount += m_scanningFillSpeed * Time.deltaTime;
         }
         //If the player lets go of the button while it's below 0.1f fill amount, the player has picked the item up.
-        if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && m_displayAnimated == true)
+        if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && m_displayAnimated == true && m_enablePickup == true)
         {
             //Make pickup item code here
             GameObject _pickupLoot = m_currentLoot;
@@ -128,19 +131,27 @@ public class HUDManager : MonoBehaviour
         //Full scan complete, open and animate display.
         if (Scanner.fillAmount == 1 && m_currentlyScanning == false)
         {
+            m_enablePickup = false;
+
             IncrementPlayerPref("WeaponsScanned");
             Scanner.fillAmount = 0;
             LootDisplay.GetComponent<Animator>().Play("DisplayStats");
             m_currentlyScanning = true;
+
+            Invoke("togglePickup", .2f);
         }
         
         //Full close complete, close and animate display.
         if (Scanner.fillAmount == 1 && m_currentlyScanning == true)
         {
+            m_enablePickup = false;
+
             Scanner.fillAmount = 0;
             LootDisplay.GetComponent<Animator>().Play("HideStats");
             m_currentlyClosingScan = true;
             m_currentlyScanning = false;
+
+            Invoke("togglePickup", .2f);
         }
 
         //Dismiss being held down fills in the button.
@@ -160,6 +171,9 @@ public class HUDManager : MonoBehaviour
         {
             //Make it explode in here
             Destroyer.fillAmount = 0;
+            GameObject explosion = Instantiate(Explosion,m_currentLoot.transform.position,m_currentLoot.transform.rotation);
+            explosion.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentLoot.gameObject, true, false);
             ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
             Destroy(m_currentLoot);
             IncrementPlayerPref("WeaponsDestroyed");
@@ -167,8 +181,6 @@ public class HUDManager : MonoBehaviour
 
         }
         #endregion
-
-
     }
 
     #region Enemy Detection Methods
@@ -449,6 +461,11 @@ public class HUDManager : MonoBehaviour
             LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.2f);
         }
     }
+
+    private void togglePickup()
+    {
+        m_enablePickup = true;
+    }
     #endregion
 
     private bool IsVisibleFrom(Renderer renderer, Camera camera)
@@ -457,7 +474,6 @@ public class HUDManager : MonoBehaviour
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
         return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);
     }
-
     private void IncrementPlayerPref(string _name)
     {
         int _value = PlayerPrefs.GetInt(_name);
