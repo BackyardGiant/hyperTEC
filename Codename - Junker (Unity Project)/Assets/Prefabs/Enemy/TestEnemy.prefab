@@ -103,6 +103,8 @@ MonoBehaviour:
   m_maxHealth: 10
   m_currentHealth: 0
   m_death: {fileID: 11400000, guid: 2b8b5d87f1895814a9d089bb729a47ab, type: 2}
+  m_explosion: {fileID: 9084401648041963869, guid: 79596fda59e6ac3448c0da99c65fd615,
+    type: 3}
 --- !u!114 &5610633641536775820
 MonoBehaviour:
   m_ObjectHideFlags: 0

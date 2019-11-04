@@ -4809,7 +4809,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d25c5cbac7fd8b43aee685c2ab72095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Ring: {fileID: 9084401648088596380}
+  m_particleEffectLength: 1.1
+  m_ring: {fileID: 9084401648088596380}
 --- !u!1 &9084401648088596380
 GameObject:
   m_ObjectHideFlags: 0
