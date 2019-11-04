@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LootDetection : MonoBehaviour
 {
-    private enum m_lootTypes {Weapon,Engine,Shield};
+    public enum m_lootTypes {Weapon,Engine,Shield};
     private Transform m_player;
     private Camera m_camera;
     private Vector2 m_screenPos;
@@ -16,6 +16,7 @@ public class LootDetection : MonoBehaviour
     private GameObject m_lootTarget;
 
     public GameObject LootTarget { get => m_lootTarget; set => m_lootTarget = value; }
+    public m_lootTypes LootType { get => m_lootType; set => m_lootType = value; }
 
     private void Start()
     {
@@ -23,6 +24,8 @@ public class LootDetection : MonoBehaviour
             m_camera = Camera.main;
             m_player = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<Transform>();
         }catch { }
+
+        DontDestroyOnLoad(gameObject);
     }
     // Update is called once per frame
     void Update()

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c65ae02821402eb4baed12d6f79d3bd5, type: 3}
+  m_Name: PlayerInv
+  m_EditorClassIdentifier: 
+  m_availableWeapons:
+  - {fileID: 11400000, guid: f2ca8e781c61055419be9364ae4df7ad, type: 2}
+  - {fileID: 11400000, guid: 7065f042ebae084478b2d3bb868fcd9d, type: 2}
+  m_availableEngines: []
+  m_equippedEngine: {fileID: 0}
+  m_equippedLeftWeapon: {fileID: 11400000, guid: f2ca8e781c61055419be9364ae4df7ad,
+    type: 2}
+  m_equippedRightWeapon: {fileID: 11400000, guid: f2ca8e781c61055419be9364ae4df7ad,
+    type: 2}
+  m_equippedEngineIndex: -1
+  m_equippedLeftIndex: 0
+  m_equippedRightIndex: 1

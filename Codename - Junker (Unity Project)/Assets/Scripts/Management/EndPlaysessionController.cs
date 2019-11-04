@@ -10,6 +10,9 @@ public class EndPlaysessionController : MonoBehaviour
     public GameObject QtoQuit;
     public GameObject PtoQuit;
 
+    public Inventory playerInv;
+    public WeaponData default1, default2;
+
     private string BASE_URL = "https://docs.google.com/forms/u/2/d/e/1FAIpQLSciZFR9V7bROx3Rp_qYcxTFKPyAruDc3Vu_jrc4JCekBiHNLg/formResponse";
 
     private void Start()
@@ -43,6 +46,14 @@ public class EndPlaysessionController : MonoBehaviour
 
     private void SaveValues()
     {
+        playerInv.AvailableWeapons.Clear();
+        playerInv.AvailableWeapons.Add(default1);
+        playerInv.AvailableWeapons.Add(default2);
+        playerInv.EquippedLeftWeapon = default1;
+        playerInv.EquippedRightWeapon = default2;
+        playerInv.EquippedLeftIndex = 0;
+        playerInv.EquippedRightIndex = 1;
+
         float _time = (float)(DateTime.Now - DateTime.Parse(PlayerPrefs.GetString("PlaysessionTime"))).TotalSeconds;
         StartCoroutine(Post(_time, PlayerPrefs.GetInt("RecordedSession"),PlayerPrefs.GetInt("ControlScheme"),PlayerPrefs.GetInt("ChosenEngine"),PlayerPrefs.GetInt("ChosenEngineType"),PlayerPrefs.GetInt("EnemiesKilled"),PlayerPrefs.GetInt("BoostedCount"),PlayerPrefs.GetInt("WeaponsCollected"),PlayerPrefs.GetInt("WeaponsScanned"),PlayerPrefs.GetInt("WeaponsDestroyed")));
     }

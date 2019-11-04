@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: -6158417902392547118}
   - component: {fileID: 679149893}
   - component: {fileID: 679149894}
+  - component: {fileID: 1910100224}
   m_Layer: 0
   m_Name: TestEnemy
   m_TagString: Enemy
@@ -103,6 +104,7 @@ MonoBehaviour:
   m_maxHealth: 10
   m_currentHealth: 0
   m_death: {fileID: 11400000, guid: 2b8b5d87f1895814a9d089bb729a47ab, type: 2}
+  m_dropWeaponsScript: {fileID: 1910100224}
   m_explosion: {fileID: 9084401648041963869, guid: 79596fda59e6ac3448c0da99c65fd615,
     type: 3}
 --- !u!114 &5610633641536775820
@@ -234,6 +236,22 @@ MonoBehaviour:
   - {fileID: 8926176723663043216}
   m_bulletPrefab: {fileID: 1168512049321899429, guid: dc8f6040eb1b72f4cb51691f82c16651,
     type: 3}
+--- !u!114 &1910100224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5610633641536775860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b207ac7995d99043bbd07fd399af59d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftSnap: {fileID: 33173457477444034}
+  rightSnap: {fileID: 5911650556500961526}
+  lootItemParent: {fileID: 5742531039650702400, guid: 341df5633658ae74189c875277192328,
+    type: 3}
 --- !u!1 &6899699368863158309
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,11 +319,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5610633641536775856}
     m_Modifications:
-    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
-        type: 3}
-      propertyPath: m_Name
-      value: ConstructionShip#1
-      objectReference: {fileID: 0}
     - target: {fileID: 5731347806934350786, guid: 1fc09b7b7908b39428b358b3cfaf6225,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -361,11 +374,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+        type: 3}
+      propertyPath: m_Name
+      value: ConstructionShip#1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2105948311529273743, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2105948311529273740, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fc09b7b7908b39428b358b3cfaf6225, type: 3}
 --- !u!4 &1586907396351256756 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5731347806934350786, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+    type: 3}
+  m_PrefabInstance: {fileID: 6452538586947244918}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &33173457477444034 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6483458042218672820, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+    type: 3}
+  m_PrefabInstance: {fileID: 6452538586947244918}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5911650556500961526 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 830460532338670464, guid: 1fc09b7b7908b39428b358b3cfaf6225,
     type: 3}
   m_PrefabInstance: {fileID: 6452538586947244918}
   m_PrefabAsset: {fileID: 0}

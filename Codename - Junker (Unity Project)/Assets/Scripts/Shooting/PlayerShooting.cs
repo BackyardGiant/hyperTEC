@@ -17,6 +17,10 @@ public class PlayerShooting : MonoBehaviour
 
     [SerializeField, Header("Target")]
     private Transform m_target;
+
+    [SerializeField, Header("Inventory")]
+    private Inventory playerInv;
+
     private Vector3 m_targetPosition;
 
     private bool m_playerCanShoot = true;
@@ -106,14 +110,14 @@ public class PlayerShooting : MonoBehaviour
         m_spawnLocations[0].transform.LookAt(m_target);
         m_spawnLocations[1].transform.LookAt(m_target);
 
-        if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot)
+        if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && playerInv.EquippedRightWeapon != null)
         {
             SpawnBullet(0);
             m_rightWeaponActive = false;
             StartCoroutine(rightCooldown());
         }
 
-        if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot)
+        if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot && playerInv.EquippedLeftWeapon != null)
         {
             SpawnBullet(1);
             m_leftWeaponActive = false;

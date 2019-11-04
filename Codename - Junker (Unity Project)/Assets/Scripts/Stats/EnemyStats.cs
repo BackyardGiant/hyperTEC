@@ -13,6 +13,9 @@ public class EnemyStats : MonoBehaviour
     [SerializeField]
     private GameObject m_explosion;
 
+    [SerializeField]
+    private DropWeapons m_dropWeaponsScript;
+
     public float CurrentHealth { get => m_currentHealth; }
 
     // Start is called before the first frame update
@@ -50,6 +53,7 @@ public class EnemyStats : MonoBehaviour
         }
         catch { Debug.Log("No target assigned to destroyed object"); }
         m_death.Raise();
+        m_dropWeaponsScript.Drop();
         Instantiate(m_explosion,transform.position,transform.rotation);
         Destroy(gameObject);
         int _value = PlayerPrefs.GetInt("EnemiesKilled");

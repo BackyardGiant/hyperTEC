@@ -11,6 +11,8 @@ public class HUDManager : MonoBehaviour
     public Camera Camera;
     public Sprite TargetSprite;
 
+    public Inventory playerInv;
+
     #region EnemyIndicators
     [Header ("Enemy Indicator System"), Space(40)]
     public Sprite enemyArrowPointer;
@@ -101,11 +103,20 @@ public class HUDManager : MonoBehaviour
         if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && m_displayAnimated == true)
         {
             //Make pickup item code here
-            //Gameobject _pickupLoot = m_currentLoot;
+            GameObject _pickupLoot = m_currentLoot;
+            
+            if(m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
+            {
+                playerInv.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
+            }
 
             IncrementPlayerPref("WeaponsCollected");
             Debug.Log("Pickup Loot.");
             Scanner.fillAmount = 0;
+
+            Destroy(m_currentLoot);
+            ClearLootDisplay();
+            ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
         }
 
         //If player lets go of the button and it's above 0.1f fill amount, clear the progress.
