@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
     public GameEvent engineOff;
     #endregion
 
-    [SerializeField, Header("Controls")]
+    [SerializeField, Header("Controls and Engine")]
     private ControlType m_controlScheme;
 
     [SerializeField, Header("UI correction")]
@@ -107,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
         m_rbPlayer = gameObject.GetComponent<Rigidbody>();
         m_rbPlayer.inertiaTensor = new Vector3(0.2f, 0.2f, 0.2f); //Used to make the player always react the same to torque no matter the size or shape of the collider
 
+        //Things that are JUST for the 06/11/19 TechDemo
         if (PlayerPrefs.GetInt("ControlScheme") == 2)
         {
             m_controlScheme = ControlType.YawLeftAxis;
@@ -114,7 +115,25 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             m_controlScheme = ControlType.RollLeftAxis;
+        }
 
+        if(PlayerPrefs.GetInt("ChosenEngineType") == 1)
+        {
+            //Agile but Slow Engine
+            m_maxSpeed = m_maxSpeed * 1.5f;
+            m_maxAcceleration = m_maxAcceleration * 1.3f;
+            m_rollSpeed = m_rollSpeed * 2f;
+            m_pitchSpeed = m_pitchSpeed * 1.8f;
+
+        }
+        else
+        {
+            //Not Agile but speedy Engine
+            m_maxSpeed = m_maxSpeed * 3.5f;
+            m_maxAcceleration = m_maxAcceleration * 2.5f;
+            m_rollSpeed = m_rollSpeed * 0.8f;
+            m_pitchSpeed = m_pitchSpeed * 0.7f;
+            m_yawSpeed = m_yawSpeed * 0.5f;
         }
     }
 

@@ -186,7 +186,7 @@ public class HUDManager : MonoBehaviour
 
         //moveit
         float _distancePercentage =  1 - Vector3.Distance(Player.transform.position, _enemy.GetComponent<Transform>().position) / m_viewDistance;
-        float _finalSize = 0.1f + _distancePercentage * m_enemyTargetSize ;
+        float _finalSize = 0.05f + _distancePercentage * m_enemyTargetSize ;
 
 
 
