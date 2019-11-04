@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SelectionManager : MonoBehaviour
 {
     public DisplayOptions display;
     public GameObject goShipEngineSnap, goShipLeftSnap, goShipRightSnap;
+
+    public TextMeshProUGUI currentPreviewtext; 
 
     private int m_currentlySelectedIndex = 0;
     private bool m_readyForInput = true;
@@ -85,6 +88,15 @@ public class SelectionManager : MonoBehaviour
         {
             m_leftSideSelected = !m_leftSideSelected;
             Debug.Log("Left side selected? : " + m_leftSideSelected);
+
+            if(m_leftSideSelected)
+            {
+                currentPreviewtext.text = "Currently Previewing: Left Side";
+            }
+            else
+            {
+                currentPreviewtext.text = "Currently Previewing: Right Side";
+            }
 
             if (!CheckIfAlreadyEquipped())
             {
