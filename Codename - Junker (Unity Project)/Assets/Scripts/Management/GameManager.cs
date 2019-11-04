@@ -37,6 +37,12 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
+
+        if (Input.GetButtonDown("Inventory"))
+        {
+            SceneManager.LoadScene("ModularShip");
+            // Needs to sharevalues well
+        }
     }
 
     public void SetSlowMo(float _newSpeed)

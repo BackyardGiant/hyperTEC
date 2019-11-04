@@ -359,6 +359,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ConstructionShip#1
       objectReference: {fileID: 0}
+    - target: {fileID: 2105948311529273743, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2105948311529273740, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fc09b7b7908b39428b358b3cfaf6225, type: 3}
 --- !u!4 &1586907396351256756 stripped

@@ -120,6 +120,7 @@
     <Compile Include="Assets\Scripts\Management\HUDManager.cs" />
     <Compile Include="Assets\Scripts\Management\MainMenuManagement.cs" />
     <Compile Include="Assets\Scripts\Management\ModuleManager.cs" />
+    <Compile Include="Assets\Scripts\Management\PlayerInventoryManager.cs" />
     <Compile Include="Assets\Scripts\Management\Quest.cs" />
     <Compile Include="Assets\Scripts\Management\QuestManager.cs" />
     <Compile Include="Assets\Scripts\Management\Sound.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Assets\Scripts\Scriptable Objects\GameEvent.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\GameEventListener.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\IntVariable.cs" />
+    <Compile Include="Assets\Scripts\Scriptable Objects\Inventory.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\WeaponData.cs" />
     <Compile Include="Assets\Scripts\Shooting\EnemyShooting.cs" />
     <Compile Include="Assets\Scripts\Shooting\PlayerShooting.cs" />

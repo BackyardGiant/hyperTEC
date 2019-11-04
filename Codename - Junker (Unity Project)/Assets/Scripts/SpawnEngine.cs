@@ -8,6 +8,8 @@ public class SpawnEngine : MonoBehaviour
     [SerializeField]
     private GameObject SnapPoint, DefaultEngine, TraderEngine, ExplorerEngine, ConstructionEngine, RightSnap, LeftSnap;
 
+    public Inventory playerInventory;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,8 +33,18 @@ public class SpawnEngine : MonoBehaviour
         }
 
         #region GenerateDefaultGuns
-        RightSnap.transform.GetChild(0).GetComponent<WeaponGenerator>().GenerateGun();
-        LeftSnap.transform.GetChild(0).GetComponent<WeaponGenerator>().GenerateGun();
+        GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(playerInventory.EquippedLeftWeapon);
+        _leftGun.transform.SetParent(LeftSnap.transform);
+        _leftGun.transform.localPosition = Vector3.zero;
+        _leftGun.transform.localRotation = Quaternion.identity;
+        _leftGun.transform.localScale = new Vector3(1, 1, 1);
+
+        GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(playerInventory.EquippedRightWeapon);
+        _rightGun.transform.SetParent(RightSnap.transform);
+        _rightGun.transform.position = Vector3.zero;
+        _rightGun.transform.localPosition = Vector3.zero;
+        _rightGun.transform.localRotation = Quaternion.identity;
+        _rightGun.transform.localScale = new Vector3(1, 1, 1);
         #endregion
     }
 

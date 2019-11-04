@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TechDemo61119.unity
     guid: c3429761c7b4bed4ab966f1c760869e0
+  - enabled: 1
+    path: Assets/Scenes/ModularShip.unity
+    guid: bea01e9c1f70acb47b8d9417a46afcb4
   m_configObjects: {}

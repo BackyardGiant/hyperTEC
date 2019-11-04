@@ -16,9 +16,14 @@ public class SelectionManager : MonoBehaviour
     // Initialise all to "null" (-1)
     void Start()
     {
-        m_equippedEngineIndex = -1;
-        m_equippedLeftIndex = -1;
-        m_equippedRightIndex = -1;
+        m_equippedEngineIndex = display.playerInventory.EquippedEngineIndex;
+        m_equippedLeftIndex = display.playerInventory.EquippedLeftIndex + display.playerInventory.AvailableEngines.Count;
+        m_equippedRightIndex = display.playerInventory.EquippedRightIndex + display.playerInventory.AvailableEngines.Count;
+
+        m_takenIndexes[0] = display.playerInventory.EquippedEngineIndex;
+        m_takenIndexes[1] = display.playerInventory.EquippedLeftIndex + display.playerInventory.AvailableEngines.Count;
+        m_takenIndexes[2] = display.playerInventory.EquippedRightIndex + display.playerInventory.AvailableEngines.Count;
+
 
         display.UpdateHighlightPosition(0);
         display.UpdateEquipped(m_takenIndexes);
@@ -103,11 +108,19 @@ public class SelectionManager : MonoBehaviour
                     m_equippedEngineIndex = m_currentlySelectedIndex;
                     m_takenIndexes[0] = (int)m_equippedEngineIndex;
                     Debug.Log("Equipped engine " + m_equippedEngineIndex);
+
+                    // Set equipped in player inventory
+                    display.playerInventory.EquippedEngine = display.playerInventory.AvailableEngines[(int)m_equippedEngineIndex];
+                    display.playerInventory.EquippedEngineIndex = (int)m_equippedEngineIndex;
                 }
                 else
                 {
                     m_equippedEngineIndex = -1;
                     m_takenIndexes[0] = -1;
+
+                    // Set removed in player inventory
+                    display.playerInventory.EquippedEngine = null;
+                    display.playerInventory.EquippedEngineIndex = -1;
                 }
             }
 
@@ -119,6 +132,11 @@ public class SelectionManager : MonoBehaviour
                     {
                         m_equippedRightIndex = -1;
                         m_takenIndexes[2] = -1;
+
+                        // Set removed in player inventory
+                        display.playerInventory.EquippedRightWeapon = null;
+                        display.playerInventory.EquippedRightIndex = -1;
+
                         RemoveRight();
                     }
 
@@ -126,6 +144,11 @@ public class SelectionManager : MonoBehaviour
                     {
                         m_equippedLeftIndex = -1;
                         m_takenIndexes[1] = -1;
+
+                        // Set removed in player inventory
+                        display.playerInventory.EquippedLeftWeapon = null;
+                        display.playerInventory.EquippedLeftIndex = -1;
+
                         RemoveLeft();
                     }
                 }
@@ -136,6 +159,10 @@ public class SelectionManager : MonoBehaviour
                         m_equippedLeftIndex = m_currentlySelectedIndex;
                         m_takenIndexes[1] = (int)m_equippedLeftIndex;
                         Debug.Log("Equipped left gun " + m_equippedLeftIndex);
+
+                        // Set equipped in player inventory
+                        display.playerInventory.EquippedLeftWeapon = display.playerInventory.AvailableWeapons[(int)m_equippedLeftIndex];
+                        display.playerInventory.EquippedLeftIndex = (int)m_equippedLeftIndex - display.playerInventory.AvailableEngines.Count;
                     }
 
                     if (m_equippedRightIndex != m_currentlySelectedIndex && !m_leftSideSelected)
@@ -143,6 +170,10 @@ public class SelectionManager : MonoBehaviour
                         m_equippedRightIndex = m_currentlySelectedIndex;
                         m_takenIndexes[2] = (int)m_equippedRightIndex;
                         Debug.Log("Equipped right gun " + m_equippedRightIndex);
+
+                        // Set equipped in player inventory
+                        display.playerInventory.EquippedRightWeapon = display.playerInventory.AvailableWeapons[(int)m_equippedRightIndex];
+                        display.playerInventory.EquippedRightIndex = (int)m_equippedRightIndex - display.playerInventory.AvailableEngines.Count;
                     }
                 }
                 
