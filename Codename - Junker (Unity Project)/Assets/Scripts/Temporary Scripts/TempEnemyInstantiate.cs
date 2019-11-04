@@ -14,7 +14,7 @@ public class TempEnemyInstantiate : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < enemyLimit; i++)
         {
             SpawnEnemy();
         }
@@ -25,7 +25,6 @@ public class TempEnemyInstantiate : MonoBehaviour
         if(GameObject.FindGameObjectsWithTag("Enemy").Length < enemyLimit)
         {
             SpawnEnemy();
-            Debug.Log("<color = red>EnemySpawned</color>");
         }
     }
 

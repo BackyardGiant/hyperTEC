@@ -149,6 +149,7 @@
     <Compile Include="Assets\Scripts\Temporary Scripts\TempEnemyInstantiate.cs" />
     <Compile Include="Assets\Scripts\Temporary Scripts\TempGeneration.cs" />
     <Compile Include="Assets\Scripts\Temporary Scripts\TestModularShip.cs" />
+    <Compile Include="Assets\Scripts\UI\Enemy\DropWeapons.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\EnemyDetection.cs" />
     <Compile Include="Assets\Scripts\UI\LootDetection.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\DisplayOptions.cs" />

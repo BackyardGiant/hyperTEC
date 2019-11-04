@@ -19,7 +19,7 @@ MonoBehaviour:
   m_equippedEngine: {fileID: 0}
   m_equippedLeftWeapon: {fileID: 11400000, guid: f2ca8e781c61055419be9364ae4df7ad,
     type: 2}
-  m_equippedRightWeapon: {fileID: 11400000, guid: 7065f042ebae084478b2d3bb868fcd9d,
+  m_equippedRightWeapon: {fileID: 11400000, guid: f2ca8e781c61055419be9364ae4df7ad,
     type: 2}
   m_equippedEngineIndex: -1
   m_equippedLeftIndex: 0
