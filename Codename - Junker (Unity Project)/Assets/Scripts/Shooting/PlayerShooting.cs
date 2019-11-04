@@ -130,6 +130,10 @@ public class PlayerShooting : MonoBehaviour
     // 0 means right hand side, 1 means left hand side
     void SpawnBullet(int _side)
     {
+        //Temporary implementation of shooting sounds
+        float _random = Random.Range(1f, 2f);
+        AudioManager.Instance.Pitch("SimpleShoot", _random);
+        AudioManager.Instance.Play("SimpleShoot");
         GameObject newBullet = Instantiate(m_bulletPrefab, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
         newBullet.GetComponent<BulletBehaviour>().SpawnedBy = gameObject;
         newBullet.GetComponent<BulletBehaviour>().LifeTime = m_bulletLifeTime;

@@ -4,7 +4,11 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    public Sound[] sounds;
+    [Header("Sound Lists")]
+    [Tooltip("Sounds to be played locally. E.G Music, UI Effects. Usually non-diegetic audio.")]
+    public Sound[] localSounds;
+    [Tooltip("Sounds to be played on a certain position. E.G gunshots, explosions. Usually diegetic audio."),Space(20)]
+    public Sound[] worldSounds;
 
     public static AudioManager Instance;
 
@@ -23,7 +27,7 @@ public class AudioManager : MonoBehaviour
 
         //DontDestroyOnLoad(gameObject);
 
-        foreach (Sound s in sounds)
+        foreach (Sound s in localSounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
@@ -34,19 +38,18 @@ public class AudioManager : MonoBehaviour
             s.source.loop = s.loop;
         }
     }
-
-    #region Audio to play no matter what
-
     private void Start()
     {
-        // all the time
     }
 
-    #endregion
-
+    #region LocalSoundControls
+    /// <summary>
+    /// Plays local sounds defined in the audio manager.
+    /// </summary>
+    /// <param name="name"></param>
     public void Play(string name)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = Array.Find(localSounds, sound => sound.name == name);
 
         if (s == null)
         {
@@ -55,10 +58,9 @@ public class AudioManager : MonoBehaviour
 
         s.source.Play();
     }
-
     public void Pause(string name)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = Array.Find(localSounds, sound => sound.name == name);
 
         if (s == null)
         {
@@ -67,10 +69,9 @@ public class AudioManager : MonoBehaviour
 
         s.source.Pause();
     }
-
     public void Volume(string name,float value)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = Array.Find(localSounds, sound => sound.name == name);
 
         if (s == null)
         {
@@ -81,7 +82,7 @@ public class AudioManager : MonoBehaviour
     }
     public void Pitch(string name, float value)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = Array.Find(localSounds, sound => sound.name == name);
 
         if (s == null)
         {
@@ -90,10 +91,9 @@ public class AudioManager : MonoBehaviour
 
         s.source.pitch = value;
     }
-
     public float getVolume(string name)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = Array.Find(localSounds, sound => sound.name == name);
 
         if (s == null)
         {
@@ -105,7 +105,7 @@ public class AudioManager : MonoBehaviour
     }
     public float getPitch(string name)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = Array.Find(localSounds, sound => sound.name == name);
 
         if (s == null)
         {
@@ -115,4 +115,45 @@ public class AudioManager : MonoBehaviour
         float pitch = s.source.pitch;
         return pitch;
     }
+    #endregion
+
+    #region 3DSoundControls
+    /// <summary>
+    /// Creates an AudioSource on the target object and plays the clip.
+    /// </summary>
+    /// <param name="name">Name of the Audio Clip in AudioManager World Sound.</param>
+    /// <param name="target">Target gameObject to create AudioSource on</param>
+    /// <param name="seperateObject">"Should the sound be placed on a seperate object at the same position as the target? Good for explosions.</param>
+    /// <param name="destroy">Pass in true if the audio source should delete itself once done.</param>
+    public void PlayWorld(string name,GameObject target,bool seperateObject,bool destroy)
+    {
+        Sound s = Array.Find(worldSounds, sound => sound.name == name);
+        if (seperateObject == true)
+        {
+            GameObject _targetAudio = new GameObject(target.name + " Audio Source. Playing - " + name);
+            _targetAudio.transform.position = target.transform.position;
+            target = _targetAudio;
+        }
+        AudioSource _source = target.AddComponent<AudioSource>();
+        _source.clip = s.clip;
+        _source.volume = s.volume;
+        _source.pitch = s.pitch;
+        _source.loop = s.loop;
+        _source.spatialBlend = 1;
+        _source.Play();
+        if (destroy == true)
+        {
+            if(seperateObject == true)
+            {
+                Destroy(target, _source.clip.length);
+            }
+            else
+            {
+                Destroy(_source, _source.clip.length);
+            }
+        }
+    }
+
+
+    #endregion
 }
