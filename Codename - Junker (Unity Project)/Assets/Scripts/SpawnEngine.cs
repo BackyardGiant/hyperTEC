@@ -33,18 +33,25 @@ public class SpawnEngine : MonoBehaviour
         }
 
         #region GenerateDefaultGuns
-        GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(playerInventory.EquippedLeftWeapon);
-        _leftGun.transform.SetParent(LeftSnap.transform);
-        _leftGun.transform.localPosition = Vector3.zero;
-        _leftGun.transform.localRotation = Quaternion.identity;
-        _leftGun.transform.localScale = new Vector3(1, 1, 1);
 
-        GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(playerInventory.EquippedRightWeapon);
-        _rightGun.transform.SetParent(RightSnap.transform);
-        _rightGun.transform.position = Vector3.zero;
-        _rightGun.transform.localPosition = Vector3.zero;
-        _rightGun.transform.localRotation = Quaternion.identity;
-        _rightGun.transform.localScale = new Vector3(1, 1, 1);
+        if (playerInventory.EquippedLeftWeapon != null)
+        {
+            GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(playerInventory.EquippedLeftWeapon);
+            _leftGun.transform.SetParent(LeftSnap.transform);
+            _leftGun.transform.localPosition = Vector3.zero;
+            _leftGun.transform.localRotation = Quaternion.identity;
+            _leftGun.transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        if (playerInventory.EquippedRightWeapon != null)
+        {
+            GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(playerInventory.EquippedRightWeapon);
+            _rightGun.transform.SetParent(RightSnap.transform);
+            _rightGun.transform.position = Vector3.zero;
+            _rightGun.transform.localPosition = Vector3.zero;
+            _rightGun.transform.localRotation = Quaternion.identity;
+            _rightGun.transform.localScale = new Vector3(1, 1, 1);
+        }    
         #endregion
     }
 

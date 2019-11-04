@@ -38,10 +38,16 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.DeleteAll();
         }
 
-        if (Input.GetButtonDown("Inventory"))
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+
+        if (Input.GetButtonDown("Inventory") && sceneName == "TechDemo61119")
         {
             SceneManager.LoadScene("ModularShip");
-            // Needs to sharevalues well
+        }
+        else if(Input.GetButtonDown("Inventory") && sceneName == "ModularShip")
+        { 
+            SceneManager.LoadScene("TechDemo61119");
         }
     }
 
