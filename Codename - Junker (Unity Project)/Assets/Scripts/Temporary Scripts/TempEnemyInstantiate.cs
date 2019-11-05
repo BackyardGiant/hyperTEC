@@ -12,6 +12,8 @@ public class TempEnemyInstantiate : MonoBehaviour
 
     public int enemyLimit;
 
+    private Vector3 m_scale = new Vector3(1, 1, 1);
+
     private void Start()
     {
         for (int i = 0; i < enemyLimit; i++)
@@ -35,12 +37,22 @@ public class TempEnemyInstantiate : MonoBehaviour
         Transform _leftSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("LeftSnap");
         Transform _rightSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("RightSnap");
 
-        GameObject _tempLeftGun = Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _leftSnap);
+        WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock();
+        GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _leftSnap);
+        _tempLeftGun.GetComponent<WeaponGenerator>().statBlock = _temp1;
+        _tempLeftGun.transform.SetParent(_leftSnap);
         _tempLeftGun.transform.localPosition = Vector3.zero;
-        _tempLeftGun.GetComponent<WeaponGenerator>().GenerateGun();
+        _tempLeftGun.transform.localRotation = Quaternion.identity;
+        _tempLeftGun.transform.localScale = m_scale;
+        //_tempLeftGun.GetComponent<WeaponGenerator>().GenerateGun();
 
-        GameObject _tempRightGun = Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _rightSnap);
+        WeaponData _temp2 = ModuleManager.Instance.CreateStatBlock();
+        GameObject _tempRightGun = ModuleManager.Instance.GenerateWeapon(_temp2); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _rightSnap);
+        _tempRightGun.GetComponent<WeaponGenerator>().statBlock = _temp2;
+        _tempRightGun.transform.SetParent(_rightSnap);
         _tempRightGun.transform.localPosition = Vector3.zero;
-        _tempRightGun.GetComponent<WeaponGenerator>().GenerateGun();
+        _tempRightGun.transform.localRotation = Quaternion.identity;
+        _tempRightGun.transform.localScale = m_scale;
+        //_tempRightGun.GetComponent<WeaponGenerator>().GenerateGun();
     }
 }

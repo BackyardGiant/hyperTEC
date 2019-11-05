@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: -6158417902392547118}
   - component: {fileID: 679149893}
   - component: {fileID: 679149894}
-  - component: {fileID: 1910100224}
+  - component: {fileID: 6690131139534326174}
   m_Layer: 0
   m_Name: TestEnemy
   m_TagString: Enemy
@@ -104,9 +104,9 @@ MonoBehaviour:
   m_maxHealth: 10
   m_currentHealth: 0
   m_death: {fileID: 11400000, guid: 2b8b5d87f1895814a9d089bb729a47ab, type: 2}
-  m_dropWeaponsScript: {fileID: 1910100224}
   m_explosion: {fileID: 9084401648041963869, guid: 79596fda59e6ac3448c0da99c65fd615,
     type: 3}
+  m_dropWeaponsScript: {fileID: 6690131139534326174}
 --- !u!114 &5610633641536775820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,7 +236,7 @@ MonoBehaviour:
   - {fileID: 8926176723663043216}
   m_bulletPrefab: {fileID: 1168512049321899429, guid: dc8f6040eb1b72f4cb51691f82c16651,
     type: 3}
---- !u!114 &1910100224
+--- !u!114 &6690131139534326174
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

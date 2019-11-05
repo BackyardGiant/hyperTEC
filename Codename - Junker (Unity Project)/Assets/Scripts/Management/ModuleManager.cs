@@ -124,6 +124,59 @@ public class ModuleManager : MonoBehaviour
         }
     }
 
+    public WeaponData CreateStatBlock()
+    {
+        WeaponData _tempWeaponData = new WeaponData();
+  
+        _tempWeaponData.Description = ""; // Desc gen here
+
+        _tempWeaponData.CurrentFaction = (WeaponData.faction)Random.Range(0, 3);
+
+        _tempWeaponData.FireRate = Random.Range(0, 100);
+
+        switch(_tempWeaponData.CurrentFaction)
+        {
+            case WeaponData.faction.explorer:
+                _tempWeaponData.Name = "Explorer Gun";
+
+                _tempWeaponData.BarrelId = Random.Range(0, explorerBarrels.Count);
+                _tempWeaponData.BatteryId = Random.Range(0, explorerBatteries.Count);
+                _tempWeaponData.MagazineId = Random.Range(0, explorerMag.Count);
+                _tempWeaponData.TargetId = Random.Range(0, explorerTargeting.Count);
+
+                break;
+            case WeaponData.faction.construction:
+                _tempWeaponData.Name = "Construction Gun";
+
+                _tempWeaponData.BarrelId = Random.Range(0, constructBarrels.Count);
+                _tempWeaponData.BatteryId = Random.Range(0, constructBatteries.Count);
+                _tempWeaponData.MagazineId = Random.Range(0, constructMag.Count);
+                _tempWeaponData.TargetId = Random.Range(0, constructTargeting.Count);
+
+                break;
+            case WeaponData.faction.initial:
+                _tempWeaponData.Name = "Default Gun";
+
+                _tempWeaponData.BarrelId = Random.Range(0, defaultBarrels.Count);
+                _tempWeaponData.BatteryId = Random.Range(0, defaultBatteries.Count);
+                _tempWeaponData.MagazineId = Random.Range(0, defaultMag.Count);
+                _tempWeaponData.TargetId = Random.Range(0, defaultTargeting.Count);
+
+                break;
+            case WeaponData.faction.trader:
+                _tempWeaponData.Name = "Trader Gun";
+
+                _tempWeaponData.BarrelId = Random.Range(0, traderBarrels.Count);
+                _tempWeaponData.BatteryId = Random.Range(0, traderBatteries.Count);
+                _tempWeaponData.MagazineId = Random.Range(0, traderMag.Count);
+                _tempWeaponData.TargetId = Random.Range(0, traderTargeting.Count);
+
+                break;
+        }
+
+        return _tempWeaponData;
+    }
+
     #region ComponentInstantiation
 
     private void InstantiateBarrel(GameObject _barrel, Transform _barrelSnap)
