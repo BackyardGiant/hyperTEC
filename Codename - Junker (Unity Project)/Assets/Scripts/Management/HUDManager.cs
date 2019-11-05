@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 public class HUDManager : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class HUDManager : MonoBehaviour
     public Inventory playerInv;
 
     #region EnemyIndicators
-    [Header ("Enemy Indicator System"), Space(40)]
+    [Header ("Enemy Indicator System"), Space(20)]
     public Sprite enemyArrowPointer;
     [SerializeField, Tooltip("Colour of the enemy indicators")]
     private Color m_enemyTargetColour;
@@ -29,7 +29,7 @@ public class HUDManager : MonoBehaviour
     #endregion
 
     #region LootIndicators
-    [Header("Loot Indicator System"),Space(40)]
+    [Header("Loot Indicator System"),Space(20)]
     public GameObject LootDisplay;
     public Image Scanner;
     public Image Destroyer;
@@ -45,6 +45,10 @@ public class HUDManager : MonoBehaviour
     private float m_scanningFillSpeed;
     [SerializeField, Tooltip("How quickly the destroy occurs. Higher is faster."), Range(0.2f, 1f)]
     private float m_destroyFillSpeed;
+    [SerializeField,Header("Loot Display Elements"),Tooltip("Display elements of the Loot Display. This will show the stats of the visible loot item."),Space(20)]
+    private TextMeshProUGUI m_weaponTitle;
+    [SerializeField, Tooltip("Each stat item. Needs the value first then the arrow second.")]
+    private GameObject[] m_damage, m_fireRate, m_reloadTime, m_accuracy;
     #endregion
 
     #region AutoAim
@@ -101,6 +105,7 @@ public class HUDManager : MonoBehaviour
         if (Input.GetButton("Interact") && LootDisplay.activeInHierarchy == true)
         {
             Scanner.fillAmount += m_scanningFillSpeed * Time.deltaTime;
+            DisplayLootStats(m_currentLoot);
         }
         //If the player lets go of the button while it's below 0.1f fill amount, the player has picked the item up.
         if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && m_displayAnimated == true && m_enablePickup == true)
@@ -419,7 +424,8 @@ public class HUDManager : MonoBehaviour
 
         for(int i = 0; i < _lootObjects.Length; i++)
         {
-            if (IsVisibleFrom(_lootObjects[i].GetComponent<Renderer>(), Camera))
+            float _distance = Vector3.Distance(Player.transform.position, _lootObjects[i].transform.position);
+            if (IsVisibleFrom(_lootObjects[i].GetComponent<Renderer>(), Camera) && _distance < m_lootViewDistance)
             {
                 _visibleLootObjects.Add(_lootObjects[i]);
             }
@@ -461,13 +467,139 @@ public class HUDManager : MonoBehaviour
             LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.2f);
         }
     }
+    private void DisplayLootStats(GameObject _currentLoot)
+    {
+        try
+        {
+            WeaponData _lootData = _currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            float _currentDamage;
+            float _currentFireRate;
+            float _currentReloadTime;
+            float _currentAccuracy;
 
+            if (playerInv.EquippedLeftWeapon.Damage < playerInv.EquippedRightWeapon.Damage){_currentDamage = playerInv.EquippedLeftWeapon.Damage;}
+            else {_currentDamage = playerInv.EquippedRightWeapon.Damage;}
+
+            if (playerInv.EquippedLeftWeapon.FireRate < playerInv.EquippedRightWeapon.FireRate) { _currentFireRate = playerInv.EquippedLeftWeapon.FireRate; }
+            else { _currentFireRate = playerInv.EquippedRightWeapon.FireRate; }
+
+            if (playerInv.EquippedLeftWeapon.ReloadTime < playerInv.EquippedRightWeapon.ReloadTime) { _currentReloadTime = playerInv.EquippedLeftWeapon.ReloadTime; }
+            else { _currentReloadTime = playerInv.EquippedRightWeapon.ReloadTime; }
+
+            if (playerInv.EquippedLeftWeapon.Accuracy < playerInv.EquippedRightWeapon.Accuracy) { _currentAccuracy = playerInv.EquippedLeftWeapon.Accuracy; }
+            else { _currentAccuracy = playerInv.EquippedRightWeapon.Accuracy; }
+
+
+            m_weaponTitle.text = _lootData.Name;
+
+
+            Image _damageArrow = m_damage[1].GetComponent<Image>();
+            Image _fireRateArrow = m_fireRate[1].GetComponent<Image>();
+            Image _reloadArrow = m_reloadTime[1].GetComponent<Image>();
+            Image _accuracyArrow = m_accuracy[1].GetComponent<Image>();
+
+            ///////////////////////////////////////////////
+            m_damage[0].GetComponent<TextMeshProUGUI>().text = _lootData.Damage.ToString();
+            if (_lootData.Damage > _currentDamage)
+            {
+                //Higher - Green Arrow
+                _damageArrow.enabled = true;
+                _damageArrow.color = Color.green;
+                _damageArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
+            else if (_lootData.Damage < _currentDamage)
+            {
+                //Lower - Red Arrow
+                _damageArrow.enabled = true;
+                _damageArrow.color = Color.red;
+                _damageArrow.rectTransform.localRotation = Quaternion.Euler(0,0,180);
+            }
+            else
+            {
+                // Equal - Hide Arrow
+                _damageArrow.enabled = false;
+            }
+
+            //////////////////////////////////////////////
+            m_fireRate[0].GetComponent<TextMeshProUGUI>().text = _lootData.FireRate.ToString();
+            if (_lootData.FireRate > _currentFireRate)
+            {
+                //Higher - Green Arrow
+                _fireRateArrow.enabled = true;
+                _fireRateArrow.color = Color.green;
+                _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
+            else if (_lootData.FireRate < _currentFireRate)
+            {
+                //Lower - Red Arrow
+                _fireRateArrow.enabled = true;
+                _fireRateArrow.color = Color.red;
+                _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+            }
+            else
+            {
+                // Equal - Hide Arrow
+                _fireRateArrow.enabled = false;
+            }
+
+            /////////////////////////////////////////////////
+            m_reloadTime[0].GetComponent<TextMeshProUGUI>().text = _lootData.ReloadTime.ToString();
+            if (_lootData.ReloadTime > _currentReloadTime)
+            {
+                //Higher - Green Arrow
+                _reloadArrow.enabled = true;
+                _reloadArrow.color = Color.green;
+                _reloadArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
+            else if (_lootData.ReloadTime < _currentReloadTime)
+            {
+                //Lower - Red Arrow
+                _reloadArrow.enabled = true;
+                _reloadArrow.color = Color.red;
+                _reloadArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+            }
+            else
+            {
+                // Equal - Hide Arrow
+                _reloadArrow.enabled = false;
+            }
+
+
+
+            ////////////////////////////////////////////////
+            m_accuracy[0].GetComponent<TextMeshProUGUI>().text = _lootData.Accuracy.ToString();
+            if (_lootData.Accuracy > _currentAccuracy)
+            {
+                //Higher - Green Arrow
+                _accuracyArrow.enabled = true;
+                _accuracyArrow.color = Color.green;
+                _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
+            else if (_lootData.Accuracy < _currentAccuracy)
+            {
+                //Lower - Red Arrow
+                _accuracyArrow.enabled = true;
+                _accuracyArrow.color = Color.red;
+                _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+            }
+            else
+            {
+                // Equal - Hide Arrow
+                _accuracyArrow.enabled = false;
+            }
+
+
+        }
+        catch { Debug.LogError("Error with displaying loot stats."); }
+    }
     private void togglePickup()
     {
         m_enablePickup = true;
     }
     #endregion
 
+
+    #region Universal Methods
     private bool IsVisibleFrom(Renderer renderer, Camera camera)
     {
         //Creates planes emitting from selected camera to detect if object is visible. Returns true if it is.
@@ -479,4 +611,5 @@ public class HUDManager : MonoBehaviour
         int _value = PlayerPrefs.GetInt(_name);
         PlayerPrefs.SetInt(_name, _value + 1);
     }
+    #endregion
 }
