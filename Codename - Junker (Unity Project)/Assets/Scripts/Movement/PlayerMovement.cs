@@ -122,8 +122,8 @@ public class PlayerMovement : MonoBehaviour
             //Agile but Slow Engine
             m_maxSpeed = m_maxSpeed * 1.5f;
             m_maxAcceleration = m_maxAcceleration * 1.3f;
-            m_rollSpeed = m_rollSpeed * 2f;
-            m_pitchSpeed = m_pitchSpeed * 1.8f;
+            m_rollSpeed = m_rollSpeed * 1.5f;
+            m_pitchSpeed = m_pitchSpeed * 1.3f;
 
         }
         else
