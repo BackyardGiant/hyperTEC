@@ -33,6 +33,7 @@ public class DropWeapons : MonoBehaviour
             {
                 GameObject _lootItem = Instantiate(lootItemParent, leftSnap.position, leftSnap.rotation);
                 GameObject _temp = ModuleManager.Instance.GenerateWeapon(m_weapon1);
+                _temp.GetComponent<WeaponGenerator>().statBlock = m_weapon1;
                 _temp.transform.SetParent(_lootItem.transform);
 
                 _temp.transform.localPosition = m_defaultOffset;
@@ -46,6 +47,7 @@ public class DropWeapons : MonoBehaviour
             {
                 GameObject _lootItem = Instantiate(lootItemParent, rightSnap.position, rightSnap.rotation);
                 GameObject _temp = ModuleManager.Instance.GenerateWeapon(m_weapon2);
+                _temp.GetComponent<WeaponGenerator>().statBlock = m_weapon2;
                 _temp.transform.SetParent(_lootItem.transform);
 
                 _temp.transform.localPosition = m_defaultOffset;
@@ -62,6 +64,7 @@ public class DropWeapons : MonoBehaviour
         {
             GameObject _lootItem = Instantiate(lootItemParent, leftSnap.position, leftSnap.rotation);
             GameObject _temp = ModuleManager.Instance.GenerateWeapon(m_weapon1);
+            _temp.GetComponent<WeaponGenerator>().statBlock = m_weapon1;
             _temp.transform.SetParent(_lootItem.transform);
             _temp.transform.localPosition = m_defaultOffset;
             _temp.transform.localRotation = Quaternion.identity;
@@ -72,6 +75,7 @@ public class DropWeapons : MonoBehaviour
 
             _lootItem = Instantiate(lootItemParent, rightSnap.position, rightSnap.rotation);
             _temp = ModuleManager.Instance.GenerateWeapon(m_weapon2);
+            _temp.GetComponent<WeaponGenerator>().statBlock = m_weapon2;
             _temp.transform.SetParent(_lootItem.transform);
             _temp.transform.localPosition = m_defaultOffset;
             _temp.transform.localRotation = Quaternion.identity;

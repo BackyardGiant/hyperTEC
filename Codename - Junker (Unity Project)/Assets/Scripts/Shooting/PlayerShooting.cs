@@ -18,8 +18,8 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField, Header("Target")]
     private Transform m_target;
 
-    [SerializeField, Header("Inventory")]
-    private Inventory playerInv;
+    //[SerializeField, Header("Inventory")]
+    //private Inventory playerInv;
 
     private Vector3 m_targetPosition;
 
@@ -77,14 +77,11 @@ public class PlayerShooting : MonoBehaviour
         m_aimingCamera = Camera.main;
 
         float _range = -(m_slowerFireRate - m_quickerFireRate);
-        float _rightFireRatePercentage = playerInv.EquippedRightWeapon.FireRate / 100;
-        float _leftFireRatePercentage = playerInv.EquippedLeftWeapon.FireRate / 100;
+        float _rightFireRatePercentage = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate / 100;
+        float _leftFireRatePercentage = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate / 100;
         // Set the cooldowns of the equipped weapons. Should probably change to not be on Start() but it's okay here for now.
         m_rightWeaponCooldown = m_slowerFireRate + (_rightFireRatePercentage * _range);
         m_leftWeaponCooldown = m_slowerFireRate + (_leftFireRatePercentage * _range);
-
-
-
     }
 
     // Update is called once per frame
@@ -122,14 +119,14 @@ public class PlayerShooting : MonoBehaviour
         m_spawnLocations[0].transform.LookAt(m_target);
         m_spawnLocations[1].transform.LookAt(m_target);
 
-        if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && playerInv.EquippedRightWeapon != null)
+        if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedRightWeapon != null)
         {
             SpawnBullet(0);
             m_rightWeaponActive = false;
             StartCoroutine(rightCooldown());
         }
 
-        if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot && playerInv.EquippedLeftWeapon != null)
+        if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
         {
             SpawnBullet(1);
             m_leftWeaponActive = false;

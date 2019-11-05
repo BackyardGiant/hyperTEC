@@ -24,8 +24,6 @@ public class LootDetection : MonoBehaviour
             m_camera = Camera.main;
             m_player = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<Transform>();
         }catch { }
-
-        DontDestroyOnLoad(gameObject);
     }
     // Update is called once per frame
     void Update()

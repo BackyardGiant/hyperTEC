@@ -46,13 +46,7 @@ public class EndPlaysessionController : MonoBehaviour
 
     private void SaveValues()
     {
-        playerInv.AvailableWeapons.Clear();
-        playerInv.AvailableWeapons.Add(default1);
-        playerInv.AvailableWeapons.Add(default2);
-        playerInv.EquippedLeftWeapon = default1;
-        playerInv.EquippedRightWeapon = default2;
-        playerInv.EquippedLeftIndex = 0;
-        playerInv.EquippedRightIndex = 1;
+        Destroy(PlayerInventoryManager.Instance.gameObject);
 
         float _time = (float)(DateTime.Now - DateTime.Parse(PlayerPrefs.GetString("PlaysessionTime"))).TotalSeconds;
         StartCoroutine(Post(_time, PlayerPrefs.GetInt("RecordedSession"),PlayerPrefs.GetInt("ControlScheme"),PlayerPrefs.GetInt("ChosenEngine"),PlayerPrefs.GetInt("ChosenEngineType"),PlayerPrefs.GetInt("EnemiesKilled"),PlayerPrefs.GetInt("BoostedCount"),PlayerPrefs.GetInt("WeaponsCollected"),PlayerPrefs.GetInt("WeaponsScanned"),PlayerPrefs.GetInt("WeaponsDestroyed")));

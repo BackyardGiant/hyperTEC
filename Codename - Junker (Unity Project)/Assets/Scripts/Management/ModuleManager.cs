@@ -126,13 +126,18 @@ public class ModuleManager : MonoBehaviour
 
     public WeaponData CreateStatBlock()
     {
-        WeaponData _tempWeaponData = new WeaponData();
+        WeaponData _tempWeaponData = ScriptableObject.CreateInstance<WeaponData>();
   
         _tempWeaponData.Description = ""; // Desc gen here
 
         _tempWeaponData.CurrentFaction = (WeaponData.faction)Random.Range(0, 3);
 
         _tempWeaponData.FireRate = Random.Range(0, 100);
+
+        _tempWeaponData.Accuracy = 100;
+        _tempWeaponData.Damage = 100;
+        _tempWeaponData.ReloadTime = 100;
+        _tempWeaponData.Value = 100;
 
         switch(_tempWeaponData.CurrentFaction)
         {
@@ -174,6 +179,7 @@ public class ModuleManager : MonoBehaviour
                 break;
         }
 
+        _tempWeaponData.name = "Weapon";
         return _tempWeaponData;
     }
 

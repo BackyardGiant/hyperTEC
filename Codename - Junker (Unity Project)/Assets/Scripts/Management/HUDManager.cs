@@ -12,7 +12,7 @@ public class HUDManager : MonoBehaviour
     public Sprite TargetSprite;
     public GameObject Explosion;
 
-    public Inventory playerInv;
+    //public Inventory playerInv;
 
     #region EnemyIndicators
     [Header ("Enemy Indicator System"), Space(20)]
@@ -115,7 +115,7 @@ public class HUDManager : MonoBehaviour
             
             if(m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
             {
-                playerInv.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
+                PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
             }
 
             IncrementPlayerPref("WeaponsCollected");
@@ -477,17 +477,17 @@ public class HUDManager : MonoBehaviour
             float _currentReloadTime;
             float _currentAccuracy;
 
-            if (playerInv.EquippedLeftWeapon.Damage < playerInv.EquippedRightWeapon.Damage){_currentDamage = playerInv.EquippedLeftWeapon.Damage;}
-            else {_currentDamage = playerInv.EquippedRightWeapon.Damage;}
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage < PlayerInventoryManager.Instance.EquippedRightWeapon.Damage){_currentDamage = PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage;}
+            else {_currentDamage = PlayerInventoryManager.Instance.EquippedRightWeapon.Damage;}
 
-            if (playerInv.EquippedLeftWeapon.FireRate < playerInv.EquippedRightWeapon.FireRate) { _currentFireRate = playerInv.EquippedLeftWeapon.FireRate; }
-            else { _currentFireRate = playerInv.EquippedRightWeapon.FireRate; }
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate < PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate) { _currentFireRate = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate; }
+            else { _currentFireRate = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate; }
 
-            if (playerInv.EquippedLeftWeapon.ReloadTime < playerInv.EquippedRightWeapon.ReloadTime) { _currentReloadTime = playerInv.EquippedLeftWeapon.ReloadTime; }
-            else { _currentReloadTime = playerInv.EquippedRightWeapon.ReloadTime; }
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime < PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime) { _currentReloadTime = PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime; }
+            else { _currentReloadTime = PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime; }
 
-            if (playerInv.EquippedLeftWeapon.Accuracy < playerInv.EquippedRightWeapon.Accuracy) { _currentAccuracy = playerInv.EquippedLeftWeapon.Accuracy; }
-            else { _currentAccuracy = playerInv.EquippedRightWeapon.Accuracy; }
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy < PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy) { _currentAccuracy = PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy; }
+            else { _currentAccuracy = PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy; }
 
 
             m_weaponTitle.text = _lootData.Name;

@@ -13,7 +13,7 @@ public class DisplayOptions : MonoBehaviour
     public List<EngineData> availableEngines;
     public List<WeaponData> availableWeapons;
 
-    public Inventory playerInventory;
+    //public Inventory playerInventory;
 
     private List<GameObject> m_modulesList = new List<GameObject>();
 
@@ -21,8 +21,8 @@ public class DisplayOptions : MonoBehaviour
 
     private void Awake()
     {
-        availableEngines = playerInventory.AvailableEngines;
-        availableWeapons = playerInventory.AvailableWeapons;
+        availableEngines = PlayerInventoryManager.Instance.AvailableEngines;
+        availableWeapons = PlayerInventoryManager.Instance.AvailableWeapons;
 
         for (int i = 0; i < availableEngines.Count; i++)
         {
