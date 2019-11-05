@@ -4,6 +4,8 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
+    public AudioMixerGroup mixer;
+
     [Header("Sound Lists")]
     [Tooltip("Sounds to be played locally. E.G Music, UI Effects. Usually non-diegetic audio.")]
     public Sound[] localSounds;
@@ -34,7 +36,7 @@ public class AudioManager : MonoBehaviour
 
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
-
+            s.source.outputAudioMixerGroup = mixer;
             s.source.loop = s.loop;
         }
     }
@@ -139,7 +141,8 @@ public class AudioManager : MonoBehaviour
         _source.volume = s.volume;
         _source.pitch = s.pitch;
         _source.loop = s.loop;
-        _source.spatialBlend = 1;
+        _source.spatialBlend = 0.99f;
+        _source.outputAudioMixerGroup = mixer;
         _source.Play();
         if (destroy == true)
         {
