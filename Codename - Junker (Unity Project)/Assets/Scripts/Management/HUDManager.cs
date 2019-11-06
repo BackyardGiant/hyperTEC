@@ -65,6 +65,8 @@ public class HUDManager : MonoBehaviour
     private GameObject m_currentLoot;
     private GameObject m_prevLoot;
     private Vector2 m_crosshairPosition;
+    private float m_buttonHoldTime = 0;
+    private int m_buttonBeingHeld = -1;
 
     #region Accessors
     public static HUDManager Instance { get => s_instance; set => s_instance = value; }
@@ -101,37 +103,87 @@ public class HUDManager : MonoBehaviour
     void Update()
     {
         #region LootInteraction
-        //If player presses button, and Loot Display is active, start filling in the scan button.
-        if (Input.GetButton("Interact") && LootDisplay.activeInHierarchy == true)
+
+        if(Input.GetButton("Interact") && LootDisplay.activeInHierarchy == true)
         {
-            Scanner.fillAmount += m_scanningFillSpeed * Time.deltaTime;
-            DisplayLootStats(m_currentLoot);
+            m_buttonBeingHeld = 0;
         }
-        //If the player lets go of the button while it's below 0.1f fill amount, the player has picked the item up.
-        if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && m_displayAnimated == true && m_enablePickup == true)
+        else if(Input.GetButton("Dismiss") && LootDisplay.activeInHierarchy == true)
+        {
+            m_buttonBeingHeld = 1;
+        }
+
+        if(m_buttonBeingHeld != -1)
+        {
+            m_buttonHoldTime += Time.deltaTime * m_scanningFillSpeed;
+        }
+
+        if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.1f && m_displayAnimated == true && m_enablePickup == true)
         {
             //Make pickup item code here
             GameObject _pickupLoot = m_currentLoot;
-            
-            if(m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
+
+            if (m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
             {
                 PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
             }
 
             IncrementPlayerPref("WeaponsCollected");
             Debug.Log("Pickup Loot.");
-            Scanner.fillAmount = 0;
 
             Destroy(m_currentLoot);
             ClearLootDisplay();
             ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
+
+            Scanner.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
         }
 
-        //If player lets go of the button and it's above 0.1f fill amount, clear the progress.
-        if (Input.GetButtonUp("Interact") && Scanner.fillAmount > 0.1f && m_displayAnimated == true)
+        if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.1f)
+        {
+            Scanner.fillAmount = m_buttonHoldTime - 0.1f;
+            DisplayLootStats(m_currentLoot);
+        }
+
+        if (Input.GetButtonUp("Interact") && m_displayAnimated == true)
         {
             Scanner.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
         }
+
+        ////If player presses button, and Loot Display is active, start filling in the scan button.
+        //if (Input.GetButton("Interact") && LootDisplay.activeInHierarchy == true)
+        //{
+        //    Scanner.fillAmount += m_scanningFillSpeed * Time.deltaTime;
+        //    DisplayLootStats(m_currentLoot);
+        //}
+        ////If the player lets go of the button while it's below 0.1f fill amount, the player has picked the item up.
+        //if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && m_displayAnimated == true && m_enablePickup == true)
+        //{
+        //    //Make pickup item code here
+        //    GameObject _pickupLoot = m_currentLoot;
+            
+        //    if(m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
+        //    {
+        //        PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
+        //    }
+
+        //    IncrementPlayerPref("WeaponsCollected");
+        //    Debug.Log("Pickup Loot.");
+        //    Scanner.fillAmount = 0;
+
+        //    Destroy(m_currentLoot);
+        //    ClearLootDisplay();
+        //    ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
+        //}
+
+        ////If player lets go of the button and it's above 0.1f fill amount, clear the progress.
+        //if (Input.GetButtonUp("Interact") && Scanner.fillAmount > 0.1f && m_displayAnimated == true)
+        //{
+        //    Scanner.fillAmount = 0;
+        //}
 
         //Full scan complete, open and animate display.
         if (Scanner.fillAmount == 1 && m_currentlyScanning == false)
@@ -140,6 +192,8 @@ public class HUDManager : MonoBehaviour
 
             IncrementPlayerPref("WeaponsScanned");
             Scanner.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
             LootDisplay.GetComponent<Animator>().Play("DisplayStats");
             m_currentlyScanning = true;
 
@@ -152,6 +206,8 @@ public class HUDManager : MonoBehaviour
             m_enablePickup = false;
 
             Scanner.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
             LootDisplay.GetComponent<Animator>().Play("HideStats");
             m_currentlyClosingScan = true;
             m_currentlyScanning = false;
@@ -160,15 +216,17 @@ public class HUDManager : MonoBehaviour
         }
 
         //Dismiss being held down fills in the button.
-        if (Input.GetButton("Dismiss") && LootDisplay.activeInHierarchy == true)
+        if (m_buttonBeingHeld == 1 && LootDisplay.activeInHierarchy == true)
         {
-            Destroyer.fillAmount += m_destroyFillSpeed * Time.deltaTime;
+            Destroyer.fillAmount = m_buttonHoldTime;
         }
 
         //Letting go of the Dismiss button clears the progress
         if (Input.GetButtonUp("Dismiss") && LootDisplay.activeInHierarchy == true)
         {
             Destroyer.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
         }
 
         //Destroy the target object.
@@ -176,6 +234,8 @@ public class HUDManager : MonoBehaviour
         {
             //Make it explode in here
             Destroyer.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
             GameObject explosion = Instantiate(Explosion,m_currentLoot.transform.position,m_currentLoot.transform.rotation);
             explosion.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentLoot.gameObject, true, false);

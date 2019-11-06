@@ -10,7 +10,6 @@ public class EndPlaysessionController : MonoBehaviour
     public GameObject QtoQuit;
     public GameObject PtoQuit;
 
-    public Inventory playerInv;
     public WeaponData default1, default2;
 
     private string BASE_URL = "https://docs.google.com/forms/u/2/d/e/1FAIpQLSciZFR9V7bROx3Rp_qYcxTFKPyAruDc3Vu_jrc4JCekBiHNLg/formResponse";

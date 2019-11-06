@@ -77,8 +77,20 @@ public class PlayerShooting : MonoBehaviour
         m_aimingCamera = Camera.main;
 
         float _range = -(m_slowerFireRate - m_quickerFireRate);
-        float _rightFireRatePercentage = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate / 100;
-        float _leftFireRatePercentage = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate / 100;
+
+        float _leftFireRatePercentage;
+        float _rightFireRatePercentage;
+
+        try
+        {
+            _rightFireRatePercentage = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate / 100;
+        }
+        catch { _rightFireRatePercentage = 0; }
+        try
+        {
+            _leftFireRatePercentage = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate / 100;
+        }
+        catch { _leftFireRatePercentage = 0; }
         // Set the cooldowns of the equipped weapons. Should probably change to not be on Start() but it's okay here for now.
         m_rightWeaponCooldown = m_slowerFireRate + (_rightFireRatePercentage * _range);
         m_leftWeaponCooldown = m_slowerFireRate + (_leftFireRatePercentage * _range);

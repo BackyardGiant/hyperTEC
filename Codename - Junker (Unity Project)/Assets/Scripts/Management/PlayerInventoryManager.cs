@@ -7,9 +7,6 @@ public class PlayerInventoryManager : MonoBehaviour
     private static PlayerInventoryManager s_instance;
     public static PlayerInventoryManager Instance { get => s_instance; set => s_instance = value; }
 
-    public Inventory playerInventory;
-    public Inventory defaultPlayerInv;
-
     #region old inv stuff
     [SerializeField]
     private List<WeaponData> m_availableWeapons;
@@ -47,23 +44,6 @@ public class PlayerInventoryManager : MonoBehaviour
         else
         {
             Destroy(this);
-        }
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            playerInventory.AvailableEngines = defaultPlayerInv.AvailableEngines;
-            playerInventory.AvailableWeapons = defaultPlayerInv.AvailableWeapons;
-
-            playerInventory.EquippedEngine = defaultPlayerInv.EquippedEngine;
-            playerInventory.EquippedLeftWeapon = defaultPlayerInv.EquippedLeftWeapon;
-            playerInventory.EquippedRightWeapon = defaultPlayerInv.EquippedRightWeapon;
-
-            playerInventory.EquippedEngineIndex = defaultPlayerInv.EquippedEngineIndex;
-            playerInventory.EquippedLeftIndex = defaultPlayerInv.EquippedLeftIndex;
-            playerInventory.EquippedRightIndex = defaultPlayerInv.EquippedRightIndex;
         }
     }
 }
