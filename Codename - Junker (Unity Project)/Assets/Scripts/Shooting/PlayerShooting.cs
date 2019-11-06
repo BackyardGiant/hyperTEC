@@ -17,14 +17,20 @@ public class PlayerShooting : MonoBehaviour
 
     [SerializeField, Header("Target")]
     private Transform m_target;
+
+    //[SerializeField, Header("Inventory")]
+    //private Inventory playerInv;
+
     private Vector3 m_targetPosition;
 
     private bool m_playerCanShoot = true;
 
     #region Cooldowns
-    [SerializeField, Header("Cooldown"), Tooltip("The time taken for the right weapon to ready to fire")]
+    [SerializeField, Header("Cooldown"), Tooltip("The cooldown speed of a fire rate of 0.")]
+    private float m_quickerFireRate;
+    [SerializeField, Tooltip("The cooldown speed of a fire rate of 100.")]
+    private float m_slowerFireRate;
     private float m_rightWeaponCooldown;
-    [SerializeField,Tooltip("The time taken for the right weapon to ready to fire")]
     private float m_leftWeaponCooldown;
     private bool m_rightWeaponActive = true;
     private bool m_leftWeaponActive = true;
@@ -69,6 +75,25 @@ public class PlayerShooting : MonoBehaviour
     void Start()
     {
         m_aimingCamera = Camera.main;
+
+        float _range = -(m_slowerFireRate - m_quickerFireRate);
+
+        float _leftFireRatePercentage;
+        float _rightFireRatePercentage;
+
+        try
+        {
+            _rightFireRatePercentage = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate / 100;
+        }
+        catch { _rightFireRatePercentage = 0; }
+        try
+        {
+            _leftFireRatePercentage = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate / 100;
+        }
+        catch { _leftFireRatePercentage = 0; }
+        // Set the cooldowns of the equipped weapons. Should probably change to not be on Start() but it's okay here for now.
+        m_rightWeaponCooldown = m_slowerFireRate + (_rightFireRatePercentage * _range);
+        m_leftWeaponCooldown = m_slowerFireRate + (_leftFireRatePercentage * _range);
     }
 
     // Update is called once per frame
@@ -106,14 +131,14 @@ public class PlayerShooting : MonoBehaviour
         m_spawnLocations[0].transform.LookAt(m_target);
         m_spawnLocations[1].transform.LookAt(m_target);
 
-        if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot)
+        if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedRightWeapon != null)
         {
             SpawnBullet(0);
             m_rightWeaponActive = false;
             StartCoroutine(rightCooldown());
         }
 
-        if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot)
+        if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
         {
             SpawnBullet(1);
             m_leftWeaponActive = false;
@@ -126,6 +151,10 @@ public class PlayerShooting : MonoBehaviour
     // 0 means right hand side, 1 means left hand side
     void SpawnBullet(int _side)
     {
+        //Temporary implementation of shooting sounds
+        float _random = Random.Range(1f, 2f);
+        AudioManager.Instance.Pitch("SimpleShoot", _random);
+        AudioManager.Instance.Play("SimpleShoot");
         GameObject newBullet = Instantiate(m_bulletPrefab, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
         newBullet.GetComponent<BulletBehaviour>().SpawnedBy = gameObject;
         newBullet.GetComponent<BulletBehaviour>().LifeTime = m_bulletLifeTime;

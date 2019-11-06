@@ -37,6 +37,18 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+
+        if (Input.GetButtonDown("Inventory") && sceneName == "TechDemo61119")
+        {
+            SceneManager.LoadScene("ModularShip");
+        }
+        else if(Input.GetButtonDown("Inventory") && sceneName == "ModularShip")
+        { 
+            SceneManager.LoadScene("TechDemo61119");
+        }
     }
 
     public void SetSlowMo(float _newSpeed)

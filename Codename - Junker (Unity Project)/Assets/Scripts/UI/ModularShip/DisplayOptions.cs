@@ -13,12 +13,17 @@ public class DisplayOptions : MonoBehaviour
     public List<EngineData> availableEngines;
     public List<WeaponData> availableWeapons;
 
+    //public Inventory playerInventory;
+
     private List<GameObject> m_modulesList = new List<GameObject>();
 
     public List<GameObject> ModulesList { get => m_modulesList; set => m_modulesList = value; }
 
     private void Awake()
     {
+        availableEngines = PlayerInventoryManager.Instance.AvailableEngines;
+        availableWeapons = PlayerInventoryManager.Instance.AvailableWeapons;
+
         for (int i = 0; i < availableEngines.Count; i++)
         {
             GameObject _goTempEngineElement = Instantiate(goTemplateEngineElement, contentPanel);

@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Bullet
   - gun
+  - InventoryManager
   layers:
   - Default
   - TransparentFX

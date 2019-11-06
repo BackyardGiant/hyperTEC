@@ -30,11 +30,13 @@ public class ThrustEffectController : MonoBehaviour
     private float m_currentAcceleration;
     private float m_maxAcceleration;
     private bool m_engineOff;
+    private bool m_currentlyBoosting;
 
 
     void Start()
     {
         m_engineOff = false;
+        m_currentlyBoosting = false;
 
         m_maxLightIntensity = new float[m_engineGlow.Length];
         m_maxEmission = new float[m_engineParticles.Length];
@@ -43,6 +45,14 @@ public class ThrustEffectController : MonoBehaviour
         m_highSpeedEmissionLifetime = new float[m_highSpeedEngineParticles.Length];
         m_planeMaterial = new Material[m_emissionPlane.Length];
 
+        //Play all engine sounds and set appropriate values;
+        AudioManager.Instance.Play("EngineIdle");
+        AudioManager.Instance.Play("EngineAccelerating");
+        AudioManager.Instance.Volume("EngineAccelerating", 0.0f);
+        AudioManager.Instance.Play("EngineOverworking");
+        AudioManager.Instance.Volume("EngineOverworking",0.0f);
+        AudioManager.Instance.Play("EngineBacking");
+        AudioManager.Instance.Volume("EngineBacking", 0.0f);
 
 
 
@@ -206,14 +216,49 @@ public class ThrustEffectController : MonoBehaviour
                 m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.5f);
             }
         }
-            #endregion
+        #endregion
+
+        #region EngineSoundFX
+        float _idleVolume = 0.2f + (0.3f * _powerPercentage);
+        float _idlePitch = 0.3f + (0.1f * _powerPercentage);
+
+        float _backingVolume = 0.1f * (_powerPercentage - 0.7f);
+        float _acceleratingVolume = 0.1f * _powerPercentage;
+        float _overworkingVolume = 0.05f * (_powerPercentage - 0.5f);
+
+        float _engineIdleVolume = AudioManager.Instance.getVolume("EngineIdle");
+        float _engineIdlePitch = AudioManager.Instance.getPitch("EngineIdle");
+        float _currentBackingVolume = AudioManager.Instance.getVolume("EngineBacking");
+        float _currentBackingPitch = AudioManager.Instance.getPitch("EngineBacking");
+        float _currentAcceleratingVolume = AudioManager.Instance.getVolume("EngineAccelerating");
+        float _currentOverworkingVolume = AudioManager.Instance.getVolume("EngineOverworking");
+
+
+        if (m_engineOff == false)
+        {
+            AudioManager.Instance.Volume("EngineIdle", Mathf.Lerp(_engineIdleVolume, _idleVolume, .2f));
+            AudioManager.Instance.Pitch("EngineIdle", Mathf.Lerp(_engineIdlePitch, _idlePitch, .2f));
+            AudioManager.Instance.Volume("EngineBacking", Mathf.Lerp(_currentBackingVolume, _backingVolume, .2f));
+            AudioManager.Instance.Volume("EngineAccelerating", Mathf.Lerp(_currentAcceleratingVolume, _acceleratingVolume, .05f));
+            AudioManager.Instance.Volume("EngineOverworking", Mathf.Lerp(_currentOverworkingVolume, _overworkingVolume, .05f));
+        }
+
+        if(m_engineOff == true && m_currentlyBoosting == false &&( _engineIdleVolume > 0.0f || _engineIdlePitch > 0.1f || _currentBackingVolume > 0.0f || _currentAcceleratingVolume > 0.0f || _currentOverworkingVolume > 0.0f))
+        {
+            AudioManager.Instance.Pitch("EngineIdle", Mathf.Lerp(AudioManager.Instance.getPitch("EngineIdle"), 0.1f, .1f));
+            AudioManager.Instance.Volume("EngineIdle", Mathf.Lerp(AudioManager.Instance.getVolume("EngineIdle"), 0f, .002f));
+            AudioManager.Instance.Pitch("EngineBacking", Mathf.Lerp(_currentBackingPitch, 0.1f, .1f));
+            AudioManager.Instance.Volume("EngineBacking", Mathf.Lerp(_currentBackingVolume, 0, .002f));
+            AudioManager.Instance.Volume("EngineAccelerating", Mathf.Lerp(_currentAcceleratingVolume, 0, .3f));
+            AudioManager.Instance.Volume("EngineOverworking", Mathf.Lerp(_currentOverworkingVolume, 0, .3f));
+        }
+
+        #endregion
     }
 
     public void EngineOff()
     {
         m_engineOff = true;
-
-
         var _emission = m_engineParticles[0].emission;
         for (int i = 0; i < m_engineParticles.Length; i++)
         {
@@ -242,6 +287,11 @@ public class ThrustEffectController : MonoBehaviour
 
     public void BoostOn()
     {
+        int _boostedCount = PlayerPrefs.GetInt("BoostedCount");
+        PlayerPrefs.SetInt("BoostedCount", _boostedCount + 1);
+        m_currentlyBoosting = true;
+        AudioManager.Instance.Play("EngineBoost");
+
         for (int i = 0; i < m_engineGlow.Length; i++)
         {
             m_engineGlow[i].intensity = Mathf.Lerp(m_engineGlow[i].intensity, 50000, 0.1f);
@@ -306,6 +356,6 @@ public class ThrustEffectController : MonoBehaviour
             _highSpeedEmissionMain.simulationSpeed = 1f;
             _highSpeedEmissionMain.startLifetime = m_highSpeedEmissionLifetime[i];
         }
-
+        m_currentlyBoosting = false;
     }
 }

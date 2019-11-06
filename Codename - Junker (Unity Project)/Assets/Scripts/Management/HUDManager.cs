@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 public class HUDManager : MonoBehaviour
 {
@@ -10,9 +10,12 @@ public class HUDManager : MonoBehaviour
     public GameObject Player;
     public Camera Camera;
     public Sprite TargetSprite;
+    public GameObject Explosion;
+
+    //public Inventory playerInv;
 
     #region EnemyIndicators
-    [Header ("Enemy Indicator System")]
+    [Header ("Enemy Indicator System"), Space(20)]
     public Sprite enemyArrowPointer;
     [SerializeField, Tooltip("Colour of the enemy indicators")]
     private Color m_enemyTargetColour;
@@ -26,7 +29,7 @@ public class HUDManager : MonoBehaviour
     #endregion
 
     #region LootIndicators
-    [Header("Loot Indicator System")]
+    [Header("Loot Indicator System"),Space(20)]
     public GameObject LootDisplay;
     public Image Scanner;
     public Image Destroyer;
@@ -42,6 +45,10 @@ public class HUDManager : MonoBehaviour
     private float m_scanningFillSpeed;
     [SerializeField, Tooltip("How quickly the destroy occurs. Higher is faster."), Range(0.2f, 1f)]
     private float m_destroyFillSpeed;
+    [SerializeField,Header("Loot Display Elements"),Tooltip("Display elements of the Loot Display. This will show the stats of the visible loot item."),Space(20)]
+    private TextMeshProUGUI m_weaponTitle;
+    [SerializeField, Tooltip("Each stat item. Needs the value first then the arrow second.")]
+    private GameObject[] m_damage, m_fireRate, m_reloadTime, m_accuracy;
     #endregion
 
     #region AutoAim
@@ -51,12 +58,15 @@ public class HUDManager : MonoBehaviour
 
 
     private bool m_displayAnimated;
+    private bool m_enablePickup;
     private bool m_currentlyClosingScan = false;
     private bool m_currentlyScanning = false;
     private GameObject m_displayDismissed;
     private GameObject m_currentLoot;
     private GameObject m_prevLoot;
     private Vector2 m_crosshairPosition;
+    private float m_buttonHoldTime = 0;
+    private int m_buttonBeingHeld = -1;
 
     #region Accessors
     public static HUDManager Instance { get => s_instance; set => s_instance = value; }
@@ -68,6 +78,7 @@ public class HUDManager : MonoBehaviour
 
     void Start()
     {
+        m_enablePickup = true;
         //Calculate Clamp angle of arrow. This is equal to the angle at which the enemy is to the behind of the player. Working out this value prevents arrows floating around the screen.
         m_displayAnimated = false;
         m_arrowClampAngle = Mathf.Asin((Screen.height) / Mathf.Sqrt((m_viewDistance * m_viewDistance) + (Screen.height * Screen.height)));
@@ -92,55 +103,130 @@ public class HUDManager : MonoBehaviour
     void Update()
     {
         #region LootInteraction
-        //If player presses button, and Loot Display is active, start filling in the scan button.
-        if (Input.GetButton("Interact") && LootDisplay.activeInHierarchy == true)
+
+        if(Input.GetButton("Interact") && LootDisplay.activeInHierarchy == true)
         {
-            Scanner.fillAmount += m_scanningFillSpeed * Time.deltaTime;
+            m_buttonBeingHeld = 0;
         }
-        //If the player lets go of the button while it's below 0.1f fill amount, the player has picked the item up.
-        if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && m_displayAnimated == true)
+        else if(Input.GetButton("Dismiss") && LootDisplay.activeInHierarchy == true)
+        {
+            m_buttonBeingHeld = 1;
+        }
+
+        if(m_buttonBeingHeld != -1)
+        {
+            m_buttonHoldTime += Time.deltaTime * m_scanningFillSpeed;
+        }
+
+        if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.1f && m_displayAnimated == true && m_enablePickup == true)
         {
             //Make pickup item code here
-            //Gameobject _pickupLoot = m_currentLoot;
+            GameObject _pickupLoot = m_currentLoot;
 
+            if (m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
+            {
+                PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
+            }
 
+            IncrementPlayerPref("WeaponsCollected");
             Debug.Log("Pickup Loot.");
+
+            Destroy(m_currentLoot);
+            ClearLootDisplay();
+            ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
+
             Scanner.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
         }
 
-        //If player lets go of the button and it's above 0.1f fill amount, clear the progress.
-        if (Input.GetButtonUp("Interact") && Scanner.fillAmount > 0.1f && m_displayAnimated == true)
+        if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.1f)
+        {
+            Scanner.fillAmount = m_buttonHoldTime - 0.1f;
+            DisplayLootStats(m_currentLoot);
+        }
+
+        if (Input.GetButtonUp("Interact") && m_displayAnimated == true)
         {
             Scanner.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
         }
+
+        ////If player presses button, and Loot Display is active, start filling in the scan button.
+        //if (Input.GetButton("Interact") && LootDisplay.activeInHierarchy == true)
+        //{
+        //    Scanner.fillAmount += m_scanningFillSpeed * Time.deltaTime;
+        //    DisplayLootStats(m_currentLoot);
+        //}
+        ////If the player lets go of the button while it's below 0.1f fill amount, the player has picked the item up.
+        //if (Input.GetButtonUp("Interact") && Scanner.fillAmount < 0.1f && m_displayAnimated == true && m_enablePickup == true)
+        //{
+        //    //Make pickup item code here
+        //    GameObject _pickupLoot = m_currentLoot;
+            
+        //    if(m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
+        //    {
+        //        PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
+        //    }
+
+        //    IncrementPlayerPref("WeaponsCollected");
+        //    Debug.Log("Pickup Loot.");
+        //    Scanner.fillAmount = 0;
+
+        //    Destroy(m_currentLoot);
+        //    ClearLootDisplay();
+        //    ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
+        //}
+
+        ////If player lets go of the button and it's above 0.1f fill amount, clear the progress.
+        //if (Input.GetButtonUp("Interact") && Scanner.fillAmount > 0.1f && m_displayAnimated == true)
+        //{
+        //    Scanner.fillAmount = 0;
+        //}
 
         //Full scan complete, open and animate display.
         if (Scanner.fillAmount == 1 && m_currentlyScanning == false)
         {
+            m_enablePickup = false;
+
+            IncrementPlayerPref("WeaponsScanned");
             Scanner.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
             LootDisplay.GetComponent<Animator>().Play("DisplayStats");
             m_currentlyScanning = true;
+
+            Invoke("togglePickup", .2f);
         }
         
         //Full close complete, close and animate display.
         if (Scanner.fillAmount == 1 && m_currentlyScanning == true)
         {
+            m_enablePickup = false;
+
             Scanner.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
             LootDisplay.GetComponent<Animator>().Play("HideStats");
             m_currentlyClosingScan = true;
             m_currentlyScanning = false;
+
+            Invoke("togglePickup", .2f);
         }
 
         //Dismiss being held down fills in the button.
-        if (Input.GetButton("Dismiss") && LootDisplay.activeInHierarchy == true)
+        if (m_buttonBeingHeld == 1 && LootDisplay.activeInHierarchy == true)
         {
-            Destroyer.fillAmount += m_destroyFillSpeed * Time.deltaTime;
+            Destroyer.fillAmount = m_buttonHoldTime;
         }
 
         //Letting go of the Dismiss button clears the progress
         if (Input.GetButtonUp("Dismiss") && LootDisplay.activeInHierarchy == true)
         {
             Destroyer.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
         }
 
         //Destroy the target object.
@@ -148,14 +234,18 @@ public class HUDManager : MonoBehaviour
         {
             //Make it explode in here
             Destroyer.fillAmount = 0;
+            m_buttonBeingHeld = -1;
+            m_buttonHoldTime = 0;
+            GameObject explosion = Instantiate(Explosion,m_currentLoot.transform.position,m_currentLoot.transform.rotation);
+            explosion.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentLoot.gameObject, true, false);
             ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
             Destroy(m_currentLoot);
+            IncrementPlayerPref("WeaponsDestroyed");
             ClearLootDisplay();
 
         }
         #endregion
-
-
     }
 
     #region Enemy Detection Methods
@@ -183,7 +273,18 @@ public class HUDManager : MonoBehaviour
         }
 
         //moveit
-        _targetImage.rectTransform.localScale = new Vector3(m_enemyTargetSize, m_enemyTargetSize, m_enemyTargetSize);
+        float _distancePercentage =  1 - Vector3.Distance(Player.transform.position, _enemy.GetComponent<Transform>().position) / m_viewDistance;
+        float _finalSize = 0.05f + _distancePercentage * m_enemyTargetSize ;
+
+
+
+
+
+        _targetImage.rectTransform.localScale = new Vector3(_finalSize,_finalSize,_finalSize);
+
+
+
+
         _targetImage.sprite =TargetSprite;
         _targetImage.transform.position = _screenPos;
         _targetImage.transform.localEulerAngles = Vector3.zero;
@@ -264,6 +365,7 @@ public class HUDManager : MonoBehaviour
     public void ClearEnemyDetection(EnemyDetection _enemy)
     {
         Destroy(_enemy.EnemyTarget);
+        m_closetEnemy = null;
     }
     #endregion
     #region Loot Detection Methods
@@ -339,8 +441,6 @@ public class HUDManager : MonoBehaviour
     {
         Scanner.fillAmount = 0;
         Destroyer.fillAmount = 0;
-        m_displayAnimated = false;
-        m_currentlyClosingScan = false;
         if (m_currentlyScanning == true)
         {
             LootDisplay.GetComponent<Animator>().Play("CloseFromScanned");
@@ -384,7 +484,8 @@ public class HUDManager : MonoBehaviour
 
         for(int i = 0; i < _lootObjects.Length; i++)
         {
-            if (_lootObjects[i].GetComponent<Renderer>().isVisible)
+            float _distance = Vector3.Distance(Player.transform.position, _lootObjects[i].transform.position);
+            if (IsVisibleFrom(_lootObjects[i].GetComponent<Renderer>(), Camera) && _distance < m_lootViewDistance)
             {
                 _visibleLootObjects.Add(_lootObjects[i]);
             }
@@ -395,19 +496,23 @@ public class HUDManager : MonoBehaviour
     //Draws the lootdisplay with appropriate offset based on the current function.
     private void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
     {
-        if (!m_displayAnimated)
-        {
-            LootDisplay.GetComponent<Animator>().Play("ShowLoot");
-            m_displayAnimated = true;
-        }
+        //Check player is going slow enough to look at it.
         Vector3 _displayTargetPos;
-        if (m_currentlyScanning)
+        if (Player.GetComponent<PlayerMovement>().CurrentSpeed/Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
         {
-            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height * 2.5f);
-            LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.2f);
+            if (!m_displayAnimated)
+            {
+                LootDisplay.GetComponent<Animator>().Play("ShowLoot");
+                m_displayAnimated = true;
+            }
+            if (m_currentlyScanning)
+            {
+                _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height * 2.5f);
+                LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.2f);
 
+            }
         }
-        else if (m_currentlyClosingScan)
+        if (m_currentlyClosingScan)
         {
             _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
             LootDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.00001f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
@@ -421,6 +526,150 @@ public class HUDManager : MonoBehaviour
             _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
             LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.2f);
         }
+    }
+    private void DisplayLootStats(GameObject _currentLoot)
+    {
+        try
+        {
+            WeaponData _lootData = _currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            float _currentDamage;
+            float _currentFireRate;
+            float _currentReloadTime;
+            float _currentAccuracy;
+
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage < PlayerInventoryManager.Instance.EquippedRightWeapon.Damage){_currentDamage = PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage;}
+            else {_currentDamage = PlayerInventoryManager.Instance.EquippedRightWeapon.Damage;}
+
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate < PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate) { _currentFireRate = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate; }
+            else { _currentFireRate = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate; }
+
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime < PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime) { _currentReloadTime = PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime; }
+            else { _currentReloadTime = PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime; }
+
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy < PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy) { _currentAccuracy = PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy; }
+            else { _currentAccuracy = PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy; }
+
+
+            m_weaponTitle.text = _lootData.Name;
+
+
+            Image _damageArrow = m_damage[1].GetComponent<Image>();
+            Image _fireRateArrow = m_fireRate[1].GetComponent<Image>();
+            Image _reloadArrow = m_reloadTime[1].GetComponent<Image>();
+            Image _accuracyArrow = m_accuracy[1].GetComponent<Image>();
+
+            ///////////////////////////////////////////////
+            m_damage[0].GetComponent<TextMeshProUGUI>().text = _lootData.Damage.ToString();
+            if (_lootData.Damage > _currentDamage)
+            {
+                //Higher - Green Arrow
+                _damageArrow.enabled = true;
+                _damageArrow.color = Color.green;
+                _damageArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
+            else if (_lootData.Damage < _currentDamage)
+            {
+                //Lower - Red Arrow
+                _damageArrow.enabled = true;
+                _damageArrow.color = Color.red;
+                _damageArrow.rectTransform.localRotation = Quaternion.Euler(0,0,180);
+            }
+            else
+            {
+                // Equal - Hide Arrow
+                _damageArrow.enabled = false;
+            }
+
+            //////////////////////////////////////////////
+            m_fireRate[0].GetComponent<TextMeshProUGUI>().text = _lootData.FireRate.ToString();
+            if (_lootData.FireRate > _currentFireRate)
+            {
+                //Higher - Green Arrow
+                _fireRateArrow.enabled = true;
+                _fireRateArrow.color = Color.green;
+                _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
+            else if (_lootData.FireRate < _currentFireRate)
+            {
+                //Lower - Red Arrow
+                _fireRateArrow.enabled = true;
+                _fireRateArrow.color = Color.red;
+                _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+            }
+            else
+            {
+                // Equal - Hide Arrow
+                _fireRateArrow.enabled = false;
+            }
+
+            /////////////////////////////////////////////////
+            m_reloadTime[0].GetComponent<TextMeshProUGUI>().text = _lootData.ReloadTime.ToString();
+            if (_lootData.ReloadTime > _currentReloadTime)
+            {
+                //Higher - Green Arrow
+                _reloadArrow.enabled = true;
+                _reloadArrow.color = Color.green;
+                _reloadArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
+            else if (_lootData.ReloadTime < _currentReloadTime)
+            {
+                //Lower - Red Arrow
+                _reloadArrow.enabled = true;
+                _reloadArrow.color = Color.red;
+                _reloadArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+            }
+            else
+            {
+                // Equal - Hide Arrow
+                _reloadArrow.enabled = false;
+            }
+
+
+
+            ////////////////////////////////////////////////
+            m_accuracy[0].GetComponent<TextMeshProUGUI>().text = _lootData.Accuracy.ToString();
+            if (_lootData.Accuracy > _currentAccuracy)
+            {
+                //Higher - Green Arrow
+                _accuracyArrow.enabled = true;
+                _accuracyArrow.color = Color.green;
+                _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
+            else if (_lootData.Accuracy < _currentAccuracy)
+            {
+                //Lower - Red Arrow
+                _accuracyArrow.enabled = true;
+                _accuracyArrow.color = Color.red;
+                _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+            }
+            else
+            {
+                // Equal - Hide Arrow
+                _accuracyArrow.enabled = false;
+            }
+
+
+        }
+        catch { Debug.LogError("Error with displaying loot stats."); }
+    }
+    private void togglePickup()
+    {
+        m_enablePickup = true;
+    }
+    #endregion
+
+
+    #region Universal Methods
+    private bool IsVisibleFrom(Renderer renderer, Camera camera)
+    {
+        //Creates planes emitting from selected camera to detect if object is visible. Returns true if it is.
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
+        return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);
+    }
+    private void IncrementPlayerPref(string _name)
+    {
+        int _value = PlayerPrefs.GetInt(_name);
+        PlayerPrefs.SetInt(_name, _value + 1);
     }
     #endregion
 }

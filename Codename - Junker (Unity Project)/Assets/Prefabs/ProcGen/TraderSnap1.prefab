@@ -129,6 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7986433555038933869}
+  - component: {fileID: 7866784174339379862}
   m_Layer: 0
   m_Name: TraderSnap1
   m_TagString: Untagged
@@ -151,6 +152,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7866784174339379862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986433555038933874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ebf6752892d40439c0437c19a5a704, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BarrelSnap: {fileID: 4827860733050803819}
+  BatterySnap: {fileID: 4827860731914005442}
+  TargetingSnap: {fileID: 4827860732289482593}
+  MagazineSnap: {fileID: 4827860731908144077}
+  statBlock: {fileID: 0}
+  isRandom: 0
 --- !u!1 &8527216032532198921
 GameObject:
   m_ObjectHideFlags: 0

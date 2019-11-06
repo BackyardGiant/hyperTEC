@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SelectionManager : MonoBehaviour
 {
     public DisplayOptions display;
     public GameObject goShipEngineSnap, goShipLeftSnap, goShipRightSnap;
+
+    public TextMeshProUGUI currentPreviewtext; 
 
     private int m_currentlySelectedIndex = 0;
     private bool m_readyForInput = true;
@@ -16,9 +19,14 @@ public class SelectionManager : MonoBehaviour
     // Initialise all to "null" (-1)
     void Start()
     {
-        m_equippedEngineIndex = -1;
-        m_equippedLeftIndex = -1;
-        m_equippedRightIndex = -1;
+        m_equippedEngineIndex = PlayerInventoryManager.Instance.EquippedEngineIndex;
+        m_equippedLeftIndex = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+        m_equippedRightIndex = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+
+        m_takenIndexes[0] = PlayerInventoryManager.Instance.EquippedEngineIndex;
+        m_takenIndexes[1] = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+        m_takenIndexes[2] = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+
 
         display.UpdateHighlightPosition(0);
         display.UpdateEquipped(m_takenIndexes);
@@ -81,6 +89,15 @@ public class SelectionManager : MonoBehaviour
             m_leftSideSelected = !m_leftSideSelected;
             Debug.Log("Left side selected? : " + m_leftSideSelected);
 
+            if(m_leftSideSelected)
+            {
+                currentPreviewtext.text = "Currently Previewing: Left Side";
+            }
+            else
+            {
+                currentPreviewtext.text = "Currently Previewing: Right Side";
+            }
+
             if (!CheckIfAlreadyEquipped())
             {
                 RemovePreviousModule();
@@ -103,11 +120,19 @@ public class SelectionManager : MonoBehaviour
                     m_equippedEngineIndex = m_currentlySelectedIndex;
                     m_takenIndexes[0] = (int)m_equippedEngineIndex;
                     Debug.Log("Equipped engine " + m_equippedEngineIndex);
+
+                    // Set equipped in player inventory
+                    PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[(int)m_equippedEngineIndex];
+                    PlayerInventoryManager.Instance.EquippedEngineIndex = (int)m_equippedEngineIndex;
                 }
                 else
                 {
                     m_equippedEngineIndex = -1;
                     m_takenIndexes[0] = -1;
+
+                    // Set removed in player inventory
+                    PlayerInventoryManager.Instance.EquippedEngine = null;
+                    PlayerInventoryManager.Instance.EquippedEngineIndex = -1;
                 }
             }
 
@@ -119,6 +144,11 @@ public class SelectionManager : MonoBehaviour
                     {
                         m_equippedRightIndex = -1;
                         m_takenIndexes[2] = -1;
+
+                        // Set removed in player inventory
+                        PlayerInventoryManager.Instance.EquippedRightWeapon = null;
+                        PlayerInventoryManager.Instance.EquippedRightIndex = -1;
+
                         RemoveRight();
                     }
 
@@ -126,6 +156,11 @@ public class SelectionManager : MonoBehaviour
                     {
                         m_equippedLeftIndex = -1;
                         m_takenIndexes[1] = -1;
+
+                        // Set removed in player inventory
+                        PlayerInventoryManager.Instance.EquippedLeftWeapon = null;
+                        PlayerInventoryManager.Instance.EquippedLeftIndex = -1;
+
                         RemoveLeft();
                     }
                 }
@@ -136,6 +171,10 @@ public class SelectionManager : MonoBehaviour
                         m_equippedLeftIndex = m_currentlySelectedIndex;
                         m_takenIndexes[1] = (int)m_equippedLeftIndex;
                         Debug.Log("Equipped left gun " + m_equippedLeftIndex);
+
+                        // Set equipped in player inventory
+                        PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[(int)m_equippedLeftIndex];
+                        PlayerInventoryManager.Instance.EquippedLeftIndex = (int)m_equippedLeftIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
                     }
 
                     if (m_equippedRightIndex != m_currentlySelectedIndex && !m_leftSideSelected)
@@ -143,6 +182,10 @@ public class SelectionManager : MonoBehaviour
                         m_equippedRightIndex = m_currentlySelectedIndex;
                         m_takenIndexes[2] = (int)m_equippedRightIndex;
                         Debug.Log("Equipped right gun " + m_equippedRightIndex);
+
+                        // Set equipped in player inventory
+                        PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[(int)m_equippedRightIndex];
+                        PlayerInventoryManager.Instance.EquippedRightIndex = (int)m_equippedRightIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
                     }
                 }
                 
