@@ -49,6 +49,11 @@ public class GameManager : MonoBehaviour
         { 
             SceneManager.LoadScene("TechDemo61119");
         }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            SaveGame();
+        }
     }
 
     public void SetSlowMo(float _newSpeed)
@@ -84,5 +89,23 @@ public class GameManager : MonoBehaviour
     {
         MovementUsabilityTestingManager.Instance.SaveValues();
         SceneManager.LoadScene("UserTesting");
+    }
+
+    public void SaveGame()
+    {
+        string _saveLine = "";
+
+        GameObject _player = GameObject.FindGameObjectWithTag("Player");
+
+        PlayerSavingObject playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, PlayerInventoryManager.Instance.EquippedRightWeapon.Seed, PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed, PlayerInventoryManager.Instance.EquippedEngine.Seed);
+
+        _saveLine = JsonUtility.ToJson(playerSave);
+
+        Debug.Log(_saveLine);
+    }
+
+    public void LoadGame()
+    {
+
     }
 }

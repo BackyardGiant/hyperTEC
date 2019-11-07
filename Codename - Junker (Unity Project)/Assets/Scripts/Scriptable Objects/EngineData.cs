@@ -6,7 +6,7 @@ using UnityEngine;
 public class EngineData : ScriptableObject
 {
     [SerializeField]
-    private string name, description;
+    private string engineName, description;
 
     private enum moduleType
     {
@@ -31,7 +31,9 @@ public class EngineData : ScriptableObject
     [SerializeField]
     private int engineId;
 
-    public string Name { get => name; set => name = value; }
+    private string seed;
+
+    public string Name { get => engineName; set => engineName = value; }
     public string Description { get => description; set => description = value; }
     public Sprite Thumbnail { get => thumbnail; set => thumbnail = value; }
     public float Value { get => value; set => this.value = value; }
@@ -42,4 +44,5 @@ public class EngineData : ScriptableObject
     private moduleType CurrentModuleType { get => currentModuleType; }
     public int EngineId { get => engineId; set => engineId = value; }
     public faction CurrentFaction { get => currentFaction; set => currentFaction = value; }
+    public string Seed { get => seed; set => seed = value; }
 }

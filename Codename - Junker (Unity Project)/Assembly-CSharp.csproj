@@ -135,6 +135,7 @@
     <Compile Include="Assets\Scripts\Movement\ReferenceMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\ThrustEffectController.cs" />
     <Compile Include="Assets\Scripts\ProcGen\WeaponGenerator.cs" />
+    <Compile Include="Assets\Scripts\SavingAndLoading\PlayerSavingObject.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\BoolVariable.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\EngineData.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\FloatVariable.cs" />

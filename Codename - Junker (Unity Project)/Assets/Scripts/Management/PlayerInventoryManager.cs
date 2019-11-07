@@ -7,7 +7,6 @@ public class PlayerInventoryManager : MonoBehaviour
     private static PlayerInventoryManager s_instance;
     public static PlayerInventoryManager Instance { get => s_instance; set => s_instance = value; }
 
-    #region old inv stuff
     [SerializeField]
     private List<WeaponData> m_availableWeapons;
 
@@ -31,7 +30,6 @@ public class PlayerInventoryManager : MonoBehaviour
     public int EquippedEngineIndex { get => m_equippedEngineIndex; set => m_equippedEngineIndex = value; }
     public int EquippedLeftIndex { get => m_equippedLeftIndex; set => m_equippedLeftIndex = value; }
     public int EquippedRightIndex { get => m_equippedRightIndex; set => m_equippedRightIndex = value; }
-    #endregion
 
     private void Awake()
     {
