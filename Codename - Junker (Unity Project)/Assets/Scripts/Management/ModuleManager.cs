@@ -188,6 +188,67 @@ public class ModuleManager : MonoBehaviour
         return _tempWeaponData;
     }
 
+    public WeaponData CreateStatBlock(string _seed)
+    {
+        WeaponData _tempWeaponData = ScriptableObject.CreateInstance<WeaponData>();
+
+        _tempWeaponData.Seed = _seed;
+
+        _tempWeaponData.Description = ""; // Desc gen here
+
+        _tempWeaponData.CurrentFaction = (WeaponData.faction)int.Parse(_seed[0].ToString());
+
+        _tempWeaponData.FireRate = float.Parse(_seed.Substring(1, 3));
+
+        _tempWeaponData.Accuracy = float.Parse(_seed.Substring(4, 3));
+        _tempWeaponData.Damage = float.Parse(_seed.Substring(7, 3));
+        _tempWeaponData.ReloadTime = float.Parse(_seed.Substring(10, 3));
+        _tempWeaponData.Value = float.Parse(_seed.Substring(13, 3));
+
+        switch (_tempWeaponData.CurrentFaction)
+        {
+            case WeaponData.faction.explorer:
+                _tempWeaponData.Name = "Explorer Gun";
+
+                _tempWeaponData.BarrelId = int.Parse(_seed[16].ToString());
+                _tempWeaponData.BatteryId = int.Parse(_seed[17].ToString());
+                _tempWeaponData.MagazineId = int.Parse(_seed[18].ToString());
+                _tempWeaponData.TargetId = int.Parse(_seed[19].ToString());
+
+                break;
+            case WeaponData.faction.construction:
+                _tempWeaponData.Name = "Construction Gun";
+
+                _tempWeaponData.BarrelId = int.Parse(_seed[16].ToString());
+                _tempWeaponData.BatteryId = int.Parse(_seed[17].ToString());
+                _tempWeaponData.MagazineId = int.Parse(_seed[18].ToString());
+                _tempWeaponData.TargetId = int.Parse(_seed[19].ToString());
+
+                break;
+            case WeaponData.faction.initial:
+                _tempWeaponData.Name = "Default Gun";
+
+                _tempWeaponData.BarrelId = int.Parse(_seed[16].ToString());
+                _tempWeaponData.BatteryId = int.Parse(_seed[17].ToString());
+                _tempWeaponData.MagazineId = int.Parse(_seed[18].ToString());
+                _tempWeaponData.TargetId = int.Parse(_seed[19].ToString());
+
+                break;
+            case WeaponData.faction.trader:
+                _tempWeaponData.Name = "Trader Gun";
+
+                _tempWeaponData.BarrelId = int.Parse(_seed[16].ToString());
+                _tempWeaponData.BatteryId = int.Parse(_seed[17].ToString());
+                _tempWeaponData.MagazineId = int.Parse(_seed[18].ToString());
+                _tempWeaponData.TargetId = int.Parse(_seed[19].ToString());
+
+                break;
+        }
+
+        _tempWeaponData.name = "Weapon";
+        return _tempWeaponData;
+    }
+
     private string GenerateSeed()
     {
         string _seed = "";
