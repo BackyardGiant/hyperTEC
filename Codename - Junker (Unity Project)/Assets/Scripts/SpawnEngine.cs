@@ -13,8 +13,9 @@ public class SpawnEngine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        int _engineChoice = PlayerPrefs.GetInt("ChosenEngine");
+        PlayerInventoryManager.Instance.EquippedEngine = new EngineData();
+        PlayerInventoryManager.Instance.EquippedEngine.Seed = "1";
+        int _engineChoice = 1;
         if(_engineChoice == 1)
         {
             AttachEngine(DefaultEngine);
