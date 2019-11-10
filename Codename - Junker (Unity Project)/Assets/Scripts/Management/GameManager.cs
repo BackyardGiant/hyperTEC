@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameEvent preSlowDown;
     public GameEvent postSlowDown;
     public GameEvent normalSpeed;
+    public TempEnemyInstantiate spawner;
 
     private Vector3 m_scale = new Vector3(1, 1, 1);
 
@@ -101,14 +102,27 @@ public class GameManager : MonoBehaviour
     public void SaveGame()
     {
         string _saveLine = "";
+        string _enemySaveLine = "";
 
         GameObject _player = GameObject.FindGameObjectWithTag("Player");
 
         PlayerSavingObject playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, PlayerInventoryManager.Instance.EquippedRightWeapon.Seed, PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed, PlayerInventoryManager.Instance.EquippedEngine.Seed);
 
+        GameObject[] _enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<EnemySavingObject> enemySaves = new List<EnemySavingObject>();
+
+        foreach (GameObject _enemy in _enemies)
+        {
+            WeaponData _enemyWeaponRight = _enemy.transform.GetChild(0).Find("RightSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            WeaponData _enemyWeaponLeft = _enemy.transform.GetChild(0).Find("LeftSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed));
+        }
+
+        string amountOfEnemies = _enemies.Length.ToString();
+
         _saveLine = JsonUtility.ToJson(playerSave);
 
-        byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
+        //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
 
         string _fileName = "SaveFile" + System.DateTime.UtcNow.ToString() + ".giant";
 
@@ -118,7 +132,15 @@ public class GameManager : MonoBehaviour
 
         File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.Write).Dispose();
 
-        File.WriteAllBytes(_fileName, _saveLineBytes);
+        File.AppendAllText(_fileName, _saveLine + System.Environment.NewLine);
+
+        File.AppendAllText(_fileName, amountOfEnemies + System.Environment.NewLine);
+
+        foreach(EnemySavingObject _enemySave in enemySaves)
+        {
+            _enemySaveLine = JsonUtility.ToJson(_enemySave);
+            File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
+        }
 
         PlayerPrefs.SetString("LatestSave", _fileName);
     }
@@ -126,18 +148,43 @@ public class GameManager : MonoBehaviour
     public void SaveGame(string _fileName)
     {
         string _saveLine = "";
+        string _enemySaveLine = "";
 
         GameObject _player = GameObject.FindGameObjectWithTag("Player");
 
         PlayerSavingObject playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, PlayerInventoryManager.Instance.EquippedRightWeapon.Seed, PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed, PlayerInventoryManager.Instance.EquippedEngine.Seed);
 
+        GameObject[] _enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<EnemySavingObject> enemySaves = new List<EnemySavingObject>();
+
+        foreach (GameObject _enemy in _enemies)
+        {
+            WeaponData _enemyWeaponRight = _enemy.transform.GetChild(0).Find("RightSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            WeaponData _enemyWeaponLeft = _enemy.transform.GetChild(0).Find("LeftSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed));
+        }
+
+        string amountOfEnemies = _enemies.Length.ToString();
+
         _saveLine = JsonUtility.ToJson(playerSave);
 
-        byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
+        //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
 
         File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.Write).Dispose();
 
-        File.WriteAllBytes(_fileName, _saveLineBytes);
+        File.WriteAllText(_fileName, System.String.Empty);
+
+        File.AppendAllText(_fileName, _saveLine + System.Environment.NewLine);
+
+        File.AppendAllText(_fileName, amountOfEnemies + System.Environment.NewLine);
+
+        foreach (EnemySavingObject _enemySave in enemySaves)
+        {
+            _enemySaveLine = JsonUtility.ToJson(_enemySave);
+            File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
+        }
+
+        PlayerPrefs.SetString("LatestSave", _fileName);
     }
 
     public void LoadGame()
@@ -146,9 +193,43 @@ public class GameManager : MonoBehaviour
 
         File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.Read).Dispose();
 
-        byte[] _loadLineBytes = File.ReadAllBytes(_fileName);
+        string[] _loadLines = File.ReadAllLines(_fileName);
 
-        PlayerSavingObject _savedPlayer = JsonUtility.FromJson<PlayerSavingObject>(System.Text.Encoding.UTF8.GetString(_loadLineBytes, 0, _loadLineBytes.Length));
+        PlayerSavingObject _savedPlayer = JsonUtility.FromJson<PlayerSavingObject>(_loadLines[0]);
+
+        GameObject[] _enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach(GameObject _enemy in _enemies)
+        {
+            Destroy(_enemy);
+        }
+
+        for (int i = 0; i < int.Parse(_loadLines[1]); i++)
+        {
+            EnemySavingObject _savedEnemy = JsonUtility.FromJson<EnemySavingObject>(_loadLines[i + 2]);
+            Vector3 _enemyPos = new Vector3(float.Parse(_savedEnemy.positionX), float.Parse(_savedEnemy.positionY), float.Parse(_savedEnemy.positionZ));
+            Quaternion _enemyRot = new Quaternion(float.Parse(_savedEnemy.rotationX), float.Parse(_savedEnemy.rotationY), float.Parse(_savedEnemy.rotationZ), float.Parse(_savedEnemy.rotationW));
+            GameObject _newEnemy = Instantiate(spawner.enemyPrefab, _enemyPos, _enemyRot);
+
+            Transform _leftSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("LeftSnap");
+            Transform _rightSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("RightSnap");
+
+            WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedEnemy.rightWeaponSeed);
+            GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _leftSnap);
+            _tempLeftGun.GetComponent<WeaponGenerator>().statBlock = _temp1;
+            _tempLeftGun.transform.SetParent(_leftSnap);
+            _tempLeftGun.transform.localPosition = Vector3.zero;
+            _tempLeftGun.transform.localRotation = Quaternion.identity;
+            _tempLeftGun.transform.localScale = m_scale;
+
+            _temp1 = ModuleManager.Instance.CreateStatBlock(_savedEnemy.leftWeaponSeed);
+            GameObject _tempRightGun = ModuleManager.Instance.GenerateWeapon(_temp1);
+            _tempRightGun.GetComponent<WeaponGenerator>().statBlock = _temp1;
+            _tempRightGun.transform.SetParent(_rightSnap);
+            _tempRightGun.transform.localPosition = Vector3.zero;
+            _tempRightGun.transform.localRotation = Quaternion.identity;
+            _tempRightGun.transform.localScale = m_scale;
+        }
 
         GameObject _player = GameObject.FindGameObjectWithTag("Player");
 
