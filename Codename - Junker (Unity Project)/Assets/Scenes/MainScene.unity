@@ -1566,6 +1566,12 @@ PrefabInstance:
       propertyPath: spawner
       value: 
       objectReference: {fileID: 1717770987}
+    - target: {fileID: 7113264020713941144, guid: 8a85022b65d0bad4f870bebc81cb8f84,
+        type: 3}
+      propertyPath: lootTemplate
+      value: 
+      objectReference: {fileID: 5742531039650702400, guid: 341df5633658ae74189c875277192328,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a85022b65d0bad4f870bebc81cb8f84, type: 3}
 --- !u!114 &663232755 stripped
@@ -3524,6 +3530,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5699840118843401054, guid: aebe92eca42947344a2089dc3ef33dcc,
+        type: 3}
+      propertyPath: spawnPoint
+      value: 
+      objectReference: {fileID: 375676218}
+    - target: {fileID: 5699840118843401054, guid: aebe92eca42947344a2089dc3ef33dcc,
+        type: 3}
+      propertyPath: enemyLimit
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5699840118843401055, guid: aebe92eca42947344a2089dc3ef33dcc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3578,16 +3594,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5699840118843401054, guid: aebe92eca42947344a2089dc3ef33dcc,
-        type: 3}
-      propertyPath: spawnPoint
-      value: 
-      objectReference: {fileID: 375676218}
-    - target: {fileID: 5699840118843401054, guid: aebe92eca42947344a2089dc3ef33dcc,
-        type: 3}
-      propertyPath: enemyLimit
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aebe92eca42947344a2089dc3ef33dcc, type: 3}

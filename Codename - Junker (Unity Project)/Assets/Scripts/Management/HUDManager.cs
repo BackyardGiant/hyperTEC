@@ -270,6 +270,7 @@ public class HUDManager : MonoBehaviour
             _targetImage = _target.AddComponent<Image>();
             _targetImage.color = m_enemyTargetColour;
             _enemy.EnemyTarget = _target;
+            _target.tag = "TargetUI";
         }
 
         //moveit
@@ -322,6 +323,7 @@ public class HUDManager : MonoBehaviour
             _targetImage = _target.AddComponent<Image>();
             _targetImage.color = m_enemyTargetColour;
             _enemy.EnemyTarget = _target;
+            _target.tag = "TargetUI";
         }
 
 
@@ -365,7 +367,6 @@ public class HUDManager : MonoBehaviour
     public void ClearEnemyDetection(EnemyDetection _enemy)
     {
         Destroy(_enemy.EnemyTarget);
-        m_closetEnemy = null;
     }
     #endregion
     #region Loot Detection Methods
