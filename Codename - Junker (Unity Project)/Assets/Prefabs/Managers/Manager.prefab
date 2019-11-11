@@ -46,4 +46,5 @@ MonoBehaviour:
   preSlowDown: {fileID: 11400000, guid: 069d3ee847de38b4bbca42934cc98242, type: 2}
   postSlowDown: {fileID: 11400000, guid: 1ca0174be80a9f74ab7a99143b0b14a6, type: 2}
   normalSpeed: {fileID: 11400000, guid: 5ff6a80814d5ebe45a0b85db0db6dbe2, type: 2}
+  spawner: {fileID: 0}
   m_gameSpeed: 1
