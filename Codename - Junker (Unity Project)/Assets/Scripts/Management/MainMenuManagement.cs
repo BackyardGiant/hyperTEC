@@ -7,18 +7,21 @@ using UnityEngine.Audio;
 
 public class MainMenuManagement : MonoBehaviour
 {
+    [SerializeField, Tooltip("Settings Menu Object")]
+    private GameObject m_settingsMenu;
     [SerializeField, Tooltip("All of the items on the menu to sort through")]
     private GameObject[] m_menuOptions;
     [SerializeField, Tooltip("UI sounds. First should be the scroll, second should be select")]
     private AudioClip[] m_sounds;
     [SerializeField, Tooltip("Audio Mixers")]
     private AudioMixer m_mixer;
+    [SerializeField, Tooltip("MainMenu Anim")]
+    private Animator m_mainMenuAnimator;
 
     private bool m_inputAllowed; //Tracks if the initial logo animation is done.
     private bool m_onMenu; //Tracks whether the player had progressed through from the logo to the menu yet.
     private bool m_readyForInput;
     private int m_selectedIndex;
-    private Animator m_mainMenuAnimator;
     private AudioSource m_UIAudio;
 
     private void Start()
@@ -39,13 +42,15 @@ public class MainMenuManagement : MonoBehaviour
         m_mixer.SetFloat("uiVol", -80 + PlayerPrefs.GetInt("uiVolume"));
 
 
-        m_mainMenuAnimator = this.GetComponent<Animator>();
         m_UIAudio = this.GetComponent<AudioSource>();
         m_selectedIndex = 0;
         m_onMenu = false;
         m_inputAllowed = false;
         InstantiatePlayerPrefs();
-        m_mainMenuAnimator.Play("MainMenuShow");
+        if (m_onMenu == false)
+        {
+            Invoke("allowInputs", 4f);
+        }
     }
 
     private void Update()
@@ -104,7 +109,7 @@ public class MainMenuManagement : MonoBehaviour
                         //Quit
                         break;
                 }
-                if ((Input.GetAxis("MacroEngine") < 0) || (Input.GetAxis("Vertical") < 0))
+                if ((Input.GetAxis("MacroEngine") < -0.3) || (Input.GetAxis("Vertical") < -0.3))
                 {
                     if (m_selectedIndex == m_menuOptions.Length - 1)
                     {
@@ -118,7 +123,7 @@ public class MainMenuManagement : MonoBehaviour
                     m_UIAudio.clip = m_sounds[0];
                     m_UIAudio.Play();
                 }
-                if ((Input.GetAxis("MacroEngine") > 0) || (Input.GetAxis("Vertical") > 0))
+                if ((Input.GetAxis("MacroEngine") > 0.3) || (Input.GetAxis("Vertical") > 0.3))
                 {
                     if (m_selectedIndex == 0)
                     {
@@ -159,6 +164,8 @@ public class MainMenuManagement : MonoBehaviour
                 }
             }
         }
+
+        
     }
 
     private void AnimateBar(int _item)
@@ -186,9 +193,14 @@ public class MainMenuManagement : MonoBehaviour
     }
 
     public void allowInputs()
-        {
+    {
         m_onMenu = true;
-        }
+        m_menuOptions[0].SetActive(true);
+        m_menuOptions[1].SetActive(true);
+        m_menuOptions[2].SetActive(true);
+        m_menuOptions[3].SetActive(true);
+        m_menuOptions[4].SetActive(true);
+    }
 
 
     private void continueGame()
@@ -209,7 +221,8 @@ public class MainMenuManagement : MonoBehaviour
     private void settings()
     {
         Debug.Log("Settings");
-        //m_onMenu = false;
+        m_settingsMenu.SetActive(true);
+        this.gameObject.SetActive(false);
     }
     private void quit()
     {

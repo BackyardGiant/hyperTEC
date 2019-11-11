@@ -7,6 +7,8 @@ using TMPro;
 
 public class SettingsMenuManagement : MonoBehaviour
 {
+    [SerializeField, Tooltip("Main Menu Object")]
+    private GameObject m_mainMenu;
     [SerializeField, Tooltip("All of the items on the menu to sort through")]
     private GameObject[] m_menuOptions;
     [SerializeField, Tooltip("All of the audio values")]
@@ -62,6 +64,24 @@ public class SettingsMenuManagement : MonoBehaviour
         if ((Input.GetAxis("MacroEngine") == 0) && (Input.GetAxis("Vertical") == 0))
         {
             m_readyForInput = true;
+        }
+
+        //Arrow Control
+        for(int i = 0; i < m_values.Length; i++)
+        {
+            if (m_values[i].text == "0")
+            {
+                m_downArrows[i].SetActive(false);
+            }
+            else if (m_values[i].text == "100")
+            {
+                m_upArrows[i].SetActive(false);
+            }
+            else
+            {
+                m_downArrows[i].SetActive(true);
+                m_upArrows[i].SetActive(true);
+            }
         }
 
 
@@ -148,38 +168,32 @@ public class SettingsMenuManagement : MonoBehaviour
                     if (m_values[m_selectedIndex].text == "0")
                     {
                         m_values[m_selectedIndex].text = "0";
-                        m_downArrows[m_selectedIndex].SetActive(false);
                     }
                     else
                     {
                         int _value = int.Parse(m_values[m_selectedIndex].text);
                         _value--;
                         m_values[m_selectedIndex].text = _value.ToString();
-                        m_downArrows[m_selectedIndex].SetActive(true);
-                        m_upArrows[m_selectedIndex].SetActive(true);
+                        m_UIAudio.clip = m_sounds[1];
+                        m_UIAudio.Play();
+                        StartCoroutine("audioCooldown");
                     }
-                    m_UIAudio.clip = m_sounds[1];
-                    m_UIAudio.Play();
-                    StartCoroutine("audioCooldown");
                 }
                 else if ((Input.GetAxis("MacroEngine") > 0) || (Input.GetAxis("Horizontal") > 0))
                 {
                     if (m_values[m_selectedIndex].text == "100")
                     {
                         m_values[m_selectedIndex].text = "100";
-                        m_upArrows[m_selectedIndex].SetActive(false);
                     }
                     else
                     {
                         int _value = int.Parse(m_values[m_selectedIndex].text);
                         _value++;
                         m_values[m_selectedIndex].text = _value.ToString();
-                        m_upArrows[m_selectedIndex].SetActive(true);
-                        m_downArrows[m_selectedIndex].SetActive(true);
+                        m_UIAudio.clip = m_sounds[1];
+                        m_UIAudio.Play();
+                        StartCoroutine("audioCooldown");
                     }
-                    m_UIAudio.clip = m_sounds[1];
-                    m_UIAudio.Play();
-                    StartCoroutine("audioCooldown");
                 }
             }
 
@@ -204,6 +218,12 @@ public class SettingsMenuManagement : MonoBehaviour
                         break;
                 }
             }
+        }
+
+        if (Input.GetButtonDown("XboxB"))
+        {
+            m_mainMenu.SetActive(true);
+            this.gameObject.SetActive(false);
         }
     }
 
