@@ -32,7 +32,7 @@ public class MainMenuManagement : MonoBehaviour
             PlayerPrefs.SetInt("musicVolume", 80);
             PlayerPrefs.SetInt("fxVolume", 80);
             PlayerPrefs.SetInt("uiVolume", 80);
-
+            PlayerPrefs.SetInt("ControlScheme", 2);
             PlayerPrefs.SetInt("FirstTime", 1);
         }
 
@@ -46,7 +46,6 @@ public class MainMenuManagement : MonoBehaviour
         m_selectedIndex = 0;
         m_onMenu = false;
         m_inputAllowed = false;
-        InstantiatePlayerPrefs();
         if (m_onMenu == false)
         {
             Invoke("allowInputs", 4f);
@@ -226,6 +225,7 @@ public class MainMenuManagement : MonoBehaviour
     }
     private void quit()
     {
+        Application.Quit();
         Debug.Log("Quit");
     }
 
