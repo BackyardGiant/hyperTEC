@@ -23,9 +23,6 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager Instance;
 
-    //[SerializeField]
-    //private AudioMixerGroup m_mixerGroup, m_mixerMusicGroup;
-
     private void Awake()
     {
         if (Instance == null)
@@ -42,15 +39,12 @@ public class AudioManager : MonoBehaviour
         {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
-
+            s.source.priority = s.priority;
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.outputAudioMixerGroup = fx;
             s.source.loop = s.loop;
         }
-    }
-    private void Start()
-    {
     }
 
     #region LocalSoundControls
@@ -150,6 +144,7 @@ public class AudioManager : MonoBehaviour
         _source.volume = s.volume;
         _source.pitch = s.pitch;
         _source.loop = s.loop;
+        _source.priority = s.priority;
         _source.spatialBlend = 0.99f;
         _source.outputAudioMixerGroup = fx;
         _source.Play();
@@ -168,7 +163,7 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     #region WeaponSoundControls
-    public AudioSource PlayWeapon(WeaponSounds weapon,int index, GameObject target,bool seperateObject, bool playOnStart, bool destroy)
+    public AudioSource PlayWeapon(WeaponSounds weapon,int index, GameObject target,bool seperateObject)
     {
         string name = weapon.ToString() + index;
         if (seperateObject == true)
@@ -179,6 +174,8 @@ public class AudioManager : MonoBehaviour
             target = _targetAudio;
         }
 
+        weapon = WeaponSounds.Medium;
+        index = 1;
         Sound s = null;
         if (weapon.ToString() == "Short")
         {
@@ -201,18 +198,10 @@ public class AudioManager : MonoBehaviour
         _source.volume = s.volume;
         _source.pitch = s.pitch;
         _source.loop = s.loop;
-        _source.spatialBlend = 0.99f;
+        _source.priority = s.priority;
+        _source.spatialBlend = 1;
         _source.outputAudioMixerGroup = fx;
 
-
-        if (playOnStart == true)
-        {
-            _source.Play();
-        }
-        if (destroy == true)
-        {
-          Destroy(_source, _source.clip.length);
-        }
 
         return _source;
     }

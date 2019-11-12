@@ -219,11 +219,11 @@ public class ThrustEffectController : MonoBehaviour
         #endregion
 
         #region EngineSoundFX
-        float _idleVolume = 0.2f + (0.3f * _powerPercentage);
+        float _idleVolume = 0.2f + (0.15f * _powerPercentage);
         float _idlePitch = 0.3f + (0.1f * _powerPercentage);
 
         float _backingVolume = 0.1f * (_powerPercentage - 0.7f);
-        float _acceleratingVolume = 0.1f * _powerPercentage;
+        float _acceleratingVolume = 0.08f * _powerPercentage;
         float _overworkingVolume = 0.05f * (_powerPercentage - 0.5f);
 
         float _engineIdleVolume = AudioManager.Instance.getVolume("EngineIdle");

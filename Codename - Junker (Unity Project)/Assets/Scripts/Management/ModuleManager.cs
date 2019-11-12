@@ -287,13 +287,13 @@ public class ModuleManager : MonoBehaviour
         switch(_fireRateType)
         {
             case WeaponData.fireRateType.fast:
-                _fireSoundIndex = Random.Range(0, AudioManager.Instance.shortWeaponSounds.Length);
+                _fireSoundIndex = Random.Range(0, AudioManager.Instance.shortWeaponSounds.Length-1);
                 break;
             case WeaponData.fireRateType.medium:
-                _fireSoundIndex = Random.Range(0, AudioManager.Instance.mediumWeaponSounds.Length);
+                _fireSoundIndex = Random.Range(0, AudioManager.Instance.mediumWeaponSounds.Length-1);
                 break;
             case WeaponData.fireRateType.slow:
-                _fireSoundIndex = Random.Range(0, AudioManager.Instance.longWeaponSounds.Length);
+                _fireSoundIndex = Random.Range(0, AudioManager.Instance.longWeaponSounds.Length-1);
                 break;
         }
 
