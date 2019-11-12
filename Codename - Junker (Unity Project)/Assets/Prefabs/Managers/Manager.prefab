@@ -47,4 +47,6 @@ MonoBehaviour:
   postSlowDown: {fileID: 11400000, guid: 1ca0174be80a9f74ab7a99143b0b14a6, type: 2}
   normalSpeed: {fileID: 11400000, guid: 5ff6a80814d5ebe45a0b85db0db6dbe2, type: 2}
   spawner: {fileID: 0}
+  lootTemplate: {fileID: 5742531039650702400, guid: 341df5633658ae74189c875277192328,
+    type: 3}
   m_gameSpeed: 1
