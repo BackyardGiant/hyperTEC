@@ -35,7 +35,7 @@ public class LootDetection : MonoBehaviour
         {
             HUDManager.Instance.DrawLootTarget(m_screenPos,this);
         }
-        else
+        else 
         {
             HUDManager.Instance.ClearLootTarget(this);
         }

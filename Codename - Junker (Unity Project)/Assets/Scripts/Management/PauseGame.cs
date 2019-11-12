@@ -10,6 +10,8 @@ public class PauseGame : MonoBehaviour
     [SerializeField]
     private AudioMixer m_mixer;
 
+    private PlayerMovement m_playerMovement;
+
     private bool m_gamePaused;
 
     private void Start()
@@ -19,6 +21,7 @@ public class PauseGame : MonoBehaviour
         m_mixer.SetFloat("fxVol", -80 + PlayerPrefs.GetInt("fxVolume"));
         m_mixer.SetFloat("uiVol", -80 + PlayerPrefs.GetInt("uiVolume"));
 
+        m_playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
 
         m_pauseMenu.SetActive(false);
         m_settingsMenu.SetActive(false);
@@ -30,7 +33,7 @@ public class PauseGame : MonoBehaviour
         if (Input.GetButtonDown("XboxStart") && m_gamePaused == false)
         {
             //PAUSE GAME HERE & DISABLE INPUTS
-
+            GameManager.Instance.SetSlowMo(0);
 
             m_gamePaused = true;
             m_pauseMenu.SetActive(true);
@@ -44,6 +47,8 @@ public class PauseGame : MonoBehaviour
 
     public void CloseMenu()
     {
+        GameManager.Instance.SetNormalSpeed();
+        m_playerMovement.ControlScheme = (PlayerMovement.ControlType)PlayerPrefs.GetInt("ControlScheme", 0);
         m_gamePaused = false;
         m_pauseMenu.SetActive(false);
         m_settingsMenu.SetActive(false);

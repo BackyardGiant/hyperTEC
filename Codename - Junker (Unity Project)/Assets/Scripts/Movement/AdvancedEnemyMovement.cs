@@ -57,6 +57,15 @@ public class AdvancedEnemyMovement : MonoBehaviour
     private bool m_canWander = true;
     #endregion
 
+    #region Slow Mo Manager
+    private Vector3 m_velocityBeforeSlow;
+    private Vector3 m_angleVelocityBeforeSlow;
+    private Vector3 m_velocityAfterSlow;
+    private Vector3 m_angleVelocityAfterSlow;
+    private float m_velocityDifferenceBetweenSlow;
+    private float m_angleVelocityDifferenceBetweenSlow;
+    #endregion
+
     private Rigidbody m_rb;
 
     private EnemyManager m_manager;
@@ -118,13 +127,33 @@ public class AdvancedEnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-
-        m_target = m_manager.Target;
-        m_attacking = m_manager.AttackingPlayer;
-
-        if (Vector3.Distance(transform.position, Vector3.zero) < m_wanderRange)
+        if (GameManager.Instance.GameSpeed != 0)
         {
-            if (m_attacking)
+            m_target = m_manager.Target;
+            m_attacking = m_manager.AttackingPlayer;
+
+            if (Vector3.Distance(transform.position, Vector3.zero) < m_wanderRange)
+            {
+                if (m_attacking)
+                {
+                    if (m_target != null)
+                    {
+                        if (m_fleeing)
+                        {
+                            m_steering = FleeTarget(m_target.transform);
+                        }
+                        else
+                        {
+                            m_steering = PursueTarget(m_target.transform);
+                        }
+                    }
+                }
+                else
+                {
+                    m_steering = Wander();
+                }
+            }
+            else
             {
                 if (m_target != null)
                 {
@@ -137,49 +166,31 @@ public class AdvancedEnemyMovement : MonoBehaviour
                         m_steering = PursueTarget(m_target.transform);
                     }
                 }
-            }
-            else
-            {
-                m_steering = Wander();
-            }
-        }
-        else
-        {
-            if (m_target != null)
-            {
-                if (m_fleeing)
-                {
-                    m_steering = FleeTarget(m_target.transform);
-                }
                 else
                 {
-                    m_steering = PursueTarget(m_target.transform);
+                    m_steering = Seek(Vector3.zero);
                 }
             }
-            else
+
+            m_steeringWithAvoidence = collisionAvoidance() + m_steering;
+
+            ApplyDamping();
+
+            if (Vector3.Angle(m_steeringWithAvoidence.normalized, m_rb.velocity.normalized) > m_flipAngle)
             {
-                m_steering = Seek(Vector3.zero);
+                m_steeringWithAvoidence += transform.right * 100;
             }
+
+            m_rb.AddForce(m_steeringWithAvoidence * m_acceleration * GameManager.Instance.GameSpeed);
+
+            if (m_rb.velocity.magnitude > m_maxSpeed)
+            {
+                m_rb.AddForce((-m_steeringWithAvoidence) * (m_rb.velocity.magnitude - m_maxSpeed));
+            }
+
+            transform.forward = Vector3.Lerp(transform.forward, m_steeringWithAvoidence.normalized * m_maxSpeed, 0.0002f);
+            //transform.forward = m_steering;
         }
-
-        m_steeringWithAvoidence = collisionAvoidance() + m_steering;
-
-        ApplyDamping();
-
-        if (Vector3.Angle(m_steeringWithAvoidence.normalized, m_rb.velocity.normalized) > m_flipAngle)
-        {
-            m_steeringWithAvoidence += transform.right * 100;
-        }
-
-        m_rb.AddForce(m_steeringWithAvoidence * m_acceleration * GameManager.Instance.GameSpeed);
-
-        if (m_rb.velocity.magnitude > m_maxSpeed)
-        {
-            m_rb.AddForce((-m_steeringWithAvoidence) * (m_rb.velocity.magnitude - m_maxSpeed));
-        }
-
-        transform.forward = Vector3.Lerp(transform.forward, m_steeringWithAvoidence.normalized * m_maxSpeed, 0.0002f);
-        //transform.forward = m_steering;
     }
 
     private Vector3 Seek(Vector3 _target)
@@ -296,4 +307,39 @@ public class AdvancedEnemyMovement : MonoBehaviour
         yield return new WaitForSeconds(3f);
         m_canWander = true;
     }
+
+    #region SlowMoObject
+    /// <summary>
+    /// Saves forces before slow mo
+    /// </summary>
+    public void RespondToPreSlowMo()
+    {
+        m_velocityBeforeSlow = m_rb.velocity;
+        m_angleVelocityBeforeSlow = m_rb.angularVelocity;
+    }
+
+    /// <summary>
+    /// Applies slow mo and saves forces after it has been applied
+    /// </summary>
+    public void RespondToPostSlowMo()
+    {
+        m_rb.velocity *= GameManager.Instance.GameSpeed;
+        m_rb.angularVelocity *= GameManager.Instance.GameSpeed;
+
+        m_velocityAfterSlow = m_rb.velocity;
+        m_angleVelocityAfterSlow = m_rb.angularVelocity;
+
+        m_velocityDifferenceBetweenSlow = m_velocityBeforeSlow.magnitude - m_velocityAfterSlow.magnitude;
+        m_angleVelocityDifferenceBetweenSlow = m_angleVelocityBeforeSlow.magnitude - m_angleVelocityAfterSlow.magnitude;
+    }
+
+    /// <summary>
+    /// Returns lost force to object using the difference between before and after slow mo
+    /// </summary>
+    public void RespondToNormalSpeed()
+    {
+        m_rb.velocity += m_rb.velocity.normalized * m_velocityDifferenceBetweenSlow;
+        m_rb.angularVelocity += m_rb.angularVelocity.normalized * m_angleVelocityDifferenceBetweenSlow;
+    }
+    #endregion
 }
