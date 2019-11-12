@@ -200,6 +200,8 @@ public class ModuleManager : MonoBehaviour
 
         _tempWeaponData.FireRate = float.Parse(_seed.Substring(1, 3));
 
+        _tempWeaponData.FireRateIndex = int.Parse(_seed.Substring(20, 3));
+
         _tempWeaponData.Accuracy = float.Parse(_seed.Substring(4, 3));
         _tempWeaponData.Damage = float.Parse(_seed.Substring(7, 3));
         _tempWeaponData.ReloadTime = float.Parse(_seed.Substring(10, 3));
@@ -258,17 +260,51 @@ public class ModuleManager : MonoBehaviour
         int _magazineId = 0;
         int _targetId = 0;
 
-        float _fireRate = Random.Range(0, 100);
+        float _fireRate = Random.Range(1, 100);
         string _fireRateString;
-        float _accuracy = 100;
-        string _accuracyString;
-        float _damage = 100;
-        string _damageString;
-        float _reloadTime = 100;
-        string _reloadTimeString;
-        float _value = 100;
-        string _valueString;
 
+        int _fireRateTypeData;
+
+        if (_fireRate <= 20)
+        {
+            _fireRateTypeData = 0;
+        }
+        else if(_fireRate > 20 && _fireRate <= 80)
+        {
+            _fireRateTypeData = 1;
+        }
+        else
+        {
+            _fireRateTypeData = 2;
+        }
+
+        WeaponData.fireRateType _fireRateType = (WeaponData.fireRateType)_fireRateTypeData;
+
+        int _fireSoundIndex = 0;
+
+        switch(_fireRateType)
+        {
+            case WeaponData.fireRateType.fast:
+                _fireSoundIndex = Random.Range(0, AudioManager.Instance.shortWeaponSounds.Length);
+                break;
+            case WeaponData.fireRateType.medium:
+                _fireSoundIndex = Random.Range(0, AudioManager.Instance.mediumWeaponSounds.Length);
+                break;
+            case WeaponData.fireRateType.slow:
+                _fireSoundIndex = Random.Range(0, AudioManager.Instance.longWeaponSounds.Length);
+                break;
+        }
+
+        string _fireSoundIndexString = _fireSoundIndex.ToString();
+
+        float _accuracy = Random.Range(1, 100);
+        string _accuracyString;
+        float _damage = Random.Range(1, 100);
+        string _damageString;
+        float _reloadTime = Random.Range(1, 100);
+        string _reloadTimeString;
+        float _value = Random.Range(1, 100); 
+        string _valueString;
         int _factionData = Random.Range(0, 4);
         WeaponData.faction _faction = (WeaponData.faction)_factionData;
 
@@ -365,9 +401,22 @@ public class ModuleManager : MonoBehaviour
         {
             _valueString = _value.ToString();
         }
+
+        if (_fireSoundIndex < 10)
+        {
+            _fireSoundIndexString = "00" + _fireSoundIndex;
+        }
+        else if (_fireSoundIndex < 100)
+        {
+            _fireSoundIndexString = "0" + _fireSoundIndex;
+        }
+        else
+        {
+            _fireSoundIndexString = _fireSoundIndex.ToString();
+        }
         #endregion
 
-        _seed = _factionData.ToString() + _fireRateString + _accuracyString + _damageString + _reloadTimeString + _valueString + _barrelId.ToString() + _batteryId.ToString() + _magazineId.ToString() + _targetId.ToString(); 
+        _seed = _factionData.ToString() + _fireRateString + _accuracyString + _damageString + _reloadTimeString + _valueString + _barrelId.ToString() + _batteryId.ToString() + _magazineId.ToString() + _targetId.ToString() + _fireSoundIndexString; 
 
         return _seed;
     }

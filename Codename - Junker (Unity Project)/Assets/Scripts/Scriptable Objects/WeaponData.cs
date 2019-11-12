@@ -17,7 +17,16 @@ public class WeaponData : ScriptableObject
         explorer, initial, trader, construction
     }
 
+    public enum fireRateType
+    {
+        slow, medium, fast
+    }
+
+    private fireRateType currentFireRateType;
+
     private moduleType currentModuleType = moduleType.weapon;
+
+    private int fireRateIndex;
 
     [SerializeField]
     private faction currentFaction;
@@ -48,4 +57,6 @@ public class WeaponData : ScriptableObject
     public int BatteryId { get => batteryId; set => batteryId = value; }
     public int TargetId { get => targetId; set => targetId = value; }
     public string Seed { get => seed; set => seed = value; }
+    public fireRateType CurrentFireRateType { get => currentFireRateType; set => currentFireRateType = value; }
+    public int FireRateIndex { get => fireRateIndex; set => fireRateIndex = value; }
 }
