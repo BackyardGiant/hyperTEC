@@ -5,12 +5,21 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
     public AudioMixerGroup mixer;
+    public enum WeaponSounds {Short,Medium,Long};
 
     [Header("Sound Lists")]
     [Tooltip("Sounds to be played locally. E.G Music, UI Effects. Usually non-diegetic audio.")]
     public Sound[] localSounds;
     [Tooltip("Sounds to be played on a certain position. E.G gunshots, explosions. Usually diegetic audio."),Space(20)]
     public Sound[] worldSounds;
+    [Header("Weapon Specific Sounds"),Tooltip("Sounds to be played on a certain position. E.G gunshots, explosions. Usually diegetic audio."), Space(20)]
+    public Sound[] shortWeaponSounds;
+    [Tooltip("Sounds to be played on a certain position. E.G gunshots, explosions. Usually diegetic audio.")]
+    public Sound[] mediumWeaponSounds;
+    [Tooltip("Sounds to be played on a certain position. E.G gunshots, explosions. Usually diegetic audio.")]
+    public Sound[] longWeaponSounds;
+    [Tooltip("Time Delays before Long Sounds Play.")]
+    public float[] longWeaponDelays;
 
     public static AudioManager Instance;
 
@@ -156,7 +165,60 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region WeaponSoundControls
+    public float PlayWeapon(WeaponSounds weapon, GameObject target, bool seperateObject, bool destroy)
+    {
+        float returnVal = 0.0f;
+        string name = "";
+        if (weapon == WeaponSounds.Short)
+        {
+            int randomVal = UnityEngine.Random.Range(1,shortWeaponSounds.Length);
+            name = "ShortWeapon" + randomVal;
+            returnVal = 0.0f;
+        }
+        else if(weapon == WeaponSounds.Medium)
+        {
+            int randomVal = UnityEngine.Random.Range(1, mediumWeaponSounds.Length);
+            name = "MediumWeapon" + randomVal;
+            returnVal = 0.0f;
+        }
+        else if(weapon == WeaponSounds.Long)
+        {
+            int randomVal = UnityEngine.Random.Range(1, longWeaponSounds.Length);
+            name = "LongWeapon" + randomVal;
+            returnVal = longWeaponDelays[randomVal];
+        }
 
+        Sound s = Array.Find(worldSounds, sound => sound.name == name);
+        if (seperateObject == true)
+        {
+            GameObject _targetAudio = new GameObject(target.name + " Audio Source. Playing - " + name);
+            _targetAudio.transform.position = target.transform.position;
+            target = _targetAudio;
+        }
+        AudioSource _source = target.AddComponent<AudioSource>();
+        _source.clip = s.clip;
+        _source.volume = s.volume;
+        _source.pitch = s.pitch;
+        _source.loop = s.loop;
+        _source.spatialBlend = 0.99f;
+        _source.outputAudioMixerGroup = mixer;
+        _source.Play();
+        if (destroy == true)
+        {
+            if (seperateObject == true)
+            {
+                Destroy(target, _source.clip.length);
+            }
+            else
+            {
+                Destroy(_source, _source.clip.length);
+            }
+        }
+
+        return returnVal;
+    }
     #endregion
 }

@@ -106,7 +106,14 @@ public class PlayerMovement : MonoBehaviour
     {
         m_rbPlayer = gameObject.GetComponent<Rigidbody>();
         m_rbPlayer.inertiaTensor = new Vector3(0.2f, 0.2f, 0.2f); //Used to make the player always react the same to torque no matter the size or shape of the collider
-        
+        if (PlayerPrefs.GetInt("ControlScheme") == 1)
+        {
+            m_controlScheme = ControlType.RollLeftAxis;
+        }
+        if (PlayerPrefs.GetInt("ControlScheme") == 2)
+        {
+            m_controlScheme = ControlType.YawLeftAxis;
+        }
     }
 
     // Update is called once per frame
