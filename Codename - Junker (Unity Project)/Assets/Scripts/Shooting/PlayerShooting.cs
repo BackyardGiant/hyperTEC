@@ -22,6 +22,7 @@ public class PlayerShooting : MonoBehaviour
     //private Inventory playerInv;
 
     private Vector3 m_targetPosition;
+    private AudioSource m_rightWeaponSound, m_leftWeaponSound;
 
     private bool m_playerCanShoot = true;
 
@@ -43,10 +44,12 @@ public class PlayerShooting : MonoBehaviour
     private float m_bulletLifeTime;
     [SerializeField, Tooltip("The speed that the projectile moves at")]
     private float m_bulletSpeed;
-    [SerializeField, Tooltip("The damage that the projectile deals")]
-    private float m_bulletDamage;
     [SerializeField, Tooltip("The auto aim range, around 3")]
     private float m_autoAimDistance;
+
+
+    private float m_rightBulletDamage;
+    private float m_leftBulletDamage;
     #endregion
 
     private static PlayerShooting s_instance;
@@ -74,6 +77,22 @@ public class PlayerShooting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        WeaponData _rightWeapon = null;
+        WeaponData _leftWeapon = null;
+
+        try
+        {
+             _rightWeapon = PlayerInventoryManager.Instance.EquippedRightWeapon;
+        }
+        catch{ }
+
+        try
+        {
+            _leftWeapon = PlayerInventoryManager.Instance.EquippedLeftWeapon;
+        }
+        catch { }
+
         m_aimingCamera = Camera.main;
 
         float _range = -(m_slowerFireRate - m_quickerFireRate);
@@ -81,19 +100,21 @@ public class PlayerShooting : MonoBehaviour
         float _leftFireRatePercentage;
         float _rightFireRatePercentage;
 
-        try
+        if(_rightWeapon != null)
         {
-            _rightFireRatePercentage = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate / 100;
+            _rightFireRatePercentage = _rightWeapon.FireRate / 100f;
+            m_rightWeaponCooldown = m_slowerFireRate + (_rightFireRatePercentage * _range);
+            m_rightBulletDamage = _rightWeapon.Damage;
+            m_rightWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(WeaponData.fireRateType)_rightWeapon.CurrentFireRateType, _rightWeapon.FireRateIndex,this.gameObject,true,false,false);
         }
-        catch { _rightFireRatePercentage = 0; }
-        try
+
+        if (_leftWeapon != null)
         {
-            _leftFireRatePercentage = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate / 100;
+            _leftFireRatePercentage = _leftWeapon.FireRate / 100f;
+            m_leftWeaponCooldown = m_slowerFireRate + (_leftFireRatePercentage * _range);
+            m_leftBulletDamage = _leftWeapon.Damage;
+            m_leftWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(WeaponData.fireRateType)_leftWeapon.CurrentFireRateType, _leftWeapon.FireRateIndex, this.gameObject,true,false, false);
         }
-        catch { _leftFireRatePercentage = 0; }
-        // Set the cooldowns of the equipped weapons. Should probably change to not be on Start() but it's okay here for now.
-        m_rightWeaponCooldown = m_slowerFireRate + (_rightFireRatePercentage * _range);
-        m_leftWeaponCooldown = m_slowerFireRate + (_leftFireRatePercentage * _range);
     }
 
     // Update is called once per frame
@@ -162,7 +183,18 @@ public class PlayerShooting : MonoBehaviour
         GameObject newBullet = Instantiate(m_bulletPrefab, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
         newBullet.GetComponent<BulletBehaviour>().SpawnedBy = gameObject;
         newBullet.GetComponent<BulletBehaviour>().LifeTime = m_bulletLifeTime;
-        newBullet.GetComponent<BulletBehaviour>().Damage = m_bulletDamage;
+
+        if (_side == 0)
+        {
+            m_rightWeaponSound.Play();
+            newBullet.GetComponent<BulletBehaviour>().Damage = m_rightBulletDamage;
+        }
+        else
+        {
+            m_leftWeaponSound.Play();
+            newBullet.GetComponent<BulletBehaviour>().Damage = m_leftBulletDamage;
+        }
+
         newBullet.GetComponent<BulletBehaviour>().Speed = m_bulletSpeed;
         newBullet.GetComponent<Rigidbody>().AddForce(newBullet.transform.forward * m_bulletSpeed * GameManager.Instance.GameSpeed, ForceMode.Impulse);
         newBullet.GetComponent<BulletBehaviour>().Instantiated();
@@ -173,7 +205,6 @@ public class PlayerShooting : MonoBehaviour
         yield return new WaitForSeconds(m_rightWeaponCooldown);
         m_rightWeaponActive = true;
     }
-
     IEnumerator leftCooldown()
     {
         yield return new WaitForSeconds(m_leftWeaponCooldown);
