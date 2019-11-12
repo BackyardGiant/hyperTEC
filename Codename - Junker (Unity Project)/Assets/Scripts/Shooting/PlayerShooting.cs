@@ -99,53 +99,57 @@ public class PlayerShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        RaycastHit _hit;
-
-        if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward), out _hit, m_range))
+        if (GameManager.Instance.GameSpeed != 0)
         {
-            Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * _hit.distance, Color.yellow);
-            m_target.position = _hit.transform.position;
-        }
-        else
-        {
-            Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range, Color.white);
-            m_target.position = (m_aimingCamera.transform.position + (m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range));
-        }
+            RaycastHit _hit;
 
-        if (HUDManager.Instance.ClosetEnemy != null)
-        {
-            if (Vector2.Distance(HUDManager.Instance.ClosetEnemyScreenPos, new Vector2(Screen.width / 2, Screen.height / 2)) < m_autoAimDistance)
+            if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward), out _hit, m_range))
             {
-                m_aimingCrosshair.HasTarget = true;
-                m_targetPosition = HUDManager.Instance.ClosetEnemy.transform.position;
-                m_aimingCrosshair.TargetPosition = new Vector2(HUDManager.Instance.ClosetEnemyScreenPos.x, HUDManager.Instance.ClosetEnemyScreenPos.y);
-                m_target.position = m_targetPosition;
+                Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * _hit.distance, Color.yellow);
+                m_target.position = _hit.transform.position;
+            }
+            else
+            {
+                Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range, Color.white);
+                m_target.position = (m_aimingCamera.transform.position + (m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range));
+            }
+
+            if (HUDManager.Instance.ClosetEnemy != null)
+            {
+                if (Vector2.Distance(HUDManager.Instance.ClosestEnemyScreenPos, new Vector2(Screen.width / 2, Screen.height / 2)) < m_autoAimDistance)
+                {
+                    m_aimingCrosshair.HasTarget = true;
+                    m_targetPosition = HUDManager.Instance.ClosetEnemy.transform.position;
+                    m_aimingCrosshair.TargetPosition = new Vector2(HUDManager.Instance.ClosestEnemyScreenPos.x, HUDManager.Instance.ClosestEnemyScreenPos.y);
+                    m_target.position = m_targetPosition;
+                }
+                else
+                {
+                    m_aimingCrosshair.HasTarget = false;
+                }
             }
             else
             {
                 m_aimingCrosshair.HasTarget = false;
             }
+
+            m_spawnLocations[0].transform.LookAt(m_target);
+            m_spawnLocations[1].transform.LookAt(m_target);
+
+            if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedRightWeapon != null)
+            {
+                SpawnBullet(0);
+                m_rightWeaponActive = false;
+                StartCoroutine(rightCooldown());
+            }
+
+            if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
+            {
+                SpawnBullet(1);
+                m_leftWeaponActive = false;
+                StartCoroutine(leftCooldown());
+            }
         }
-
-        m_spawnLocations[0].transform.LookAt(m_target);
-        m_spawnLocations[1].transform.LookAt(m_target);
-
-        if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedRightWeapon != null)
-        {
-            SpawnBullet(0);
-            m_rightWeaponActive = false;
-            StartCoroutine(rightCooldown());
-        }
-
-        if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
-        {
-            SpawnBullet(1);
-            m_leftWeaponActive = false;
-            StartCoroutine(leftCooldown());
-        }
-
-
     }
 
     // 0 means right hand side, 1 means left hand side

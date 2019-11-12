@@ -49,13 +49,13 @@ public class SettingsMenuManagement : MonoBehaviour
             PlayerPrefs.SetInt("fxVolume", 80);
             PlayerPrefs.SetInt("uiVolume", 80);
             PlayerPrefs.SetInt("FirstTime", 1);
-            PlayerPrefs.SetInt("ControlScheme", 2);
+            PlayerPrefs.SetInt("ControlScheme", 1);
         }
         m_values[0].text = PlayerPrefs.GetInt("masterVolume").ToString();
         m_values[1].text = PlayerPrefs.GetInt("musicVolume").ToString();
         m_values[2].text = PlayerPrefs.GetInt("fxVolume").ToString();
         m_values[3].text = PlayerPrefs.GetInt("uiVolume").ToString();
-        m_controlSchemeValue.text = PlayerPrefs.GetInt("ControlScheme").ToString();
+        m_controlSchemeValue.text = (PlayerPrefs.GetInt("ControlScheme") + 1).ToString();
 
 
         m_mixer.SetFloat("masterVol", -80 + PlayerPrefs.GetInt("masterVolume"));
@@ -236,12 +236,12 @@ public class SettingsMenuManagement : MonoBehaviour
                     case 4:
                         if (m_controlSchemeValue.text == "1")
                         {
-                            PlayerPrefs.SetInt("ControlScheme", 2);
+                            PlayerPrefs.SetInt("ControlScheme", 1);
                             m_controlSchemeValue.text = "2";
                         }
                         else
                         {
-                            PlayerPrefs.SetInt("ControlScheme", 1);
+                            PlayerPrefs.SetInt("ControlScheme", 0);
                             m_controlSchemeValue.text = "1";
                         }
                         break;

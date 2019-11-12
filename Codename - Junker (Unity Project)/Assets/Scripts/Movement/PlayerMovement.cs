@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private enum ControlType { YawLeftAxis, RollLeftAxis }
+    public enum ControlType { RollLeftAxis, YawLeftAxis }
 
     #region Speed
     [Header("Speed Settings")]
@@ -93,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float CurrentSpeed { get => m_currentSpeed; }
     public float MaxAcceleration { get => m_maxAcceleration; }
+    public ControlType ControlScheme { get => m_controlScheme; set => m_controlScheme = value; }
 
     private void Awake()
     {
@@ -106,11 +107,11 @@ public class PlayerMovement : MonoBehaviour
     {
         m_rbPlayer = gameObject.GetComponent<Rigidbody>();
         m_rbPlayer.inertiaTensor = new Vector3(0.2f, 0.2f, 0.2f); //Used to make the player always react the same to torque no matter the size or shape of the collider
-        if (PlayerPrefs.GetInt("ControlScheme") == 1)
+        if (PlayerPrefs.GetInt("ControlScheme") == 0)
         {
             m_controlScheme = ControlType.RollLeftAxis;
         }
-        if (PlayerPrefs.GetInt("ControlScheme") == 2)
+        if (PlayerPrefs.GetInt("ControlScheme") == 1)
         {
             m_controlScheme = ControlType.YawLeftAxis;
         }
@@ -119,53 +120,56 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Restets posative force application to the ship (If you let go of go forwards it stops applying force)
-        if(Input.GetButtonUp("Throttle Up"))
+        if (GameManager.Instance.GameSpeed != 0)
         {
-            m_posativeClampedSpeed = 0;
-            m_currentSpeed = 0;
-        }
-        if(Input.GetButtonUp("Throttle Down"))
-        {
-            m_posativeClampedSpeed = 0;
-            m_negativeSpeed = 0;
-        }
+            // Restets posative force application to the ship (If you let go of go forwards it stops applying force)
+            if (Input.GetButtonUp("Throttle Up"))
+            {
+                m_posativeClampedSpeed = 0;
+                m_currentSpeed = 0;
+            }
+            if (Input.GetButtonUp("Throttle Down"))
+            {
+                m_posativeClampedSpeed = 0;
+                m_negativeSpeed = 0;
+            }
 
-        if (Input.GetAxis("MacroEngine") > 0.1f && m_killedEngine)
-        {
-            m_killedEngine = false;
-            m_engageBoost = true;
-        }
+            if (Input.GetAxis("MacroEngine") > 0.1f && m_killedEngine)
+            {
+                m_killedEngine = false;
+                m_engageBoost = true;
+            }
 
-        if (Input.GetAxis("MacroEngine") < -0.1f && !m_killedEngine && !m_boostOn && !m_engageBoost)
-        {
-            engineOff.Raise();
-            m_killedEngine = true;
-        }
+            if (Input.GetAxis("MacroEngine") < -0.1f && !m_killedEngine && !m_boostOn && !m_engageBoost)
+            {
+                engineOff.Raise();
+                m_killedEngine = true;
+            }
 
-        if (Input.GetButton("Throttle Up"))
-        {
-            m_posativeClampedSpeed += m_acceleration / 100;
-            m_posativeClampedSpeed = Mathf.Clamp(m_posativeClampedSpeed, 0, 1);
+            if (Input.GetButton("Throttle Up"))
+            {
+                m_posativeClampedSpeed += m_acceleration / 100;
+                m_posativeClampedSpeed = Mathf.Clamp(m_posativeClampedSpeed, 0, 1);
 
-            m_currentSpeed = m_posativeClampedSpeed * m_maxAcceleration;
+                m_currentSpeed = m_posativeClampedSpeed * m_maxAcceleration;
 
-        }
-        if (Input.GetButton("Throttle Down"))
-        {
-            m_negativeClampedSpeed += m_decleration / 100;
-            m_negativeClampedSpeed = Mathf.Clamp(m_negativeClampedSpeed, 0, 1);
+            }
+            if (Input.GetButton("Throttle Down"))
+            {
+                m_negativeClampedSpeed += m_decleration / 100;
+                m_negativeClampedSpeed = Mathf.Clamp(m_negativeClampedSpeed, 0, 1);
 
-            m_negativeSpeed = m_negativeClampedSpeed * m_maxAcceleration;
-        }
+                m_negativeSpeed = m_negativeClampedSpeed * m_maxAcceleration;
+            }
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            GameManager.Instance.SetSlowMo(0.5f);
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            GameManager.Instance.SetNormalSpeed();
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                GameManager.Instance.SetSlowMo(0.5f);
+            }
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                GameManager.Instance.SetNormalSpeed();
+            }
         }
     }
 
