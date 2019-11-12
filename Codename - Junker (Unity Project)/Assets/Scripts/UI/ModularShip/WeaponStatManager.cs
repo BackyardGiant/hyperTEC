@@ -16,5 +16,12 @@ public class WeaponStatManager : MonoBehaviour
     {
         name.text = data.Name;
         thumbnail.sprite = data.Thumbnail;
+
+        if(thumbnail.sprite == null)
+        {
+            Color _tempColour = thumbnail.color;
+            _tempColour.a = 0f;
+            thumbnail.color = _tempColour;
+        }
     }
 }
