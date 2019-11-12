@@ -158,6 +158,7 @@
     <Compile Include="Assets\Scripts\Temporary Scripts\TestModularShip.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\DropWeapons.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\EnemyDetection.cs" />
+    <Compile Include="Assets\Scripts\UI\InventoryItemResize.cs" />
     <Compile Include="Assets\Scripts\UI\LootDetection.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\DisplayOptions.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\EngineStatManager.cs" />

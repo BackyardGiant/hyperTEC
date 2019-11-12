@@ -39,6 +39,10 @@ public class DisplayOptions : MonoBehaviour
             _goTempWeaponElement.name = "weapon" + i.ToString();
             _goTempWeaponElement.GetComponent<WeaponStatManager>().Data = availableWeapons[i];
             _goTempWeaponElement.GetComponent<WeaponStatManager>().PopulateData();
+
+            RectTransform _tempRect = gameObject.GetComponent<RectTransform>();
+            _goTempWeaponElement.GetComponent<RectTransform>().sizeDelta = new Vector2(_tempRect.rect.width, Screen.height / 8);
+
             m_modulesList.Add(_goTempWeaponElement);
         }
     }
