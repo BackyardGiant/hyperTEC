@@ -8,6 +8,8 @@ public class DisplayOptions : MonoBehaviour
     public RectTransform contentPanel;
     public RectTransform highlight;
 
+    public VerticalLayoutGroup vertLayout;
+
     public GameObject goTemplateEngineElement, goTemplateWeaponElement;
 
     public List<EngineData> availableEngines;
@@ -15,9 +17,12 @@ public class DisplayOptions : MonoBehaviour
 
     //public Inventory playerInventory;
 
+    private int m_numItemsOnScreen = 8;
+
     private List<GameObject> m_modulesList = new List<GameObject>();
 
     public List<GameObject> ModulesList { get => m_modulesList; set => m_modulesList = value; }
+    public int NumItemsOnScreen { get => m_numItemsOnScreen; set => m_numItemsOnScreen = value; }
 
     private void Awake()
     {
@@ -41,7 +46,7 @@ public class DisplayOptions : MonoBehaviour
             _goTempWeaponElement.GetComponent<WeaponStatManager>().PopulateData();
 
             RectTransform _tempRect = gameObject.GetComponent<RectTransform>();
-            _goTempWeaponElement.GetComponent<RectTransform>().sizeDelta = new Vector2(_tempRect.rect.width, Screen.height / 8);
+            _goTempWeaponElement.GetComponent<RectTransform>().sizeDelta = new Vector2(_tempRect.rect.width, Screen.height / m_numItemsOnScreen);
 
             m_modulesList.Add(_goTempWeaponElement);
         }
@@ -79,5 +84,28 @@ public class DisplayOptions : MonoBehaviour
         }
     }
 
+    public void ScrollUpToSelected(int _diffBetweenTopAndBottom)
+    {
+        //contentPanel.offsetMin = new Vector2(contentPanel.offsetMin.x, _index * 100); //bottom    
+        //contentPanel.offsetMax = new Vector2(contentPanel.offsetMax.x, (_index * -1) * 100);    //top
 
+        RectOffset _tempPadding = new RectOffset(vertLayout.padding.left, vertLayout.padding.right, (_diffBetweenTopAndBottom - NumItemsOnScreen) * -(Screen.height / NumItemsOnScreen), vertLayout.padding.bottom);
+        vertLayout.padding = _tempPadding;
+
+        
+    }
+
+    public void ScrollDownToSelected(int _index)
+    {
+        //contentPanel.offsetMin = new Vector2(contentPanel.offsetMin.x, _index * 100); //bottom    
+        //contentPanel.offsetMax = new Vector2(contentPanel.offsetMax.x, (_index * -1) * 100);    //top
+
+        RectOffset _tempPadding = new RectOffset(vertLayout.padding.left, vertLayout.padding.right, (_index - NumItemsOnScreen) * -(Screen.height / NumItemsOnScreen), vertLayout.padding.bottom);
+        vertLayout.padding = _tempPadding;
+
+
+    }
 }
+
+
+
