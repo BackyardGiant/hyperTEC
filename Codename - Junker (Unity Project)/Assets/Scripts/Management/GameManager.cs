@@ -69,7 +69,8 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("ModularShip");
         }
         else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip")
-        { 
+        {
+            SaveWeapons();
             SceneManager.LoadScene("MainScene");
         }
 
@@ -116,6 +117,51 @@ public class GameManager : MonoBehaviour
     {
         MovementUsabilityTestingManager.Instance.SaveValues();
         SceneManager.LoadScene("UserTesting");
+    }
+
+    public void SaveWeapons()
+    {
+        string _fileName = PlayerPrefs.GetString("LatestSave", "NoSave");
+
+        if (_fileName == "NoSave")
+        {
+            return;
+        }
+
+        try
+        {
+            string[] _lines = File.ReadAllLines(_fileName);
+
+            PlayerSavingObject _savedPlayer = JsonUtility.FromJson<PlayerSavingObject>(_lines[0]);
+
+            GameObject _player = GameObject.FindGameObjectWithTag("Player");
+
+            string _saveLine = "";
+
+            PlayerSavingObject playerSave = new PlayerSavingObject(new Vector3(float.Parse(_savedPlayer.positionX), float.Parse(_savedPlayer.positionY), float.Parse(_savedPlayer.positionZ)), new Quaternion(float.Parse(_savedPlayer.rotationX), float.Parse(_savedPlayer.rotationY), float.Parse(_savedPlayer.rotationZ), float.Parse(_savedPlayer.rotationW)), PlayerInventoryManager.Instance.EquippedRightWeapon.Seed, PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed, PlayerInventoryManager.Instance.EquippedEngine.Seed);
+
+            _saveLine = JsonUtility.ToJson(playerSave);
+
+            using (StreamWriter writer = new StreamWriter(_fileName))
+            {
+                for (int currentLine = 0; currentLine < _lines.Length; currentLine++)
+                {
+                    if (currentLine == 0)
+                    {
+                        writer.WriteLine(_saveLine);
+                    }
+                    else
+                    {
+                        writer.WriteLine(_lines[currentLine]);
+                    }
+                }
+            }
+
+        }
+        catch
+        {
+            return;
+        }
     }
 
     public void SaveGame()

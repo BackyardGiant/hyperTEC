@@ -43,6 +43,7 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.outputAudioMixerGroup = fx;
+            s.source.spatialBlend = 0;
             s.source.loop = s.loop;
         }
     }
@@ -145,7 +146,10 @@ public class AudioManager : MonoBehaviour
         _source.pitch = s.pitch;
         _source.loop = s.loop;
         _source.priority = s.priority;
-        _source.spatialBlend = 0.99f;
+        _source.rolloffMode = AudioRolloffMode.Linear;
+        _source.minDistance = 30;
+        _source.maxDistance = 1000;
+        _source.spatialBlend = 1f;
         _source.outputAudioMixerGroup = fx;
         _source.Play();
         if (destroy == true)
@@ -173,9 +177,6 @@ public class AudioManager : MonoBehaviour
             _targetAudio.transform.position = target.transform.position;
             target = _targetAudio;
         }
-
-        weapon = WeaponSounds.Medium;
-        index = 1;
         Sound s = null;
         if (weapon.ToString() == "Short")
         {
@@ -199,7 +200,7 @@ public class AudioManager : MonoBehaviour
         _source.pitch = s.pitch;
         _source.loop = s.loop;
         _source.priority = s.priority;
-        _source.spatialBlend = 1;
+        _source.spatialBlend = 0;
         _source.outputAudioMixerGroup = fx;
 
 

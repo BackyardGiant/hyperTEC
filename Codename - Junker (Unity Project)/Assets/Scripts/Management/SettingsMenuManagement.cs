@@ -41,16 +41,6 @@ public class SettingsMenuManagement : MonoBehaviour
         m_selectedIndex = 0;
         m_UIAudio = this.GetComponent<AudioSource>();
 
-      
-        if (PlayerPrefs.GetInt("FirstTime") == 0)
-        {
-            PlayerPrefs.SetInt("masterVolume", 80);
-            PlayerPrefs.SetInt("musicVolume", 80);
-            PlayerPrefs.SetInt("fxVolume", 80);
-            PlayerPrefs.SetInt("uiVolume", 80);
-            PlayerPrefs.SetInt("FirstTime", 1);
-            PlayerPrefs.SetInt("ControlScheme", 1);
-        }
         m_values[0].text = PlayerPrefs.GetInt("masterVolume").ToString();
         m_values[1].text = PlayerPrefs.GetInt("musicVolume").ToString();
         m_values[2].text = PlayerPrefs.GetInt("fxVolume").ToString();
@@ -80,7 +70,7 @@ public class SettingsMenuManagement : MonoBehaviour
             {
                 m_downArrows[i].SetActive(false);
             }
-            else if (m_values[i].text == "100")
+            else if (m_values[i].text == "80")
             {
                 m_upArrows[i].SetActive(false);
             }
@@ -90,8 +80,6 @@ public class SettingsMenuManagement : MonoBehaviour
                 m_upArrows[i].SetActive(true);
             }
         }
-
-
         if (m_readyForInput)
         {
             //If you've added an item to the menu and it's not selecting, it's because it doesn't exist here.
@@ -201,9 +189,9 @@ public class SettingsMenuManagement : MonoBehaviour
                 }
                 else if ((Input.GetAxis("MacroEngine") > 0) || (Input.GetAxis("Horizontal") > 0))
                 {
-                    if (m_values[m_selectedIndex].text == "100")
+                    if (m_values[m_selectedIndex].text == "80")
                     {
-                        m_values[m_selectedIndex].text = "100";
+                        m_values[m_selectedIndex].text = "80";
                     }
                     else
                     {
@@ -248,14 +236,12 @@ public class SettingsMenuManagement : MonoBehaviour
                 }
             }
         }
-
         if (Input.GetButtonDown("XboxB"))
         {
             m_mainMenu.SetActive(true);
             this.gameObject.SetActive(false);
         }
     }
-
     private void AnimateBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
@@ -266,7 +252,6 @@ public class SettingsMenuManagement : MonoBehaviour
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
         _bar.fillAmount -= 3f * Time.deltaTime;
     }
-
     IEnumerator audioCooldown()
     {
         m_audioCooldown = true;

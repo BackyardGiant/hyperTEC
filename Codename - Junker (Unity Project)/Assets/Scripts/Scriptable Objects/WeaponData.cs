@@ -21,11 +21,11 @@ public class WeaponData : ScriptableObject
     {
         slow, medium, fast
     }
-
+    [SerializeField]
     private fireRateType currentFireRateType;
 
     private moduleType currentModuleType = moduleType.weapon;
-
+    [SerializeField]
     private int fireRateIndex;
 
     [SerializeField]

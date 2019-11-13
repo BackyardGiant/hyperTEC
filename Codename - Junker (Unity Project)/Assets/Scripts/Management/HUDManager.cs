@@ -560,7 +560,7 @@ public class HUDManager : MonoBehaviour
                 Image _accuracyArrow = m_accuracy[1].GetComponent<Image>();
 
                 ///////////////////////////////////////////////
-                m_damage[0].GetComponent<TextMeshProUGUI>().text = _lootData.Damage.ToString();
+                m_damage[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Damage);// _lootData.Damage.ToString();
                 if (_lootData.Damage > _currentDamage)
                 {
                     //Higher - Green Arrow
@@ -582,7 +582,7 @@ public class HUDManager : MonoBehaviour
                 }
 
                 //////////////////////////////////////////////
-                m_fireRate[0].GetComponent<TextMeshProUGUI>().text = _lootData.FireRate.ToString();
+                m_fireRate[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.FireRate);// _lootData.FireRate.ToString();
                 if (_lootData.FireRate > _currentFireRate)
                 {
                     //Higher - Green Arrow
@@ -604,7 +604,7 @@ public class HUDManager : MonoBehaviour
                 }
 
                 /////////////////////////////////////////////////
-                m_reloadTime[0].GetComponent<TextMeshProUGUI>().text = _lootData.ReloadTime.ToString();
+                m_reloadTime[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.ReloadTime);// _lootData.ReloadTime.ToString();
                 if (_lootData.ReloadTime > _currentReloadTime)
                 {
                     //Higher - Green Arrow
@@ -628,7 +628,7 @@ public class HUDManager : MonoBehaviour
 
 
                 ////////////////////////////////////////////////
-                m_accuracy[0].GetComponent<TextMeshProUGUI>().text = _lootData.Accuracy.ToString();
+                m_accuracy[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Accuracy); //_lootData.Accuracy.ToString();
                 if (_lootData.Accuracy > _currentAccuracy)
                 {
                     //Higher - Green Arrow
@@ -653,6 +653,15 @@ public class HUDManager : MonoBehaviour
             }
             catch { Debug.LogError("Error with displaying loot stats."); }
         }
+    }
+    private string DisplayNiceStats(float _value)
+    {
+        string _returnVal;
+        float _percentage = _value / 100f;
+
+        float _newValue = 100 + (899 * _percentage);
+        _returnVal = ((int)_newValue).ToString();
+        return _returnVal;
     }
     private void togglePickup()
     {

@@ -16,6 +16,16 @@ public class PauseGame : MonoBehaviour
 
     private void Start()
     {
+        if (PlayerPrefs.GetInt("FirstTime") == 0)
+        {
+            PlayerPrefs.SetInt("masterVolume", 50);
+            PlayerPrefs.SetInt("musicVolume", 50);
+            PlayerPrefs.SetInt("fxVolume", 50);
+            PlayerPrefs.SetInt("uiVolume", 50);
+            PlayerPrefs.SetInt("ControlScheme", 1);
+            PlayerPrefs.SetInt("FirstTime", 1);
+        }
+
         m_mixer.SetFloat("masterVol", -80 + PlayerPrefs.GetInt("masterVolume", 80));
         m_mixer.SetFloat("musicVol", -80 + PlayerPrefs.GetInt("musicVolume", 80));
         m_mixer.SetFloat("fxVol", -80 + PlayerPrefs.GetInt("fxVolume", 80));

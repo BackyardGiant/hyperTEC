@@ -199,9 +199,9 @@ public class PlayerShooting : MonoBehaviour
         {
             RaycastHit _hit;
 
-            if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward), out _hit, m_range))
+            if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 100), m_aimingCamera.transform.TransformDirection(Vector3.forward), out _hit, m_range))
             {
-                Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * _hit.distance, Color.yellow);
+                Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 100), m_aimingCamera.transform.TransformDirection(Vector3.forward) * _hit.distance, Color.yellow);
                 m_target.position = _hit.transform.position;
             }
             else

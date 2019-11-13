@@ -2070,9 +2070,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 275.9
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -2080,23 +2080,95 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.0036245016
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -276.01035
+      outSlope: -276.01035
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.0072490033
+      value: 0.5
+      inSlope: -69.00259
+      outSlope: -69.00259
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.014498007
+      value: 0.25
+      inSlope: -17.250647
+      outSlope: -17.250647
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.028996013
+      value: 0.125
+      inSlope: -4.3126616
+      outSlope: -4.3126616
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.057992026
+      value: 0.0625
+      inSlope: -1.0781654
+      outSlope: -1.0781654
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.11598405
+      value: 0.03125
+      inSlope: -0.26954135
+      outSlope: -0.26954135
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2319681
+      value: 0.015625
+      inSlope: -0.06738534
+      outSlope: -0.06738534
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.55893743
+      value: 0
+      inSlope: -0.016846335
+      outSlope: -0.016846335
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9278724
+      value: 0.00390625
+      inSlope: -0.0042115836
+      outSlope: -0.0042115836
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
+      value: 0.0036245016
+      inSlope: -0.0036259473
+      outSlope: -0.0036259473
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -9071,7 +9143,7 @@ PrefabInstance:
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
       propertyPath: worldSounds.Array.data[0].volume
-      value: 0.6
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
@@ -9191,7 +9263,7 @@ PrefabInstance:
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
       propertyPath: worldSounds.Array.data[1].volume
-      value: 0.6
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
@@ -9211,7 +9283,7 @@ PrefabInstance:
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
       propertyPath: worldSounds.Array.data[2].volume
-      value: 0.6
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
@@ -9231,7 +9303,7 @@ PrefabInstance:
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
       propertyPath: worldSounds.Array.data[3].volume
-      value: 0.6
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
@@ -9251,7 +9323,7 @@ PrefabInstance:
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
       propertyPath: worldSounds.Array.data[4].volume
-      value: 0.6
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
@@ -9271,7 +9343,7 @@ PrefabInstance:
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
       propertyPath: worldSounds.Array.data[5].volume
-      value: 0.6
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
@@ -9291,7 +9363,7 @@ PrefabInstance:
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
       propertyPath: worldSounds.Array.data[6].volume
-      value: 0.6
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
@@ -9311,7 +9383,7 @@ PrefabInstance:
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
       propertyPath: worldSounds.Array.data[7].volume
-      value: 0.6
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
@@ -9530,12 +9602,12 @@ PrefabInstance:
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
       propertyPath: shortWeaponSounds.Array.data[0].pitch
-      value: 1
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
       propertyPath: shortWeaponSounds.Array.data[1].pitch
-      value: 1
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7623626995318783564, guid: 80c794cbe678d144ba82b5483e55adf5,
         type: 3}
