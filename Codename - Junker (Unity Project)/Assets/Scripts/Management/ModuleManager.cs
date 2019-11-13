@@ -139,6 +139,10 @@ public class ModuleManager : MonoBehaviour
 
         _tempWeaponData.FireRate = float.Parse(_seed.Substring(1,3));
 
+        _tempWeaponData.CurrentFireRateType = (WeaponData.fireRateType)int.Parse(_seed[23].ToString());
+
+        _tempWeaponData.FireRateIndex = int.Parse(_seed.Substring(20, 3));
+
         _tempWeaponData.Accuracy = float.Parse(_seed.Substring(4, 3));
         _tempWeaponData.Damage = float.Parse(_seed.Substring(7, 3));
         _tempWeaponData.ReloadTime = float.Parse(_seed.Substring(10, 3));

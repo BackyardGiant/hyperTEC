@@ -47,6 +47,7 @@ public class EnemyStats : MonoBehaviour
 
     private void Die()
     {
+        Collider enemyCollider = GetComponent<Collider>();
         try
         {
             Destroy(GetComponent<EnemyDetection>().EnemyTarget.gameObject);
@@ -56,14 +57,18 @@ public class EnemyStats : MonoBehaviour
 
 
 
+        if (enemyCollider.enabled == true)
+        {
+            m_dropWeaponsScript.Drop();
+            Instantiate(m_explosion, transform.position, transform.rotation);
+            int _random = Random.Range(1, 4);
+            AudioManager.Instance.PlayWorld("ExplosionLong" + _random, this.gameObject, true, true);
 
-        m_dropWeaponsScript.Drop();
-        Instantiate(m_explosion,transform.position,transform.rotation);
-        int _random = Random.Range(1, 4);
-        AudioManager.Instance.PlayWorld("ExplosionLong" + _random, this.gameObject, true, true);
+            Destroy(gameObject);
+            int _value = PlayerPrefs.GetInt("EnemiesKilled");
+            PlayerPrefs.SetInt("EnemiesKilled", _value + 1);
+        }
 
-        Destroy(gameObject);
-        int _value = PlayerPrefs.GetInt("EnemiesKilled");
-        PlayerPrefs.SetInt("EnemiesKilled", _value + 1);
+        enemyCollider.enabled = false;
     }
 }

@@ -39,6 +39,19 @@ public class GameManager : MonoBehaviour
             s_instance = this;
         }
     }
+
+    private void Start()
+    {
+        Scene _currentScene = SceneManager.GetActiveScene();
+        string _sceneName = _currentScene.name;
+
+        if (_sceneName == "MainScene" && PlayerPrefs.GetInt("LoadFromSave", 0) == 1)
+        {
+            spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
+            Invoke("LoadGame", 0.3f);
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F1))
@@ -46,14 +59,16 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.DeleteAll();
         }
 
-        Scene currentScene = SceneManager.GetActiveScene();
-        string sceneName = currentScene.name;
+        Scene _currentScene = SceneManager.GetActiveScene();
+        string _sceneName = _currentScene.name;
 
-        if (Input.GetButtonDown("Inventory") && sceneName == "MainScene")
+        if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene")
         {
+            SaveGame();
+            PlayerPrefs.SetInt("LoadFromSave", 1);
             SceneManager.LoadScene("ModularShip");
         }
-        else if(Input.GetButtonDown("Inventory") && sceneName == "ModularShip")
+        else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip")
         { 
             SceneManager.LoadScene("MainScene");
         }
@@ -273,9 +288,21 @@ public class GameManager : MonoBehaviour
 
     public void LoadGame()
     {
-        string _fileName = PlayerPrefs.GetString("LatestSave");
+        string _fileName = PlayerPrefs.GetString("LatestSave", "NoSave");
 
-        File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.Read).Dispose();
+        if(_fileName == "NoSave")
+        {
+            return;
+        }
+
+        try
+        {
+            File.Open(_fileName, FileMode.Open, FileAccess.Read).Dispose();
+        }
+        catch
+        {
+            return;
+        }
 
         string[] _loadLines = File.ReadAllLines(_fileName);
 

@@ -11,6 +11,7 @@ TagManager:
   - gun
   - InventoryManager
   - TargetUI
+  - Spawner
   layers:
   - Default
   - TransparentFX

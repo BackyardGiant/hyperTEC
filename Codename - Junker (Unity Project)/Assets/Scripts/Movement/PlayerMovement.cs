@@ -115,6 +115,8 @@ public class PlayerMovement : MonoBehaviour
         {
             m_controlScheme = ControlType.YawLeftAxis;
         }
+
+        m_boostSpeed = 8.5f * m_maxSpeed;
     }
 
     // Update is called once per frame

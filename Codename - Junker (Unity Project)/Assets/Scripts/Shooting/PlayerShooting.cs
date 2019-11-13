@@ -119,8 +119,8 @@ public class PlayerShooting : MonoBehaviour
         if(_rightWeapon != null)
         {
             //SOUND
-            m_rightWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(WeaponData.fireRateType)_rightWeapon.CurrentFireRateType, _rightWeapon.FireRateIndex, this.gameObject, true);
-
+            m_rightWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(int)_rightWeapon.CurrentFireRateType, _rightWeapon.FireRateIndex, this.gameObject, true);
+            
             //FIRE RATE
             _rightFireRatePercentage = _rightWeapon.FireRate / 100f;
             m_rightWeaponCooldown = m_slowerFireRate + (_rightFireRatePercentage * _rangeFireRate);

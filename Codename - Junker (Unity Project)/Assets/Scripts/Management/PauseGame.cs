@@ -16,10 +16,11 @@ public class PauseGame : MonoBehaviour
 
     private void Start()
     {
-        m_mixer.SetFloat("masterVol", -80 + PlayerPrefs.GetInt("masterVolume"));
-        m_mixer.SetFloat("musicVol", -80 + PlayerPrefs.GetInt("musicVolume"));
-        m_mixer.SetFloat("fxVol", -80 + PlayerPrefs.GetInt("fxVolume"));
-        m_mixer.SetFloat("uiVol", -80 + PlayerPrefs.GetInt("uiVolume"));
+        m_mixer.SetFloat("masterVol", -80 + PlayerPrefs.GetInt("masterVolume", 80));
+        m_mixer.SetFloat("musicVol", -80 + PlayerPrefs.GetInt("musicVolume", 80));
+        m_mixer.SetFloat("fxVol", -80 + PlayerPrefs.GetInt("fxVolume", 80));
+        m_mixer.SetFloat("uiVol", -80 + PlayerPrefs.GetInt("uiVolume", 80));
+
 
         m_playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
 
