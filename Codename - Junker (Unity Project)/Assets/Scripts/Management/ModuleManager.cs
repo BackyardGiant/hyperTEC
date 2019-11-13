@@ -37,17 +37,27 @@ public class ModuleManager : MonoBehaviour
 
     public GameObject GenerateEngine(EngineData data)
     {
+        GameObject _goTempEngine;
+
         data.Seed = data.EngineId.ToString();
         switch(data.CurrentFaction)
         {
             case EngineData.faction.trader:
-                return traderEngines[data.EngineId];
+                _goTempEngine = traderEngines[data.EngineId];
+                Instantiate(_goTempEngine);
+                return _goTempEngine;
             case EngineData.faction.construction:
-                return constructEngine[data.EngineId];
+                _goTempEngine = constructEngine[data.EngineId];
+                Instantiate(_goTempEngine);
+                return _goTempEngine;
             case EngineData.faction.explorer:
-                return explorerEngines[data.EngineId];
+                _goTempEngine = explorerEngines[data.EngineId];
+                Instantiate(_goTempEngine);
+                return _goTempEngine;
             case EngineData.faction.initial:
-                return defaultEngines[data.EngineId];
+                _goTempEngine = defaultEngines[data.EngineId];
+                Instantiate(_goTempEngine);
+                return _goTempEngine;
             default:
                 return null;
         }
