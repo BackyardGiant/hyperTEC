@@ -4,18 +4,24 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioMixerGroup mixer;
+    public AudioMixerGroup fx,music,ui;
+    public enum WeaponSounds {Long,Medium,Short};
 
     [Header("Sound Lists")]
     [Tooltip("Sounds to be played locally. E.G Music, UI Effects. Usually non-diegetic audio.")]
     public Sound[] localSounds;
     [Tooltip("Sounds to be played on a certain position. E.G gunshots, explosions. Usually diegetic audio."),Space(20)]
     public Sound[] worldSounds;
+    [Header("Weapon Specific Sounds"),Tooltip("Sounds to be played on a certain position. E.G gunshots, explosions. Usually diegetic audio."), Space(20)]
+    public Sound[] shortWeaponSounds;
+    [Tooltip("Sounds to be played on a certain position. E.G gunshots, explosions. Usually diegetic audio.")]
+    public Sound[] mediumWeaponSounds;
+    [Tooltip("Sounds to be played on a certain position. E.G gunshots, explosions. Usually diegetic audio.")]
+    public Sound[] longWeaponSounds;
+    [Tooltip("Time Delays before Long Sounds Play.")]
+    public float[] longWeaponDelays;
 
     public static AudioManager Instance;
-
-    //[SerializeField]
-    //private AudioMixerGroup m_mixerGroup, m_mixerMusicGroup;
 
     private void Awake()
     {
@@ -33,15 +39,13 @@ public class AudioManager : MonoBehaviour
         {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
-
+            s.source.priority = s.priority;
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
-            s.source.outputAudioMixerGroup = mixer;
+            s.source.outputAudioMixerGroup = fx;
+            s.source.spatialBlend = 0;
             s.source.loop = s.loop;
         }
-    }
-    private void Start()
-    {
     }
 
     #region LocalSoundControls
@@ -141,8 +145,12 @@ public class AudioManager : MonoBehaviour
         _source.volume = s.volume;
         _source.pitch = s.pitch;
         _source.loop = s.loop;
-        _source.spatialBlend = 0.99f;
-        _source.outputAudioMixerGroup = mixer;
+        _source.priority = s.priority;
+        _source.rolloffMode = AudioRolloffMode.Linear;
+        _source.minDistance = 30;
+        _source.maxDistance = 1000;
+        _source.spatialBlend = 1f;
+        _source.outputAudioMixerGroup = fx;
         _source.Play();
         if (destroy == true)
         {
@@ -156,7 +164,47 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
+    #endregion
+
+    #region WeaponSoundControls
+    public AudioSource PlayWeapon(WeaponSounds weapon,int index, GameObject target,bool seperateObject)
+    {
+        string name = weapon.ToString() + index;
+        if (seperateObject == true)
+        {
+            GameObject _targetAudio = new GameObject(target.name + " audio source. Playing - " + name);
+            _targetAudio.transform.parent = target.transform;
+            _targetAudio.transform.position = target.transform.position;
+            target = _targetAudio;
+        }
+        Sound s = null;
+        if (weapon.ToString() == "Short")
+        {
+            name = "ShortWeapon" + (index + 1).ToString();
+            s = Array.Find(shortWeaponSounds, sound => sound.name == name);
+        }
+        else if(weapon.ToString() == "Medium")
+        {
+            name = "MediumWeapon" + (index + 1).ToString();
+            s = Array.Find(mediumWeaponSounds, sound => sound.name == name);
+        }
+        else if(weapon.ToString() == "Long")
+        {
+            name = "LongWeapon" + (index+1).ToString();
+            s = Array.Find(longWeaponSounds, sound => sound.name == name);
+        }
+
+        AudioSource _source = target.AddComponent<AudioSource>();
+        _source.clip = s.clip;
+        _source.volume = s.volume;
+        _source.pitch = s.pitch;
+        _source.loop = s.loop;
+        _source.priority = s.priority;
+        _source.spatialBlend = 0;
+        _source.outputAudioMixerGroup = fx;
 
 
+        return _source;
+    }
     #endregion
 }

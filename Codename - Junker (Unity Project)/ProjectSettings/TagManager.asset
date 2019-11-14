@@ -10,6 +10,8 @@ TagManager:
   - Bullet
   - gun
   - InventoryManager
+  - TargetUI
+  - Spawner
   layers:
   - Default
   - TransparentFX

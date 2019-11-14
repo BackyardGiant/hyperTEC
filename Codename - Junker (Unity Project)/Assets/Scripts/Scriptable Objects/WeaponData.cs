@@ -6,7 +6,7 @@ using UnityEngine;
 public class WeaponData : ScriptableObject
 {
     [SerializeField]
-    private string name, description;
+    private string weaponName, description;
 
     private enum moduleType
     {
@@ -17,7 +17,16 @@ public class WeaponData : ScriptableObject
         explorer, initial, trader, construction
     }
 
+    public enum fireRateType
+    {
+        slow, medium, fast
+    }
+    [SerializeField]
+    private fireRateType currentFireRateType;
+
     private moduleType currentModuleType = moduleType.weapon;
+    [SerializeField]
+    private int fireRateIndex;
 
     [SerializeField]
     private faction currentFaction;
@@ -31,7 +40,9 @@ public class WeaponData : ScriptableObject
     [SerializeField]
     private int barrelId, magazineId, batteryId, targetId;
 
-    public string Name { get => name; set => name = value; }
+    private string seed;
+
+    public string Name { get => weaponName; set => weaponName = value; }
     public string Description { get => description; set => description = value; }
     public Sprite Thumbnail { get => thumbnail; set => thumbnail = value; }
     public float Value { get => value; set => this.value = value; }
@@ -45,4 +56,7 @@ public class WeaponData : ScriptableObject
     public int MagazineId { get => magazineId; set => magazineId = value; }
     public int BatteryId { get => batteryId; set => batteryId = value; }
     public int TargetId { get => targetId; set => targetId = value; }
+    public string Seed { get => seed; set => seed = value; }
+    public fireRateType CurrentFireRateType { get => currentFireRateType; set => currentFireRateType = value; }
+    public int FireRateIndex { get => fireRateIndex; set => fireRateIndex = value; }
 }

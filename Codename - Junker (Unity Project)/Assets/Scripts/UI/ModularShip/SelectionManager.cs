@@ -16,6 +16,9 @@ public class SelectionManager : MonoBehaviour
     private int[] m_takenIndexes = new int[] { -1, -1, -1 };
     private bool m_leftSideSelected = true;
 
+    [SerializeField]
+    private int m_bottomIndex;
+
     // Initialise all to "null" (-1)
     void Start()
     {
@@ -32,6 +35,8 @@ public class SelectionManager : MonoBehaviour
         display.UpdateEquipped(m_takenIndexes);
 
         PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+
+        m_bottomIndex = display.NumItemsOnScreen;
     }
 
     private void Update()
@@ -48,11 +53,17 @@ public class SelectionManager : MonoBehaviour
             {
                 if (m_currentlySelectedIndex == display.ModulesList.Count - 1)
                 {
-                    m_currentlySelectedIndex = 0;
+                    m_currentlySelectedIndex = display.ModulesList.Count - 1;
                 }
                 else
                 {
                     m_currentlySelectedIndex++;
+                }
+
+                if(m_currentlySelectedIndex >= display.NumItemsOnScreen)
+                {
+                    display.ScrollDownToSelected(m_currentlySelectedIndex + 1);
+                    m_bottomIndex++;
                 }
 
                 RemovePreviousModule();
@@ -67,11 +78,17 @@ public class SelectionManager : MonoBehaviour
             {
                 if (m_currentlySelectedIndex == 0)
                 {
-                    m_currentlySelectedIndex = display.ModulesList.Count - 1;
+                    m_currentlySelectedIndex = 0;
                 }
                 else
                 {
                     m_currentlySelectedIndex--;
+                }
+
+                if (m_currentlySelectedIndex < m_bottomIndex - display.NumItemsOnScreen)
+                {
+                    m_bottomIndex--;
+                    display.ScrollDownToSelected(m_bottomIndex);            
                 }
 
                 RemovePreviousModule();
