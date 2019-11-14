@@ -114,7 +114,7 @@ MonoBehaviour:
   m_MinSize: {x: 681, y: 494}
   m_MaxSize: {x: 18006, y: 14044}
   vertical: 0
-  controlID: 13
+  controlID: 142
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 494}
   m_MaxSize: {x: 14006, y: 14044}
   vertical: 1
-  controlID: 14
+  controlID: 143
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 222}
   m_MaxSize: {x: 8006, y: 4022}
   vertical: 0
-  controlID: 70
+  controlID: 144
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_MinSize: {x: 336, y: 272}
   m_MaxSize: {x: 14006, y: 10022}
   vertical: 0
-  controlID: 15
+  controlID: 79
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -265,15 +265,15 @@ MonoBehaviour:
     height: 286
   m_MinSize: {x: 102, y: 122}
   m_MaxSize: {x: 4002, y: 4022}
-  m_ActualView: {fileID: 21}
+  m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 18}
   - {fileID: 19}
   - {fileID: 20}
   - {fileID: 21}
   - {fileID: 22}
-  m_Selected: 3
-  m_LastSelected: 2
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -437,9 +437,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 16770200
-      m_LastClickedID: 161558
-      m_ExpandedIDs: ba0bf5ff6017f5ff861bf5ff9efefdfffe8cffff0e8dffff148dffff648ffffff08fffff6e90ffffdc90ffffee90fffff690ffff0a91ffff3091ffff4091ffff5691ffff6491ffff6891ffff0a92ffff8492fffffe92ffff7893fffff293ffff6c94ffffe694ffff6095ffffda95ffff5496ffffce96ffff4897ffffc897ffff4298ffffbc98ffff3699ffffb099ffff2a9affffa49affff1e9bffff989bffff129cffff8c9cffff0c9dffff0e9dfffff4ffffffc85a0000e45a0000fc5a00003c5b0000ea5b00006a5c0000845c0000925c0000ae5c0000b45c0000c45c0000f65c0000768f00006278020078780200
+      m_SelectedIDs: 12abfaff
+      m_LastClickedID: -349422
+      m_ExpandedIDs: 0e9dfffff4ffffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -499,9 +499,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -173.6813, y: 538.91675, z: -721.6779}
+    m_Target: {x: -1.117049, y: 0.5403986, z: 3.448391}
     speed: 2
-    m_Value: {x: -173.6813, y: 538.91675, z: -721.6779}
+    m_Value: {x: -1.117049, y: 0.5403986, z: 3.448391}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -530,13 +530,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.08843253, y: 0.2627266, z: -0.024189884, w: 0.96051586}
+    m_Target: {x: 0.16156374, y: -0.020726953, z: 0.0033924447, w: 0.98665}
     speed: 2
-    m_Value: {x: 0.08843158, y: 0.26272377, z: -0.024189625, w: 0.96050555}
+    m_Value: {x: 0.16156195, y: -0.020726724, z: 0.003392407, w: 0.986639}
   m_Size:
-    m_Target: 27.583559
+    m_Target: 38.609528
     speed: 2
-    m_Value: 27.583559
+    m_Value: 38.609528
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -611,7 +611,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 1094
-    width: 1303
+    width: 1302
     height: 267
   m_ViewDataDictionary: {fileID: 0}
   m_SearchFilter:
@@ -627,21 +627,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/Scripts/Management
   m_ViewMode: 1
   m_StartGridSize: 89
   m_LastFolders:
-  - Assets
+  - Assets/Scripts/Management
   m_LastFoldersGridSize: 89
-  m_LastProjectPath: C:\Users\jgriffiths6.SOCNET\Documents\GitKracken\hyperTEC\Codename
-    - Junker (Unity Project)
+  m_LastProjectPath: C:\Users\jjbrewer\Desktop\hyperTEC\Codename - Junker (Unity Project)
   m_LockTracker:
     m_IsLocked: 1
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 0e540000
-    m_LastClickedID: 21518
-    m_ExpandedIDs: 000000000e540000b2540000d455000016560000405600001259000000ca9a3b
+    scrollPos: {x: 0, y: 553}
+    m_SelectedIDs: f2580000
+    m_LastClickedID: 22770
+    m_ExpandedIDs: 000000000e540000b25400002a550000d455000016560000405600001259000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -669,7 +668,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000e540000b254000012590000
+    m_ExpandedIDs: 000000000e540000b25400002a550000d4550000165600004056000012590000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -694,9 +693,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 3c09f5ff
-    m_LastClickedInstanceID: -718532
-    m_HadKeyboardFocusLastEvent: 0
+    m_SelectedInstanceIDs: ecd9faff
+    m_LastClickedInstanceID: -337428
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000d44d000028440000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -748,7 +747,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 1094
-    width: 1303
+    width: 1302
     height: 267
   m_ViewDataDictionary: {fileID: 0}
 --- !u!114 &20
@@ -808,7 +807,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_MixersTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 503c0000
+    m_SelectedIDs: 
     m_LastClickedID: 15440
     m_ExpandedIDs: 12eb343c
     m_RenameOverlay:
@@ -880,7 +879,7 @@ MonoBehaviour:
       splitSize: 6
       xOffset: 0
     m_HorizontalSplitter:
-      ID: 31
+      ID: 59
       splitterInitialOffset: 603
       currentActiveSplitter: -1
       realSizes: 8701000090030000
@@ -1058,12 +1057,11 @@ MonoBehaviour:
   m_LastFolders:
   - Assets/Scripts/Management
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\jgriffiths6.SOCNET\Documents\GitKracken\hyperTEC\Codename
-    - Junker (Unity Project)
+  m_LastProjectPath: C:\Users\jjbrewer\Desktop\hyperTEC\Codename - Junker (Unity Project)
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 357}
+    scrollPos: {x: 0, y: 405}
     m_SelectedIDs: f2580000
     m_LastClickedID: 22770
     m_ExpandedIDs: 000000000e540000b25400002a550000d455000016560000405600001259000000ca9a3b
@@ -1094,7 +1092,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000e540000b254000012590000
+    m_ExpandedIDs: 000000000e540000b25400002a550000d4550000165600004056000012590000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

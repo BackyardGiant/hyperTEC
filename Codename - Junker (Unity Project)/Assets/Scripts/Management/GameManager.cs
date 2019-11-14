@@ -215,9 +215,25 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        List<string> _weaponSeeds = new List<string>();
+        List<string> _engineSeeds = new List<string>();
+
+        foreach (WeaponData _weapon in PlayerInventoryManager.Instance.AvailableWeapons)
+        {
+            _weaponSeeds.Add(_weapon.Seed);
+        }
+        foreach (EngineData _engine in PlayerInventoryManager.Instance.AvailableEngines)
+        {
+            _engineSeeds.Add(_engine.Seed);
+        }
+
+        InventorySavingObject inventory = new InventorySavingObject(_weaponSeeds, _engineSeeds);
+
         string amountOfLoot = _lootSaves.Count.ToString();
 
         _saveLine = JsonUtility.ToJson(playerSave);
+
+        string _inventorySave = JsonUtility.ToJson(inventory);
 
         //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
 
@@ -246,6 +262,8 @@ public class GameManager : MonoBehaviour
             _enemySaveLine = JsonUtility.ToJson(_lootSave);
             File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
         }
+
+        File.AppendAllText(_fileName, _inventorySave + System.Environment.NewLine);
 
         PlayerPrefs.SetString("LatestSave", _fileName);
     }
@@ -301,9 +319,25 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        List<string> _weaponSeeds = new List<string>();
+        List<string> _engineSeeds = new List<string>();
+
+        foreach(WeaponData _weapon in PlayerInventoryManager.Instance.AvailableWeapons)
+        {
+            _weaponSeeds.Add(_weapon.Seed);
+        }
+        foreach (EngineData _engine in PlayerInventoryManager.Instance.AvailableEngines)
+        {
+            _engineSeeds.Add(_engine.Seed);
+        }
+
+        InventorySavingObject inventory = new InventorySavingObject(_weaponSeeds, _engineSeeds);
+
         string amountOfLoot = _lootSaves.Count.ToString();
 
         _saveLine = JsonUtility.ToJson(playerSave);
+
+        string _inventorySave = JsonUtility.ToJson(inventory);
 
         //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
 
@@ -328,6 +362,8 @@ public class GameManager : MonoBehaviour
             _enemySaveLine = JsonUtility.ToJson(_lootSave);
             File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
         }
+
+        File.AppendAllText(_fileName, _inventorySave + System.Environment.NewLine);
 
         PlayerPrefs.SetString("LatestSave", _fileName);
     }
@@ -457,6 +493,27 @@ public class GameManager : MonoBehaviour
             _tempLeftGun.transform.localPosition = Vector3.zero;
             _tempLeftGun.transform.localRotation = Quaternion.identity;
             _tempLeftGun.transform.localScale = m_scale;
+        }
+
+        //PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
+
+        InventorySavingObject _inventory = JsonUtility.FromJson<InventorySavingObject>(_loadLines[3 + _numberOfEnemies + _numberOfItems]);
+
+        foreach(string _weapon in _inventory.availableWeapons)
+        {
+            if (_weapon.Length > 0)
+            {
+                WeaponData _tempWeapon = ModuleManager.Instance.CreateStatBlock(_weapon);
+                PlayerInventoryManager.Instance.AvailableWeapons.Add(_tempWeapon);
+            }
+        }
+        foreach(string _engine in _inventory.availableEngines)
+        {
+            if (_engine.Length > 0)
+            {
+                EngineData _tempEngine = ModuleManager.Instance.CreateEngineBlock(_engine);
+                PlayerInventoryManager.Instance.AvailableEngines.Add(_tempEngine);
+            }
         }
     }
 
