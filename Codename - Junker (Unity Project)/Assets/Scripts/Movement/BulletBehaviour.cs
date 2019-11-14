@@ -34,6 +34,11 @@ public class BulletBehaviour : MonoBehaviour
     {
         m_rbBullet = gameObject.GetComponent<Rigidbody>();
     }
+    private void Update()
+    {
+        Debug.Log(m_rbBullet.velocity.magnitude);    
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == m_target)

@@ -25,6 +25,7 @@ public class PlayerShooting : MonoBehaviour
 
     private Vector3 m_targetPosition;
     private AudioSource m_rightWeaponSound, m_leftWeaponSound;
+    private float m_rightWeaponSoundDelay, m_leftWeaponSoundDelay;
 
     private bool m_playerCanShoot = true;
 
@@ -44,6 +45,11 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField]
     private float m_highDamage;
 
+    [SerializeField, Header("Accuracy Ranges"), Tooltip("lowest and highest range of accuracy.")]
+    private float m_lowAccuracy;
+    [SerializeField]
+    private float m_highAccuracy;
+
     #region Stats
     [SerializeField, Header("Stats"), Tooltip("The range that the bullets aim towards using the camera, 1000 is default")]
     private uint m_range = 1000;
@@ -53,11 +59,14 @@ public class PlayerShooting : MonoBehaviour
     private float m_bulletSpeed;
     [SerializeField, Tooltip("The auto aim range, around 3")]
     private float m_autoAimDistance;
-
-
+    [SerializeField, Tooltip("The spread around the target")]
+    private float m_universalBulletSpread;
 
     private float m_rightBulletDamage;
     private float m_leftBulletDamage;
+
+    private float m_rightBulletAccuracy;
+    private float m_leftBulletAccuracy;
     #endregion
 
 
@@ -109,17 +118,28 @@ public class PlayerShooting : MonoBehaviour
 
         float _rangeFireRate = -(m_slowerFireRate - m_quickerFireRate);
         float _rangeDamage = (m_highDamage - m_lowDamage);
+        float _rangeAccuracy = (m_highAccuracy - m_lowAccuracy);
 
         float _leftFireRatePercentage;
         float _rightFireRatePercentage;
         float _leftDamagePercentage;
         float _rightDamagePercentage;
+        float _leftAccuracyPercentage;
+        float _rightAccuracyPercentage;
 
-
-        if(_rightWeapon != null)
+        if (_rightWeapon != null)
         {
             //SOUND
             m_rightWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(int)_rightWeapon.CurrentFireRateType, _rightWeapon.FireRateIndex, this.gameObject, true);
+
+            if(_rightWeapon.CurrentFireRateType == WeaponData.fireRateType.slow)
+            {
+                m_rightWeaponSoundDelay = AudioManager.Instance.longWeaponDelays[_rightWeapon.FireRateIndex];
+            }
+            else
+            {
+                m_rightWeaponSoundDelay = 0;
+            }
             
             //FIRE RATE
             _rightFireRatePercentage = _rightWeapon.FireRate / 100f;
@@ -129,12 +149,16 @@ public class PlayerShooting : MonoBehaviour
             _rightDamagePercentage = _rightWeapon.Damage / 100f;
             m_rightBulletDamage = m_lowDamage + (_rangeDamage * _rightDamagePercentage);
 
+            //Accuracy
+            _rightAccuracyPercentage = _rightWeapon.Accuracy / 100f;
+            m_rightBulletAccuracy = m_lowAccuracy + (_rangeAccuracy * _rightAccuracyPercentage);
+
             //ACCURACY
 
             //RELOAD TIME
 
             //BULLET MATERIAL
-            if(_rightWeapon.CurrentFaction == WeaponData.faction.initial)
+            if (_rightWeapon.CurrentFaction == WeaponData.faction.initial)
             {
                 m_rightBulletType = m_defaultBulletPrefab;
             }
@@ -158,6 +182,15 @@ public class PlayerShooting : MonoBehaviour
             //SOUND
             m_leftWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(WeaponData.fireRateType)_leftWeapon.CurrentFireRateType, _leftWeapon.FireRateIndex, this.gameObject, true);
 
+            if (_leftWeapon.CurrentFireRateType == WeaponData.fireRateType.slow)
+            {
+                m_leftWeaponSoundDelay = AudioManager.Instance.longWeaponDelays[_leftWeapon.FireRateIndex];
+            }
+            else
+            {
+                m_leftWeaponSoundDelay = 0;
+            }
+
             //FIRE RATE
             _leftFireRatePercentage = _leftWeapon.FireRate / 100f;
             m_leftWeaponCooldown = m_slowerFireRate + (_leftFireRatePercentage * _rangeFireRate);
@@ -167,6 +200,8 @@ public class PlayerShooting : MonoBehaviour
             m_leftBulletDamage = m_lowDamage + (_rangeDamage * _leftDamagePercentage);
 
             //ACCURACY
+            _leftAccuracyPercentage = _leftWeapon.Accuracy / 100f;
+            m_leftBulletAccuracy = m_lowAccuracy + (_rangeAccuracy * _leftAccuracyPercentage);
 
             //RELOAD TIME
 
@@ -215,7 +250,7 @@ public class PlayerShooting : MonoBehaviour
                 if (Vector2.Distance(HUDManager.Instance.ClosestEnemyScreenPos, new Vector2(Screen.width / 2, Screen.height / 2)) < m_autoAimDistance)
                 {
                     m_aimingCrosshair.HasTarget = true;
-                    m_targetPosition = HUDManager.Instance.ClosetEnemy.transform.position;
+                    m_targetPosition = HUDManager.Instance.ClosetEnemy.transform.position + (HUDManager.Instance.ClosetEnemy.GetComponent<Rigidbody>().velocity * ((HUDManager.Instance.ClosetEnemy.GetComponent<Rigidbody>().velocity.magnitude / m_bulletSpeed) + Vector3.Distance(HUDManager.Instance.ClosetEnemy.transform.position, transform.position) * 0.0008f));
                     m_aimingCrosshair.TargetPosition = new Vector2(HUDManager.Instance.ClosestEnemyScreenPos.x, HUDManager.Instance.ClosestEnemyScreenPos.y);
                     m_target.position = m_targetPosition;
                 }
@@ -229,19 +264,25 @@ public class PlayerShooting : MonoBehaviour
                 m_aimingCrosshair.HasTarget = false;
             }
 
-            m_spawnLocations[0].transform.LookAt(m_target);
-            m_spawnLocations[1].transform.LookAt(m_target);
+            Vector3 offset = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_target.position, transform.position) / m_range));
+
+            m_spawnLocations[0].transform.LookAt(m_target.position + (offset * (1 - m_rightBulletAccuracy)));
+            m_spawnLocations[1].transform.LookAt(m_target.position + (offset * (1 - m_leftBulletAccuracy)));
+
+            float _random = Random.Range(1f, 2f);
 
             if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedRightWeapon != null)
             {
-                SpawnBullet(0);
+                m_rightWeaponSound.pitch = _random;
+                m_rightWeaponSound.Play();
                 m_rightWeaponActive = false;
                 StartCoroutine(rightCooldown());
             }
 
             if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
             {
-                SpawnBullet(1);
+                m_leftWeaponSound.pitch = _random;
+                m_leftWeaponSound.Play();
                 m_leftWeaponActive = false;
                 StartCoroutine(leftCooldown());
             }
@@ -252,19 +293,14 @@ public class PlayerShooting : MonoBehaviour
     void SpawnBullet(int _side)
     {
         //Temporary implementation of shooting sounds
-        float _random = Random.Range(1f, 2f);
         GameObject newBullet;
         if (_side == 0)
         {
-            m_rightWeaponSound.pitch = _random;
-            m_rightWeaponSound.Play();
             newBullet = Instantiate(m_rightBulletType, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
             newBullet.GetComponent<BulletBehaviour>().Damage = m_rightBulletDamage;
         }
         else
         {
-            m_leftWeaponSound.pitch = _random;
-            m_leftWeaponSound.Play();
             newBullet = Instantiate(m_leftBulletType, m_spawnLocations[_side].transform.position, m_spawnLocations[_side].transform.rotation);
             newBullet.GetComponent<BulletBehaviour>().Damage = m_leftBulletDamage;
 
@@ -281,11 +317,15 @@ public class PlayerShooting : MonoBehaviour
 
     IEnumerator rightCooldown()
     {
+        yield return new WaitForSeconds(m_rightWeaponSoundDelay);
+        SpawnBullet(0);
         yield return new WaitForSeconds(m_rightWeaponCooldown);
         m_rightWeaponActive = true;
     }
     IEnumerator leftCooldown()
     {
+        yield return new WaitForSeconds(m_leftWeaponSoundDelay);
+        SpawnBullet(1);
         yield return new WaitForSeconds(m_leftWeaponCooldown);
         m_leftWeaponActive = true;
     }

@@ -393,10 +393,12 @@ MonoBehaviour:
   m_aimingCamera: {fileID: 0}
   m_aimingCrosshair: {fileID: 0}
   m_target: {fileID: 6754279457850745871}
-  m_quickerFireRate: 0.15
+  m_quickerFireRate: 0.1
   m_slowerFireRate: 1.3
   m_lowDamage: 5
   m_highDamage: 30
+  m_lowAccuracy: 0
+  m_highAccuracy: 1
   m_range: 500
   m_bulletLifeTime: 2
   m_bulletSpeed: 2000
