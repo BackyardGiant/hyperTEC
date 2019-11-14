@@ -135,6 +135,26 @@ public class ModuleManager : MonoBehaviour
         }
     }
 
+    public EngineData CreateEngineBlock()
+    {
+        EngineData _tempEngineData = ScriptableObject.CreateInstance<EngineData>();
+
+        //Put engine generation stuff here
+        _tempEngineData.CurrentFaction = EngineData.faction.initial;
+
+        return _tempEngineData;
+    }
+
+    public EngineData CreateEngineBlock(string _seed)
+    {
+        EngineData _tempEngineData = ScriptableObject.CreateInstance<EngineData>();
+
+        //Put engine generation stuff here
+        _tempEngineData.CurrentFaction = (EngineData.faction)int.Parse(_seed[0].ToString());
+
+        return _tempEngineData;
+    }
+
     public WeaponData CreateStatBlock()
     {
         string _seed = GenerateSeed();
