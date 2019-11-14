@@ -7,8 +7,13 @@ using UnityEngine.Audio;
 
 public class MainMenuManagement : MonoBehaviour
 {
-    [SerializeField, Tooltip("Settings Menu Object")]
+    [SerializeField, Tooltip("Settings Menu Object"), Header("Sub-Menu List")]
     private GameObject m_settingsMenu;
+    [SerializeField, Tooltip("Load Game Menu Object")]
+    private GameObject m_loadGameMenu;
+
+
+
     [SerializeField, Tooltip("All of the items on the menu to sort through")]
     private GameObject[] m_menuOptions;
     [SerializeField, Tooltip("UI sounds. First should be the scroll, second should be select")]
@@ -26,12 +31,14 @@ public class MainMenuManagement : MonoBehaviour
 
     private void Start()
     {
+        m_onMenu = false;
+        m_settingsMenu.SetActive(false);
         if (PlayerPrefs.GetInt("FirstTime") == 0)
         {
-            PlayerPrefs.SetInt("masterVolume", 50);
-            PlayerPrefs.SetInt("musicVolume", 50);
-            PlayerPrefs.SetInt("fxVolume", 50);
-            PlayerPrefs.SetInt("uiVolume", 50);
+            PlayerPrefs.SetInt("masterVolume", 80);
+            PlayerPrefs.SetInt("musicVolume", 80);
+            PlayerPrefs.SetInt("fxVolume", 80);
+            PlayerPrefs.SetInt("uiVolume", 80);
             PlayerPrefs.SetInt("ControlScheme", 1);
             PlayerPrefs.SetInt("FirstTime", 1);
         }
@@ -211,7 +218,8 @@ public class MainMenuManagement : MonoBehaviour
     private void loadGame()
     {
         Debug.Log("Load Game");
-        //m_onMenu = false;
+        m_loadGameMenu.SetActive(true);
+        gameObject.SetActive(false);
     }
     private void newGame()
     {

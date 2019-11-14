@@ -18,10 +18,10 @@ public class PauseGame : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("FirstTime") == 0)
         {
-            PlayerPrefs.SetInt("masterVolume", 50);
-            PlayerPrefs.SetInt("musicVolume", 50);
-            PlayerPrefs.SetInt("fxVolume", 50);
-            PlayerPrefs.SetInt("uiVolume", 50);
+            PlayerPrefs.SetInt("masterVolume", 80);
+            PlayerPrefs.SetInt("musicVolume", 80);
+            PlayerPrefs.SetInt("fxVolume", 80);
+            PlayerPrefs.SetInt("uiVolume", 80);
             PlayerPrefs.SetInt("ControlScheme", 1);
             PlayerPrefs.SetInt("FirstTime", 1);
         }
