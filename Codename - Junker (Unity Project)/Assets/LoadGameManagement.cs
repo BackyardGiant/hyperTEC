@@ -236,6 +236,11 @@ public class LoadGameManagement : MonoBehaviour
             m_chosenFaction.color = new Color32(238, 168, 11, 255);
             m_chosenFaction.text = "construction";//Change to the fancy name later;
         }
+        else if (_faction == "initial")
+        {
+            m_chosenFaction.color = Color.red;
+            m_chosenFaction.text = "initial";//Change to the fancy name later;
+        }
         else
         {
             m_chosenFaction.color = Color.red;

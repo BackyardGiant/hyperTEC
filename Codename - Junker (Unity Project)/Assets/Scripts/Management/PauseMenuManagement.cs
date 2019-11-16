@@ -198,29 +198,8 @@ public class PauseMenuManagement : MonoBehaviour
         Debug.Log("saveGame");
         m_gameSaved.Play("GameSavedAnim");
         string _saveIndex = PlayerPrefs.GetString("CurrentSave");
-        PlayerPrefs.SetString("Last" + _saveIndex, System.DateTime.Now.ToString("yyyy-MM-dd h:mm tt"));
 
-        ////////////// SAVE THE GAME TO THE RELEVANT FILE
-        if (_saveIndex == "Save1")
-        {
-            
-        }
-        else if (_saveIndex == "Save2")
-        {
-
-        }
-        else if (_saveIndex == "Save3")
-        {
-
-        }
-        else if (_saveIndex == "Save4")
-        {
-
-        }
-
-
-
-
+        GameManager.Instance.SaveGame();
     }
     private void loadGame()
     {
@@ -235,6 +214,7 @@ public class PauseMenuManagement : MonoBehaviour
     }
     private void mainMenu()
     {
+        GameManager.Instance.SaveGame();
         SceneManager.LoadScene("MainMenu");
         Debug.Log("Quit");
     }
