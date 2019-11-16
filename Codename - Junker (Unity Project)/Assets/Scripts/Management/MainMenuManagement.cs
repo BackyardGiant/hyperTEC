@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
+using TMPro;
 
 public class MainMenuManagement : MonoBehaviour
 {
@@ -11,9 +12,12 @@ public class MainMenuManagement : MonoBehaviour
     private GameObject m_settingsMenu;
     [SerializeField, Tooltip("Load Game Menu Object")]
     private GameObject m_loadGameMenu;
+    [SerializeField, Tooltip("New Game Menu Object")]
+    private GameObject m_newGameMenu;
 
 
-
+    [SerializeField, Tooltip("Continue Text - Used to display WHICH save you will be continuing")]
+    private TextMeshProUGUI m_continueText;
     [SerializeField, Tooltip("All of the items on the menu to sort through")]
     private GameObject[] m_menuOptions;
     [SerializeField, Tooltip("UI sounds. First should be the scroll, second should be select")]
@@ -21,18 +25,23 @@ public class MainMenuManagement : MonoBehaviour
     [SerializeField, Tooltip("Audio Mixers")]
     private AudioMixer m_mixer;
     [SerializeField, Tooltip("MainMenu Anim")]
-    private Animator m_mainMenuAnimator;
+    private Animator m_mainMenuAnimator, m_logoAnimator;
 
     private bool m_inputAllowed; //Tracks if the initial logo animation is done.
     private bool m_onMenu; //Tracks whether the player had progressed through from the logo to the menu yet.
     private bool m_readyForInput;
+    private string m_recentSave;
     private int m_selectedIndex;
     private AudioSource m_UIAudio;
 
     private void Start()
     {
+        latestSave();
+        m_selectedIndex = 0;
         m_onMenu = false;
         m_settingsMenu.SetActive(false);
+        m_loadGameMenu.SetActive(false);
+        m_newGameMenu.SetActive(false);
         if (PlayerPrefs.GetInt("FirstTime") == 0)
         {
             PlayerPrefs.SetInt("masterVolume", 80);
@@ -58,9 +67,14 @@ public class MainMenuManagement : MonoBehaviour
             Invoke("allowInputs", 4f);
         }
     }
-
     private void Update()
     {
+        if (Input.anyKeyDown && m_onMenu == false)
+        {
+            m_mainMenuAnimator.speed = 1000;
+            m_logoAnimator.speed = 1000;
+            allowInputs();
+        }
 
         if (m_onMenu == true)
         {
@@ -169,11 +183,8 @@ public class MainMenuManagement : MonoBehaviour
                     }
                 }
             }
-        }
-
-        
+        }    
     }
-
     private void AnimateBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
@@ -197,7 +208,6 @@ public class MainMenuManagement : MonoBehaviour
         PlayerPrefs.SetInt("WeaponsScanned", 0);
         PlayerPrefs.SetInt("WeaponsDestroyed", 0);
     }
-
     public void allowInputs()
     {
         m_onMenu = true;
@@ -207,14 +217,55 @@ public class MainMenuManagement : MonoBehaviour
         m_menuOptions[3].SetActive(true);
         m_menuOptions[4].SetActive(true);
     }
+    private void latestSave()
+    {
+        //Retrieve Dates from Player Prefs
+        string _date1 = PlayerPrefs.GetString("LastSave1");
+        string _date2 = PlayerPrefs.GetString("LastSave2");
+        string _date3 = PlayerPrefs.GetString("LastSave3");
+        string _date4 = PlayerPrefs.GetString("LastSave4");
+
+
+        //If the playerpref is empty, set it to an impossible date
+        if (_date1 == null || _date1 == "" || _date1 == " "){_date1 = "01/01/2000";}
+        if (_date2 == null || _date2 == "" || _date2 == " "){_date2 = "01/01/2000"; }
+        if (_date3 == null || _date3 == "" || _date3 == " "){_date3 = "01/01/2000"; }
+        if (_date4 == null || _date4 == "" || _date4 == " "){_date4 = "01/01/2000"; }
+
+
+        //Parse all of the dates so they're easy to check
+        System.DateTime save1 = System.DateTime.Parse(_date1);
+        System.DateTime save2 = System.DateTime.Parse(_date2);
+        System.DateTime save3 = System.DateTime.Parse(_date3);
+        System.DateTime save4 = System.DateTime.Parse(_date4); {}
+
+        //FailedDate to check if it's an established save
+        System.DateTime failedDate = System.DateTime.Parse("01/01/2000");
+        System.DateTime now = System.DateTime.Now;
+        System.DateTime currentlyLatest = save1;
+        int lowestIndex = 0;
+
+        //Check each date to find the lowest
+        if (System.DateTime.Compare(save1, currentlyLatest) > 0 && save1 != failedDate){ currentlyLatest = save1; lowestIndex = 1;}
+        Debug.Log(currentlyLatest);
+        if (System.DateTime.Compare(save2, currentlyLatest) > 0 && save2 != failedDate){ currentlyLatest = save2; lowestIndex = 2;}
+        Debug.Log(currentlyLatest);
+        if (System.DateTime.Compare(save3, currentlyLatest) > 0 && save3 != failedDate){ currentlyLatest = save3; lowestIndex = 3;}
+        Debug.Log(currentlyLatest);
+        if (System.DateTime.Compare(save4, currentlyLatest) > 0 && save4 != failedDate){ currentlyLatest = save4; lowestIndex = 4;}
+        Debug.Log(currentlyLatest);
+        //No save files currentlyLatest.
+        if (lowestIndex == 0){m_continueText.text = "Play Game";} else { m_continueText.text = "Continue - Save " + lowestIndex; m_recentSave = "Save" + lowestIndex;}
+    }
 
 
     private void continueGame()
     {
         //Load most recent save state and move into Main Scene
         Debug.Log("Continue");
+        PlayerPrefs.SetString("CurrentSave", m_recentSave);
+        SceneManager.LoadScene("MainScene");
     }
-
     private void loadGame()
     {
         Debug.Log("Load Game");
@@ -224,6 +275,8 @@ public class MainMenuManagement : MonoBehaviour
     private void newGame()
     {
         Debug.Log("New Game");
+        m_newGameMenu.SetActive(true);
+        this.gameObject.SetActive(false);
     }
     private void settings()
     {

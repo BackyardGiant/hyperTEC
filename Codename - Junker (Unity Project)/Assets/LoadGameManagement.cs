@@ -10,11 +10,11 @@ using TMPro;
 public class LoadGameManagement : MonoBehaviour
 {
     [SerializeField, Tooltip("Main Menu Object")]
-    private GameObject m_MainMenu;
+    private GameObject m_mainMenu;
     [SerializeField, Tooltip("Stats Object")]
     private GameObject m_saveStats;
     [SerializeField]
-    private TextMeshProUGUI m_titleText, m_chosenFaction, m_enemiesKilled, m_otherStat;
+    private TextMeshProUGUI m_titleText, m_chosenFaction, m_enemiesKilled, m_lastSaved;
 
 
     [SerializeField, Tooltip("All of the items on the menu to sort through"),Space(10)]
@@ -31,17 +31,23 @@ public class LoadGameManagement : MonoBehaviour
 
     private void Start()
     {
+        m_selectedIndex = 0;
         m_saveIndex += 1;
 
         displaySaveStats(false);
-        m_MainMenu.SetActive(false);
+        m_mainMenu.SetActive(false);
 
         m_UIAudio = this.GetComponent<AudioSource>();
         m_selectedIndex = 0;
     }
-
     private void Update()
     {
+        if (Input.GetButtonDown("XboxB"))
+        {
+            m_mainMenu.SetActive(true);
+            this.gameObject.SetActive(false);
+        }
+
         if ((Input.GetAxis("MacroEngine") == 0) && (Input.GetAxis("Vertical") == 0))
         {
             m_readyForInput = true;
@@ -191,10 +197,9 @@ public class LoadGameManagement : MonoBehaviour
     }
     private void mainMenu()
     {
-        m_MainMenu.SetActive(true);
+            m_mainMenu.SetActive(true);
         gameObject.SetActive(false);
     }
-
     private void displaySaveStats(bool _animate)
     {
         m_saveStats.SetActive(false);
@@ -209,42 +214,56 @@ public class LoadGameManagement : MonoBehaviour
         }
          
     }
-
     private void populateStats()
     {
         m_titleText.text = "Save Game " + m_saveIndex;
 
         //CHOSEN FACTION
-        string _faction = "trader"; //Get the chosen faction from the save file
+        string _faction = PlayerPrefs.GetString("ChosenFaction"+m_saveIndex); //Get the chosen faction from the save file
         if (_faction == "trader")
         {
-            m_chosenFaction.color = new Color(91, 138, 81);
+            m_chosenFaction.color = Color.cyan;
             m_chosenFaction.text = "trader";//Change to the fancy name later;
         }
         else if (_faction == "exploratory")
         {
-            m_chosenFaction.color = new Color(239, 50, 40);
+            m_chosenFaction.color = new Color32(239, 50, 40, 255);
             m_chosenFaction.text = "exploratory";//Change to the fancy name later;
 
         }
         else if (_faction == "construction")
         {
-            m_chosenFaction.color = new Color(238, 168, 11);
+            m_chosenFaction.color = new Color32(238, 168, 11, 255);
             m_chosenFaction.text = "construction";//Change to the fancy name later;
         }
         else
         {
-            m_chosenFaction.color = new Color(70, 255, 255);
+            m_chosenFaction.color = Color.red;
             m_chosenFaction.text = "EMPTY";//Change to the fancy name later;
         }
 
 
         //ENEMIES KILLED
-        m_enemiesKilled.text = "100"; //MAKE THIS NUMBER RIGHT
+        string _enemiesKilled = PlayerPrefs.GetInt("EnemiesKilled" + m_saveIndex).ToString();
+        if (_enemiesKilled == null || _enemiesKilled == "0")
+        {
+            m_enemiesKilled.text = "EMPTY";
+        }
+        else
+        {
+            m_enemiesKilled.text = PlayerPrefs.GetInt("EnemiesKilled" + m_saveIndex).ToString();
+        }
 
 
         //OTHER STAT
-        m_otherStat.text = "idk something else";
+        string _lastSave = PlayerPrefs.GetString("LastSave" + m_saveIndex);
+        if (_lastSave == null || _lastSave == "")
+        {
+            m_lastSaved.text = "EMPTY";
+        }
+        else
+        {
+            m_lastSaved.text = PlayerPrefs.GetString("LastSave" + m_saveIndex);
+        }
     }
-
 }

@@ -37,6 +37,7 @@ public class SettingsMenuManagement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_selectedIndex = 0;
         m_audioCooldown = false;
         m_selectedIndex = 0;
         m_UIAudio = this.GetComponent<AudioSource>();
