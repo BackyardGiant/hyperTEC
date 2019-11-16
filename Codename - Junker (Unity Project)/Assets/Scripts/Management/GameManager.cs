@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public TempEnemyInstantiate spawner;
     public GameObject lootTemplate;
 
+    private int m_enemiesKilledSoFar;
+
     private Vector3 m_defaultScale = new Vector3(1, 1, 1);
     private Vector3 m_defaultOffset = new Vector3(0.278f, -0.226f, -0.802f); // taken from eyeballing the offset in the inspector
 
@@ -26,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get => s_instance; set => s_instance = value; }
     public float GameSpeed { get => m_gameSpeed; private set => m_gameSpeed = value; }
+    public int EnemiesKilledSoFar { get => m_enemiesKilledSoFar; set => m_enemiesKilledSoFar = value; }
 
     private void Awake()
     {
@@ -47,8 +50,15 @@ public class GameManager : MonoBehaviour
 
         if (_sceneName == "MainScene" && PlayerPrefs.GetInt("LoadFromSave", 0) == 1)
         {
+            PlayerPrefs.SetInt("LoadFromSave", 0);
             spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
-            Invoke("LoadGame", 0.3f);
+            Invoke("LoadGame", 0.2f);
+        }
+        else if(_sceneName == "MainScene")
+        {
+            PlayerPrefs.SetInt("LoadFromSave", 0);
+            spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
+            Invoke("LoadGame", 0.2f);
         }
     }
 
@@ -117,6 +127,11 @@ public class GameManager : MonoBehaviour
     {
         MovementUsabilityTestingManager.Instance.SaveValues();
         SceneManager.LoadScene("UserTesting");
+    }
+
+    public void EnemyKilled()
+    {
+        m_enemiesKilledSoFar++;
     }
 
     public void SaveWeapons()
@@ -237,7 +252,7 @@ public class GameManager : MonoBehaviour
 
         //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
 
-        string _fileName = "SaveFile" + System.DateTime.UtcNow.ToString() + ".giant";
+        string _fileName = PlayerPrefs.GetString("CurrentSave") + ".giant";
 
         _fileName = _fileName.Replace("/", "_");
         _fileName = _fileName.Replace(" ", "_");
@@ -265,112 +280,18 @@ public class GameManager : MonoBehaviour
 
         File.AppendAllText(_fileName, _inventorySave + System.Environment.NewLine);
 
-        PlayerPrefs.SetString("LatestSave", _fileName);
-    }
+        PlayerPrefs.SetString("LastSave" + _fileName[4], System.DateTime.Now.ToString());
 
-    public void SaveGame(string _fileName)
-    {
-        string _saveLine = "";
-        string _enemySaveLine = "";
+        PlayerPrefs.SetInt("EnemiesKilled" + _fileName[4], m_enemiesKilledSoFar);
 
-        GameObject _player = GameObject.FindGameObjectWithTag("Player");
-
-        PlayerSavingObject playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, PlayerInventoryManager.Instance.EquippedRightWeapon.Seed, PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed, PlayerInventoryManager.Instance.EquippedEngine.Seed);
-
-        GameObject[] _enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        List<EnemySavingObject> enemySaves = new List<EnemySavingObject>();
-
-        foreach (GameObject _enemy in _enemies)
-        {
-            WeaponData _enemyWeaponRight = _enemy.transform.GetChild(0).Find("RightSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
-            WeaponData _enemyWeaponLeft = _enemy.transform.GetChild(0).Find("LeftSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
-            enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed));
-        }
-
-        string amountOfEnemies = _enemies.Length.ToString();
-
-        GameObject[] _targets = GameObject.FindGameObjectsWithTag("Component");
-        List<LootSavingObject> _lootSaves = new List<LootSavingObject>();
-
-        foreach (GameObject _target in _targets)
-        {
-            int _type = -1;
-            switch (_target.GetComponent<LootDetection>().LootType)
-            {
-                case LootDetection.m_lootTypes.Weapon:
-                    _type = 0;
-                    break;
-                case LootDetection.m_lootTypes.Engine:
-                    _type = 1;
-                    break;
-                case LootDetection.m_lootTypes.Shield:
-                    _type = 2;
-                    break;
-            }
-            if (_type == -1)
-            {
-                Debug.Log("Loot has no type");
-                break;
-            }
-            else
-            {
-                string _seed = _target.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock.Seed;
-                _lootSaves.Add(new LootSavingObject(_target.transform.position, _target.transform.rotation, _seed, _type.ToString()));
-            }
-        }
-
-        List<string> _weaponSeeds = new List<string>();
-        List<string> _engineSeeds = new List<string>();
-
-        foreach(WeaponData _weapon in PlayerInventoryManager.Instance.AvailableWeapons)
-        {
-            _weaponSeeds.Add(_weapon.Seed);
-        }
-        foreach (EngineData _engine in PlayerInventoryManager.Instance.AvailableEngines)
-        {
-            _engineSeeds.Add(_engine.Seed);
-        }
-
-        InventorySavingObject inventory = new InventorySavingObject(_weaponSeeds, _engineSeeds);
-
-        string amountOfLoot = _lootSaves.Count.ToString();
-
-        _saveLine = JsonUtility.ToJson(playerSave);
-
-        string _inventorySave = JsonUtility.ToJson(inventory);
-
-        //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
-
-        File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.Write).Dispose();
-
-        File.WriteAllText(_fileName, System.String.Empty);
-
-        File.AppendAllText(_fileName, _saveLine + System.Environment.NewLine);
-
-        File.AppendAllText(_fileName, amountOfEnemies + System.Environment.NewLine);
-
-        foreach (EnemySavingObject _enemySave in enemySaves)
-        {
-            _enemySaveLine = JsonUtility.ToJson(_enemySave);
-            File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
-        }
-
-        File.AppendAllText(_fileName, amountOfLoot + System.Environment.NewLine);
-
-        foreach (LootSavingObject _lootSave in _lootSaves)
-        {
-            _enemySaveLine = JsonUtility.ToJson(_lootSave);
-            File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
-        }
-
-        File.AppendAllText(_fileName, _inventorySave + System.Environment.NewLine);
+        PlayerPrefs.SetString("ChosenFaction" + _fileName[4], "initial");
 
         PlayerPrefs.SetString("LatestSave", _fileName);
     }
 
     public void LoadGame()
     {
-        string _fileName = PlayerPrefs.GetString("LatestSave", "NoSave");
+        string _fileName = PlayerPrefs.GetString("CurrentSave", "NoSave") + ".giant";
 
         if(_fileName == "NoSave")
         {
@@ -387,6 +308,12 @@ public class GameManager : MonoBehaviour
         }
 
         string[] _loadLines = File.ReadAllLines(_fileName);
+
+        if(_loadLines.Length < 1)
+        {
+            return;
+        }
+
 
         PlayerSavingObject _savedPlayer = JsonUtility.FromJson<PlayerSavingObject>(_loadLines[0]);
 
@@ -515,10 +442,5 @@ public class GameManager : MonoBehaviour
                 PlayerInventoryManager.Instance.AvailableEngines.Add(_tempEngine);
             }
         }
-    }
-
-    public void LoadGame(string _fileName)
-    {
-
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using TMPro;
+using System.IO;
 
 public class NewGameManagement : MonoBehaviour
 {
@@ -196,6 +197,8 @@ public class NewGameManagement : MonoBehaviour
     private void overrideSave()
     {
         PlayerPrefs.SetString("CurrentSave","Save" + m_saveIndex);
+        string _fileName = PlayerPrefs.GetString("CurrentSave") + ".giant";
+        File.Delete(_fileName);
         SceneManager.LoadScene("MainScene");
     }
     private void newSave()
@@ -268,6 +271,11 @@ public class NewGameManagement : MonoBehaviour
         {
             m_chosenFaction.color = new Color32(238, 168, 11, 255);
             m_chosenFaction.text = "construction";//Change to the fancy name later;
+        }
+        else if (_faction == "initial")
+        {
+            m_chosenFaction.color = Color.red;
+            m_chosenFaction.text = "initial";//Change to the fancy name later;
         }
         else
         {

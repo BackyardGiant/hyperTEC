@@ -237,12 +237,12 @@ public class MainMenuManagement : MonoBehaviour
         System.DateTime save1 = System.DateTime.Parse(_date1);
         System.DateTime save2 = System.DateTime.Parse(_date2);
         System.DateTime save3 = System.DateTime.Parse(_date3);
-        System.DateTime save4 = System.DateTime.Parse(_date4); {}
+        System.DateTime save4 = System.DateTime.Parse(_date4);
 
         //FailedDate to check if it's an established save
         System.DateTime failedDate = System.DateTime.Parse("01/01/2000");
         System.DateTime now = System.DateTime.Now;
-        System.DateTime currentlyLatest = save1;
+        System.DateTime currentlyLatest = failedDate;
         int lowestIndex = 0;
 
         //Check each date to find the lowest
@@ -255,7 +255,7 @@ public class MainMenuManagement : MonoBehaviour
         if (System.DateTime.Compare(save4, currentlyLatest) > 0 && save4 != failedDate){ currentlyLatest = save4; lowestIndex = 4;}
         Debug.Log(currentlyLatest);
         //No save files currentlyLatest.
-        if (lowestIndex == 0){m_continueText.text = "Play Game";} else { m_continueText.text = "Continue - Save " + lowestIndex; m_recentSave = "Save" + lowestIndex;}
+        if (lowestIndex == 0){m_continueText.text = "Play Game"; m_recentSave = "Save1"; } else { m_continueText.text = "Continue - Save " + lowestIndex; m_recentSave = "Save" + lowestIndex;}
     }
 
 
