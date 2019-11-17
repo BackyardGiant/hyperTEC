@@ -213,7 +213,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_target: {fileID: 0}
+  m_blank: {fileID: 6665592495025000306, guid: 205b5289361f08e4db408f1dc4e44555, type: 3}
   m_attackingPlayer: 0
+  m_displacementRadius: 30
 --- !u!114 &679149894
 MonoBehaviour:
   m_ObjectHideFlags: 0
