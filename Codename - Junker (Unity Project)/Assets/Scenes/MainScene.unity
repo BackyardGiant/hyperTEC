@@ -1215,6 +1215,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1408714799887553993, guid: e4cc41bcc9b013a47a330dca36184aa7,
+        type: 3}
+      propertyPath: defaultEngines.Array.data[0]
+      value: 
+      objectReference: {fileID: 7600961632688489320, guid: d27987ff6eda96141af1de329b014f35,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4cc41bcc9b013a47a330dca36184aa7, type: 3}
 --- !u!4 &132567577 stripped
@@ -9288,6 +9294,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_quickerFireRate
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698530898101933364, guid: 5f833fa36dfcf7c41b867d1460102cf2,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698530898101933364, guid: 5f833fa36dfcf7c41b867d1460102cf2,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698530898101933364, guid: 5f833fa36dfcf7c41b867d1460102cf2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f833fa36dfcf7c41b867d1460102cf2, type: 3}

@@ -43,20 +43,16 @@ public class ModuleManager : MonoBehaviour
         switch(data.CurrentFaction)
         {
             case EngineData.faction.trader:
-                _goTempEngine = traderEngines[data.EngineId];
-                Instantiate(_goTempEngine);
+                _goTempEngine = Instantiate(traderEngines[data.EngineId]);
                 return _goTempEngine;
             case EngineData.faction.construction:
-                _goTempEngine = constructEngine[data.EngineId];
-                Instantiate(_goTempEngine);
+                _goTempEngine = Instantiate(constructEngine[data.EngineId]);
                 return _goTempEngine;
             case EngineData.faction.explorer:
-                _goTempEngine = explorerEngines[data.EngineId];
-                Instantiate(_goTempEngine);
+                _goTempEngine = Instantiate(explorerEngines[data.EngineId]);
                 return _goTempEngine;
             case EngineData.faction.initial:
-                _goTempEngine = defaultEngines[data.EngineId];
-                Instantiate(_goTempEngine);
+                _goTempEngine = Instantiate(defaultEngines[data.EngineId]);
                 return _goTempEngine;
             default:
                 return null;
