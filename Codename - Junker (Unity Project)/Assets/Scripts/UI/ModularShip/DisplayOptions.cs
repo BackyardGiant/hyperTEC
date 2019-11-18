@@ -35,6 +35,10 @@ public class DisplayOptions : MonoBehaviour
             _goTempEngineElement.name = "engine" + i.ToString();
             _goTempEngineElement.GetComponent<EngineStatManager>().Data = availableEngines[i];
             _goTempEngineElement.GetComponent<EngineStatManager>().PopulateData();
+
+            RectTransform _tempRect = gameObject.GetComponent<RectTransform>();
+            _goTempEngineElement.GetComponent<RectTransform>().sizeDelta = new Vector2(_tempRect.rect.width, Screen.height / m_numItemsOnScreen);
+
             m_modulesList.Add(_goTempEngineElement);
         }
 

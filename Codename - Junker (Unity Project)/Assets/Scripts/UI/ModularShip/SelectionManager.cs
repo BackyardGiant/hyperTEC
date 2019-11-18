@@ -33,6 +33,7 @@ public class SelectionManager : MonoBehaviour
 
         display.UpdateHighlightPosition(0);
         display.UpdateEquipped(m_takenIndexes);
+        DisplayEquipped();
 
         PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
 
@@ -239,6 +240,8 @@ public class SelectionManager : MonoBehaviour
         {
             EngineData statBlock = display.ModulesList[(int)m_equippedEngineIndex].GetComponent<EngineStatManager>().Data;
             GameObject tempEngine = ModuleManager.Instance.GenerateEngine(statBlock);
+
+            tempEngine.transform.GetChild(0).GetComponent<ThrustEffectController>().enabled = false;
 
             tempEngine.transform.SetParent(goShipEngineSnap.transform);
             tempEngine.transform.position = goShipEngineSnap.transform.position;
