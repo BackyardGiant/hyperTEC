@@ -24,10 +24,11 @@ public class TempEnemyInstantiate : MonoBehaviour
 
     private void Update()
     {
-        if(GameObject.FindGameObjectsWithTag("Enemy").Length < enemyLimit)
-        {
-            SpawnEnemy();
-        }
+        // Continously spawn enemies, ensuring that enemyLimit is met.
+        //if(GameObject.FindGameObjectsWithTag("Enemy").Length < enemyLimit)
+        //{
+        //    SpawnEnemy();
+        //}
     }
 
     private void SpawnEnemy()
