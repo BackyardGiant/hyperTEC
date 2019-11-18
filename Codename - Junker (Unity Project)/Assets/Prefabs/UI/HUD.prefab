@@ -5621,6 +5621,11 @@ MonoBehaviour:
   m_displayOffset: 0.057
   m_scanningFillSpeed: 0.8
   m_destroyFillSpeed: 0.5
+  m_lootItemIcon: {fileID: 1299725903}
+  m_weapon: {fileID: 21300000, guid: b50b86b3ae7d5c349bb6c2fd651f0b23, type: 3}
+  m_engine: {fileID: 21300000, guid: e3ec3a826dae0044885aa4e7c7558021, type: 3}
+  m_shield: {fileID: 21300000, guid: 9a8612e9008ab52479ab83b7afa6d3a9, type: 3}
+  m_lootDisplayTitle: {fileID: 2044105214}
   m_weaponTitle: {fileID: 3456544886697499462}
   m_damage:
   - {fileID: 1819318225}
