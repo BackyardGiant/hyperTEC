@@ -20,6 +20,8 @@ public class SpawnEngine : MonoBehaviour
             _engine.transform.SetParent(SnapPoint.transform);
             _engine.transform.localPosition = Vector3.zero;
 
+            _engine.transform.GetChild(0).GetComponent<ThrustEffectController>().player = this.gameObject.GetComponent<PlayerMovement>();
+
             PlayerInventoryManager.Instance.EquippedEngine.Seed = string.Format("{0}", PlayerInventoryManager.Instance.EquippedEngine.EngineId + 1);
         }
 

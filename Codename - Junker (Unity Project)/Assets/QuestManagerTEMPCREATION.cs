@@ -11,11 +11,13 @@ public class QuestManagerTEMPCREATION : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (PlayerPrefs.GetInt("CreatedQuest") == 0|| m_inEditor == true)
+        if (PlayerPrefs.GetInt("CreatedQuest") == 0 || m_inEditor == true)
         {
             DontDestroyOnLoad(this);
             PlayerPrefs.SetInt("CreatedQuest", 1);
             QuestManager.Instance.CreateKillQuest(15, "Control the Sector!", "Kill 15 Enemies to Control the Sector.");
+
+            SpawnEngine();
         }
     }
 
@@ -27,5 +29,13 @@ public class QuestManagerTEMPCREATION : MonoBehaviour
             PlayerPrefs.SetInt("CreatedQuest", 0);
             Destroy(this);
         }
+    }
+
+    void SpawnEngine()
+    {
+        string _saveName = PlayerPrefs.GetString("CurrentSave");
+        int _saveIndex = int.Parse(_saveName[_saveName.Length - 1].ToString());
+
+        // make thing that will be spawning relative to save idnex + spawn it
     }
 }

@@ -80,13 +80,13 @@ public class EnemyStats : MonoBehaviour
             }
             else if (_save == "Save3")
             {
-                _value = PlayerPrefs.GetInt("EnemiesKilled2");
-                PlayerPrefs.SetInt("EnemiesKilled2", _value + 1);
+                _value = PlayerPrefs.GetInt("EnemiesKilled3");
+                PlayerPrefs.SetInt("EnemiesKilled3", _value + 1);
             }
             else if (_save == "Save4")
             {
-                _value = PlayerPrefs.GetInt("EnemiesKilled2");
-                PlayerPrefs.SetInt("EnemiesKilled2", _value + 1);
+                _value = PlayerPrefs.GetInt("EnemiesKilled4");
+                PlayerPrefs.SetInt("EnemiesKilled4", _value + 1);
             }
 
 

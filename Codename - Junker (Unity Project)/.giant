@@ -96,3 +96,17 @@
 {"positionX":"-275.2234","positionY":"25.47713","positionZ":"-19.46486","rotationX":"-0.006270695","rotationY":"-0.000958353","rotationZ":"-6.009663E-06","rotationW":"0.9999799","rightWeaponSeed":"000108808008303000000000","leftWeaponSeed":"201306200801208812010010"}
 0
 {"availableWeapons":["",""],"availableEngines":["1"]}
+{"positionX":"-6.599999","positionY":"-0.2022128","positionZ":"0.03965807","rotationX":"0","rotationY":"1.490116E-08","rotationZ":"-1.862645E-09","rotationW":"1","rightWeaponSeed":"","leftWeaponSeed":"","engineSeed":"1"}
+10
+{"positionX":"17.5258","positionY":"-118.4495","positionZ":"86.84055","rotationX":"-0.1864025","rotationY":"-0.1400054","rotationZ":"-0.02684703","rotationW":"0.9720761","rightWeaponSeed":"106805204400703510000001","leftWeaponSeed":"208603502508200802200002"}
+{"positionX":"-220.3048","positionY":"-50.15551","positionZ":"54.25346","rotationX":"-0.04377419","rotationY":"-0.08676839","rotationZ":"-0.003816309","rotationW":"0.995259","rightWeaponSeed":"306602801200308812210001","leftWeaponSeed":"203409800505605000210001"}
+{"positionX":"34.95719","positionY":"214.9243","positionZ":"122.5393","rotationX":"0.1085885","rotationY":"-0.01940154","rotationZ":"0.002119725","rotationW":"0.9938952","rightWeaponSeed":"306906008405808902200011","leftWeaponSeed":"105303102008509810000011"}
+{"positionX":"179.9389","positionY":"26.46418","positionZ":"-125.28","rotationX":"0.001727884","rotationY":"-0.06777193","rotationZ":"0.000117372","rotationW":"0.9976994","rightWeaponSeed":"205606104809605210200011","leftWeaponSeed":"100707008404205710000020"}
+{"positionX":"-27.45947","positionY":"-263.3238","positionZ":"-2.459214","rotationX":"-0.006075373","rotationY":"0.06051324","rotationZ":"0.0003683222","rotationW":"0.9981489","rightWeaponSeed":"104102406507906000000011","leftWeaponSeed":"304008802709800820100011"}
+{"positionX":"6.859209","positionY":"127.2092","positionZ":"151.2558","rotationX":"0.04108407","rotationY":"-0.009237153","rotationZ":"0.0003798369","rotationW":"0.999113","rightWeaponSeed":"301705901409900912210000","leftWeaponSeed":"209806502309806501110002"}
+{"positionX":"121.1785","positionY":"-97.45235","positionZ":"363.3739","rotationX":"0.1726198","rotationY":"0.2327752","rotationZ":"-0.04202373","rotationW":"0.9561654","rightWeaponSeed":"300903904809100822000020","leftWeaponSeed":"008205101903101312020002"}
+{"positionX":"-18.46692","positionY":"-82.91352","positionZ":"-81.61869","rotationX":"0.1188881","rotationY":"0.2640929","rotationZ":"-0.0328227","rotationW":"0.9565789","rightWeaponSeed":"203901300708109920100011","leftWeaponSeed":"105903608700702210000001"}
+{"positionX":"-10.93453","positionY":"-237.1552","positionZ":"183.6803","rotationX":"-0.005625528","rotationY":"-0.1299384","rotationZ":"-0.0007372342","rotationW":"0.9915059","rightWeaponSeed":"000908606707701212220030","leftWeaponSeed":"200203208804109321210030"}
+{"positionX":"75.83866","positionY":"-42.84103","positionZ":"79.86406","rotationX":"-0.06529503","rotationY":"0.3404574","rotationZ":"0.02370736","rotationW":"0.9376904","rightWeaponSeed":"103405509202102910000001","leftWeaponSeed":"204107004408801121110011"}
+0
+{"availableWeapons":["",""],"availableEngines":["1","1"]}

@@ -144,6 +144,11 @@ public class HUDManager : MonoBehaviour
             {
                 PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
             }
+            else if (m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Engine)
+            {
+                PlayerInventoryManager.Instance.AvailableEngines.Add(m_currentLoot.transform.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock);
+            }
+
 
             IncrementPlayerPref("WeaponsCollected");
             Debug.Log("Pickup Loot.");

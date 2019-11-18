@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Art\Skybox\Starfield Skybox\Demo\Script\LookCamera.cs" />
+    <Compile Include="Assets\EngineGenerator.cs" />
     <Compile Include="Assets\LoadGameManagement.cs" />
     <Compile Include="Assets\NewGameManagement.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\GetSetAttribute.cs" />
@@ -171,11 +172,11 @@
     <Compile Include="Assets\Scripts\UI\ModularShip\WeaponStatManager.cs" />
     <Compile Include="Assets\Scripts\UI\Player\Crosshair.cs" />
     <Compile Include="Assets\Scripts\UI\ScrollerScript.cs" />
-    <Compile Include="Assets\Scripts\Usability Testing\FlightTestRecordCollision.cs" />
-    <Compile Include="Assets\Scripts\Usability Testing\IncrementFlightChallenge.cs" />
-    <Compile Include="Assets\Scripts\Usability Testing\MovementUsabilityTestingManager.cs" />
-    <Compile Include="Assets\Scripts\Usability Testing\StartFlightTest.cs" />
     <Compile Include="Assets\TEMPQuestCreation.cs" />
+    <Compile Include="Assets\Usability Testing\FlightTestRecordCollision.cs" />
+    <Compile Include="Assets\Usability Testing\IncrementFlightChallenge.cs" />
+    <Compile Include="Assets\Usability Testing\MovementUsabilityTestingManager.cs" />
+    <Compile Include="Assets\Usability Testing\StartFlightTest.cs" />
     <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
@@ -238,31 +239,31 @@
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformCompute.compute" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/jgriffiths6/Documents/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/jgriffiths6/Documents/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/jgriffiths6/Documents/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/jgriffiths6/Documents/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/jgriffiths6/Documents/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/jgriffiths6/Documents/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/jgriffiths6/Documents/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/jgriffiths6/Documents/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/jgriffiths6/Documents/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
