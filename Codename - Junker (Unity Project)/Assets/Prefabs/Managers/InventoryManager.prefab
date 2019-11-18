@@ -43,17 +43,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e4eebccf27cf442b59b5534e637767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInventory: {fileID: 0}
-  defaultPlayerInv: {fileID: 11400000, guid: 980670c2c65b4de438c0e7b02bc48b83, type: 2}
   m_availableWeapons:
   - {fileID: 11400000, guid: f2ca8e781c61055419be9364ae4df7ad, type: 2}
   - {fileID: 11400000, guid: 7065f042ebae084478b2d3bb868fcd9d, type: 2}
-  m_availableEngines: []
-  m_equippedEngine: {fileID: 0}
+  m_availableEngines:
+  - {fileID: 11400000, guid: 35628cefd8ed15c42a60382f243c2546, type: 2}
+  m_equippedEngine: {fileID: 11400000, guid: 35628cefd8ed15c42a60382f243c2546, type: 2}
   m_equippedLeftWeapon: {fileID: 11400000, guid: f2ca8e781c61055419be9364ae4df7ad,
     type: 2}
   m_equippedRightWeapon: {fileID: 11400000, guid: 7065f042ebae084478b2d3bb868fcd9d,
     type: 2}
-  m_equippedEngineIndex: -1
+  m_equippedEngineIndex: 0
   m_equippedLeftIndex: 0
   m_equippedRightIndex: 1

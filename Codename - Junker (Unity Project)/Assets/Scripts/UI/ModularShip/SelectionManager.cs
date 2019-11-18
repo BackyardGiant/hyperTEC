@@ -33,6 +33,7 @@ public class SelectionManager : MonoBehaviour
 
         display.UpdateHighlightPosition(0);
         display.UpdateEquipped(m_takenIndexes);
+        DisplayEquipped();
 
         PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
 
@@ -238,7 +239,9 @@ public class SelectionManager : MonoBehaviour
         if(m_equippedEngineIndex != -1)
         {
             EngineData statBlock = display.ModulesList[(int)m_equippedEngineIndex].GetComponent<EngineStatManager>().Data;
-            GameObject tempEngine = Instantiate(ModuleManager.Instance.GenerateEngine(statBlock));
+            GameObject tempEngine = ModuleManager.Instance.GenerateEngine(statBlock);
+
+            tempEngine.transform.GetChild(0).GetComponent<ThrustEffectController>().enabled = false;
 
             tempEngine.transform.SetParent(goShipEngineSnap.transform);
             tempEngine.transform.position = goShipEngineSnap.transform.position;
@@ -293,7 +296,9 @@ public class SelectionManager : MonoBehaviour
             if (selectedObject.GetComponent<EngineStatManager>())
             {
                 EngineData _statBlock = selectedObject.GetComponent<EngineStatManager>().Data;
-                GameObject _tempEngine = Instantiate(ModuleManager.Instance.GenerateEngine(_statBlock));
+                GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(_statBlock);
+
+                _tempEngine.transform.GetChild(0).GetComponent<ThrustEffectController>().enabled = false;
 
                 _tempEngine.transform.SetParent(goShipEngineSnap.transform);
                 _tempEngine.transform.position = goShipEngineSnap.transform.position;

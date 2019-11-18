@@ -13,25 +13,35 @@ public class SpawnEngine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerInventoryManager.Instance.EquippedEngine = new EngineData();
-        PlayerInventoryManager.Instance.EquippedEngine.Seed = "1";
-        int _engineChoice = 1;
-        if(_engineChoice == 1)
+        if(PlayerInventoryManager.Instance.EquippedEngine != null)
         {
-            AttachEngine(DefaultEngine);
+            GameObject _engine = ModuleManager.Instance.GenerateEngine(PlayerInventoryManager.Instance.EquippedEngine);
+
+            _engine.transform.SetParent(SnapPoint.transform);
+            _engine.transform.localPosition = Vector3.zero;
+
+            PlayerInventoryManager.Instance.EquippedEngine.Seed = string.Format("{0}", PlayerInventoryManager.Instance.EquippedEngine.EngineId + 1);
         }
-        if (_engineChoice == 2)
-        {
-            AttachEngine(TraderEngine);
-        }
-        if (_engineChoice == 3)
-        {
-            AttachEngine(ExplorerEngine);
-        }
-        if (_engineChoice == 4)
-        {
-            AttachEngine(ConstructionEngine);
-        }
+
+        //PlayerInventoryManager.Instance.EquippedEngine = new EngineData();
+        
+        //int _engineChoice = 1;
+        //if(_engineChoice == 1)
+        //{
+        //    AttachEngine(DefaultEngine);
+        //}
+        //if (_engineChoice == 2)
+        //{
+        //    AttachEngine(TraderEngine);
+        //}
+        //if (_engineChoice == 3)
+        //{
+        //    AttachEngine(ExplorerEngine);
+        //}
+        //if (_engineChoice == 4)
+        //{
+        //    AttachEngine(ConstructionEngine);
+        //}
 
         #region GenerateDefaultGuns
 

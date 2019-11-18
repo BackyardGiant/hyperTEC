@@ -102,7 +102,7 @@ MonoBehaviour:
   - {fileID: 3250931294493663760, guid: b3ce835660718b54fab719f6abfb53cb, type: 3}
   explorerEngines: []
   defaultEngines:
-  - {fileID: 4369712147853546786, guid: e75c7378b6b8f844eb289727151a8d86, type: 3}
+  - {fileID: 6337663216647463888, guid: 8ef856949dea1134aa6167d38c555c49, type: 3}
   traderEngines: []
   constructEngine: []
   goExplorerGunBase: {fileID: 173963497452463579, guid: 8452c1851d0c8374993be696c40f7126,
