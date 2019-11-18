@@ -547,7 +547,7 @@ public class HUDManager : MonoBehaviour
     }
     private void DisplayLootStats(GameObject _currentLoot)
     {
-        if (_currentLoot != null)
+        if (_currentLoot != null && _currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
         {
             try
             {
