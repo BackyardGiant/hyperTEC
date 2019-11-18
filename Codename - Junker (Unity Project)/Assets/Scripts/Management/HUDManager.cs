@@ -11,6 +11,7 @@ public class HUDManager : MonoBehaviour
     public Camera Camera;
     public Sprite TargetSprite;
     public GameObject Explosion;
+    public Transform WaypointsAndMarkers;
 
     //public Inventory playerInv;
 
@@ -27,7 +28,6 @@ public class HUDManager : MonoBehaviour
     private int m_viewDistance;
     private float m_arrowClampAngle;
     #endregion
-
     #region LootIndicators
     [Header("Loot Indicator System"),Space(20)]
     public GameObject LootDisplay;
@@ -50,12 +50,17 @@ public class HUDManager : MonoBehaviour
     [SerializeField, Tooltip("Each stat item. Needs the value first then the arrow second.")]
     private GameObject[] m_damage, m_fireRate, m_reloadTime, m_accuracy;
     #endregion
-
     #region AutoAim
     private GameObject m_closestEnemy;
     private Vector2 m_closestEnemyScreenPos;
     #endregion
+    #region QuestDisplay
+    [SerializeField, Header("Quest Display Text Elements")]
+    private TextMeshProUGUI m_questTitle;
+    [SerializeField]
+    private TextMeshProUGUI m_questDescription,m_questProgress;
 
+    #endregion
 
     private bool m_displayAnimated;
     private bool m_enablePickup;
@@ -86,6 +91,12 @@ public class HUDManager : MonoBehaviour
         m_crosshairPosition = new Vector2(Screen.width / 2, Screen.height / 2);
         Destroyer.fillAmount = 0;
         Scanner.fillAmount = 0;
+
+
+        // 18/11/19 - TEMPORARILY MAKE SURE YOU'RE TRACKING THE RIGHT QUEST.
+        QuestManager.Instance.TrackingQuestIndex = 0;
+
+        QuestManager.Instance.CreateKillQuest(15, "Control the Sector!", "Kill 15 Enemies to Control the Sector.");
     }
     void Awake()
     {
@@ -223,6 +234,7 @@ public class HUDManager : MonoBehaviour
             m_buttonHoldTime = 0;
         }
         #endregion
+        DisplayActiveQuest();
     }
 
     #region Enemy Detection Methods
@@ -241,7 +253,7 @@ public class HUDManager : MonoBehaviour
         {
             _target = new GameObject();
             _target.name = "EnemyTarget";
-            _target.transform.parent = this.transform;
+            _target.transform.parent = WaypointsAndMarkers;
 
             //Setting the sprite
             _targetImage = _target.AddComponent<Image>();
@@ -310,7 +322,7 @@ public class HUDManager : MonoBehaviour
         {
             _target = new GameObject();
             _target.name = "EnemyTarget";
-            _target.transform.parent = this.transform;
+            _target.transform.parent = WaypointsAndMarkers;
 
             //Setting the sprite
             _targetImage = _target.AddComponent<Image>();
@@ -384,7 +396,7 @@ public class HUDManager : MonoBehaviour
         {
             _lootObject = new GameObject();
             _lootObject.name = "LootTarget";
-            _lootObject.transform.parent = this.transform;
+            _lootObject.transform.parent = WaypointsAndMarkers;
 
             //Setting the sprite
             _targetImage = _lootObject.AddComponent<Image>();
@@ -667,6 +679,32 @@ public class HUDManager : MonoBehaviour
     {
         m_enablePickup = true;
     }
+    #endregion
+
+    #region QuestDisplay
+    private void DisplayActiveQuest()
+    {
+        if (QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Complete == false)
+        {
+            try
+            {
+
+                m_questTitle.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Name;
+                m_questDescription.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Description;
+                m_questProgress.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].CurrentAmountCompleted.ToString() + "/" + QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Size.ToString();
+            }
+            catch{}
+        }
+        else
+        {
+            m_questTitle.text = "";
+            m_questDescription.text = "";
+            m_questProgress.text = ""; 
+        }
+    }
+
+
+
     #endregion
 
 

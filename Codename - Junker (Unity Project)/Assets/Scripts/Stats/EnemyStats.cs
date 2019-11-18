@@ -65,6 +65,9 @@ public class EnemyStats : MonoBehaviour
             AudioManager.Instance.PlayWorld("ExplosionLong" + _random, this.gameObject, true, true);
 
             Destroy(gameObject);
+
+            QuestManager.Instance.IncrementKillQuests();
+
             int _value = PlayerPrefs.GetInt("EnemiesKilled");
             PlayerPrefs.SetInt("EnemiesKilled", _value + 1);
         }
