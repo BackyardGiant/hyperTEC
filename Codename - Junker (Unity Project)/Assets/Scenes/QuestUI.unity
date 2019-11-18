@@ -509,7 +509,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777140
+    rgba: 4294967220
   m_fontColor: {r: 0.7058824, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -644,6 +644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c9079a7b2ac7584fb10bc3503ccd5ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_inEditor: 1
 --- !u!114 &58529695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3701,7 +3702,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777140
+    rgba: 4294967220
   m_fontColor: {r: 0.7058824, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -5608,31 +5609,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 726904555}
   m_CullTransparentMesh: 0
---- !u!1 &742101470 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 742101470, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1706699861}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &742101472
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 742101470}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8c6bf2c33490cb84db194439b895a106, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &757525780
 GameObject:
   m_ObjectHideFlags: 0
@@ -6338,7 +6314,7 @@ RectTransform:
   m_GameObject: {fileID: 928742073}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 433743015}
   - {fileID: 970642993}
@@ -6446,7 +6422,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777140
+    rgba: 4294967220
   m_fontColor: {r: 0.7058824, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -9975,6 +9951,21 @@ PrefabInstance:
       propertyPath: m_questProgress
       value: 
       objectReference: {fileID: 267072568}
+    - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
+        type: 3}
+      propertyPath: m_completedQuestAnimator
+      value: 
+      objectReference: {fileID: 928742075}
+    - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
+        type: 3}
+      propertyPath: m_completedQuestTitle
+      value: 
+      objectReference: {fileID: 970642994}
+    - target: {fileID: 4991470086643399871, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
+        type: 3}
+      propertyPath: m_completedQuestDescription
+      value: 
+      objectReference: {fileID: 51783044}
     - target: {fileID: 4991470086643399865, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
         type: 3}
       propertyPath: m_RenderMode
@@ -9983,10 +9974,11 @@ PrefabInstance:
     - target: {fileID: 382393549, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
       propertyPath: InventoryManager
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8751166865296910840, guid: 3e5fd941f7015db468ae2f40ea29b1a9,
+        type: 3}
     - target: {fileID: 742101470, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}

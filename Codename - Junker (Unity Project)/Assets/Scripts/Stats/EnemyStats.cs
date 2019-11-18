@@ -68,7 +68,29 @@ public class EnemyStats : MonoBehaviour
 
             QuestManager.Instance.IncrementKillQuests();
 
-            int _value = PlayerPrefs.GetInt("EnemiesKilled");
+            string _save = PlayerPrefs.GetString("CurrentSave");
+            int _value;
+            if (_save == "Save1") {
+                _value = PlayerPrefs.GetInt("EnemiesKilled1");
+                PlayerPrefs.SetInt("EnemiesKilled1", _value + 1);
+            }
+            else if (_save == "Save2") {
+                _value = PlayerPrefs.GetInt("EnemiesKilled2");
+                PlayerPrefs.SetInt("EnemiesKilled2", _value + 1);
+            }
+            else if (_save == "Save3")
+            {
+                _value = PlayerPrefs.GetInt("EnemiesKilled2");
+                PlayerPrefs.SetInt("EnemiesKilled2", _value + 1);
+            }
+            else if (_save == "Save4")
+            {
+                _value = PlayerPrefs.GetInt("EnemiesKilled2");
+                PlayerPrefs.SetInt("EnemiesKilled2", _value + 1);
+            }
+
+
+            _value = PlayerPrefs.GetInt("EnemiesKilled");
             PlayerPrefs.SetInt("EnemiesKilled", _value + 1);
         }
 

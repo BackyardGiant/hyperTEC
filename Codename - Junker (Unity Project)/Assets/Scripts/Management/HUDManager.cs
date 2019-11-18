@@ -59,6 +59,10 @@ public class HUDManager : MonoBehaviour
     private TextMeshProUGUI m_questTitle;
     [SerializeField]
     private TextMeshProUGUI m_questDescription,m_questProgress;
+    [SerializeField]
+    private TextMeshProUGUI m_completedQuestTitle, m_completedQuestDescription;
+    [SerializeField]
+    private Animator m_completedQuestAnimator;
 
     #endregion
 
@@ -95,8 +99,6 @@ public class HUDManager : MonoBehaviour
 
         // 18/11/19 - TEMPORARILY MAKE SURE YOU'RE TRACKING THE RIGHT QUEST.
         QuestManager.Instance.TrackingQuestIndex = 0;
-
-        QuestManager.Instance.CreateKillQuest(15, "Control the Sector!", "Kill 15 Enemies to Control the Sector.");
     }
     void Awake()
     {
@@ -684,23 +686,24 @@ public class HUDManager : MonoBehaviour
     #region QuestDisplay
     private void DisplayActiveQuest()
     {
-        if (QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Complete == false)
-        {
-            try
+        try {
+            if (QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Complete == false)
             {
-
-                m_questTitle.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Name;
-                m_questDescription.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Description;
-                m_questProgress.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].CurrentAmountCompleted.ToString() + "/" + QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Size.ToString();
+                    m_questTitle.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Name;
+                    m_questDescription.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Description;
+                    m_questProgress.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].CurrentAmountCompleted.ToString() + "/" + QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Size.ToString();
             }
-            catch{}
-        }
-        else
-        {
-            m_questTitle.text = "";
-            m_questDescription.text = "";
-            m_questProgress.text = ""; 
-        }
+            else
+            {
+                m_completedQuestAnimator.Play("QuestCompletedAnim");
+                m_questTitle.text = "";
+                m_questDescription.text = "";
+                m_questProgress.text = "";
+                m_completedQuestTitle.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Name;
+                m_completedQuestDescription.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Description;
+                QuestManager.Instance.TrackingQuestIndex += 1;
+            }
+        } catch { }
     }
 
 
