@@ -191,7 +191,7 @@ public class SelectionManager : MonoBehaviour
                         Debug.Log("Equipped left gun " + m_equippedLeftIndex);
 
                         // Set equipped in player inventory
-                        PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[(int)m_equippedLeftIndex];
+                        PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[(int)m_equippedLeftIndex - 1];
                         PlayerInventoryManager.Instance.EquippedLeftIndex = (int)m_equippedLeftIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
                     }
 
@@ -202,7 +202,7 @@ public class SelectionManager : MonoBehaviour
                         Debug.Log("Equipped right gun " + m_equippedRightIndex);
 
                         // Set equipped in player inventory
-                        PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[(int)m_equippedRightIndex];
+                        PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[(int)m_equippedRightIndex - 1];
                         PlayerInventoryManager.Instance.EquippedRightIndex = (int)m_equippedRightIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
                     }
                 }

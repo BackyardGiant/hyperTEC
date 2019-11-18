@@ -36,7 +36,7 @@ public class BulletBehaviour : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log(m_rbBullet.velocity.magnitude);    
+        //Debug.Log(m_rbBullet.velocity.magnitude);    
     }
 
     private void OnTriggerEnter(Collider other)
