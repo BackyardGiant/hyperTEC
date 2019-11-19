@@ -155,6 +155,7 @@
     <Compile Include="Assets\Scripts\Scriptable Objects\IntVariable.cs" />
     <Compile Include="Assets\Scripts\Scriptable Objects\WeaponData.cs" />
     <Compile Include="Assets\Scripts\Shooting\EnemyShooting.cs" />
+    <Compile Include="Assets\Scripts\Shooting\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\Shooting\PlayerShooting.cs" />
     <Compile Include="Assets\Scripts\SpawnEngine.cs" />
     <Compile Include="Assets\Scripts\Stats\EnemyStats.cs" />
