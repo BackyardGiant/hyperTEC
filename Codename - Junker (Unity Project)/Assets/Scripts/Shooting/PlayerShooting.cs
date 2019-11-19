@@ -98,133 +98,7 @@ public class PlayerShooting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        WeaponData _rightWeapon = null;
-        WeaponData _leftWeapon = null;
-
-        try
-        {
-             _rightWeapon = PlayerInventoryManager.Instance.EquippedRightWeapon;
-        }
-        catch{ }
-
-        try
-        {
-            _leftWeapon = PlayerInventoryManager.Instance.EquippedLeftWeapon;
-        }
-        catch { }
-
-        m_aimingCamera = Camera.main;
-
-        float _rangeFireRate = -(m_slowerFireRate - m_quickerFireRate);
-        float _rangeDamage = (m_highDamage - m_lowDamage);
-        float _rangeAccuracy = (m_highAccuracy - m_lowAccuracy);
-
-        float _leftFireRatePercentage;
-        float _rightFireRatePercentage;
-        float _leftDamagePercentage;
-        float _rightDamagePercentage;
-        float _leftAccuracyPercentage;
-        float _rightAccuracyPercentage;
-
-        if (_rightWeapon != null)
-        {
-            //SOUND
-            m_rightWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(int)_rightWeapon.CurrentFireRateType, _rightWeapon.FireRateIndex, this.gameObject, true);
-
-            if(_rightWeapon.CurrentFireRateType == WeaponData.fireRateType.slow)
-            {
-                m_rightWeaponSoundDelay = AudioManager.Instance.longWeaponDelays[_rightWeapon.FireRateIndex];
-            }
-            else
-            {
-                m_rightWeaponSoundDelay = 0;
-            }
-            
-            //FIRE RATE
-            _rightFireRatePercentage = _rightWeapon.FireRate / 100f;
-            m_rightWeaponCooldown = m_slowerFireRate + (_rightFireRatePercentage * _rangeFireRate);
-
-            //DAMAGE
-            _rightDamagePercentage = _rightWeapon.Damage / 100f;
-            m_rightBulletDamage = m_lowDamage + (_rangeDamage * _rightDamagePercentage);
-
-            //Accuracy
-            _rightAccuracyPercentage = _rightWeapon.Accuracy / 100f;
-            m_rightBulletAccuracy = m_lowAccuracy + (_rangeAccuracy * _rightAccuracyPercentage);
-
-            //ACCURACY
-
-            //RELOAD TIME
-
-            //BULLET MATERIAL
-            if (_rightWeapon.CurrentFaction == WeaponData.faction.initial)
-            {
-                m_rightBulletType = m_defaultBulletPrefab;
-            }
-            else if (_rightWeapon.CurrentFaction == WeaponData.faction.trader)
-            {
-                m_rightBulletType = m_traderBulletPrefab;
-            }
-            else if (_rightWeapon.CurrentFaction == WeaponData.faction.explorer)
-            {
-                m_rightBulletType = m_exploratoryBulletPrefab;
-            }
-            else if (_rightWeapon.CurrentFaction == WeaponData.faction.construction)
-            {
-                m_rightBulletType = m_constructionBulletPrefab;
-            }
-
-        }
-
-        if (_leftWeapon != null)
-        {
-            //SOUND
-            m_leftWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(WeaponData.fireRateType)_leftWeapon.CurrentFireRateType, _leftWeapon.FireRateIndex, this.gameObject, true);
-
-            if (_leftWeapon.CurrentFireRateType == WeaponData.fireRateType.slow)
-            {
-                m_leftWeaponSoundDelay = AudioManager.Instance.longWeaponDelays[_leftWeapon.FireRateIndex];
-            }
-            else
-            {
-                m_leftWeaponSoundDelay = 0;
-            }
-
-            //FIRE RATE
-            _leftFireRatePercentage = _leftWeapon.FireRate / 100f;
-            m_leftWeaponCooldown = m_slowerFireRate + (_leftFireRatePercentage * _rangeFireRate);
-
-            //DAMAGE
-            _leftDamagePercentage = _leftWeapon.Damage / 100f;
-            m_leftBulletDamage = m_lowDamage + (_rangeDamage * _leftDamagePercentage);
-
-            //ACCURACY
-            _leftAccuracyPercentage = _leftWeapon.Accuracy / 100f;
-            m_leftBulletAccuracy = m_lowAccuracy + (_rangeAccuracy * _leftAccuracyPercentage);
-
-            //RELOAD TIME
-
-            //BULLET MATERIAL
-            if (_leftWeapon.CurrentFaction == WeaponData.faction.initial)
-            {
-                m_leftBulletType = m_defaultBulletPrefab;
-            }
-            else if (_leftWeapon.CurrentFaction == WeaponData.faction.trader)
-            {
-                m_leftBulletType = m_traderBulletPrefab;
-            }
-            else if (_leftWeapon.CurrentFaction == WeaponData.faction.explorer)
-            {
-                m_leftBulletType = m_exploratoryBulletPrefab;
-            }
-            else if (_leftWeapon.CurrentFaction == WeaponData.faction.construction)
-            {
-                m_leftBulletType = m_constructionBulletPrefab;
-            }
-
-
-        }
+        buildWeapons();        
     }
 
     // Update is called once per frame
@@ -328,5 +202,142 @@ public class PlayerShooting : MonoBehaviour
         SpawnBullet(1);
         yield return new WaitForSeconds(m_leftWeaponCooldown);
         m_leftWeaponActive = true;
+    }
+
+    public void buildWeapons()
+    {
+        GameObject[] previousAudio = GameObject.FindGameObjectsWithTag("WeaponAudio");
+
+        foreach(GameObject _source in previousAudio)
+        {
+            Destroy(_source);
+        }
+
+        WeaponData _rightWeapon = null;
+        WeaponData _leftWeapon = null;
+
+        try
+        {
+            _rightWeapon = PlayerInventoryManager.Instance.EquippedRightWeapon;
+        }
+        catch { }
+
+        try
+        {
+            _leftWeapon = PlayerInventoryManager.Instance.EquippedLeftWeapon;
+        }
+        catch { }
+
+        m_aimingCamera = Camera.main;
+
+        float _rangeFireRate = -(m_slowerFireRate - m_quickerFireRate);
+        float _rangeDamage = (m_highDamage - m_lowDamage);
+        float _rangeAccuracy = (m_highAccuracy - m_lowAccuracy);
+
+        float _leftFireRatePercentage;
+        float _rightFireRatePercentage;
+        float _leftDamagePercentage;
+        float _rightDamagePercentage;
+        float _leftAccuracyPercentage;
+        float _rightAccuracyPercentage;
+
+        if (_rightWeapon != null)
+        {
+            //SOUND
+            m_rightWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(int)_rightWeapon.CurrentFireRateType, _rightWeapon.FireRateIndex, this.gameObject, true);
+
+            if (_rightWeapon.CurrentFireRateType == WeaponData.fireRateType.slow)
+            {
+                m_rightWeaponSoundDelay = AudioManager.Instance.longWeaponDelays[_rightWeapon.FireRateIndex];
+            }
+            else
+            {
+                m_rightWeaponSoundDelay = 0;
+            }
+
+            //FIRE RATE
+            _rightFireRatePercentage = _rightWeapon.FireRate / 100f;
+            m_rightWeaponCooldown = m_slowerFireRate + (_rightFireRatePercentage * _rangeFireRate);
+
+            //DAMAGE
+            _rightDamagePercentage = _rightWeapon.Damage / 100f;
+            m_rightBulletDamage = m_lowDamage + (_rangeDamage * _rightDamagePercentage);
+
+            //Accuracy
+            _rightAccuracyPercentage = _rightWeapon.Accuracy / 100f;
+            m_rightBulletAccuracy = m_lowAccuracy + (_rangeAccuracy * _rightAccuracyPercentage);
+
+            //ACCURACY
+
+            //RELOAD TIME
+
+            //BULLET MATERIAL
+            if (_rightWeapon.CurrentFaction == WeaponData.faction.initial)
+            {
+                m_rightBulletType = m_defaultBulletPrefab;
+            }
+            else if (_rightWeapon.CurrentFaction == WeaponData.faction.trader)
+            {
+                m_rightBulletType = m_traderBulletPrefab;
+            }
+            else if (_rightWeapon.CurrentFaction == WeaponData.faction.explorer)
+            {
+                m_rightBulletType = m_exploratoryBulletPrefab;
+            }
+            else if (_rightWeapon.CurrentFaction == WeaponData.faction.construction)
+            {
+                m_rightBulletType = m_constructionBulletPrefab;
+            }
+
+        }
+
+        if (_leftWeapon != null)
+        {
+            //SOUND
+            m_leftWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(WeaponData.fireRateType)_leftWeapon.CurrentFireRateType, _leftWeapon.FireRateIndex, this.gameObject, true);
+
+            if (_leftWeapon.CurrentFireRateType == WeaponData.fireRateType.slow)
+            {
+                m_leftWeaponSoundDelay = AudioManager.Instance.longWeaponDelays[_leftWeapon.FireRateIndex];
+            }
+            else
+            {
+                m_leftWeaponSoundDelay = 0;
+            }
+
+            //FIRE RATE
+            _leftFireRatePercentage = _leftWeapon.FireRate / 100f;
+            m_leftWeaponCooldown = m_slowerFireRate + (_leftFireRatePercentage * _rangeFireRate);
+
+            //DAMAGE
+            _leftDamagePercentage = _leftWeapon.Damage / 100f;
+            m_leftBulletDamage = m_lowDamage + (_rangeDamage * _leftDamagePercentage);
+
+            //ACCURACY
+            _leftAccuracyPercentage = _leftWeapon.Accuracy / 100f;
+            m_leftBulletAccuracy = m_lowAccuracy + (_rangeAccuracy * _leftAccuracyPercentage);
+
+            //RELOAD TIME
+
+            //BULLET MATERIAL
+            if (_leftWeapon.CurrentFaction == WeaponData.faction.initial)
+            {
+                m_leftBulletType = m_defaultBulletPrefab;
+            }
+            else if (_leftWeapon.CurrentFaction == WeaponData.faction.trader)
+            {
+                m_leftBulletType = m_traderBulletPrefab;
+            }
+            else if (_leftWeapon.CurrentFaction == WeaponData.faction.explorer)
+            {
+                m_leftBulletType = m_exploratoryBulletPrefab;
+            }
+            else if (_leftWeapon.CurrentFaction == WeaponData.faction.construction)
+            {
+                m_leftBulletType = m_constructionBulletPrefab;
+            }
+
+
+        }
     }
 }

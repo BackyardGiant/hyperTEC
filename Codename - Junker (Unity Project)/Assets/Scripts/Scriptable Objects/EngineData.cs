@@ -31,6 +31,7 @@ public class EngineData : ScriptableObject
     [SerializeField]
     private int engineId;
 
+    [SerializeField]
     private string seed;
 
     public string Name { get => engineName; set => engineName = value; }

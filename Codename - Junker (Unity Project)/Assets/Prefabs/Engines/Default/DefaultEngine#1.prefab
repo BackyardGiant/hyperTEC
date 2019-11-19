@@ -9973,4 +9973,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f025e4f8cef1647ae64bb517d73dfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  engineStatBlock: {fileID: 0}
+  engineStatBlock: {fileID: 11400000, guid: 35628cefd8ed15c42a60382f243c2546, type: 2}

@@ -122,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.GameSpeed != 0)
+        if (GameManager.Instance.GameSpeed != 0 && PlayerInventoryManager.Instance.EquippedEngine != null)
         {
             // Restets posative force application to the ship (If you let go of go forwards it stops applying force)
             if (Input.GetButtonUp("Throttle Up"))
@@ -228,14 +228,27 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+
         // We accumulate torque forces into this variable:
         var torque = Vector3.zero;
-        // Add torque for the pitch based on the pitch input.
-        torque += _pitch * m_pitchSpeed * transform.right;
-        // Add torque for the yaw based on the yaw input.
-        torque += _yaw * m_yawSpeed * transform.up;
-        // Add torque for the roll based on the roll input.
-        torque += -_roll * m_rollSpeed * transform.forward;
+        if (PlayerInventoryManager.Instance.EquippedEngine != null)
+        {
+            // Add torque for the pitch based on the pitch input.
+            torque += _pitch * m_pitchSpeed * transform.right;
+            // Add torque for the yaw based on the yaw input.
+            torque += _yaw * m_yawSpeed * transform.up;
+            // Add torque for the roll based on the roll input.
+            torque += -_roll * m_rollSpeed * transform.forward;
+        }
+        else
+        {
+            // Add torque for the pitch based on the pitch input.
+            torque += _pitch * m_pitchSpeed * transform.right * 0.33f;
+            // Add torque for the yaw based on the yaw input.
+            torque += _yaw * m_yawSpeed * transform.up * 0.33f;
+            // Add torque for the roll based on the roll input.
+            torque += -_roll * m_rollSpeed * transform.forward * 0.33f;
+        }
 
         if (m_boostOn)
         {

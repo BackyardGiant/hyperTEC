@@ -28,8 +28,7 @@ public class QuestManagerTEMPCREATION : MonoBehaviour
             DontDestroyOnLoad(this);
             PlayerPrefs.SetInt("CreatedQuest", 1);
             QuestManager.Instance.CreateKillQuest(15, "Control the Sector!", "Kill 15 Enemies to Control the Sector.");
-
-            Invoke("SpawnEngine", 0.5f);         
+      
         }
     }
 
