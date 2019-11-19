@@ -15,8 +15,15 @@ public class DropWeapons : MonoBehaviour
 
     private void Start()
     {
-        m_weapon1 = leftSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
-        m_weapon2 = rightSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+        try
+        {
+            m_weapon1 = leftSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            m_weapon2 = rightSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+        }
+        catch
+        {
+
+        }
     }
 
     public void Drop()
