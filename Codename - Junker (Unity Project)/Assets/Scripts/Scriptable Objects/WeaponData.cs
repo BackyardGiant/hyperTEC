@@ -40,6 +40,7 @@ public class WeaponData : ScriptableObject
     [SerializeField]
     private int barrelId, magazineId, batteryId, targetId;
 
+    [SerializeField]
     private string seed;
 
     public string Name { get => weaponName; set => weaponName = value; }

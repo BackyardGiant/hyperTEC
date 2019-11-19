@@ -44,4 +44,21 @@ public class PlayerInventoryManager : MonoBehaviour
             Destroy(this);
         }
     }
+
+    public void WipeInventory()
+    {
+        EngineData DefaultEngine = m_availableEngines[0];
+        WeaponData DefaultLeft = m_availableWeapons[0];
+        WeaponData DefaultRight = m_availableWeapons[1];
+
+        m_availableEngines = new List<EngineData>();
+        m_availableEngines.Add(DefaultEngine);
+        m_availableWeapons = new List<WeaponData>();
+        m_availableWeapons.Add(DefaultLeft);
+        m_availableWeapons.Add(DefaultRight);
+
+        m_equippedEngineIndex = new int();
+        m_equippedLeftIndex = new int();
+        m_equippedRightIndex = new int();
+    }
 }

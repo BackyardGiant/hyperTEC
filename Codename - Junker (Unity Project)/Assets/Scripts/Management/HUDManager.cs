@@ -868,5 +868,15 @@ public class HUDManager : MonoBehaviour
         int _value = PlayerPrefs.GetInt(_name);
         PlayerPrefs.SetInt(_name, _value + 1);
     }
+
+    public void ClearAllDisplays()
+    {
+        int _waypointCount = WaypointsAndMarkers.transform.childCount;
+
+        for(int i=0; i<_waypointCount; i++)
+        {
+            Destroy(WaypointsAndMarkers.GetChild(i).gameObject);
+        }
+    }
     #endregion
 }

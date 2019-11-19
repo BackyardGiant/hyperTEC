@@ -175,6 +175,7 @@ public class AudioManager : MonoBehaviour
             GameObject _targetAudio = new GameObject(target.name + " audio source. Playing - " + name);
             _targetAudio.transform.parent = target.transform;
             _targetAudio.transform.position = target.transform.position;
+            _targetAudio.tag = "WeaponAudio";
             target = _targetAudio;
         }
         Sound s = null;

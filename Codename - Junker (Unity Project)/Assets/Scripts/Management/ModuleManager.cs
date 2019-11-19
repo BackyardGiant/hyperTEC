@@ -145,8 +145,14 @@ public class ModuleManager : MonoBehaviour
     {
         EngineData _tempEngineData = ScriptableObject.CreateInstance<EngineData>();
 
-        //Put engine generation stuff here
-        _tempEngineData.CurrentFaction = (EngineData.faction)int.Parse(_seed[0].ToString());
+        try
+        {
+            //Put engine generation stuff here
+            _tempEngineData.CurrentFaction = (EngineData.faction)int.Parse(_seed[0].ToString());
+        }
+        catch
+        {
+        }
 
         return _tempEngineData;
     }
