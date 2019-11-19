@@ -47,12 +47,10 @@ public class PlayerInventoryManager : MonoBehaviour
 
     public void WipeInventory()
     {
-        EngineData DefaultEngine = m_availableEngines[0];
         WeaponData DefaultLeft = m_availableWeapons[0];
         WeaponData DefaultRight = m_availableWeapons[1];
 
         m_availableEngines = new List<EngineData>();
-        m_availableEngines.Add(DefaultEngine);
         m_availableWeapons = new List<WeaponData>();
         m_availableWeapons.Add(DefaultLeft);
         m_availableWeapons.Add(DefaultRight);

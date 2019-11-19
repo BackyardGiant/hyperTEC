@@ -16,5 +16,12 @@ public class EngineStatManager : MonoBehaviour
     {
         name.text = data.name;
         thumbnail.sprite = data.Thumbnail;
+
+        if (thumbnail.sprite == null)
+        {
+            Color _tempColour = thumbnail.color;
+            _tempColour.a = 0f;
+            thumbnail.color = _tempColour;
+        }
     }
 }

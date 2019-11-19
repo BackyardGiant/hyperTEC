@@ -497,6 +497,25 @@ public class GameManager : MonoBehaviour
             _tempLeftGun.transform.localRotation = Quaternion.identity;
             _tempLeftGun.transform.localScale = m_scale;
         }
+        if(_savedPlayer.engineSeed != "" && _savedPlayer.engineSeed != "-1")
+        {
+            Transform _engineSnapPoint = _player.transform.Find("EngineShip");
+
+            try
+            {
+                Destroy(_engineSnapPoint.GetChild(0).gameObject);
+            }
+            catch { }
+
+            EngineData _temp1 = ModuleManager.Instance.CreateEngineBlock(_savedPlayer.engineSeed);
+            GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(_temp1);
+            _tempEngine.transform.GetChild(0).GetComponent<ThrustEffectController>().player = _player.GetComponent<PlayerMovement>();
+            _tempEngine.GetComponent<EngineGenerator>().engineStatBlock = _temp1;
+            _tempEngine.transform.SetParent(_engineSnapPoint);
+            _tempEngine.transform.localPosition = Vector3.zero;
+            _tempEngine.transform.localRotation = Quaternion.identity;
+            _tempEngine.transform.localScale = m_scale;
+        }
 
         //PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
 
