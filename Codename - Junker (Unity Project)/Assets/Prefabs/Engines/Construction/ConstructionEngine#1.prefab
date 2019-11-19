@@ -14591,6 +14591,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2669169145273278257}
+  - component: {fileID: -329047522111306748}
   m_Layer: 0
   m_Name: ConstructionEngine#1
   m_TagString: Untagged
@@ -14613,6 +14614,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-329047522111306748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2669169145273278258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32f025e4f8cef1647ae64bb517d73dfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  engineStatBlock: {fileID: 11400000, guid: 5f05a6eaff3aa9e4db3c58511bdd45ee, type: 2}
 --- !u!1 &7896754794886393176
 GameObject:
   m_ObjectHideFlags: 0

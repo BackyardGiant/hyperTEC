@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,10 +45,14 @@ public class HUDManager : MonoBehaviour
     private float m_scanningFillSpeed;
     [SerializeField, Tooltip("How quickly the destroy occurs. Higher is faster."), Range(0.2f, 1f)]
     private float m_destroyFillSpeed;
-    [SerializeField,Header("Loot Display Elements"),Tooltip("Display elements of the Loot Display. This will show the stats of the visible loot item."),Space(20)]
-    private TextMeshProUGUI m_weaponTitle;
+    [SerializeField, Header("Loot Display Elements"), Tooltip("Display elements of the Loot Display. This will show the stats of the visible loot item."), Space(20)]
+    private Image m_lootItemIcon;
+    [SerializeField]
+    private Sprite m_weapon, m_engine, m_shield;
+    [SerializeField]
+    private TextMeshProUGUI m_lootDisplayTitle, m_lootTitle;
     [SerializeField, Tooltip("Each stat item. Needs the value first then the arrow second.")]
-    private GameObject[] m_damage, m_fireRate, m_reloadTime, m_accuracy;
+    private GameObject[] m_stat1, m_stat2, m_stat3, m_stat4;
     #endregion
     #region AutoAim
     private GameObject m_closestEnemy;
@@ -144,6 +148,11 @@ public class HUDManager : MonoBehaviour
             {
                 PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
             }
+            else if (m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Engine)
+            {
+                PlayerInventoryManager.Instance.AvailableEngines.Add(m_currentLoot.transform.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock);
+            }
+
 
             IncrementPlayerPref("WeaponsCollected");
             Debug.Log("Pickup Loot.");
@@ -415,9 +424,8 @@ public class HUDManager : MonoBehaviour
         //Find all "component" tagged game objects
         GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
         m_currentLoot = ReturnTargetLoot(_lootObjects);
-
         //If targeted loot has changed, reset LootDisplay.
-        if(m_prevLoot != m_currentLoot)
+        if (m_prevLoot != m_currentLoot)
         {
             // Swapping over the LootDisplays to a different object
             m_displayAnimated = false;
@@ -509,6 +517,7 @@ public class HUDManager : MonoBehaviour
     //Draws the lootdisplay with appropriate offset based on the current function.
     private void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
     {
+        DisplayLootTitle(m_currentLoot);
         //Check player is going slow enough to look at it.
         Vector3 _displayTargetPos;
         if (Player.GetComponent<PlayerMovement>().CurrentSpeed/Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
@@ -544,130 +553,266 @@ public class HUDManager : MonoBehaviour
     {
         if (_currentLoot != null)
         {
-            try
-            {
-                WeaponData _lootData = _currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
-                float _currentDamage;
-                float _currentFireRate;
-                float _currentReloadTime;
-                float _currentAccuracy;
-
-                if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage < PlayerInventoryManager.Instance.EquippedRightWeapon.Damage) { _currentDamage = PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage; }
-                else { _currentDamage = PlayerInventoryManager.Instance.EquippedRightWeapon.Damage; }
-
-                if (PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate < PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate) { _currentFireRate = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate; }
-                else { _currentFireRate = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate; }
-
-                if (PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime < PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime) { _currentReloadTime = PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime; }
-                else { _currentReloadTime = PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime; }
-
-                if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy < PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy) { _currentAccuracy = PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy; }
-                else { _currentAccuracy = PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy; }
-
-
-                m_weaponTitle.text = _lootData.Name;
-
-
-                Image _damageArrow = m_damage[1].GetComponent<Image>();
-                Image _fireRateArrow = m_fireRate[1].GetComponent<Image>();
-                Image _reloadArrow = m_reloadTime[1].GetComponent<Image>();
-                Image _accuracyArrow = m_accuracy[1].GetComponent<Image>();
-
-                ///////////////////////////////////////////////
-                m_damage[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Damage);// _lootData.Damage.ToString();
-                if (_lootData.Damage > _currentDamage)
+            try { 
+                if(_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
                 {
-                    //Higher - Green Arrow
-                    _damageArrow.enabled = true;
-                    _damageArrow.color = Color.green;
-                    _damageArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
-                }
-                else if (_lootData.Damage < _currentDamage)
-                {
-                    //Lower - Red Arrow
-                    _damageArrow.enabled = true;
-                    _damageArrow.color = Color.red;
-                    _damageArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
-                }
-                else
-                {
-                    // Equal - Hide Arrow
-                    _damageArrow.enabled = false;
-                }
 
-                //////////////////////////////////////////////
-                m_fireRate[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.FireRate);// _lootData.FireRate.ToString();
-                if (_lootData.FireRate > _currentFireRate)
-                {
-                    //Higher - Green Arrow
-                    _fireRateArrow.enabled = true;
-                    _fireRateArrow.color = Color.green;
-                    _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
-                }
-                else if (_lootData.FireRate < _currentFireRate)
-                {
-                    //Lower - Red Arrow
-                    _fireRateArrow.enabled = true;
-                    _fireRateArrow.color = Color.red;
-                    _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
-                }
-                else
-                {
-                    // Equal - Hide Arrow
-                    _fireRateArrow.enabled = false;
-                }
+                        WeaponData _lootData = _currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+                        float _currentDamage;
+                        float _currentFireRate;
+                        float _currentReloadTime;
+                        float _currentAccuracy;
 
-                /////////////////////////////////////////////////
-                m_reloadTime[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.ReloadTime);// _lootData.ReloadTime.ToString();
-                if (_lootData.ReloadTime > _currentReloadTime)
-                {
-                    //Higher - Green Arrow
-                    _reloadArrow.enabled = true;
-                    _reloadArrow.color = Color.green;
-                    _reloadArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
-                }
-                else if (_lootData.ReloadTime < _currentReloadTime)
-                {
-                    //Lower - Red Arrow
-                    _reloadArrow.enabled = true;
-                    _reloadArrow.color = Color.red;
-                    _reloadArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
-                }
-                else
-                {
-                    // Equal - Hide Arrow
-                    _reloadArrow.enabled = false;
-                }
+                        if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage < PlayerInventoryManager.Instance.EquippedRightWeapon.Damage) { _currentDamage = PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage; }
+                        else { _currentDamage = PlayerInventoryManager.Instance.EquippedRightWeapon.Damage; }
+
+                        if (PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate < PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate) { _currentFireRate = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate; }
+                        else { _currentFireRate = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate; }
+
+                        if (PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime < PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime) { _currentReloadTime = PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime; }
+                        else { _currentReloadTime = PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime; }
+
+                        if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy < PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy) { _currentAccuracy = PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy; }
+                        else { _currentAccuracy = PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy; }
 
 
-
-                ////////////////////////////////////////////////
-                m_accuracy[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Accuracy); //_lootData.Accuracy.ToString();
-                if (_lootData.Accuracy > _currentAccuracy)
-                {
-                    //Higher - Green Arrow
-                    _accuracyArrow.enabled = true;
-                    _accuracyArrow.color = Color.green;
-                    _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
-                }
-                else if (_lootData.Accuracy < _currentAccuracy)
-                {
-                    //Lower - Red Arrow
-                    _accuracyArrow.enabled = true;
-                    _accuracyArrow.color = Color.red;
-                    _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
-                }
-                else
-                {
-                    // Equal - Hide Arrow
-                    _accuracyArrow.enabled = false;
-                }
+                        m_lootTitle.text = _lootData.Name;
 
 
+                        Image _damageArrow = m_stat1[2].GetComponent<Image>();
+                        Image _fireRateArrow = m_stat2[2].GetComponent<Image>();
+                        Image _reloadArrow = m_stat3[2].GetComponent<Image>();
+                        Image _accuracyArrow = m_stat4[2].GetComponent<Image>();
+
+                        ///////////////////////////////////////////////
+                        m_stat1[0].GetComponent<TextMeshProUGUI>().text = "Damage";
+                        m_stat1[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Damage);// _lootData.Damage.ToString();
+                        if (_lootData.Damage > _currentDamage)
+                        {
+                            //Higher - Green Arrow
+                            _damageArrow.enabled = true;
+                            _damageArrow.color = Color.green;
+                            _damageArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                        }
+                        else if (_lootData.Damage < _currentDamage)
+                        {
+                            //Lower - Red Arrow
+                            _damageArrow.enabled = true;
+                            _damageArrow.color = Color.red;
+                            _damageArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                        }
+                        else
+                        {
+                            // Equal - Hide Arrow
+                            _damageArrow.enabled = false;
+                        }
+
+                        //////////////////////////////////////////////
+                        m_stat2[0].GetComponent<TextMeshProUGUI>().text = "Fire Rate";
+                        m_stat2[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.FireRate);// _lootData.FireRate.ToString();
+                        if (_lootData.FireRate > _currentFireRate)
+                        {
+                            //Higher - Green Arrow
+                            _fireRateArrow.enabled = true;
+                            _fireRateArrow.color = Color.green;
+                            _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                        }
+                        else if (_lootData.FireRate < _currentFireRate)
+                        {
+                            //Lower - Red Arrow
+                            _fireRateArrow.enabled = true;
+                            _fireRateArrow.color = Color.red;
+                            _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                        }
+                        else
+                        {
+                            // Equal - Hide Arrow
+                            _fireRateArrow.enabled = false;
+                        }
+
+                        /////////////////////////////////////////////////
+                        m_stat3[0].GetComponent<TextMeshProUGUI>().text = "Reload Time";
+                        m_stat3[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.ReloadTime);// _lootData.ReloadTime.ToString();
+                        if (_lootData.ReloadTime > _currentReloadTime)
+                        {
+                            //Higher - Green Arrow
+                            _reloadArrow.enabled = true;
+                            _reloadArrow.color = Color.green;
+                            _reloadArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                        }
+                        else if (_lootData.ReloadTime < _currentReloadTime)
+                        {
+                            //Lower - Red Arrow
+                            _reloadArrow.enabled = true;
+                            _reloadArrow.color = Color.red;
+                            _reloadArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                        }
+                        else
+                        {
+                            // Equal - Hide Arrow
+                            _reloadArrow.enabled = false;
+                        }
+
+
+
+                        ////////////////////////////////////////////////
+                        m_stat4[0].GetComponent<TextMeshProUGUI>().text = "Accuracy";
+                        m_stat4[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Accuracy); //_lootData.Accuracy.ToString();
+                        if (_lootData.Accuracy > _currentAccuracy)
+                        {
+                            //Higher - Green Arrow
+                            _accuracyArrow.enabled = true;
+                            _accuracyArrow.color = Color.green;
+                            _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                        }
+                        else if (_lootData.Accuracy < _currentAccuracy)
+                        {
+                            //Lower - Red Arrow
+                            _accuracyArrow.enabled = true;
+                            _accuracyArrow.color = Color.red;
+                            _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                        }
+                        else
+                        {
+                            // Equal - Hide Arrow
+                            _accuracyArrow.enabled = false;
+                        }
+                }
+                if (_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Engine)
+                {
+                    EngineData _lootData = _currentLoot.transform.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock;
+                    float _currentTopSpeed = PlayerInventoryManager.Instance.EquippedEngine.TopSpeed;
+                    float _currentAcceleration = PlayerInventoryManager.Instance.EquippedEngine.Acceleration;
+                    float _currentBoostPower = PlayerInventoryManager.Instance.EquippedEngine.BoostPower;
+                    float _currentHandling = PlayerInventoryManager.Instance.EquippedEngine.Handling;
+
+                    m_stat1[0].GetComponent<TextMeshProUGUI>().text = "Top Speed";
+                    m_stat2[0].GetComponent<TextMeshProUGUI>().text = "Acceleration";
+                    m_stat3[0].GetComponent<TextMeshProUGUI>().text = "Boost Power";
+                    m_stat4[0].GetComponent<TextMeshProUGUI>().text = "Handling";
+
+                    m_stat1[1].GetComponent<TextMeshProUGUI>().text = _lootData.TopSpeed.ToString();
+                    m_stat2[1].GetComponent<TextMeshProUGUI>().text = _lootData.Acceleration.ToString();
+                    m_stat3[1].GetComponent<TextMeshProUGUI>().text = _lootData.BoostPower.ToString();
+                    m_stat4[1].GetComponent<TextMeshProUGUI>().text = _lootData.Handling.ToString();
+
+                    Image _topSpeedArrow = m_stat1[2].GetComponent<Image>();
+                    Image _accelerationArrow = m_stat2[2].GetComponent<Image>();
+                    Image _boostPowerArrow = m_stat3[2].GetComponent<Image>();
+                    Image _handlingArrow = m_stat4[2].GetComponent<Image>();
+
+                    m_lootTitle.text = _lootData.Name;
+
+                    ////////////////TOP SPEED ARROW
+                    if (_lootData.TopSpeed > _currentTopSpeed)
+                    {
+                        //Higher - Green Arrow
+                        _topSpeedArrow.enabled = true;
+                        _topSpeedArrow.color = Color.green;
+                        _topSpeedArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.TopSpeed < _currentTopSpeed)
+                    {
+                        //Lower - Red Arrow
+                        _topSpeedArrow.enabled = true;
+                        _topSpeedArrow.color = Color.red;
+                        _topSpeedArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _topSpeedArrow.enabled = false;
+                    }
+
+                    ////////////////ACCELERATION ARROW
+                    if (_lootData.Acceleration > _currentAcceleration)
+                    {
+                        //Higher - Green Arrow
+                        _accelerationArrow.enabled = true;
+                        _accelerationArrow.color = Color.green;
+                        _accelerationArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.Acceleration < _currentAcceleration)
+                    {
+                        //Lower - Red Arrow
+                        _accelerationArrow.enabled = true;
+                        _accelerationArrow.color = Color.red;
+                        _accelerationArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _accelerationArrow.enabled = false;
+                    }
+
+
+                    ////////////////BOOST POWER
+                    if (_lootData.BoostPower > _currentBoostPower)
+                    {
+                        //Higher - Green Arrow
+                        _boostPowerArrow.enabled = true;
+                        _boostPowerArrow.color = Color.green;
+                        _boostPowerArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.BoostPower < _currentBoostPower)
+                    {
+                        //Lower - Red Arrow
+                        _boostPowerArrow.enabled = true;
+                        _boostPowerArrow.color = Color.red;
+                        _boostPowerArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _boostPowerArrow.enabled = false;
+                    }
+
+                    ////////////////HANDLING
+                    if (_lootData.Handling > _currentHandling)
+                    {
+                        //Higher - Green Arrow
+                        _handlingArrow.enabled = true;
+                        _handlingArrow.color = Color.green;
+                        _handlingArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.Handling < _currentHandling)
+                    {
+                        //Lower - Red Arrow
+                        _handlingArrow.enabled = true;
+                        _handlingArrow.color = Color.red;
+                        _handlingArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _handlingArrow.enabled = false;
+                    }
+                }
             }
-            catch { Debug.LogError("Error with displaying loot stats."); }
+            catch { }
         }
     }
+    private void DisplayLootTitle(GameObject _currentLoot)
+    {
+        if (_currentLoot != null)
+        {
+            if (_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
+            {
+                m_lootItemIcon.sprite = m_weapon;
+                m_lootDisplayTitle.text = "WEAPON";
+            }
+            if (_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Engine)
+            {
+                m_lootItemIcon.sprite = m_engine;
+                m_lootDisplayTitle.text = "ENGINE";
+            }
+            if (_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Shield)
+            {
+                m_lootItemIcon.sprite = m_shield;
+                m_lootDisplayTitle.text = "SHIELD";
+            }
+        }
+    }      
     private string DisplayNiceStats(float _value)
     {
         string _returnVal;

@@ -248,8 +248,12 @@ public class AdvancedEnemyMovement : MonoBehaviour
             Vector2 randomPoint = Random.insideUnitCircle;
 
             Vector3 displacement = new Vector3(randomPoint.x, randomPoint.y) * m_circleRadius;
-            displacement = Quaternion.LookRotation(m_rb.velocity) * displacement;
 
+            if(m_rb.velocity != Vector3.zero)
+            {
+                displacement = Quaternion.LookRotation(m_rb.velocity) * displacement;
+            }
+           
             _wanderForce = _circleCentre + displacement;
             _wanderForce = (_wanderForce.normalized * m_maxSpeed * m_acceleration) - m_rb.velocity;
             m_wanderDirection = _wanderForce;

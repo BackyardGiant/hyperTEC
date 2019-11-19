@@ -60,6 +60,22 @@ public class GameManager : MonoBehaviour
             spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
             Invoke("LoadGame", 0.2f);
         }
+
+        if (_sceneName == "MainScene" && PlayerPrefs.GetInt("LoadFromSave", 0) == 1)
+        {
+            PlayerPrefs.SetInt("LoadFromSave", 0);
+            spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
+            LoadGame();
+        }
+        else if (_sceneName == "MainScene")
+        {
+            PlayerPrefs.SetInt("LoadFromSave", 0);
+            spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
+            LoadGame();
+        }
+
+        Debug.Log("<color=red>CURRENT SAVE: </color>" + PlayerPrefs.GetString("CurrentSave"));
+        Debug.Log("<color=red>LATEST SAVE: </color>" + PlayerPrefs.GetString("LatestSave"));
     }
 
     private void Update()
