@@ -295,6 +295,8 @@ public class SelectionManager : MonoBehaviour
         {
             if (selectedObject.GetComponent<EngineStatManager>())
             {
+                RemoveEngine();
+
                 EngineData _statBlock = selectedObject.GetComponent<EngineStatManager>().Data;
                 GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(_statBlock);
 

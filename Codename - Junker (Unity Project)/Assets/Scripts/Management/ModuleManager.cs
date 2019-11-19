@@ -39,7 +39,6 @@ public class ModuleManager : MonoBehaviour
     {
         GameObject _goTempEngine;
 
-        data.Seed = data.EngineId.ToString();
         switch(data.CurrentFaction)
         {
             case EngineData.faction.trader:
@@ -149,6 +148,30 @@ public class ModuleManager : MonoBehaviour
         {
             //Put engine generation stuff here
             _tempEngineData.CurrentFaction = (EngineData.faction)int.Parse(_seed[0].ToString());
+
+            switch (_tempEngineData.CurrentFaction)
+            {
+                case EngineData.faction.explorer:
+                    _tempEngineData.Seed = "0";
+                    _tempEngineData.name = "Default explorer engine";
+                    _tempEngineData.EngineId = 0;
+                    break;
+                case EngineData.faction.initial:
+                    _tempEngineData.Seed = "1";
+                    _tempEngineData.name = "Default engine";
+                    _tempEngineData.EngineId = 0;
+                    break;
+                case EngineData.faction.trader:
+                    _tempEngineData.Seed = "2";
+                    _tempEngineData.name = "Default trader engine";
+                    _tempEngineData.EngineId = 0;
+                    break;
+                case EngineData.faction.construction:
+                    _tempEngineData.Seed = "3";
+                    _tempEngineData.name = "Default construction engine";
+                    _tempEngineData.EngineId = 0;
+                    break;
+            }
         }
         catch
         {
