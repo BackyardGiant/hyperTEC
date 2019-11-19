@@ -30,6 +30,10 @@ public class AdvancedEnemyMovement : MonoBehaviour
     private float m_circleRadius;
     [SerializeField, Tooltip("The chance that the ship will chnage direction when wondering"), Range(0,1)]
     private float m_turnChance;
+    [SerializeField, Tooltip("The size of the max random offset when evading")]
+    private float m_evadeSize;
+    [SerializeField, Tooltip("The chance that the ship will chnage direction when evading"), Range(0, 1)]
+    private float m_evadeChance;
     #endregion
 
     #region Damping
@@ -55,6 +59,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
     [SerializeField, Tooltip("The distance from the oragin that the enemy will fly before tunring around and seeking back to the centre")]
     private float m_wanderRange;
     private bool m_canWander = true;
+    private bool m_canEvade = true;
     #endregion
 
     #region Slow Mo Manager
@@ -138,13 +143,17 @@ public class AdvancedEnemyMovement : MonoBehaviour
                 {
                     if (m_target != null)
                     {
-                        if (m_fleeing)
+                        if (m_manager.m_behaviourState == EnemyManager.States.Flee)
                         {
                             m_steering = FleeTarget(m_target.transform);
                         }
-                        else
+                        else if(m_manager.m_behaviourState == EnemyManager.States.Pursue)
                         {
                             m_steering = PursueTarget(m_target.transform);
+                        }
+                        else if(m_manager.m_behaviourState == EnemyManager.States.Evade)
+                        {
+                            m_steering = Evade(m_target.transform);
                         }
                     }
                 }
@@ -157,13 +166,17 @@ public class AdvancedEnemyMovement : MonoBehaviour
             {
                 if (m_target != null)
                 {
-                    if (m_fleeing)
+                    if (m_manager.m_behaviourState == EnemyManager.States.Flee)
                     {
                         m_steering = FleeTarget(m_target.transform);
                     }
-                    else
+                    else if (m_manager.m_behaviourState == EnemyManager.States.Pursue)
                     {
                         m_steering = PursueTarget(m_target.transform);
+                    }
+                    else if (m_manager.m_behaviourState == EnemyManager.States.Evade)
+                    {
+                        m_steering = Evade(m_target.transform);
                     }
                 }
                 else
@@ -203,7 +216,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
 
     private Vector3 PursueTarget(Transform _target)
     {
-        Vector3 _estimatedPosition = _target.position + _target.GetComponent<Rigidbody>().velocity;
+        Vector3 _estimatedPosition = _target.position - _target.GetComponentInParent<Rigidbody>().velocity;
         Vector3 _steering = Seek(_estimatedPosition);
 
         return _steering;
@@ -219,8 +232,35 @@ public class AdvancedEnemyMovement : MonoBehaviour
 
     private Vector3 FleeTarget(Transform _target)
     {
-        Vector3 _estimatedPosition = _target.position + _target.GetComponent<Rigidbody>().velocity;
+        Vector3 _estimatedPosition = _target.position + _target.GetComponentInParent<Rigidbody>().velocity;
         Vector3 _steering = Flee(_estimatedPosition);
+
+        return _steering;
+    }
+
+    private Vector3 Evade(Transform _target)
+    {
+        Vector3 _steering = m_steering;
+
+        if (Random.value < m_evadeChance && m_canEvade)
+        {
+            m_canEvade = false;
+            StartCoroutine(ResetEvade());
+            Vector3 _desiredVelocity = new Vector3();
+            if (_target.GetComponentInParent<Rigidbody>().velocity.magnitude > 0)
+            {
+                _desiredVelocity = (Vector3.Normalize(_target.GetComponentInParent<Rigidbody>().velocity) * m_maxSpeed * m_acceleration) - m_rb.velocity;
+            }
+            else
+            {
+                _desiredVelocity = (_target.forward * m_maxSpeed * m_acceleration) - m_rb.velocity;
+            }
+            float _randomDisplacementX = Random.Range(-m_evadeSize, m_evadeSize);
+            float _randomDisplacementY = Random.Range(-m_evadeSize, m_evadeSize);
+            Vector3 _displacement = new Vector3(_randomDisplacementX, _randomDisplacementY, 0);
+
+            _steering = _desiredVelocity + _displacement;
+        }
 
         return _steering;
     }
@@ -310,6 +350,12 @@ public class AdvancedEnemyMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         m_canWander = true;
+    }
+
+    private IEnumerator ResetEvade()
+    {
+        yield return new WaitForSeconds(3f);
+        m_canEvade = true;
     }
 
     #region SlowMoObject

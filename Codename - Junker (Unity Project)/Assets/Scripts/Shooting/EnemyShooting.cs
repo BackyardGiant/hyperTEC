@@ -61,11 +61,11 @@ public class EnemyShooting : MonoBehaviour
 
             RaycastHit _hit;
 
-            m_lookAtPlayer.transform.LookAt(m_target.transform); // Game object that always looks towards the target
+            m_lookAtPlayer.transform.LookAt(m_player.transform); // Game object that always looks towards the target
 
-            if (Vector3.Angle(m_target.transform.position - transform.position, transform.forward) < m_attackAngle && Physics.Raycast(m_lookAtPlayer.transform.position + (m_lookAtPlayer.transform.forward * 30), m_lookAtPlayer.transform.forward, out _hit, Mathf.Infinity))
+            if (Vector3.Angle(m_player.transform.position - transform.position, transform.forward) < m_attackAngle && Physics.Raycast(m_lookAtPlayer.transform.position + (m_lookAtPlayer.transform.forward * 30), m_lookAtPlayer.transform.forward, out _hit, Mathf.Infinity))
             {
-                if (_hit.transform.gameObject == m_target)
+                if (_hit.transform.gameObject.tag == "Player")
                 {
                     m_targetInSight = true;
                 }
@@ -81,8 +81,8 @@ public class EnemyShooting : MonoBehaviour
 
             if (m_targetInSight)
             {
-                m_spawnLocations[0].transform.LookAt(m_target.transform);
-                m_spawnLocations[1].transform.LookAt(m_target.transform);
+                m_spawnLocations[0].transform.LookAt(m_player.transform);
+                m_spawnLocations[1].transform.LookAt(m_player.transform);
 
 
                 if (m_rightWeaponActive)
