@@ -47,24 +47,24 @@ public class SpawnEngine : MonoBehaviour
 
         #region GenerateDefaultGuns
 
-        if (PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
-        {
-            GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedLeftWeapon);
-            _leftGun.transform.SetParent(LeftSnap.transform);
-            _leftGun.transform.localPosition = Vector3.zero;
-            _leftGun.transform.localRotation = Quaternion.identity;
-            _leftGun.transform.localScale = new Vector3(1, 1, 1);
-        }
+        //if (PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
+        //{
+        //    GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedLeftWeapon);
+        //    _leftGun.transform.SetParent(LeftSnap.transform);
+        //    _leftGun.transform.localPosition = Vector3.zero;
+        //    _leftGun.transform.localRotation = Quaternion.identity;
+        //    _leftGun.transform.localScale = new Vector3(1, 1, 1);
+        //}
 
-        if (PlayerInventoryManager.Instance.EquippedRightWeapon != null)
-        {
-            GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedRightWeapon);
-            _rightGun.transform.SetParent(RightSnap.transform);
-            _rightGun.transform.position = Vector3.zero;
-            _rightGun.transform.localPosition = Vector3.zero;
-            _rightGun.transform.localRotation = Quaternion.identity;
-            _rightGun.transform.localScale = new Vector3(1, 1, 1);
-        }
+        //if (PlayerInventoryManager.Instance.EquippedRightWeapon != null)
+        //{
+        //    GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedRightWeapon);
+        //    _rightGun.transform.SetParent(RightSnap.transform);
+        //    _rightGun.transform.position = Vector3.zero;
+        //    _rightGun.transform.localPosition = Vector3.zero;
+        //    _rightGun.transform.localRotation = Quaternion.identity;
+        //    _rightGun.transform.localScale = new Vector3(1, 1, 1);
+        //}
         #endregion
     }
 

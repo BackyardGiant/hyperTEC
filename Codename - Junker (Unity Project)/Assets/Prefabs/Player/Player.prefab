@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 2872460001895466242}
   - component: {fileID: 7552080781785832936}
   - component: {fileID: 1807098150}
+  - component: {fileID: 7629306427194235306}
   - component: {fileID: 388294911365480841}
   m_Layer: 0
   m_Name: Player
@@ -428,6 +429,22 @@ MonoBehaviour:
     type: 3}
   RightSnap: {fileID: 7900840253664833653}
   LeftSnap: {fileID: 3627947422364815315}
+--- !u!114 &7629306427194235306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2872460001895466296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b207ac7995d99043bbd07fd399af59d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftSnap: {fileID: 7326393077191352418}
+  rightSnap: {fileID: 5718154230315381651}
+  lootItemParent: {fileID: 5742531039650702400, guid: 341df5633658ae74189c875277192328,
+    type: 3}
 --- !u!114 &388294911365480841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,6 +466,16 @@ MonoBehaviour:
   m_healthMax: 100
   m_rechargeRate: 1
   m_rechargePeriod: 5
+  m_explosion: {fileID: 9084401648041963869, guid: 79596fda59e6ac3448c0da99c65fd615,
+    type: 3}
+  m_dropWeaponsScript: {fileID: 7629306427194235306}
+  m_playerToBeDestroyed:
+  - {fileID: 5115152693064020622}
+  - {fileID: 1138647564}
+  - {fileID: 1691651519}
+  - {fileID: 1011916844817270759}
+  - {fileID: 7900840253664833653}
+  - {fileID: 3627947422364815315}
 --- !u!1 &2872460002776077785
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,6 +683,12 @@ PrefabInstance:
 --- !u!4 &8117726908124250269 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 65f76285eb8a2ec4fb032f586a207e4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 3881330280882629511}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5115152693064020622 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 65f76285eb8a2ec4fb032f586a207e4d,
     type: 3}
   m_PrefabInstance: {fileID: 3881330280882629511}
   m_PrefabAsset: {fileID: 0}

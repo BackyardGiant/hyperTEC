@@ -139,7 +139,7 @@ public class HUDManager : MonoBehaviour
             m_buttonHoldTime += Time.deltaTime * m_scanningFillSpeed;
         }
 
-        if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.1f && m_displayAnimated == true && m_enablePickup == true)
+        if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.3f && m_displayAnimated == true && m_enablePickup == true)
         {
             //Make pickup item code here
             GameObject _pickupLoot = m_currentLoot;
@@ -166,9 +166,9 @@ public class HUDManager : MonoBehaviour
             m_buttonHoldTime = 0;
         }
 
-        if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.1f)
+        if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.3f)
         {
-            Scanner.fillAmount = m_buttonHoldTime - 0.1f;
+            Scanner.fillAmount = m_buttonHoldTime - 0.3f;
             DisplayLootStats(m_currentLoot);
         }
 

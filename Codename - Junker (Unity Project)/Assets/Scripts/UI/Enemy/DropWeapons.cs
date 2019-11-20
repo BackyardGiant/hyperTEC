@@ -96,9 +96,47 @@ public class DropWeapons : MonoBehaviour
         #endregion
     }
 
+    public void DropWithoutChance()
+    {
+        try
+        {
+            m_weapon1 = leftSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            m_weapon2 = rightSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+        }
+        catch
+        {
+
+        }
+
+        try
+        {
+            GameObject _lootItem = Instantiate(lootItemParent, leftSnap.position, leftSnap.rotation);
+            GameObject _temp = ModuleManager.Instance.GenerateWeapon(m_weapon1);
+            _temp.GetComponent<WeaponGenerator>().statBlock = m_weapon1;
+            _temp.transform.SetParent(_lootItem.transform);
+            _temp.transform.localPosition = m_defaultOffset;
+            _temp.transform.localRotation = Quaternion.identity;
+
+            _temp.transform.localScale = m_defaultScale;
+
+            AddExplosionForce(_lootItem, leftSnap);
+
+            _lootItem = Instantiate(lootItemParent, rightSnap.position, rightSnap.rotation);
+            _temp = ModuleManager.Instance.GenerateWeapon(m_weapon2);
+            _temp.GetComponent<WeaponGenerator>().statBlock = m_weapon2;
+            _temp.transform.SetParent(_lootItem.transform);
+            _temp.transform.localPosition = m_defaultOffset;
+            _temp.transform.localRotation = Quaternion.identity;
+            _temp.transform.localScale = m_defaultScale;
+
+            AddExplosionForce(_lootItem, rightSnap);
+        }
+        catch { }
+    }
+
     private void AddExplosionForce(GameObject _lootItem, Transform _snap)
     {
-        _lootItem.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)) * Random.Range(1, 5), ForceMode.Impulse);
+        _lootItem.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)) * Random.Range(1, 5) + (transform.forward * Random.Range(2f,3f)), ForceMode.Impulse);
         _lootItem.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)) * Random.Range(1, 5), ForceMode.Impulse);
     }
 }

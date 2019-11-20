@@ -73,7 +73,7 @@ public class MainMenuManagement : MonoBehaviour
         {
             m_mainMenuAnimator.speed = 1000;
             m_logoAnimator.speed = 1000;
-            allowInputs();
+            Invoke("allowInputs", 0.2f);
         }
 
         if (m_onMenu == true)
@@ -169,10 +169,10 @@ public class MainMenuManagement : MonoBehaviour
                             continueGame();
                             break;
                         case 1:
-                            loadGame();
+                            newGame();
                             break;
                         case 2:
-                            newGame();
+                            loadGame();
                             break;
                         case 3:
                             settings();
