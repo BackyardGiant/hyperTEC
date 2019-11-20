@@ -33,7 +33,7 @@ public class TempEnemyInstantiate : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        GameObject _tempEnemy = Instantiate(enemyPrefab, Random.insideUnitSphere * 300, spawnPoint.rotation);
+        GameObject _tempEnemy = Instantiate(enemyPrefab,spawnPoint.position + (Random.insideUnitSphere * 300), spawnPoint.rotation);
 
         Transform _leftSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("LeftSnap");
         Transform _rightSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("RightSnap");

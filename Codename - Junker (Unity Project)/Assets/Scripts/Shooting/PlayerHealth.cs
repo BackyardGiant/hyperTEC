@@ -51,11 +51,11 @@ public class PlayerHealth : MonoBehaviour
         m_timeSinceDamage += Time.deltaTime;
     }
 
-    public void TakeDamage(int _dmg)
+    public void TakeDamage(float _dmg)
     {
         if (m_playerHealth[_currentSave].Value - _dmg > 0)
         {
-            m_playerHealth[_currentSave].Value -= _dmg;
+            m_playerHealth[_currentSave].Value -= (int)_dmg;
             m_timeSinceDamage = 0;
             Debug.Log("<color=green>CURRENT HEALTH : </color>" + m_playerHealth[_currentSave].Value);
         }
@@ -66,7 +66,7 @@ public class PlayerHealth : MonoBehaviour
         }      
     }
 
-    private void ResetHealth(int _save)
+    public void ResetHealth(int _save)
     {
         m_playerHealth[_save].Value = m_healthMax;
     }

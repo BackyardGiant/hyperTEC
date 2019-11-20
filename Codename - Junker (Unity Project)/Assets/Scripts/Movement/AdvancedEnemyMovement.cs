@@ -137,7 +137,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
             m_target = m_manager.Target;
             m_attacking = m_manager.AttackingPlayer;
 
-            if (Vector3.Distance(transform.position, Vector3.zero) < m_wanderRange)
+            if (Vector3.Distance(transform.position, m_manager.enemySpawnPoint.position) < m_wanderRange)
             {
                 if (m_attacking)
                 {
@@ -155,6 +155,18 @@ public class AdvancedEnemyMovement : MonoBehaviour
                         {
                             m_steering = Evade(m_target.transform);
                         }
+                        else if(m_manager.m_behaviourState == EnemyManager.States.PassBy)
+                        {
+                            m_steering = Forward();
+                        }
+                        else if(m_manager.m_behaviourState == EnemyManager.States.Wander)
+                        {
+                            m_steering = Wander();
+                        }
+                    }
+                    else
+                    {
+                        m_steering = Wander();
                     }
                 }
                 else
@@ -178,10 +190,14 @@ public class AdvancedEnemyMovement : MonoBehaviour
                     {
                         m_steering = Evade(m_target.transform);
                     }
+                    else if (m_manager.m_behaviourState == EnemyManager.States.PassBy)
+                    {
+                        m_steering = Forward();
+                    }
                 }
                 else
                 {
-                    m_steering = Seek(Vector3.zero);
+                    m_steering = Seek(m_manager.enemySpawnPoint.position);
                 }
             }
 
@@ -300,6 +316,13 @@ public class AdvancedEnemyMovement : MonoBehaviour
         }
 
         return _wanderForce;
+    }
+
+    private Vector3 Forward()
+    {
+        Vector3 forward = (transform.forward * m_maxSpeed) - m_rb.velocity;
+
+        return forward;
     }
 
     private Vector3 collisionAvoidance()

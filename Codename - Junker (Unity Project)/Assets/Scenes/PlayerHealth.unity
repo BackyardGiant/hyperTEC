@@ -10341,27 +10341,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1608534287}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1807098150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1807098149}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82312ee7574cf6240bc900d4ed0ff3bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_playerDeath: {fileID: 11400000, guid: 77155931c2d417b4aa756ee891a75fc5, type: 2}
-  m_playerHealth:
-  - {fileID: 11400000, guid: 35ab9603c2ef8ae4ca7ce61df64e28ba, type: 2}
-  - {fileID: 11400000, guid: 8fc01d49d2c6f984ab88f28bc9cc6e14, type: 2}
-  - {fileID: 11400000, guid: 55d5140163aac5741a1c5d48110a6d42, type: 2}
-  - {fileID: 11400000, guid: f80af97534092ab449883536da0e6d44, type: 2}
-  m_healthMax: 100
-  m_rechargeRate: 1
-  m_rechargePeriod: 5
 --- !u!54 &1807098154 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 2872460001895466301, guid: 5f833fa36dfcf7c41b867d1460102cf2,

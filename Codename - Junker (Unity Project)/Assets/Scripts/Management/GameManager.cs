@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,7 +14,9 @@ public class GameManager : MonoBehaviour
     public GameEvent normalSpeed;
     public TempEnemyInstantiate spawner;
     public GameObject lootTemplate;
-
+    public Image blackOut;
+    public Animator fadeAnimator;
+    
     private int m_enemiesKilledSoFar;
 
     private Vector3 m_defaultScale = new Vector3(1, 1, 1);
@@ -50,19 +53,30 @@ public class GameManager : MonoBehaviour
 
         if (_sceneName == "MainScene" && PlayerPrefs.GetInt("LoadFromSave", 0) == 1)
         {
-            PlayerPrefs.SetInt("LoadFromSave", 0);
-            spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
-            Invoke("LoadGame", 0.6f);
+            LoadInto();
         }
         else if(_sceneName == "MainScene")
         {
-            PlayerPrefs.SetInt("LoadFromSave", 0);
-            spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
-            Invoke("LoadGame", 0.6f);
+            LoadInto();
         }
 
         Debug.Log("<color=red>CURRENT SAVE: </color>" + PlayerPrefs.GetString("CurrentSave"));
         Debug.Log("<color=red>LATEST SAVE: </color>" + PlayerPrefs.GetString("LatestSave"));
+    }
+
+    private void LoadInto()
+    {
+        PlayerPrefs.SetInt("LoadFromSave", 0);
+        spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
+        Invoke("LoadGame", 0.6f);
+        fadeAnimator.Play("Fade");
+    }
+
+    private void LoadOut()
+    {
+        SaveGame();
+        PlayerPrefs.SetInt("LoadFromSave", 1);
+        SceneManager.LoadScene("ModularShip");
     }
 
     private void Update()
@@ -77,9 +91,8 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene")
         {
-            SaveGame();
-            PlayerPrefs.SetInt("LoadFromSave", 1);
-            SceneManager.LoadScene("ModularShip");
+            fadeAnimator.Play("FadeOut");
+            Invoke("LoadOut",1.3f);
         }
         else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip")
         {
@@ -226,7 +239,7 @@ public class GameManager : MonoBehaviour
         }
         if (PlayerInventoryManager.Instance.EquippedEngine != null)
         {
-            _engineSeed = PlayerInventoryManager.Instance.EquippedRightWeapon.Seed;
+            _engineSeed = PlayerInventoryManager.Instance.EquippedEngine.Seed;
         }
 
         PlayerSavingObject playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, _rightWeaponSeed, _leftWeaponSeed, _engineSeed);
@@ -356,8 +369,9 @@ public class GameManager : MonoBehaviour
     public void LoadGame()
     {
         string _fileName = PlayerPrefs.GetString("CurrentSave", "NoSave") + ".giant";
+        GameObject _player = GameObject.FindGameObjectWithTag("Player");
 
-        if(_fileName == "NoSave")
+        if (_fileName == "NoSave")
         {
             return;
         }
@@ -368,6 +382,7 @@ public class GameManager : MonoBehaviour
         }
         catch
         {
+            _player.GetComponent<PlayerHealth>().ResetHealth(int.Parse(_fileName[4].ToString()));
             return;
         }
 
@@ -464,8 +479,6 @@ public class GameManager : MonoBehaviour
             _newLoot.transform.localScale = m_scale;
         }
 
-        GameObject _player = GameObject.FindGameObjectWithTag("Player");
-
         _player.transform.position = new Vector3(float.Parse(_savedPlayer.positionX), float.Parse(_savedPlayer.positionY), float.Parse(_savedPlayer.positionZ));
         _player.transform.rotation = new Quaternion(float.Parse(_savedPlayer.rotationX), float.Parse(_savedPlayer.rotationY), float.Parse(_savedPlayer.rotationZ), float.Parse(_savedPlayer.rotationW));
 
@@ -473,7 +486,11 @@ public class GameManager : MonoBehaviour
         {
             Transform _rightSnapPoint = _player.transform.Find("WeaponRight");
 
-            Destroy(_rightSnapPoint.GetChild(0).gameObject);
+            try
+            {
+                Destroy(_rightSnapPoint.GetChild(0).gameObject);
+            }
+            catch { }
 
             WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.rightWeaponSeed);
             GameObject _tempRightGun = ModuleManager.Instance.GenerateWeapon(_temp1);
@@ -487,7 +504,11 @@ public class GameManager : MonoBehaviour
         {
             Transform _leftSnapPoint = _player.transform.Find("WeaponLeft");
 
-            Destroy(_leftSnapPoint.GetChild(0).gameObject);
+            try
+            {
+                Destroy(_leftSnapPoint.GetChild(0).gameObject);
+            }
+            catch { }
 
             WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.leftWeaponSeed);
             GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1);
@@ -548,39 +569,59 @@ public class GameManager : MonoBehaviour
         {
             Transform _RightSnap = _player.transform.Find("WeaponRight");
 
-            Destroy(_RightSnap.GetChild(0).gameObject);
+            try
+            {
+                Destroy(_RightSnap.GetChild(0).gameObject);
 
-            GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedRightWeapon);
-            _rightGun.transform.SetParent(_RightSnap.transform);
-            _rightGun.transform.position = Vector3.zero;
-            _rightGun.transform.localPosition = Vector3.zero;
-            _rightGun.transform.localRotation = Quaternion.identity;
-            _rightGun.transform.localScale = new Vector3(1, 1, 1);
+                GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedRightWeapon);
+                _rightGun.transform.SetParent(_RightSnap.transform);
+                _rightGun.transform.position = Vector3.zero;
+                _rightGun.transform.localPosition = Vector3.zero;
+                _rightGun.transform.localRotation = Quaternion.identity;
+                _rightGun.transform.localScale = new Vector3(1, 1, 1);
+
+            }
+            catch { }
         }
         else
         {
-            WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.rightWeaponSeed);
+            try
+            {
+                WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.rightWeaponSeed);
 
-            PlayerInventoryManager.Instance.EquippedRightWeapon = _temp1;
+                PlayerInventoryManager.Instance.EquippedRightWeapon = _temp1;
+            }
+            catch { }
         }
         if (_savedPlayer.leftWeaponSeed == "")
         {
             Transform _LeftSnap = _player.transform.Find("WeaponLeft");
 
-            Destroy(_LeftSnap.GetChild(0).gameObject);
+            try
+            { 
+                Destroy(_LeftSnap.GetChild(0).gameObject);
 
-            GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedLeftWeapon);
-            _leftGun.transform.SetParent(_LeftSnap.transform);
-            _leftGun.transform.localPosition = Vector3.zero;
-            _leftGun.transform.localRotation = Quaternion.identity;
-            _leftGun.transform.localScale = new Vector3(1, 1, 1);
+                GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedLeftWeapon);
+                _leftGun.transform.SetParent(_LeftSnap.transform);
+                _leftGun.transform.localPosition = Vector3.zero;
+                _leftGun.transform.localRotation = Quaternion.identity;
+                _leftGun.transform.localScale = new Vector3(1, 1, 1);
+            }
+            catch { }
         }
         else
         {
-            WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.leftWeaponSeed);
+            try
+            {
+                WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.leftWeaponSeed);
 
-            PlayerInventoryManager.Instance.EquippedLeftWeapon = _temp1;
+                PlayerInventoryManager.Instance.EquippedLeftWeapon = _temp1;
+            }
+            catch { }
         }
+
+        PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[int.Parse(_inventory.equippedEngineIndex)];
+        PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
 
         _player.GetComponent<PlayerShooting>().buildWeapons();
 

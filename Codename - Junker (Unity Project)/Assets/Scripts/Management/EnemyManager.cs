@@ -11,6 +11,8 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private GameObject m_player;
 
+    public Transform enemySpawnPoint;
+
     [SerializeField]
     public States m_behaviourState;
 
@@ -34,13 +36,14 @@ public class EnemyManager : MonoBehaviour
     public bool AttackingPlayer { get => m_attackingPlayer; set => m_attackingPlayer = value; }
     
     #region Behaviour States
-    public enum States { Wander, Pursue, Flee, Evade }
+    public enum States { Wander, Pursue, Flee, Evade, PassBy }
     #endregion
 
 
     private void Awake()
     {
         m_player = GameObject.FindGameObjectWithTag("Player");
+        enemySpawnPoint = GameObject.Find("EnemySpawnPoint").transform;
     }
 
     // Start is called before the first frame update
@@ -84,7 +87,7 @@ public class EnemyManager : MonoBehaviour
             }
             else
             {
-                m_behaviourState = States.Flee;
+                m_behaviourState = States.PassBy;
             }
         }
         else

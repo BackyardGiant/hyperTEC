@@ -220,7 +220,7 @@ MonoBehaviour:
   m_behaviourState: 0
   m_attackingPlayer: 0
   m_displacementRadius: 30
-  m_detectionRange: 500
+  m_detectionRange: 300
   m_minEngageHealth: 40
   m_stats: {fileID: 5610633641536775823}
 --- !u!114 &679149894
@@ -241,8 +241,8 @@ MonoBehaviour:
   m_bulletSpeed: 1000
   m_bulletDamage: 10
   m_attackAngle: 35
-  m_rightWeaponCooldown: 0.2
-  m_leftWeaponCooldown: 0.2
+  m_rightWeaponCooldown: 0.6
+  m_leftWeaponCooldown: 0.6
   m_spawnLocations:
   - {fileID: 6899699368863158309}
   - {fileID: 8926176723663043216}
@@ -418,6 +418,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5610633641536775856}
     m_Modifications:
+    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+        type: 3}
+      propertyPath: m_Name
+      value: ConstructionShip#1
+      objectReference: {fileID: 0}
     - target: {fileID: 5731347806934350786, guid: 1fc09b7b7908b39428b358b3cfaf6225,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -472,11 +477,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
-        type: 3}
-      propertyPath: m_Name
-      value: ConstructionShip#1
       objectReference: {fileID: 0}
     - target: {fileID: 3662219012777312756, guid: 1fc09b7b7908b39428b358b3cfaf6225,
         type: 3}

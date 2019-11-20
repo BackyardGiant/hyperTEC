@@ -49,7 +49,7 @@ public class BulletBehaviour : MonoBehaviour
             }
             else if(m_target == "Player")
             {
-                //Do stuff to player here
+                other.transform.GetComponent<PlayerHealth>().TakeDamage(m_damage);
             }
         }
         if (other.transform.tag != "Bullet" && other.gameObject != m_spawnedBy)
