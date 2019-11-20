@@ -47,6 +47,7 @@ public class PlayerHealth : MonoBehaviour
                 _currentSave = 4;
                 break;
         }
+        ResetHealth();
     }
 
     private void Update()

@@ -233,7 +233,7 @@ public class HUDManager : MonoBehaviour
             AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentLoot.gameObject, true, false);
             ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
             Destroy(m_currentLoot);
-            IncrementPlayerPref("WeaponsDestroyed");
+            IncrementPlayerPref("LootDestroyed");
             ClearLootDisplay();
 
         }
@@ -243,6 +243,11 @@ public class HUDManager : MonoBehaviour
             Destroyer.fillAmount = 0;
             Scanner.fillAmount = 0;
             m_buttonHoldTime = 0;
+        }
+
+        if(m_currentLoot == null && m_displayAnimated == true)
+        {
+            ClearLootDisplay();
         }
         #endregion
         DisplayActiveQuest();

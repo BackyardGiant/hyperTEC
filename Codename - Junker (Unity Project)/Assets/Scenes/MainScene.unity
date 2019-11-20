@@ -5826,7 +5826,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.000014201, y: -74.75}
+  m_AnchoredPosition: {x: 0.000014201, y: -75}
   m_SizeDelta: {x: 743.8, y: 124.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &877939423
@@ -9535,6 +9535,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0.8000488
       objectReference: {fileID: 0}
+    - target: {fileID: 2025088561, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 5e15476fb9db2af468eaa0f615f65c8a,
+        type: 2}
+    - target: {fileID: 2025088561, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3790811676352246218, guid: 5e15476fb9db2af468eaa0f615f65c8a,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
 --- !u!1 &1713827732
@@ -11448,7 +11458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c9079a7b2ac7584fb10bc3503ccd5ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_inEditor: 1
+  m_inEditor: 0
   m_lootTemplate: {fileID: 5742531039650702400, guid: 8afd4e1468f74a94db1fe40ff73e444a,
     type: 3}
   m_engineSpawnPoints:
