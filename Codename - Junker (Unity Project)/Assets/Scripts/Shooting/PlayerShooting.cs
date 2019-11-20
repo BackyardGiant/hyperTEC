@@ -106,59 +106,63 @@ public class PlayerShooting : MonoBehaviour
     {
         if (GameManager.Instance.GameSpeed != 0)
         {
-            RaycastHit _hit;
+            if (m_spawnLocations[0] != null && m_spawnLocations[1] != null)
+            {
+                RaycastHit _hit;
 
-            if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 100), m_aimingCamera.transform.TransformDirection(Vector3.forward), out _hit, m_range))
-            {
-                Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 100), m_aimingCamera.transform.TransformDirection(Vector3.forward) * _hit.distance, Color.yellow);
-                m_target.position = _hit.transform.position;
-            }
-            else
-            {
-                Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range, Color.white);
-                m_target.position = (m_aimingCamera.transform.position + (m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range));
-            }
-
-            if (HUDManager.Instance.ClosetEnemy != null)
-            {
-                if (Vector2.Distance(HUDManager.Instance.ClosestEnemyScreenPos, new Vector2(Screen.width / 2, Screen.height / 2)) < m_autoAimDistance)
+                if (Physics.Raycast(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 100), m_aimingCamera.transform.TransformDirection(Vector3.forward), out _hit, m_range))
                 {
-                    m_aimingCrosshair.HasTarget = true;
-                    m_targetPosition = HUDManager.Instance.ClosetEnemy.transform.position + (HUDManager.Instance.ClosetEnemy.GetComponent<Rigidbody>().velocity * ((HUDManager.Instance.ClosetEnemy.GetComponent<Rigidbody>().velocity.magnitude / m_bulletSpeed) + Vector3.Distance(HUDManager.Instance.ClosetEnemy.transform.position, transform.position) * 0.0008f));
-                    m_aimingCrosshair.TargetPosition = new Vector2(HUDManager.Instance.ClosestEnemyScreenPos.x, HUDManager.Instance.ClosestEnemyScreenPos.y);
-                    m_target.position = m_targetPosition;
+                    Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 100), m_aimingCamera.transform.TransformDirection(Vector3.forward) * _hit.distance, Color.yellow);
+                    m_target.position = _hit.transform.position;
+                }
+                else
+                {
+                    Debug.DrawRay(m_aimingCamera.transform.position + (m_aimingCamera.transform.forward * 30), m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range, Color.white);
+                    m_target.position = (m_aimingCamera.transform.position + (m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range));
+                }
+
+                if (HUDManager.Instance.ClosetEnemy != null)
+                {
+                    if (Vector2.Distance(HUDManager.Instance.ClosestEnemyScreenPos, new Vector2(Screen.width / 2, Screen.height / 2)) < m_autoAimDistance)
+                    {
+                        m_aimingCrosshair.HasTarget = true;
+                        m_targetPosition = HUDManager.Instance.ClosetEnemy.transform.position + (HUDManager.Instance.ClosetEnemy.GetComponent<Rigidbody>().velocity * ((HUDManager.Instance.ClosetEnemy.GetComponent<Rigidbody>().velocity.magnitude / m_bulletSpeed) + Vector3.Distance(HUDManager.Instance.ClosetEnemy.transform.position, transform.position) * 0.0008f));
+                        m_aimingCrosshair.TargetPosition = new Vector2(HUDManager.Instance.ClosestEnemyScreenPos.x, HUDManager.Instance.ClosestEnemyScreenPos.y);
+                        m_target.position = m_targetPosition;
+                    }
+                    else
+                    {
+                        m_aimingCrosshair.HasTarget = false;
+                    }
                 }
                 else
                 {
                     m_aimingCrosshair.HasTarget = false;
                 }
-            }
-            else
-            {
-                m_aimingCrosshair.HasTarget = false;
-            }
 
-            Vector3 offset = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_target.position, transform.position) / m_range));
+                Vector3 offset1 = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_target.position, transform.position) / m_range));
+                Vector3 offset2 = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_target.position, transform.position) / m_range));
 
-            m_spawnLocations[0].transform.LookAt(m_target.position + (offset * (1 - m_rightBulletAccuracy)));
-            m_spawnLocations[1].transform.LookAt(m_target.position + (offset * (1 - m_leftBulletAccuracy)));
+                m_spawnLocations[0].transform.LookAt(m_target.position + (offset1 * (1 - m_rightBulletAccuracy)));
+                m_spawnLocations[1].transform.LookAt(m_target.position + (offset2 * (1 - m_leftBulletAccuracy)));
 
-            float _random = Random.Range(1f, 2f);
+                float _random = Random.Range(1f, 2f);
 
-            if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedRightWeapon != null)
-            {
-                m_rightWeaponSound.pitch = _random;
-                m_rightWeaponSound.Play();
-                m_rightWeaponActive = false;
-                StartCoroutine(rightCooldown());
-            }
+                if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedRightWeapon != null)
+                {
+                    m_rightWeaponSound.pitch = _random;
+                    m_rightWeaponSound.Play();
+                    m_rightWeaponActive = false;
+                    StartCoroutine(rightCooldown());
+                }
 
-            if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
-            {
-                m_leftWeaponSound.pitch = _random;
-                m_leftWeaponSound.Play();
-                m_leftWeaponActive = false;
-                StartCoroutine(leftCooldown());
+                if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
+                {
+                    m_leftWeaponSound.pitch = _random;
+                    m_leftWeaponSound.Play();
+                    m_leftWeaponActive = false;
+                    StartCoroutine(leftCooldown());
+                }
             }
         }
     }

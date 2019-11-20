@@ -104,6 +104,50 @@ public class ThrustEffectController : MonoBehaviour
             m_maximumEnginePower = player.MaxAcceleration * 100f;
             m_currentAcceleration = 0;
         }
+        else
+        {
+            m_engineOff = true;
+            var _emission = m_engineParticles[0].emission;
+            for (int i = 0; i < m_engineParticles.Length; i++)
+            {
+                //Set emission to 0
+                _emission = m_engineParticles[i].emission;
+                _emission.rateOverTime = 0;
+            }
+
+
+
+            var _highSpeedEmission = m_highSpeedEngineParticles[0].emission;
+            for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
+            {
+                //Set emission to 0
+                _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
+                _highSpeedEmission.rateOverTime = 0;
+
+            }
+
+
+            for (int i = 0; i < m_engineGlow.Length; i++)
+            {
+                m_engineGlow[i].intensity = Mathf.Lerp(m_engineGlow[i].intensity, 0, m_lerpSpeed * 3);
+            }
+
+            m_planeMaterial = new Material[m_emissionPlane.Length];
+
+            //Set Plane Material and make it almost transparent.
+            for (int i = 0; i < m_emissionPlane.Length; i++)
+            {
+                m_planeMaterial[i] = m_emissionPlane[i].GetComponent<MeshRenderer>().material;
+                m_planeMaterial[i].color = new Color(m_planeMaterial[i].color.r, m_planeMaterial[i].color.g, m_planeMaterial[i].color.b, 2);
+            }
+
+            for (int i = 0; i < m_emissionPlane.Length; i++)
+            {
+                Color _emissionColour = m_planeMaterial[i].color;
+                Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, 0);
+                m_planeMaterial[i].color = _afterColor;
+            }
+        }
 
     }
 
@@ -260,6 +304,7 @@ public class ThrustEffectController : MonoBehaviour
 
             #endregion
         }
+
     }
 
     public void EngineOff()

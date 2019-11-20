@@ -19,11 +19,12 @@ MonoBehaviour:
   currentFaction: 1
   thumbnail: {fileID: 21300000, guid: 4ab61231d45a5224d9cec2b95673e602, type: 3}
   value: 100
-  damage: 100
-  reloadTime: 100
-  fireRate: 100
-  accuracy: 50
+  damage: 10
+  reloadTime: 20
+  fireRate: 90
+  accuracy: 20
   barrelId: 0
   magazineId: 0
   batteryId: 0
   targetId: 0
+  seed: 1

@@ -22,6 +22,14 @@ public class PlayerHealth : MonoBehaviour
 
     private bool _isRecharging = false;
 
+    [SerializeField]
+    private GameObject m_explosion;
+    [SerializeField]
+    private DropWeapons m_dropWeaponsScript;
+
+    [SerializeField]
+    GameObject[] m_playerToBeDestroyed;
+
     private void Start()
     {
         switch(PlayerPrefs.GetString("CurrentSave"))
@@ -62,6 +70,22 @@ public class PlayerHealth : MonoBehaviour
         else
         {
             m_playerDeath.Raise();
+
+            GetComponent<Collider>().enabled = false;
+            GetComponent<PlayerMovement>().enabled = false;
+
+            m_dropWeaponsScript.DropWithoutChance();
+            Instantiate(m_explosion, transform.position, transform.rotation);
+            int _random = Random.Range(1, 4);
+            AudioManager.Instance.PlayWorld("ExplosionLong" + _random, this.gameObject, true, true);
+
+            foreach(GameObject _objectToDestroy in m_playerToBeDestroyed)
+            {
+                Destroy(_objectToDestroy);
+            }
+
+            GameManager.Instance.ReturnToMenuDelayed(2f);
+
             Debug.Log("<color=green>DEAD</color>");
         }      
     }

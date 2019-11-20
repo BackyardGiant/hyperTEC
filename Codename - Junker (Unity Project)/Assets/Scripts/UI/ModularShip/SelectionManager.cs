@@ -12,7 +12,7 @@ public class SelectionManager : MonoBehaviour
 
     private int m_currentlySelectedIndex = 0;
     private bool m_readyForInput = true;
-    private float m_equippedEngineIndex, m_equippedLeftIndex, m_equippedRightIndex;
+    private int m_equippedEngineIndex, m_equippedLeftIndex, m_equippedRightIndex;
     private int[] m_takenIndexes = new int[] { -1, -1, -1 };
     private bool m_leftSideSelected = true;
 
@@ -187,22 +187,24 @@ public class SelectionManager : MonoBehaviour
                     if (m_equippedLeftIndex != m_currentlySelectedIndex && m_leftSideSelected)
                     {
                         m_equippedLeftIndex = m_currentlySelectedIndex;
-                        m_takenIndexes[1] = (int)m_equippedLeftIndex;
+                        m_takenIndexes[1] = m_equippedLeftIndex;
                         Debug.Log("Equipped left gun " + m_equippedLeftIndex);
+                        int _engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
 
                         // Set equipped in player inventory
-                        PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[(int)m_equippedLeftIndex - 1];
+                        PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedLeftIndex - _engineLength];
                         PlayerInventoryManager.Instance.EquippedLeftIndex = (int)m_equippedLeftIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
                     }
 
                     if (m_equippedRightIndex != m_currentlySelectedIndex && !m_leftSideSelected)
                     {
                         m_equippedRightIndex = m_currentlySelectedIndex;
-                        m_takenIndexes[2] = (int)m_equippedRightIndex;
+                        m_takenIndexes[2] = m_equippedRightIndex;
                         Debug.Log("Equipped right gun " + m_equippedRightIndex);
+                        int _engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
 
                         // Set equipped in player inventory
-                        PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[(int)m_equippedRightIndex - 1];
+                        PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedRightIndex - _engineLength];
                         PlayerInventoryManager.Instance.EquippedRightIndex = (int)m_equippedRightIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
                     }
                 }

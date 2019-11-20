@@ -59,6 +59,10 @@ public class GameManager : MonoBehaviour
         {
             LoadInto();
         }
+        else if(_sceneName == "ModularShip")
+        {
+            fadeAnimator.Play("Fade");
+        }
 
         Debug.Log("<color=red>CURRENT SAVE: </color>" + PlayerPrefs.GetString("CurrentSave"));
         Debug.Log("<color=red>LATEST SAVE: </color>" + PlayerPrefs.GetString("LatestSave"));
@@ -79,6 +83,12 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("ModularShip");
     }
 
+    private void InventoryLoadOut()
+    {
+        SaveWeapons();
+        SceneManager.LoadScene("MainScene");
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F1))
@@ -92,12 +102,12 @@ public class GameManager : MonoBehaviour
         if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene")
         {
             fadeAnimator.Play("FadeOut");
-            Invoke("LoadOut",1.3f);
+            Invoke("LoadOut",0.5f);
         }
         else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip")
         {
-            SaveWeapons();
-            SceneManager.LoadScene("MainScene");
+            fadeAnimator.Play("FadeOut");
+            Invoke("InventoryLoadOut", 0.5f);
         }
 
         if (Input.GetKeyDown(KeyCode.F2))
@@ -172,7 +182,23 @@ public class GameManager : MonoBehaviour
             int _numberOfEnemies = int.Parse(_lines[1]);
             int _numberOfItems = int.Parse(_lines[2 + _numberOfEnemies]);
 
-            PlayerSavingObject playerSave = new PlayerSavingObject(new Vector3(float.Parse(_savedPlayer.positionX), float.Parse(_savedPlayer.positionY), float.Parse(_savedPlayer.positionZ)), new Quaternion(float.Parse(_savedPlayer.rotationX), float.Parse(_savedPlayer.rotationY), float.Parse(_savedPlayer.rotationZ), float.Parse(_savedPlayer.rotationW)), PlayerInventoryManager.Instance.EquippedRightWeapon.Seed, PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed, PlayerInventoryManager.Instance.EquippedEngine.Seed);
+            string _leftSeed = "";
+            string _rightSeed = "";
+            string _engineSeed = "";
+
+            if(PlayerInventoryManager.Instance.EquippedRightWeapon != null)
+            {
+                _rightSeed = PlayerInventoryManager.Instance.EquippedRightWeapon.Seed;
+            }
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
+            {
+                _leftSeed = PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed;
+            }
+            if (PlayerInventoryManager.Instance.EquippedEngine != null)
+            {
+                _engineSeed = PlayerInventoryManager.Instance.EquippedEngine.Seed;
+            }
+            PlayerSavingObject playerSave = new PlayerSavingObject(new Vector3(float.Parse(_savedPlayer.positionX), float.Parse(_savedPlayer.positionY), float.Parse(_savedPlayer.positionZ)), new Quaternion(float.Parse(_savedPlayer.rotationX), float.Parse(_savedPlayer.rotationY), float.Parse(_savedPlayer.rotationZ), float.Parse(_savedPlayer.rotationW)), _rightSeed, _leftSeed, _engineSeed);
 
             List<string> _weaponSeeds = new List<string>();
             List<string> _engineSeeds = new List<string>();
@@ -403,6 +429,28 @@ public class GameManager : MonoBehaviour
         catch
         {
             _player.GetComponent<PlayerHealth>().ResetHealth(int.Parse(_fileName[4].ToString()));
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
+            {
+                Transform _leftSnapPoint = _player.transform.Find("WeaponLeft");
+
+                GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedLeftWeapon);
+                _leftGun.transform.SetParent(_leftSnapPoint.transform);
+                _leftGun.transform.localPosition = Vector3.zero;
+                _leftGun.transform.localRotation = Quaternion.identity;
+                _leftGun.transform.localScale = new Vector3(1, 1, 1);
+            }
+
+            if (PlayerInventoryManager.Instance.EquippedRightWeapon != null)
+            {
+                Transform _rightSnapPoint = _player.transform.Find("WeaponRight");
+
+                GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedRightWeapon);
+                _rightGun.transform.SetParent(_rightSnapPoint.transform);
+                _rightGun.transform.position = Vector3.zero;
+                _rightGun.transform.localPosition = Vector3.zero;
+                _rightGun.transform.localRotation = Quaternion.identity;
+                _rightGun.transform.localScale = new Vector3(1, 1, 1);
+            }
             return;
         }
 
@@ -502,7 +550,7 @@ public class GameManager : MonoBehaviour
         _player.transform.position = new Vector3(float.Parse(_savedPlayer.positionX), float.Parse(_savedPlayer.positionY), float.Parse(_savedPlayer.positionZ));
         _player.transform.rotation = new Quaternion(float.Parse(_savedPlayer.rotationX), float.Parse(_savedPlayer.rotationY), float.Parse(_savedPlayer.rotationZ), float.Parse(_savedPlayer.rotationW));
 
-        if (_savedPlayer.rightWeaponSeed != "" && _savedPlayer.rightWeaponSeed != "-1")
+        if (_savedPlayer.rightWeaponSeed != "" && _savedPlayer.rightWeaponSeed != "-1" && _savedPlayer.rightWeaponSeed != "1")
         {
             Transform _rightSnapPoint = _player.transform.Find("WeaponRight");
 
@@ -520,7 +568,7 @@ public class GameManager : MonoBehaviour
             _tempRightGun.transform.localRotation = Quaternion.identity;
             _tempRightGun.transform.localScale = m_scale;
         }
-        if (_savedPlayer.leftWeaponSeed != "" && _savedPlayer.leftWeaponSeed != "-1")
+        if (_savedPlayer.leftWeaponSeed != "" && _savedPlayer.leftWeaponSeed != "-1" && _savedPlayer.leftWeaponSeed != "1")
         {
             Transform _leftSnapPoint = _player.transform.Find("WeaponLeft");
 
@@ -566,10 +614,13 @@ public class GameManager : MonoBehaviour
         
         foreach(string _weapon in _inventory.availableWeapons)
         {
-            if (_weapon.Length > 0)
+            if (_weapon != "1")
             {
-                WeaponData _tempWeapon = ModuleManager.Instance.CreateStatBlock(_weapon);
-                PlayerInventoryManager.Instance.AvailableWeapons.Add(_tempWeapon);
+                if (_weapon.Length > 0)
+                {
+                    WeaponData _tempWeapon = ModuleManager.Instance.CreateStatBlock(_weapon);
+                    PlayerInventoryManager.Instance.AvailableWeapons.Add(_tempWeapon);
+                }
             }
         }
         foreach(string _engine in _inventory.availableEngines)
@@ -585,23 +636,25 @@ public class GameManager : MonoBehaviour
         PlayerInventoryManager.Instance.EquippedRightIndex = int.Parse(_inventory.equippedRightIndex);
         PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
 
-        if (_savedPlayer.rightWeaponSeed == "")
+        PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedLeftIndex];
+        PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedRightIndex];
+        PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[PlayerInventoryManager.Instance.EquippedEngineIndex];
+
+        if (_savedPlayer.rightWeaponSeed == "1")
         {
             Transform _RightSnap = _player.transform.Find("WeaponRight");
 
-            try
-            {
+            if(_RightSnap.childCount > 1)
+            { 
                 Destroy(_RightSnap.GetChild(0).gameObject);
-
-                GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedRightWeapon);
-                _rightGun.transform.SetParent(_RightSnap.transform);
-                _rightGun.transform.position = Vector3.zero;
-                _rightGun.transform.localPosition = Vector3.zero;
-                _rightGun.transform.localRotation = Quaternion.identity;
-                _rightGun.transform.localScale = new Vector3(1, 1, 1);
-
             }
-            catch { }
+
+            GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedRightWeapon);
+            _rightGun.transform.SetParent(_RightSnap.transform);
+            _rightGun.transform.position = Vector3.zero;
+            _rightGun.transform.localPosition = Vector3.zero;
+            _rightGun.transform.localRotation = Quaternion.identity;
+            _rightGun.transform.localScale = new Vector3(1, 1, 1);
         }
         else
         {
@@ -613,21 +666,21 @@ public class GameManager : MonoBehaviour
             }
             catch { }
         }
-        if (_savedPlayer.leftWeaponSeed == "")
+        if (_savedPlayer.leftWeaponSeed == "1")
         {
             Transform _LeftSnap = _player.transform.Find("WeaponLeft");
 
-            try
-            { 
-                Destroy(_LeftSnap.GetChild(0).gameObject);
 
-                GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedLeftWeapon);
-                _leftGun.transform.SetParent(_LeftSnap.transform);
-                _leftGun.transform.localPosition = Vector3.zero;
-                _leftGun.transform.localRotation = Quaternion.identity;
-                _leftGun.transform.localScale = new Vector3(1, 1, 1);
+            if (_LeftSnap.childCount > 1)
+            {
+                Destroy(_LeftSnap.GetChild(0).gameObject);
             }
-            catch { }
+
+            GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedLeftWeapon);
+            _leftGun.transform.SetParent(_LeftSnap.transform);
+            _leftGun.transform.localPosition = Vector3.zero;
+            _leftGun.transform.localRotation = Quaternion.identity;
+            _leftGun.transform.localScale = new Vector3(1, 1, 1);
         }
         else
         {
@@ -687,5 +740,15 @@ public class GameManager : MonoBehaviour
         _player.GetComponent<PlayerShooting>().buildWeapons();
 
         HUDManager.Instance.ClearAllDisplays();
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ReturnToMenuDelayed(float _delay)
+    {
+        Invoke("ReturnToMenu", _delay);
     }
 }
