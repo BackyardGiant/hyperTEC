@@ -116,6 +116,11 @@ public class QuestManager : MonoBehaviour
     }
     #endregion
 
+    public void ClearQuests()
+    {
+        m_currentQuests = new List<Quest>();
+        m_trackingQuestIndex = 0;
+    }
 
     public void CompleteQuest(Quest _completedQuest)
     {

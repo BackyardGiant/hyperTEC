@@ -213,8 +213,8 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   longWeaponDelays:
-  - 0.1
-  - 0.1
-  - 0.1
+  - 0.45
+  - 0.45
+  - 0.2
   - 0.1
   - 0.1

@@ -325,6 +325,17 @@ public class GameManager : MonoBehaviour
 
         string _inventorySave = JsonUtility.ToJson(_inventory);
 
+        string _amountOfQuests = QuestManager.Instance.CurrentQuests.Count.ToString();
+        string _questIndex = QuestManager.Instance.TrackingQuestIndex.ToString();
+
+        List<QuestSavingObject> _questSavingObjects = new List<QuestSavingObject>();
+
+        foreach (Quest _quest in QuestManager.Instance.CurrentQuests)
+        {
+            QuestSavingObject _savedQuest = new QuestSavingObject(_quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.PercentageComplete.ToString(), _quest.Size.ToString(), _quest.CurrentAmountCompleted.ToString());
+            _questSavingObjects.Add(_savedQuest);
+        }
+
         //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
 
         string _fileName = PlayerPrefs.GetString("CurrentSave") + ".giant";
@@ -356,6 +367,15 @@ public class GameManager : MonoBehaviour
         }
 
         File.AppendAllText(_fileName, _inventorySave + System.Environment.NewLine);
+
+        File.AppendAllText(_fileName, _amountOfQuests + System.Environment.NewLine);
+        File.AppendAllText(_fileName, _questIndex + System.Environment.NewLine);
+
+        foreach (QuestSavingObject _quest in _questSavingObjects)
+        {
+            string _questSaveLine = JsonUtility.ToJson(_quest);
+            File.AppendAllText(_fileName, _questSaveLine + System.Environment.NewLine);
+        }
 
         PlayerPrefs.SetString("LastSave" + _fileName[4], System.DateTime.Now.ToString());
 
@@ -620,8 +640,49 @@ public class GameManager : MonoBehaviour
             catch { }
         }
 
-        PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[int.Parse(_inventory.equippedEngineIndex)];
-        PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
+        try
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[int.Parse(_inventory.equippedEngineIndex)];
+            PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
+        }
+        catch { }
+
+        //_loadLines[3 + _numberOfEnemies + _numberOfItems]
+        int _numberOfQuests = int.Parse(_loadLines[4 + _numberOfEnemies + _numberOfItems]);
+        int _questIndex = int.Parse(_loadLines[5 + _numberOfEnemies + _numberOfItems]);
+
+        QuestManager.Instance.ClearQuests();
+
+        QuestManager.Instance.TrackingQuestIndex = _questIndex;
+
+        for (int i = 0; i < _numberOfQuests; i++)
+        {
+            QuestSavingObject _quest = JsonUtility.FromJson<QuestSavingObject>(_loadLines[6 + _numberOfEnemies + _numberOfItems]);
+
+            switch ((QuestType)int.Parse(_quest.m_questType))
+            {
+                case QuestType.kill:
+                    QuestManager.Instance.CreateKillQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.control:
+                    QuestManager.Instance.CreateControlQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.collect:
+                    //QuestManager.Instance.CreateCollectQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.recon:
+                    QuestManager.Instance.CreateReconQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.targets:
+                    QuestManager.Instance.CreateTargetQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+            }
+        }
 
         _player.GetComponent<PlayerShooting>().buildWeapons();
 

@@ -404,7 +404,7 @@ MonoBehaviour:
   m_bulletLifeTime: 2
   m_bulletSpeed: 2000
   m_autoAimDistance: 3
-  m_universalBulletSpread: 0
+  m_universalBulletSpread: 20
 --- !u!114 &1807098150
 MonoBehaviour:
   m_ObjectHideFlags: 0

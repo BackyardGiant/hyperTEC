@@ -9412,6 +9412,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 726958074, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4991470086643399864, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9530,10 +9534,6 @@ PrefabInstance:
     - target: {fileID: 726958073, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0.8000488
-      objectReference: {fileID: 0}
-    - target: {fileID: 726958074, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
-      propertyPath: m_Color.a
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
