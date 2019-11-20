@@ -264,82 +264,88 @@ public class ThrustEffectController : MonoBehaviour
 
     public void EngineOff()
     {
-        m_engineOff = true;
-        var _emission = m_engineParticles[0].emission;
-        for (int i = 0; i < m_engineParticles.Length; i++)
+        if (player != null)
         {
-            //Set emission to 0
-            _emission = m_engineParticles[i].emission;
-            _emission.rateOverTime = 0;
-        }
+            m_engineOff = true;
+            var _emission = m_engineParticles[0].emission;
+            for (int i = 0; i < m_engineParticles.Length; i++)
+            {
+                //Set emission to 0
+                _emission = m_engineParticles[i].emission;
+                _emission.rateOverTime = 0;
+            }
 
 
 
-        var _highSpeedEmission = m_highSpeedEngineParticles[0].emission;
-        for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
-        {
-            //Set emission to 0
-            _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
-            _highSpeedEmission.rateOverTime = 0;
+            var _highSpeedEmission = m_highSpeedEngineParticles[0].emission;
+            for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
+            {
+                //Set emission to 0
+                _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
+                _highSpeedEmission.rateOverTime = 0;
 
-        }
+            }
 
 
-        for (int i = 0; i< m_engineGlow.Length; i++)
-        {
-            m_engineGlow[i].intensity = Mathf.Lerp(m_engineGlow[i].intensity, 0, m_lerpSpeed * 3);
+            for (int i = 0; i < m_engineGlow.Length; i++)
+            {
+                m_engineGlow[i].intensity = Mathf.Lerp(m_engineGlow[i].intensity, 0, m_lerpSpeed * 3);
+            }
         }
     }
 
     public void BoostOn()
     {
-        int _boostedCount = PlayerPrefs.GetInt("BoostedCount");
-        PlayerPrefs.SetInt("BoostedCount", _boostedCount + 1);
-        m_currentlyBoosting = true;
-        AudioManager.Instance.Play("EngineBoost");
-
-        for (int i = 0; i < m_engineGlow.Length; i++)
+        if (player != null)
         {
-            m_engineGlow[i].intensity = Mathf.Lerp(m_engineGlow[i].intensity, 50000, 0.1f);
-        }
+            int _boostedCount = PlayerPrefs.GetInt("BoostedCount", 0);
+            PlayerPrefs.SetInt("BoostedCount", _boostedCount + 1);
+            m_currentlyBoosting = true;
+            AudioManager.Instance.Play("EngineBoost");
+
+            for (int i = 0; i < m_engineGlow.Length; i++)
+            {
+                m_engineGlow[i].intensity = Mathf.Lerp(m_engineGlow[i].intensity, 50000, 0.1f);
+            }
 
 
-        //Boost normal Particles
-        var _emission = m_engineParticles[0].emission;
-        var _emissionMain = m_engineParticles[0].main;
-        for(int i = 0;i <m_engineParticles.Length; i++)
-        {
-            _emission = m_engineParticles[i].emission;
-            _emissionMain = m_engineParticles[i].main;
-            _emission.rateOverTime = 1000;
-            _emissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
-            _emissionMain.simulationSpeed = 2.5f;
-        }
+            //Boost normal Particles
+            var _emission = m_engineParticles[0].emission;
+            var _emissionMain = m_engineParticles[0].main;
+            for (int i = 0; i < m_engineParticles.Length; i++)
+            {
+                _emission = m_engineParticles[i].emission;
+                _emissionMain = m_engineParticles[i].main;
+                _emission.rateOverTime = 1000;
+                _emissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
+                _emissionMain.simulationSpeed = 2.5f;
+            }
 
-        //Boost High speed 
-        var _highSpeedEmission = m_highSpeedEngineParticles[0].emission;
-        var _highSpeedEmissionMain = m_highSpeedEngineParticles[0].main;
-        for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
-        {
-            _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
-            _highSpeedEmissionMain = m_highSpeedEngineParticles[i].main;
-            _highSpeedEmission.rateOverTime = 800;
-            _highSpeedEmissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
-            _highSpeedEmissionMain.simulationSpeed = 2.5f;
-        }
+            //Boost High speed 
+            var _highSpeedEmission = m_highSpeedEngineParticles[0].emission;
+            var _highSpeedEmissionMain = m_highSpeedEngineParticles[0].main;
+            for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
+            {
+                _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
+                _highSpeedEmissionMain = m_highSpeedEngineParticles[i].main;
+                _highSpeedEmission.rateOverTime = 800;
+                _highSpeedEmissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
+                _highSpeedEmissionMain.simulationSpeed = 2.5f;
+            }
 
-        //make panel super blue
-        for (int i = 0; i < m_emissionPlane.Length; i++)
-        {
-            Color _emissionColour = m_planeMaterial[i].color;
-            Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
-            Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, 255);
-            m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed);
-        }
+            //make panel super blue
+            for (int i = 0; i < m_emissionPlane.Length - 1; i++)
+            {
+                Color _emissionColour = m_planeMaterial[i].color;
+                Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
+                Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, 255);
+                m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed);
+            }
 
 
             //Reset everything to normal once boost is done.
             Invoke("ResetParticles", 0.6f);
+        }
     }
 
     private void ResetParticles()
