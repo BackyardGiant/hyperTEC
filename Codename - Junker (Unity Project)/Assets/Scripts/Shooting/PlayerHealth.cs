@@ -72,6 +72,8 @@ public class PlayerHealth : MonoBehaviour
         {
             m_playerDeath.Raise();
 
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+
             GetComponent<Collider>().enabled = false;
             GetComponent<PlayerMovement>().enabled = false;
 

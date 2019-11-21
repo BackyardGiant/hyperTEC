@@ -217,6 +217,7 @@ MonoBehaviour:
   m_target: {fileID: 0}
   m_blank: {fileID: 6665592495025000306, guid: 205b5289361f08e4db408f1dc4e44555, type: 3}
   m_player: {fileID: 0}
+  enemySpawnPoint: {fileID: 0}
   m_behaviourState: 0
   m_attackingPlayer: 0
   m_displacementRadius: 30
@@ -241,8 +242,23 @@ MonoBehaviour:
   m_bulletSpeed: 1000
   m_bulletDamage: 10
   m_attackAngle: 35
+  m_universalBulletSpread: 40
   m_rightWeaponCooldown: 0.6
   m_leftWeaponCooldown: 0.6
+  m_defaultBulletPrefab: {fileID: 1168512049321899429, guid: dc8f6040eb1b72f4cb51691f82c16651,
+    type: 3}
+  m_traderBulletPrefab: {fileID: 1168512049321899429, guid: bf5f046c93b82d04c8d1d13ed3e39bd7,
+    type: 3}
+  m_exploratoryBulletPrefab: {fileID: 1168512049321899429, guid: b2ac2f2a02d9394418d71e67e0459b63,
+    type: 3}
+  m_constructionBulletPrefab: {fileID: 1168512049321899429, guid: b17f29c446608a14a85af63670f3ad82,
+    type: 3}
+  m_lowDamage: 5
+  m_highDamage: 30
+  m_lowAccuracy: 0
+  m_highAccuracy: 1
+  m_quickerFireRate: 0.1
+  m_slowerFireRate: 1.3
   m_spawnLocations:
   - {fileID: 6899699368863158309}
   - {fileID: 8926176723663043216}
@@ -418,11 +434,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5610633641536775856}
     m_Modifications:
-    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
-        type: 3}
-      propertyPath: m_Name
-      value: ConstructionShip#1
-      objectReference: {fileID: 0}
     - target: {fileID: 5731347806934350786, guid: 1fc09b7b7908b39428b358b3cfaf6225,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -477,6 +488,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+        type: 3}
+      propertyPath: m_Name
+      value: ConstructionShip#1
       objectReference: {fileID: 0}
     - target: {fileID: 3662219012777312756, guid: 1fc09b7b7908b39428b358b3cfaf6225,
         type: 3}

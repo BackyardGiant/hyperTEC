@@ -30,10 +30,6 @@ public class PlayerShooting : MonoBehaviour
     private bool m_playerCanShoot = true;
 
     #region Cooldowns
-    [SerializeField, Header("Cooldown"), Tooltip("The cooldown speed of a fire rate of 0.")]
-    private float m_quickerFireRate;
-    [SerializeField, Tooltip("The cooldown speed of a fire rate of 100.")]
-    private float m_slowerFireRate;
     private float m_rightWeaponCooldown;
     private float m_leftWeaponCooldown;
     private bool m_rightWeaponActive = true;
@@ -49,6 +45,11 @@ public class PlayerShooting : MonoBehaviour
     private float m_lowAccuracy;
     [SerializeField]
     private float m_highAccuracy;
+
+    [SerializeField, Header("Cooldown"), Tooltip("The cooldown speed of a fire rate of 0.")]
+    private float m_quickerFireRate;
+    [SerializeField, Tooltip("The cooldown speed of a fire rate of 100.")]
+    private float m_slowerFireRate;
 
     #region Stats
     [SerializeField, Header("Stats"), Tooltip("The range that the bullets aim towards using the camera, 1000 is default")]
@@ -298,7 +299,7 @@ public class PlayerShooting : MonoBehaviour
         if (_leftWeapon != null)
         {
             //SOUND
-            m_leftWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(WeaponData.fireRateType)_leftWeapon.CurrentFireRateType, _leftWeapon.FireRateIndex, this.gameObject, true);
+            m_leftWeaponSound = AudioManager.Instance.PlayWeapon((AudioManager.WeaponSounds)(int)_leftWeapon.CurrentFireRateType, _leftWeapon.FireRateIndex, this.gameObject, true);
 
             if (_leftWeapon.CurrentFireRateType == WeaponData.fireRateType.slow)
             {
