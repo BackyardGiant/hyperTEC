@@ -237,19 +237,12 @@ public class AudioManager : MonoBehaviour
             s = Array.Find(longWeaponSounds, sound => sound.name == name);
         }
 
-        if (seperateObject == true)
-        {
-            GameObject _targetAudio = new GameObject(target.name + " Audio Source. Playing - " + name);
-            _targetAudio.transform.SetParent(target.transform);
-            target = _targetAudio;
-        }
-
         AudioSource _source = target.AddComponent<AudioSource>();
         _source.clip = s.clip;
-        _source.volume = s.volume;
+        _source.volume = s.volume - 0.7f;
         _source.pitch = s.pitch;
         _source.loop = s.loop;
-        _source.priority = s.priority;
+        _source.priority = s.priority - 5;
         _source.rolloffMode = AudioRolloffMode.Linear;
         _source.minDistance = 30;
         _source.maxDistance = 1000;
