@@ -55,6 +55,30 @@ public class HUDManager : MonoBehaviour
     [SerializeField, Tooltip("Each stat item. Needs the value first then the arrow second.")]
     private GameObject[] m_stat1, m_stat2, m_stat3, m_stat4;
     #endregion
+    #region QuestIndicators
+    [Header("Quest Indicator System"), Space(20)]
+    public GameObject QuestDisplay;
+    public Image QuestScanner;
+    public Image QuestDestroyer;
+    [SerializeField, Tooltip("Colour of the loot indicators")]
+    private Color m_questTargetColour;
+    [SerializeField, Tooltip("Scale of the loot indicators")]
+    private float m_questTargetSize;
+    [SerializeField, Tooltip("Distance at which loot should be detected")]
+    private int m_questViewDistance;
+    [SerializeField, Tooltip("How far away from the target that the loot display appears"), Range(0f, 0.2f)]
+    private float m_questDisplayOffset;
+    [SerializeField, Tooltip("How quickly the scan occurs. Higher is faster."), Range(0.2f, 1f)]
+    private float m_questScanningFillSpeed;
+    [SerializeField, Tooltip("How quickly the destroy occurs. Higher is faster."), Range(0.2f, 1f)]
+    private float m_questDestroyFillSpeed;
+    [SerializeField, Header("Loot Display Elements"), Tooltip("Display elements of the Loot Display. This will show the stats of the visible loot item."), Space(20)]
+    private Image m_questItemIcon;
+    [SerializeField]
+    private Sprite m_kill, m_collect, m_target, m_recon, m_control;
+    [SerializeField]
+    private TextMeshProUGUI m_questDisplayTitle, m_questDisplayObjectTitle;
+    #endregion
     #region AutoAim
     private GameObject m_closestEnemy;
     private Vector2 m_closestEnemyScreenPos;
@@ -81,6 +105,9 @@ public class HUDManager : MonoBehaviour
     private Vector2 m_crosshairPosition;
     private float m_buttonHoldTime = 0;
     private int m_buttonBeingHeld = -1;
+
+    private GameObject m_currentBeacon;
+    private GameObject m_prevBeacon;
 
     #region Accessors
     public static HUDManager Instance { get => s_instance; set => s_instance = value; }
@@ -844,6 +871,181 @@ public class HUDManager : MonoBehaviour
     private void togglePickup()
     {
         m_enablePickup = true;
+    }
+    #endregion
+
+    #region Quest Becon Detection Methods
+    public void DrawBeaconTarget(Vector2 _screenPos, QuestBeconDetection _beacon)
+    {
+        GameObject _beaconObject;
+        Image _targetImage;
+
+        if (_beacon.QuestTarget != null)
+        {
+            _beaconObject = _beacon.QuestTarget;
+            _targetImage = _beaconObject.GetComponent<Image>();
+        }
+        else
+        {
+            _beaconObject = new GameObject();
+            _beaconObject.name = "BeconTarget";
+            _beaconObject.transform.parent = WaypointsAndMarkers;
+
+            //Setting the sprite
+            _targetImage = _beaconObject.AddComponent<Image>();
+            _targetImage.color = m_questTargetColour;
+            _beacon.QuestTarget = _beaconObject;
+        }
+        //moveit
+        _targetImage.rectTransform.localScale = new Vector3(m_questTargetSize, m_questTargetSize, m_questTargetSize);
+        _targetImage.sprite = TargetSprite;
+        _targetImage.transform.position = _screenPos;
+        _targetImage.transform.localEulerAngles = Vector3.zero;
+
+
+        //Find all "component" tagged game objects
+        GameObject[] _questObjects = GameObject.FindGameObjectsWithTag("QuestBeacon");
+        m_currentBeacon = ReturnTargetBeacon(_questObjects);
+        //If targeted loot has changed, reset LootDisplay.
+        if (m_prevBeacon != m_currentBeacon)
+        {
+            // Swapping over the LootDisplays to a different object
+            m_displayAnimated = false;
+            m_currentlyScanning = false;
+            Destroyer.fillAmount = 0;
+            Scanner.fillAmount = 0;
+        }
+        m_prevBeacon = m_currentBeacon;
+
+        if (m_currentBeacon == null)
+        {
+            Debug.Log("<color=red> Current beacon is null. </color> Do all loot objects have the component tag?");
+        }
+
+        //Screenpos of loot, and LootDetection script. This will aid in automatically entering values from a piece of loot.
+        _screenPos = Camera.WorldToScreenPoint(m_currentBeacon.transform.position);
+        _beacon = m_currentBeacon.GetComponent<QuestBeconDetection>();
+
+
+        DrawBeaconDisplay(_screenPos, _beacon);
+
+    }
+
+    private void DrawBeaconDisplay(Vector2 _targetPos, QuestBeconDetection _beacon)
+    {
+        DisplayBeconTitle(m_currentBeacon);
+        //Check player is going slow enough to look at it.
+        Vector3 _displayTargetPos;
+        if (Player.GetComponent<PlayerMovement>().CurrentSpeed / Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
+        {
+            if (!m_displayAnimated)
+            {
+                QuestDisplay.GetComponent<Animator>().Play("ShowLoot");
+                m_displayAnimated = true;
+            }
+        }
+        if (m_currentlyScanning)
+        {
+            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + (m_displayOffset * Screen.height * 3f));
+            QuestDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.08f);
+
+        }
+        else if (m_currentlyClosingScan)
+        {
+            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
+            QuestDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.000006f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
+            if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 10)
+            {
+                m_currentlyClosingScan = false;
+            }
+        }
+        else
+        {
+            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
+            QuestDisplay.GetComponent<RectTransform>().position = _displayTargetPos;
+        }
+    }
+
+    public void ClearBeaconTarget(QuestBeconDetection _beacon)
+    {
+        Destroy(_beacon.QuestTarget);
+        //Need to make it clear the loot Display if there isn't any loot left on screen.
+        if (countTargets() == 0 && m_displayAnimated == true)
+        {
+            ClearBeaconDisplay();
+        }
+    }
+
+    //Clears the Loot Display
+    private void ClearBeaconDisplay()
+    {
+        Scanner.fillAmount = 0;
+        Destroyer.fillAmount = 0;
+        m_displayAnimated = false;
+        m_currentlyClosingScan = false;
+        m_currentlyScanning = false;
+        if (m_currentlyScanning == true)
+        {
+            QuestDisplay.GetComponent<Animator>().Play("CloseFromScanned");
+        }
+        else if (m_currentlyScanning == false)
+        {
+            QuestDisplay.GetComponent<Animator>().Play("CloseFromUnscanned");
+        }
+
+
+    }
+
+    private void DisplayBeconTitle(GameObject _currentBeacon)
+    {
+        if (_currentBeacon != null)
+        {
+            if (_currentBeacon.GetComponent<QuestBeconDetection>().QuestType == QuestType.kill)
+            {
+                m_lootItemIcon.sprite = m_weapon;
+                m_lootDisplayTitle.text = "WEAPON";
+            }
+            if (_currentBeacon.GetComponent<QuestBeconDetection>().QuestType == QuestType.control)
+            {
+                m_lootItemIcon.sprite = m_engine;
+                m_lootDisplayTitle.text = "ENGINE";
+            }
+            if (_currentBeacon.GetComponent<QuestBeconDetection>().QuestType == QuestType.collect)
+            {
+                m_lootItemIcon.sprite = m_shield;
+                m_lootDisplayTitle.text = "SHIELD";
+            }
+            if (_currentBeacon.GetComponent<QuestBeconDetection>().QuestType == QuestType.recon)
+            {
+                m_lootItemIcon.sprite = m_shield;
+                m_lootDisplayTitle.text = "SHIELD";
+            }
+            if (_currentBeacon.GetComponent<QuestBeconDetection>().QuestType == QuestType.targets)
+            {
+                m_lootItemIcon.sprite = m_shield;
+                m_lootDisplayTitle.text = "SHIELD";
+            }
+        }
+    }
+
+    private GameObject ReturnTargetBeacon(GameObject[] _visibleBeacons)
+    {
+        GameObject _target = null;
+        float _currentDistance = 0f;
+        float _minimumDistance = Mathf.Infinity;
+        Vector2 _crosshairPosition = new Vector2(Screen.width / 2, Screen.height / 2);
+
+        foreach (GameObject _objTarget in _visibleBeacons)
+        {
+            _currentDistance = Vector2.Distance(_crosshairPosition, Camera.WorldToScreenPoint(_objTarget.transform.position));
+            if (_currentDistance < _minimumDistance && Vector3.Distance(_objTarget.transform.position, Player.transform.position) < m_lootViewDistance)
+            {
+                _target = _objTarget;
+                _minimumDistance = _currentDistance;
+            }
+        }
+
+        return _target;
     }
     #endregion
 

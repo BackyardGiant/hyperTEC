@@ -33,7 +33,6 @@ public class PlayerInventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
 
         if (s_instance == null)
         {

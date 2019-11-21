@@ -71,9 +71,13 @@ public class AdvancedEnemyMovement : MonoBehaviour
     private float m_angleVelocityDifferenceBetweenSlow;
     #endregion
 
+    private Vector3 m_startPosition;
+
     private Rigidbody m_rb;
 
     private EnemyManager m_manager;
+
+    public Vector3 StartPosition { get => m_startPosition; set => m_startPosition = value; }
 
     private void Awake()
     {
@@ -137,7 +141,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
             m_target = m_manager.Target;
             m_attacking = m_manager.AttackingPlayer;
 
-            if (Vector3.Distance(transform.position, m_manager.enemySpawnPoint.position) < m_wanderRange)
+            if (Vector3.Distance(transform.position, m_startPosition) < m_wanderRange)
             {
                 if (m_attacking)
                 {
@@ -197,7 +201,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
                 }
                 else
                 {
-                    m_steering = Seek(m_manager.enemySpawnPoint.position);
+                    m_steering = Seek(m_startPosition);
                 }
             }
 
