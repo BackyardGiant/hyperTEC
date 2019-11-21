@@ -9392,6 +9392,16 @@ PrefabInstance:
       propertyPath: m_aimingCrosshair
       value: 
       objectReference: {fileID: 663232755}
+    - target: {fileID: 388294911365480841, guid: 5f833fa36dfcf7c41b867d1460102cf2,
+        type: 3}
+      propertyPath: m_rechargeRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 388294911365480841, guid: 5f833fa36dfcf7c41b867d1460102cf2,
+        type: 3}
+      propertyPath: m_rechargePeriod
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f833fa36dfcf7c41b867d1460102cf2, type: 3}
 --- !u!1 &1608534288 stripped
@@ -9545,6 +9555,27 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -3790811676352246218, guid: 5e15476fb9db2af468eaa0f615f65c8a,
         type: 2}
+    - target: {fileID: 1183197614, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0535282ec1a510446b7348615757acbc,
+        type: 3}
+    - target: {fileID: 1183197614, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1183197614, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
+      propertyPath: m_FillMethod
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1183197614, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1183197614, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1888cbe4f75b6114ab617ae04f52ae0b, type: 3}
 --- !u!1 &1713827732

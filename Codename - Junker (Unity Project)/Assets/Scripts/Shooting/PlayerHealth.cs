@@ -21,11 +21,16 @@ public class PlayerHealth : MonoBehaviour
     private int _currentSave;
 
     private bool _isRecharging = false;
+    private bool _isDead = false;
 
     [SerializeField]
     private GameObject m_explosion;
     [SerializeField]
     private DropWeapons m_dropWeaponsScript;
+
+    [SerializeField]
+    [Range(0f, 1f)]
+    private float m_imageFill;
 
     [SerializeField]
     GameObject[] m_playerToBeDestroyed;
@@ -48,16 +53,16 @@ public class PlayerHealth : MonoBehaviour
                 break;
         }
         ResetHealth();
-
+        _isDead = false;
         HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[_currentSave].Value;
     }
 
     private void Update()
     {
-        if(m_timeSinceDamage > m_rechargePeriod && m_playerHealth[_currentSave].Value != m_healthMax)
+        if (m_timeSinceDamage > m_rechargePeriod && m_playerHealth[_currentSave].Value != m_healthMax && !_isDead)
         {
             m_playerHealth[_currentSave].Value += (int)m_rechargeRate;
-            HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[_currentSave].Value;
+            HUDManager.Instance.Healthbar.fillAmount = (float)m_playerHealth[_currentSave].Value / m_healthMax;
         }
 
         m_timeSinceDamage += Time.deltaTime;
@@ -68,13 +73,16 @@ public class PlayerHealth : MonoBehaviour
         if (m_playerHealth[_currentSave].Value - _dmg > 0)
         {
             m_playerHealth[_currentSave].Value -= (int)_dmg;
-            HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[_currentSave].Value;
+            HUDManager.Instance.Healthbar.fillAmount = (float)m_playerHealth[_currentSave].Value / m_healthMax;
             m_timeSinceDamage = 0;
             Debug.Log("<color=green>CURRENT HEALTH : </color>" + m_playerHealth[_currentSave].Value);
         }
         else
         {
+            _isDead = true;
             m_playerDeath.Raise();
+
+            HUDManager.Instance.Healthbar.fillAmount = 0;
 
             GetComponent<Rigidbody>().velocity = Vector3.zero;
 
