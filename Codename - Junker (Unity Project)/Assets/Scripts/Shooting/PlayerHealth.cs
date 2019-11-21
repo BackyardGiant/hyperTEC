@@ -40,16 +40,16 @@ public class PlayerHealth : MonoBehaviour
         switch(PlayerPrefs.GetString("CurrentSave"))
         {
             case "Save1":
-                _currentSave = 1;
+                _currentSave = 0;
                 break;
             case "Save2":
-                _currentSave = 2;
+                _currentSave = 1;
                 break;
             case "Save3":
-                _currentSave = 3;
+                _currentSave = 2;
                 break;
             case "Save4":
-                _currentSave = 4;
+                _currentSave = 3;
                 break;
         }
         ResetHealth();

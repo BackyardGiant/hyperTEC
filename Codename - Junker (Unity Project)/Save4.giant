@@ -1,0 +1,24 @@
+{"positionX":"21.31929","positionY":"29.88916","positionZ":"493.0298","rotationX":"0.4140269","rotationY":"0.5134431","rotationZ":"-0.1667102","rotationW":"-0.7329159","rightWeaponSeed":"1","leftWeaponSeed":"206404109407809512200011","engineSeed":"1"}
+5
+{"positionX":"8.120713","positionY":"13.69888","positionZ":"97.87713","rotationX":"0.3985298","rotationY":"-0.3518112","rotationZ":"0.1689285","rotationW":"0.8299796","rightWeaponSeed":"002805300709305000210001","leftWeaponSeed":"001801508308909912100030"}
+{"positionX":"532.2472","positionY":"139.3017","positionZ":"227.9738","rotationX":"0.2736582","rotationY":"-0.2501841","rotationZ":"0.07395455","rotationW":"0.9257699","rightWeaponSeed":"001305606904001120010000","leftWeaponSeed":"103109904202003200000001"}
+{"positionX":"80.17208","positionY":"75.52871","positionZ":"4.449517","rotationX":"0.08999401","rotationY":"-0.6832672","rotationZ":"0.08545683","rotationW":"0.7195444","rightWeaponSeed":"109308405603005700000002","leftWeaponSeed":"105201508907903810000001"}
+{"positionX":"49.19572","positionY":"69.62191","positionZ":"366.8647","rotationX":"0.1953583","rotationY":"-0.03805189","rotationZ":"0.00758574","rotationW":"0.9799641","rightWeaponSeed":"303306205805305022120011","leftWeaponSeed":"107405107406107300000011"}
+{"positionX":"-23.36189","positionY":"94.22719","positionZ":"321.6634","rotationX":"0.1205171","rotationY":"0.1612025","rotationZ":"-0.01983761","rotationW":"0.9793344","rightWeaponSeed":"209002004504405910110002","leftWeaponSeed":"007203207006705620020011"}
+12
+{"positionX":"-26.87001","positionY":"-2.290947","positionZ":"21.46004","rotationX":"5.587933E-08","rotationY":"-3.725289E-09","rotationZ":"-4.470347E-08","rotationW":"1","type":"1","seed":"3"}
+{"positionX":"27.58","positionY":"-2.29094","positionZ":"21.46","rotationX":"5.7742E-08","rotationY":"-7.450581E-09","rotationZ":"-3.72529E-09","rotationW":"1","type":"1","seed":"2"}
+{"positionX":"9.720007","positionY":"-2.290942","positionZ":"21.46006","rotationX":"-1.862644E-09","rotationY":"-1.722946E-08","rotationZ":"-7.450575E-09","rotationW":"1","type":"1","seed":"0"}
+{"positionX":"221.7131","positionY":"-79.02818","positionZ":"1125.837","rotationX":"-0.7701429","rotationY":"-0.488318","rotationZ":"-0.0594089","rotationW":"0.4060741","type":"0","seed":"303707401600306820010001"}
+{"positionX":"-321.1743","positionY":"18.51241","positionZ":"350.8021","rotationX":"0.4307272","rotationY":"0.7852536","rotationZ":"0.03831096","rotationW":"0.4431515","type":"0","seed":"005403305104609101020011"}
+{"positionX":"-240.7752","positionY":"-26.21199","positionZ":"428.4755","rotationX":"0.38395","rotationY":"0.2811376","rotationZ":"0.08488002","rotationW":"-0.8754082","type":"0","seed":"102806600805804610000011"}
+{"positionX":"320.8441","positionY":"-504.0937","positionZ":"-322.6655","rotationX":"-0.4335214","rotationY":"-0.6938735","rotationZ":"0.2793471","rotationW":"0.5025575","type":"0","seed":"105309206208104310000001"}
+{"positionX":"83.52474","positionY":"-740.6525","positionZ":"-114.2814","rotationX":"-0.4348039","rotationY":"-0.6911103","rotationZ":"0.276558","rotationW":"0.5067819","type":"0","seed":"004208605001305211220001"}
+{"positionX":"148.0401","positionY":"-158.2167","positionZ":"570.2009","rotationX":"0.08849776","rotationY":"-0.522902","rotationZ":"0.1428019","rotationW":"-0.8356729","type":"0","seed":"303303508500303422110011"}
+{"positionX":"-261.6313","positionY":"-13.87486","positionZ":"18.74822","rotationX":"0.3393708","rotationY":"-0.741494","rotationZ":"-0.07399942","rotationW":"-0.5740542","type":"0","seed":"000906705402406220100020"}
+{"positionX":"-256.9144","positionY":"-29.81555","positionZ":"42.22554","rotationX":"-0.1851476","rotationY":"0.5575508","rotationZ":"-0.3494356","rotationW":"-0.7298988","type":"0","seed":"003002008102407200020001"}
+{"positionX":"-414.8853","positionY":"15.92639","positionZ":"83.199","rotationX":"-0.7235944","rotationY":"0.5854548","rotationZ":"0.001087845","rotationW":"0.3655854","type":"0","seed":"300107904807603301100020"}
+{"availableWeapons":["1","1","206404109407809512200011"],"availableEngines":["1"],"equippedEngineIndex":"0","equippedLeftIndex":"2","equippedRightIndex":"1"}
+1
+1
+{"m_name":"Control the Sector!","m_description":"Kill 15 Enemies to Control the Sector.","m_questType":"0","m_percentageComplete":"100","m_size":"15","m_currentAmountCompleted":"15"}

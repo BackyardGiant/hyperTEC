@@ -430,7 +430,7 @@ public class GameManager : MonoBehaviour
         }
         catch
         {
-            _player.GetComponent<PlayerHealth>().ResetHealth(int.Parse(_fileName[4].ToString()));
+            _player.GetComponent<PlayerHealth>().ResetHealth(int.Parse(_fileName[4].ToString()) - 1);
             if (PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
             {
                 Transform _leftSnapPoint = _player.transform.Find("WeaponLeft");

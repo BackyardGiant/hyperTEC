@@ -9,6 +9,7 @@ public class DisplayOptions : MonoBehaviour
     public RectTransform highlight;
     public RectTransform statsPanel;
     public PopulateStatDisplay m_statsPanelUpdate;
+    public SelectionManager selectionManager;
 
     public VerticalLayoutGroup vertLayout;
 
@@ -28,12 +29,8 @@ public class DisplayOptions : MonoBehaviour
     public int NumItemsOnScreen { get => m_numItemsOnScreen; set => m_numItemsOnScreen = value; }
     public int Index { get => index; set => index = value; }
 
-    private void Start()
-    {
-        index = 0;
-        UpdateHighlightPosition();
-        m_statsPanelUpdate = statsPanel.GetComponent<PopulateStatDisplay>();
-    }
+    private bool m_finishedLoad = false;
+    
     public void FillInventory()
     {
         availableEngines = PlayerInventoryManager.Instance.AvailableEngines;
@@ -67,29 +64,45 @@ public class DisplayOptions : MonoBehaviour
 
         RectTransform _targetBlock = m_modulesList[0].GetComponent<RectTransform>();
         statsPanel.sizeDelta = new Vector2(_targetBlock.sizeDelta.x /3,_targetBlock.sizeDelta.y * 1.7f);
+
+        index = 0;
+        UpdateHighlightPosition();
+        m_statsPanelUpdate = statsPanel.GetComponent<PopulateStatDisplay>();
+
+        m_finishedLoad = true;
+
+        Invoke("WaitForLoad", 0.05f);
+    }
+
+    private void WaitForLoad()
+    {
+        selectionManager.FillMenu();
     }
 
     private void Update()
     {
-        RectTransform _targetBlock = m_modulesList[index].GetComponent<RectTransform>();
-        Vector2 _statsDisplayPosition = statsPanel.position;
-        Vector2 _statsDisplayRequiredPosition;
+        if (m_finishedLoad)
+        {
+            RectTransform _targetBlock = m_modulesList[index].GetComponent<RectTransform>();
+            Vector2 _statsDisplayPosition = statsPanel.position;
+            Vector2 _statsDisplayRequiredPosition;
 
-        if (index != 0)
-        {
-            _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 0.9f, _targetBlock.position.y);
-            _statsDisplayPosition.y = Mathf.Clamp(_statsDisplayPosition.y, statsPanel.sizeDelta.y, Screen.height-statsPanel.sizeDelta.y);
-            if (_statsDisplayPosition != _statsDisplayRequiredPosition)
+            if (index != 0)
             {
-                statsPanel.position = Vector2.Lerp(_statsDisplayPosition, _statsDisplayRequiredPosition, 0.1f);
+                _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 0.9f, _targetBlock.position.y);
+                _statsDisplayPosition.y = Mathf.Clamp(_statsDisplayPosition.y, statsPanel.sizeDelta.y, Screen.height - statsPanel.sizeDelta.y);
+                if (_statsDisplayPosition != _statsDisplayRequiredPosition)
+                {
+                    statsPanel.position = Vector2.Lerp(_statsDisplayPosition, _statsDisplayRequiredPosition, 0.1f);
+                }
             }
-        }
-        else
-        {
-            _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 0.9f, +_targetBlock.position.y - _targetBlock.sizeDelta.y*0.4f);
-            if (_statsDisplayPosition != _statsDisplayRequiredPosition)
+            else
             {
-                statsPanel.position = Vector2.Lerp(_statsDisplayPosition, _statsDisplayRequiredPosition, 0.1f);
+                _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 0.9f, +_targetBlock.position.y - _targetBlock.sizeDelta.y * 0.4f);
+                if (_statsDisplayPosition != _statsDisplayRequiredPosition)
+                {
+                    statsPanel.position = Vector2.Lerp(_statsDisplayPosition, _statsDisplayRequiredPosition, 0.1f);
+                }
             }
         }
     }
