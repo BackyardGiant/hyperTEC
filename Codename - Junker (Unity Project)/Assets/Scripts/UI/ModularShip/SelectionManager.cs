@@ -30,8 +30,7 @@ public class SelectionManager : MonoBehaviour
         m_takenIndexes[1] = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
         m_takenIndexes[2] = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
 
-
-        display.UpdateHighlightPosition(0);
+        display.UpdateHighlightPosition();
         display.UpdateEquipped(m_takenIndexes);
         DisplayEquipped();
 
@@ -63,7 +62,8 @@ public class SelectionManager : MonoBehaviour
 
                 if(m_currentlySelectedIndex >= display.NumItemsOnScreen)
                 {
-                    display.ScrollDownToSelected(m_currentlySelectedIndex + 1);
+                    display.Index = m_currentlySelectedIndex + 1;
+                    display.ScrollDownToSelected();
                     m_bottomIndex++;
                 }
 
@@ -71,7 +71,8 @@ public class SelectionManager : MonoBehaviour
                 DisplayEquipped();
                 PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
 
-                display.UpdateHighlightPosition(m_currentlySelectedIndex);
+                display.Index = m_currentlySelectedIndex;
+                display.UpdateHighlightPosition();
                 m_readyForInput = false;
             }
 
@@ -89,14 +90,15 @@ public class SelectionManager : MonoBehaviour
                 if (m_currentlySelectedIndex < m_bottomIndex - display.NumItemsOnScreen)
                 {
                     m_bottomIndex--;
-                    display.ScrollDownToSelected(m_bottomIndex);            
+                    display.Index = m_bottomIndex;
+                    display.ScrollDownToSelected();            
                 }
 
                 RemovePreviousModule();
                 DisplayEquipped();
                 PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
-
-                display.UpdateHighlightPosition(m_currentlySelectedIndex);
+                display.Index = m_currentlySelectedIndex;
+                display.UpdateHighlightPosition();
                 m_readyForInput = false;
             }
         }

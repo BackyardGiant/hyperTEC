@@ -73,7 +73,7 @@ public class MainMenuManagement : MonoBehaviour
         {
             m_mainMenuAnimator.speed = 1000;
             m_logoAnimator.speed = 1000;
-            Invoke("allowInputs", 0.2f);
+            Invoke("allowInputs", 1.5f);
         }
 
         if (m_onMenu == true)
