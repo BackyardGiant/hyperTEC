@@ -239,22 +239,27 @@ public class EnemyShooting : MonoBehaviour
 
             if (m_targetInSight)
             {
-                Vector3 offset1 = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_target.transform.position, transform.position) / m_range));
-                Vector3 offset2 = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_target.transform.position, transform.position) / m_range));
+                Vector3 offset1 = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_player.transform.position, transform.position) / m_range));
+                Vector3 offset2 = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_player.transform.position, transform.position) / m_range));
 
-                m_spawnLocations[0].transform.LookAt(m_target.transform.position + (offset1 * (1 - m_rightBulletAccuracy)));
-                m_spawnLocations[1].transform.LookAt(m_target.transform.position + (offset2 * (1 - m_leftBulletAccuracy)));
+                m_spawnLocations[0].transform.LookAt(m_player.transform.position + (offset1 * (1 - m_rightBulletAccuracy)));
+                m_spawnLocations[1].transform.LookAt(m_player.transform.position + (offset2 * (1 - m_leftBulletAccuracy)));
+
+                float _random1 = Random.Range(1f, 2f);
+                float _random2 = Random.Range(1f, 2f);
 
                 if (m_rightWeaponActive)
                 {
-                    SpawnBullet(0);
+                    m_rightWeaponSound.pitch = _random1;
+                    m_rightWeaponSound.Play();
                     m_rightWeaponActive = false;
                     StartCoroutine(rightCooldown());
                 }
 
                 if (m_leftWeaponActive)
                 {
-                    SpawnBullet(1);
+                    m_leftWeaponSound.pitch = _random2;
+                    m_leftWeaponSound.Play();
                     m_leftWeaponActive = false;
                     StartCoroutine(leftCooldown());
                 }
@@ -286,12 +291,15 @@ public class EnemyShooting : MonoBehaviour
 
     IEnumerator rightCooldown()
     {
+        yield return new WaitForSeconds(m_rightWeaponSoundDelay);
+        SpawnBullet(0);
         yield return new WaitForSeconds(m_rightWeaponCooldown);
         m_rightWeaponActive = true;
     }
-
     IEnumerator leftCooldown()
     {
+        yield return new WaitForSeconds(m_leftWeaponSoundDelay);
+        SpawnBullet(1);
         yield return new WaitForSeconds(m_leftWeaponCooldown);
         m_leftWeaponActive = true;
     }

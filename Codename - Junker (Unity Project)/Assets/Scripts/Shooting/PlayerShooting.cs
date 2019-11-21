@@ -147,11 +147,12 @@ public class PlayerShooting : MonoBehaviour
                 m_spawnLocations[0].transform.LookAt(m_target.position + (offset1 * (1 - m_rightBulletAccuracy)));
                 m_spawnLocations[1].transform.LookAt(m_target.position + (offset2 * (1 - m_leftBulletAccuracy)));
 
-                float _random = Random.Range(1f, 2f);
+                float _random1 = Random.Range(1f, 2f);
+                float _random2 = Random.Range(1f, 2f);
 
                 if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedRightWeapon != null)
                 {
-                    m_rightWeaponSound.pitch = _random;
+                    m_rightWeaponSound.pitch = _random1;
                     m_rightWeaponSound.Play();
                     m_rightWeaponActive = false;
                     StartCoroutine(rightCooldown());
@@ -159,7 +160,7 @@ public class PlayerShooting : MonoBehaviour
 
                 if (Input.GetAxis("LeftTrigger") > 0.1f && m_leftWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
                 {
-                    m_leftWeaponSound.pitch = _random;
+                    m_leftWeaponSound.pitch = _random2;
                     m_leftWeaponSound.Play();
                     m_leftWeaponActive = false;
                     StartCoroutine(leftCooldown());
