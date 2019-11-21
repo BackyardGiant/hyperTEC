@@ -48,6 +48,8 @@ public class PlayerHealth : MonoBehaviour
                 break;
         }
         ResetHealth();
+
+        HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[_currentSave].Value;
     }
 
     private void Update()
@@ -55,6 +57,7 @@ public class PlayerHealth : MonoBehaviour
         if(m_timeSinceDamage > m_rechargePeriod && m_playerHealth[_currentSave].Value != m_healthMax)
         {
             m_playerHealth[_currentSave].Value += (int)m_rechargeRate;
+            HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[_currentSave].Value;
         }
 
         m_timeSinceDamage += Time.deltaTime;
@@ -65,6 +68,7 @@ public class PlayerHealth : MonoBehaviour
         if (m_playerHealth[_currentSave].Value - _dmg > 0)
         {
             m_playerHealth[_currentSave].Value -= (int)_dmg;
+            HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[_currentSave].Value;
             m_timeSinceDamage = 0;
             Debug.Log("<color=green>CURRENT HEALTH : </color>" + m_playerHealth[_currentSave].Value);
         }

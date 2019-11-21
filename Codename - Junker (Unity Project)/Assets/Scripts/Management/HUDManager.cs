@@ -12,6 +12,7 @@ public class HUDManager : MonoBehaviour
     public Sprite TargetSprite;
     public GameObject Explosion;
     public Transform WaypointsAndMarkers;
+    public Image Healthbar;
 
     //public Inventory playerInv;
 
