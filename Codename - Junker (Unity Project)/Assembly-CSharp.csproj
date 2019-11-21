@@ -66,6 +66,7 @@
     <Compile Include="Assets\EngineGenerator.cs" />
     <Compile Include="Assets\LoadGameManagement.cs" />
     <Compile Include="Assets\NewGameManagement.cs" />
+    <Compile Include="Assets\PopulateStatDisplay.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\GetSetAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\TrackballAttribute.cs" />

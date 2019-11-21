@@ -10,6 +10,7 @@ public class SelectionManager : MonoBehaviour
 
     public TextMeshProUGUI currentPreviewtext; 
 
+    [SerializeField]
     private int m_currentlySelectedIndex = 0;
     private bool m_readyForInput = true;
     private int m_equippedEngineIndex, m_equippedLeftIndex, m_equippedRightIndex;
@@ -30,8 +31,7 @@ public class SelectionManager : MonoBehaviour
         m_takenIndexes[1] = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
         m_takenIndexes[2] = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
 
-
-        display.UpdateHighlightPosition(0);
+        display.UpdateHighlightPosition();
         display.UpdateEquipped(m_takenIndexes);
         DisplayEquipped();
 
@@ -52,7 +52,7 @@ public class SelectionManager : MonoBehaviour
         {
             if ((Input.GetAxis("MacroEngine") < 0) || (Input.GetAxis("Vertical") < 0))
             {
-                if (m_currentlySelectedIndex == display.ModulesList.Count - 1)
+                if (m_currentlySelectedIndex >= display.ModulesList.Count - 1)
                 {
                     m_currentlySelectedIndex = display.ModulesList.Count - 1;
                 }
@@ -60,18 +60,25 @@ public class SelectionManager : MonoBehaviour
                 {
                     m_currentlySelectedIndex++;
                 }
+                Debug.Log("Index is " + m_currentlySelectedIndex);
 
                 if(m_currentlySelectedIndex >= display.NumItemsOnScreen)
                 {
-                    display.ScrollDownToSelected(m_currentlySelectedIndex + 1);
-                    m_bottomIndex++;
+                    if (m_bottomIndex != display.ModulesList.Count)
+                    {
+                        display.Index = m_currentlySelectedIndex + 1;
+                        display.ScrollDownToSelected();
+                        m_bottomIndex++;
+                    }
+
                 }
 
                 RemovePreviousModule();
                 DisplayEquipped();
                 PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
 
-                display.UpdateHighlightPosition(m_currentlySelectedIndex);
+                display.Index = m_currentlySelectedIndex;
+                display.UpdateHighlightPosition();
                 m_readyForInput = false;
             }
 
@@ -89,14 +96,15 @@ public class SelectionManager : MonoBehaviour
                 if (m_currentlySelectedIndex < m_bottomIndex - display.NumItemsOnScreen)
                 {
                     m_bottomIndex--;
-                    display.ScrollDownToSelected(m_bottomIndex);            
+                    display.Index = m_bottomIndex;
+                    display.ScrollDownToSelected();            
                 }
 
                 RemovePreviousModule();
                 DisplayEquipped();
                 PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
-
-                display.UpdateHighlightPosition(m_currentlySelectedIndex);
+                display.Index = m_currentlySelectedIndex;
+                display.UpdateHighlightPosition();
                 m_readyForInput = false;
             }
         }
