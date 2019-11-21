@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public GameObject lootTemplate;
     public Image blackOut;
     public Animator fadeAnimator;
+    public DisplayOptions display;
     
     private int m_enemiesKilledSoFar;
 
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
         else if(_sceneName == "ModularShip")
         {
             fadeAnimator.Play("Fade");
+            LoadInventory();
         }
 
         Debug.Log("<color=red>CURRENT SAVE: </color>" + PlayerPrefs.GetString("CurrentSave"));
@@ -636,9 +638,18 @@ public class GameManager : MonoBehaviour
         PlayerInventoryManager.Instance.EquippedRightIndex = int.Parse(_inventory.equippedRightIndex);
         PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
 
-        PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedLeftIndex];
-        PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedRightIndex];
-        PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[PlayerInventoryManager.Instance.EquippedEngineIndex];
+        if (_inventory.equippedLeftIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedLeftIndex];
+        }
+        if (_inventory.equippedRightIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedRightIndex];
+        }
+        if (_inventory.equippedEngineIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[PlayerInventoryManager.Instance.EquippedEngineIndex];
+        }
 
         if (_savedPlayer.rightWeaponSeed == "1")
         {
@@ -740,6 +751,110 @@ public class GameManager : MonoBehaviour
         _player.GetComponent<PlayerShooting>().buildWeapons();
 
         HUDManager.Instance.ClearAllDisplays();
+    }
+
+    public void LoadInventory()
+    {
+        string _fileName = PlayerPrefs.GetString("CurrentSave", "NoSave") + ".giant";
+        GameObject _player = GameObject.FindGameObjectWithTag("Player");
+
+        if (_fileName == "NoSave")
+        {
+            return;
+        }
+
+        string[] _loadLines = File.ReadAllLines(_fileName);
+
+        int _numberOfEnemies = int.Parse(_loadLines[1]);
+        int _numberOfItems = int.Parse(_loadLines[2 + _numberOfEnemies]);
+
+
+        InventorySavingObject _inventory = JsonUtility.FromJson<InventorySavingObject>(_loadLines[3 + _numberOfEnemies + _numberOfItems]);
+
+        PlayerInventoryManager.Instance.WipeInventory();
+
+        foreach (string _weapon in _inventory.availableWeapons)
+        {
+            if (_weapon != "1")
+            {
+                if (_weapon.Length > 0)
+                {
+                    WeaponData _tempWeapon = ModuleManager.Instance.CreateStatBlock(_weapon);
+                    PlayerInventoryManager.Instance.AvailableWeapons.Add(_tempWeapon);
+                }
+            }
+        }
+        foreach (string _engine in _inventory.availableEngines)
+        {
+            if (_engine.Length > 0)
+            {
+                EngineData _tempEngine = ModuleManager.Instance.CreateEngineBlock(_engine);
+                PlayerInventoryManager.Instance.AvailableEngines.Add(_tempEngine);
+            }
+        }
+
+        PlayerInventoryManager.Instance.EquippedLeftIndex = int.Parse(_inventory.equippedLeftIndex);
+        PlayerInventoryManager.Instance.EquippedRightIndex = int.Parse(_inventory.equippedRightIndex);
+        PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
+
+        if (_inventory.equippedLeftIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedLeftIndex];
+        }
+        if (_inventory.equippedRightIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedRightIndex];
+        }
+        if (_inventory.equippedEngineIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[PlayerInventoryManager.Instance.EquippedEngineIndex];
+        }
+
+        try
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[int.Parse(_inventory.equippedEngineIndex)];
+            PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
+        }
+        catch { }
+
+        //_loadLines[3 + _numberOfEnemies + _numberOfItems]
+        int _numberOfQuests = int.Parse(_loadLines[4 + _numberOfEnemies + _numberOfItems]);
+        int _questIndex = int.Parse(_loadLines[5 + _numberOfEnemies + _numberOfItems]);
+
+        QuestManager.Instance.ClearQuests();
+
+        QuestManager.Instance.TrackingQuestIndex = _questIndex;
+
+        for (int i = 0; i < _numberOfQuests; i++)
+        {
+            QuestSavingObject _quest = JsonUtility.FromJson<QuestSavingObject>(_loadLines[6 + _numberOfEnemies + _numberOfItems]);
+
+            switch ((QuestType)int.Parse(_quest.m_questType))
+            {
+                case QuestType.kill:
+                    QuestManager.Instance.CreateKillQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.control:
+                    QuestManager.Instance.CreateControlQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.collect:
+                    //QuestManager.Instance.CreateCollectQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.recon:
+                    QuestManager.Instance.CreateReconQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.targets:
+                    QuestManager.Instance.CreateTargetQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+            }
+        }
+
+        display.FillInventory();
     }
 
     public void ReturnToMenu()
