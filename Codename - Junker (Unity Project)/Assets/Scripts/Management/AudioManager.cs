@@ -204,6 +204,57 @@ public class AudioManager : MonoBehaviour
         _source.spatialBlend = 0;
         _source.outputAudioMixerGroup = fx;
 
+        return _source;
+    }
+
+    public AudioSource PlayEnemyGun(WeaponSounds weapon, int index, GameObject target, bool seperateObject)
+    {
+        string name = weapon.ToString() + index;
+        if (seperateObject == true)
+        {
+            GameObject _targetAudio = new GameObject(target.name + " audio source. Playing - " + name);
+            _targetAudio.transform.parent = target.transform;
+            _targetAudio.transform.position = target.transform.position;
+            _targetAudio.tag = "WeaponAudio";
+            target = _targetAudio;
+        }
+
+        Sound s = null;
+
+        if (weapon.ToString() == "Short")
+        {
+            name = "ShortWeapon" + (index + 1).ToString();
+            s = Array.Find(shortWeaponSounds, sound => sound.name == name);
+        }
+        else if (weapon.ToString() == "Medium")
+        {
+            name = "MediumWeapon" + (index + 1).ToString();
+            s = Array.Find(mediumWeaponSounds, sound => sound.name == name);
+        }
+        else if (weapon.ToString() == "Long")
+        {
+            name = "LongWeapon" + (index + 1).ToString();
+            s = Array.Find(longWeaponSounds, sound => sound.name == name);
+        }
+
+        if (seperateObject == true)
+        {
+            GameObject _targetAudio = new GameObject(target.name + " Audio Source. Playing - " + name);
+            _targetAudio.transform.SetParent(target.transform);
+            target = _targetAudio;
+        }
+
+        AudioSource _source = target.AddComponent<AudioSource>();
+        _source.clip = s.clip;
+        _source.volume = s.volume;
+        _source.pitch = s.pitch;
+        _source.loop = s.loop;
+        _source.priority = s.priority;
+        _source.rolloffMode = AudioRolloffMode.Linear;
+        _source.minDistance = 30;
+        _source.maxDistance = 1000;
+        _source.spatialBlend = 1f;
+        _source.outputAudioMixerGroup = fx;
 
         return _source;
     }
