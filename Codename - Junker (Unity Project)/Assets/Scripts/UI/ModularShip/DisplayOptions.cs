@@ -8,6 +8,7 @@ public class DisplayOptions : MonoBehaviour
     public RectTransform contentPanel;
     public RectTransform highlight;
     public RectTransform statsPanel;
+    public PopulateStatDisplay m_statsPanelUpdate;
 
     public VerticalLayoutGroup vertLayout;
 
@@ -30,6 +31,8 @@ public class DisplayOptions : MonoBehaviour
     private void Start()
     {
         index = 0;
+        UpdateHighlightPosition();
+        m_statsPanelUpdate = statsPanel.GetComponent<PopulateStatDisplay>();
     }
     private void Awake()
     {
@@ -75,6 +78,7 @@ public class DisplayOptions : MonoBehaviour
         if (index != 0)
         {
             _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 0.9f, _targetBlock.position.y);
+            _statsDisplayPosition.y = Mathf.Clamp(_statsDisplayPosition.y, statsPanel.sizeDelta.y, Screen.height-statsPanel.sizeDelta.y);
             if (_statsDisplayPosition != _statsDisplayRequiredPosition)
             {
                 statsPanel.position = Vector2.Lerp(_statsDisplayPosition, _statsDisplayRequiredPosition, 0.1f);
@@ -93,12 +97,22 @@ public class DisplayOptions : MonoBehaviour
     public void UpdateHighlightPosition()
     {
         m_modulesList[index].GetComponent<ToggleElements>().HighlightOn();
-        for (int i = 0; i < ModulesList.Count; i++)
+        for (int i = 0; i < m_modulesList.Count; i++)
         {
             if(i != index)
             {
                 ModulesList[i].GetComponent<ToggleElements>().HighlightOff();
             }
+        }
+
+        //Displays stats correctly, if shields don't work then we need to add them to here.
+        if(m_modulesList[index].name.Contains("weapon"))
+        {
+            m_statsPanelUpdate.PopulateWeapon(m_modulesList[index].GetComponent<WeaponStatManager>().Data);
+        }
+        else if (m_modulesList[index].name.Contains("engine"))
+        {
+            m_statsPanelUpdate.PopulateEngine(m_modulesList[index].GetComponent<EngineStatManager>().Data);
         }
 
 

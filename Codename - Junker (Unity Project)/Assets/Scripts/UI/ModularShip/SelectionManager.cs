@@ -10,6 +10,7 @@ public class SelectionManager : MonoBehaviour
 
     public TextMeshProUGUI currentPreviewtext; 
 
+    [SerializeField]
     private int m_currentlySelectedIndex = 0;
     private bool m_readyForInput = true;
     private int m_equippedEngineIndex, m_equippedLeftIndex, m_equippedRightIndex;
@@ -51,7 +52,7 @@ public class SelectionManager : MonoBehaviour
         {
             if ((Input.GetAxis("MacroEngine") < 0) || (Input.GetAxis("Vertical") < 0))
             {
-                if (m_currentlySelectedIndex == display.ModulesList.Count - 1)
+                if (m_currentlySelectedIndex >= display.ModulesList.Count - 1)
                 {
                     m_currentlySelectedIndex = display.ModulesList.Count - 1;
                 }
@@ -59,12 +60,17 @@ public class SelectionManager : MonoBehaviour
                 {
                     m_currentlySelectedIndex++;
                 }
+                Debug.Log("Index is " + m_currentlySelectedIndex);
 
                 if(m_currentlySelectedIndex >= display.NumItemsOnScreen)
                 {
-                    display.Index = m_currentlySelectedIndex + 1;
-                    display.ScrollDownToSelected();
-                    m_bottomIndex++;
+                    if (m_bottomIndex != display.ModulesList.Count)
+                    {
+                        display.Index = m_currentlySelectedIndex + 1;
+                        display.ScrollDownToSelected();
+                        m_bottomIndex++;
+                    }
+
                 }
 
                 RemovePreviousModule();
