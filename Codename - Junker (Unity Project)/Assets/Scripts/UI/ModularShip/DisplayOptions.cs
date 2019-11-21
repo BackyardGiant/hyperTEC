@@ -34,7 +34,7 @@ public class DisplayOptions : MonoBehaviour
         UpdateHighlightPosition();
         m_statsPanelUpdate = statsPanel.GetComponent<PopulateStatDisplay>();
     }
-    private void Awake()
+    public void FillInventory()
     {
         availableEngines = PlayerInventoryManager.Instance.AvailableEngines;
         availableWeapons = PlayerInventoryManager.Instance.AvailableWeapons;
