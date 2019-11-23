@@ -10,17 +10,20 @@ public class SelectionManager : MonoBehaviour
 
     public TextMeshProUGUI currentPreviewtext; 
 
+    [SerializeField]
     private int m_currentlySelectedIndex = 0;
     private bool m_readyForInput = true;
-    private float m_equippedEngineIndex, m_equippedLeftIndex, m_equippedRightIndex;
+    private int m_equippedEngineIndex, m_equippedLeftIndex, m_equippedRightIndex;
     private int[] m_takenIndexes = new int[] { -1, -1, -1 };
     private bool m_leftSideSelected = true;
 
     [SerializeField]
     private int m_bottomIndex;
 
+    private bool m_filled = false;
+
     // Initialise all to "null" (-1)
-    void Start()
+    public void FillMenu()
     {
         m_equippedEngineIndex = PlayerInventoryManager.Instance.EquippedEngineIndex;
         m_equippedLeftIndex = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
@@ -30,188 +33,203 @@ public class SelectionManager : MonoBehaviour
         m_takenIndexes[1] = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
         m_takenIndexes[2] = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
 
-
-        display.UpdateHighlightPosition(0);
+        display.UpdateHighlightPosition();
         display.UpdateEquipped(m_takenIndexes);
+        DisplayEquipped();
 
         PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
 
         m_bottomIndex = display.NumItemsOnScreen;
+
+        m_filled = true;
     }
 
     private void Update()
     {
-        // Reset input "cooldown"
-        if((Input.GetAxis("MacroEngine") == 0) && (Input.GetAxis("Vertical") == 0))
+        if (m_filled == true)
         {
-            m_readyForInput = true;
-        }
-
-        if(m_readyForInput)
-        {
-            if ((Input.GetAxis("MacroEngine") < 0) || (Input.GetAxis("Vertical") < 0))
+            // Reset input "cooldown"
+            if ((Input.GetAxis("MacroEngine") == 0) && (Input.GetAxis("Vertical") == 0))
             {
-                if (m_currentlySelectedIndex == display.ModulesList.Count - 1)
-                {
-                    m_currentlySelectedIndex = display.ModulesList.Count - 1;
-                }
-                else
-                {
-                    m_currentlySelectedIndex++;
-                }
-
-                if(m_currentlySelectedIndex >= display.NumItemsOnScreen)
-                {
-                    display.ScrollDownToSelected(m_currentlySelectedIndex + 1);
-                    m_bottomIndex++;
-                }
-
-                RemovePreviousModule();
-                DisplayEquipped();
-                PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
-
-                display.UpdateHighlightPosition(m_currentlySelectedIndex);
-                m_readyForInput = false;
+                m_readyForInput = true;
             }
 
-            if ((Input.GetAxis("MacroEngine") > 0) || (Input.GetAxis("Vertical") > 0))
+            if (m_readyForInput)
             {
-                if (m_currentlySelectedIndex == 0)
+                if ((Input.GetAxis("MacroEngine") < 0) || (Input.GetAxis("Vertical") < 0))
                 {
-                    m_currentlySelectedIndex = 0;
-                }
-                else
-                {
-                    m_currentlySelectedIndex--;
-                }
-
-                if (m_currentlySelectedIndex < m_bottomIndex - display.NumItemsOnScreen)
-                {
-                    m_bottomIndex--;
-                    display.ScrollDownToSelected(m_bottomIndex);            
-                }
-
-                RemovePreviousModule();
-                DisplayEquipped();
-                PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
-
-                display.UpdateHighlightPosition(m_currentlySelectedIndex);
-                m_readyForInput = false;
-            }
-        }
-
-        // Swap from left to right side of the ship
-        if(Input.GetButtonDown("XboxY"))
-        {
-            m_leftSideSelected = !m_leftSideSelected;
-            Debug.Log("Left side selected? : " + m_leftSideSelected);
-
-            if(m_leftSideSelected)
-            {
-                currentPreviewtext.text = "Currently Previewing: Left Side";
-            }
-            else
-            {
-                currentPreviewtext.text = "Currently Previewing: Right Side";
-            }
-
-            if (!CheckIfAlreadyEquipped())
-            {
-                RemovePreviousModule();
-                DisplayEquipped();
-                PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
-            }
-        }
-
-        // Equip an option from the inventory
-        if (Input.GetButtonDown("Throttle Up"))
-        {
-            GameObject selected = display.ModulesList[m_currentlySelectedIndex];
-
-            
-
-            if (selected.GetComponent<EngineStatManager>())
-            {
-                if (m_equippedEngineIndex != m_currentlySelectedIndex)
-                {
-                    m_equippedEngineIndex = m_currentlySelectedIndex;
-                    m_takenIndexes[0] = (int)m_equippedEngineIndex;
-                    Debug.Log("Equipped engine " + m_equippedEngineIndex);
-
-                    // Set equipped in player inventory
-                    PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[(int)m_equippedEngineIndex];
-                    PlayerInventoryManager.Instance.EquippedEngineIndex = (int)m_equippedEngineIndex;
-                }
-                else
-                {
-                    m_equippedEngineIndex = -1;
-                    m_takenIndexes[0] = -1;
-
-                    // Set removed in player inventory
-                    PlayerInventoryManager.Instance.EquippedEngine = null;
-                    PlayerInventoryManager.Instance.EquippedEngineIndex = -1;
-                }
-            }
-
-            if (selected.GetComponent<WeaponStatManager>())
-            {
-                if (display.ModulesList[m_currentlySelectedIndex].GetComponent<ToggleElements>().IsEquipped())
-                {
-                    if (m_equippedRightIndex == m_currentlySelectedIndex)
+                    if (m_currentlySelectedIndex >= display.ModulesList.Count - 1)
                     {
-                        m_equippedRightIndex = -1;
-                        m_takenIndexes[2] = -1;
+                        m_currentlySelectedIndex = display.ModulesList.Count - 1;
+                    }
+                    else
+                    {
+                        m_currentlySelectedIndex++;
+                    }
+                    Debug.Log("Index is " + m_currentlySelectedIndex);
 
-                        // Set removed in player inventory
-                        PlayerInventoryManager.Instance.EquippedRightWeapon = null;
-                        PlayerInventoryManager.Instance.EquippedRightIndex = -1;
+                    if (m_currentlySelectedIndex >= display.NumItemsOnScreen)
+                    {
+                        if (m_bottomIndex != display.ModulesList.Count)
+                        {
+                            display.Index = m_currentlySelectedIndex + 1;
+                            display.ScrollDownToSelected();
+                            m_bottomIndex++;
+                        }
 
-                        RemoveRight();
                     }
 
-                    if (m_equippedLeftIndex == m_currentlySelectedIndex)
+                    RemovePreviousModule();
+                    DisplayEquipped();
+                    PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+
+                    display.Index = m_currentlySelectedIndex;
+                    display.UpdateHighlightPosition();
+                    m_readyForInput = false;
+                }
+
+                if ((Input.GetAxis("MacroEngine") > 0) || (Input.GetAxis("Vertical") > 0))
+                {
+                    if (m_currentlySelectedIndex == 0)
                     {
-                        m_equippedLeftIndex = -1;
-                        m_takenIndexes[1] = -1;
-
-                        // Set removed in player inventory
-                        PlayerInventoryManager.Instance.EquippedLeftWeapon = null;
-                        PlayerInventoryManager.Instance.EquippedLeftIndex = -1;
-
-                        RemoveLeft();
+                        m_currentlySelectedIndex = 0;
                     }
+                    else
+                    {
+                        m_currentlySelectedIndex--;
+                    }
+
+                    if (m_currentlySelectedIndex < m_bottomIndex - display.NumItemsOnScreen)
+                    {
+                        m_bottomIndex--;
+                        display.Index = m_bottomIndex;
+                        display.ScrollDownToSelected();
+                    }
+
+                    RemovePreviousModule();
+                    DisplayEquipped();
+                    PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+                    display.Index = m_currentlySelectedIndex;
+                    display.UpdateHighlightPosition();
+                    m_readyForInput = false;
+                }
+            }
+
+            // Swap from left to right side of the ship
+            if (Input.GetButtonDown("XboxY"))
+            {
+                m_leftSideSelected = !m_leftSideSelected;
+                Debug.Log("Left side selected? : " + m_leftSideSelected);
+
+                if (m_leftSideSelected)
+                {
+                    currentPreviewtext.text = "Currently Previewing: Left Side";
                 }
                 else
                 {
-                    if (m_equippedLeftIndex != m_currentlySelectedIndex && m_leftSideSelected)
+                    currentPreviewtext.text = "Currently Previewing: Right Side";
+                }
+
+                if (!CheckIfAlreadyEquipped())
+                {
+                    RemovePreviousModule();
+                    DisplayEquipped();
+                    PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+                }
+            }
+
+            // Equip an option from the inventory
+            if (Input.GetButtonDown("Throttle Up"))
+            {
+                GameObject selected = display.ModulesList[m_currentlySelectedIndex];
+
+
+
+                if (selected.GetComponent<EngineStatManager>())
+                {
+                    if (m_equippedEngineIndex != m_currentlySelectedIndex)
                     {
-                        m_equippedLeftIndex = m_currentlySelectedIndex;
-                        m_takenIndexes[1] = (int)m_equippedLeftIndex;
-                        Debug.Log("Equipped left gun " + m_equippedLeftIndex);
+                        m_equippedEngineIndex = m_currentlySelectedIndex;
+                        m_takenIndexes[0] = (int)m_equippedEngineIndex;
+                        Debug.Log("Equipped engine " + m_equippedEngineIndex);
 
                         // Set equipped in player inventory
-                        PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[(int)m_equippedLeftIndex];
-                        PlayerInventoryManager.Instance.EquippedLeftIndex = (int)m_equippedLeftIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
+                        PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[(int)m_equippedEngineIndex];
+                        PlayerInventoryManager.Instance.EquippedEngineIndex = (int)m_equippedEngineIndex;
                     }
-
-                    if (m_equippedRightIndex != m_currentlySelectedIndex && !m_leftSideSelected)
+                    else
                     {
-                        m_equippedRightIndex = m_currentlySelectedIndex;
-                        m_takenIndexes[2] = (int)m_equippedRightIndex;
-                        Debug.Log("Equipped right gun " + m_equippedRightIndex);
+                        m_equippedEngineIndex = -1;
+                        m_takenIndexes[0] = -1;
 
-                        // Set equipped in player inventory
-                        PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[(int)m_equippedRightIndex];
-                        PlayerInventoryManager.Instance.EquippedRightIndex = (int)m_equippedRightIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
+                        // Set removed in player inventory
+                        PlayerInventoryManager.Instance.EquippedEngine = null;
+                        PlayerInventoryManager.Instance.EquippedEngineIndex = -1;
                     }
                 }
-                
 
-                
+                if (selected.GetComponent<WeaponStatManager>())
+                {
+                    if (display.ModulesList[m_currentlySelectedIndex].GetComponent<ToggleElements>().IsEquipped())
+                    {
+                        if (m_equippedRightIndex == m_currentlySelectedIndex)
+                        {
+                            m_equippedRightIndex = -1;
+                            m_takenIndexes[2] = -1;
+
+                            // Set removed in player inventory
+                            PlayerInventoryManager.Instance.EquippedRightWeapon = null;
+                            PlayerInventoryManager.Instance.EquippedRightIndex = -1;
+
+                            RemoveRight();
+                        }
+
+                        if (m_equippedLeftIndex == m_currentlySelectedIndex)
+                        {
+                            m_equippedLeftIndex = -1;
+                            m_takenIndexes[1] = -1;
+
+                            // Set removed in player inventory
+                            PlayerInventoryManager.Instance.EquippedLeftWeapon = null;
+                            PlayerInventoryManager.Instance.EquippedLeftIndex = -1;
+
+                            RemoveLeft();
+                        }
+                    }
+                    else
+                    {
+                        if (m_equippedLeftIndex != m_currentlySelectedIndex && m_leftSideSelected)
+                        {
+                            m_equippedLeftIndex = m_currentlySelectedIndex;
+                            m_takenIndexes[1] = m_equippedLeftIndex;
+                            Debug.Log("Equipped left gun " + m_equippedLeftIndex);
+                            int _engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
+
+                            // Set equipped in player inventory
+                            PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedLeftIndex - _engineLength];
+                            PlayerInventoryManager.Instance.EquippedLeftIndex = (int)m_equippedLeftIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
+                        }
+
+                        if (m_equippedRightIndex != m_currentlySelectedIndex && !m_leftSideSelected)
+                        {
+                            m_equippedRightIndex = m_currentlySelectedIndex;
+                            m_takenIndexes[2] = m_equippedRightIndex;
+                            Debug.Log("Equipped right gun " + m_equippedRightIndex);
+                            int _engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
+
+                            // Set equipped in player inventory
+                            PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedRightIndex - _engineLength];
+                            PlayerInventoryManager.Instance.EquippedRightIndex = (int)m_equippedRightIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
+                        }
+                    }
+
+
+
+                }
+
+                PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+                display.UpdateEquipped(m_takenIndexes);
             }
-
-            PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
-            display.UpdateEquipped(m_takenIndexes);
         }
     }
 
@@ -238,7 +256,9 @@ public class SelectionManager : MonoBehaviour
         if(m_equippedEngineIndex != -1)
         {
             EngineData statBlock = display.ModulesList[(int)m_equippedEngineIndex].GetComponent<EngineStatManager>().Data;
-            GameObject tempEngine = Instantiate(ModuleManager.Instance.GenerateEngine(statBlock));
+            GameObject tempEngine = ModuleManager.Instance.GenerateEngine(statBlock);
+
+            tempEngine.transform.GetChild(0).GetComponent<ThrustEffectController>().enabled = false;
 
             tempEngine.transform.SetParent(goShipEngineSnap.transform);
             tempEngine.transform.position = goShipEngineSnap.transform.position;
@@ -292,8 +312,12 @@ public class SelectionManager : MonoBehaviour
         {
             if (selectedObject.GetComponent<EngineStatManager>())
             {
+                RemoveEngine();
+
                 EngineData _statBlock = selectedObject.GetComponent<EngineStatManager>().Data;
-                GameObject _tempEngine = Instantiate(ModuleManager.Instance.GenerateEngine(_statBlock));
+                GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(_statBlock);
+
+                _tempEngine.transform.GetChild(0).GetComponent<ThrustEffectController>().enabled = false;
 
                 _tempEngine.transform.SetParent(goShipEngineSnap.transform);
                 _tempEngine.transform.position = goShipEngineSnap.transform.position;

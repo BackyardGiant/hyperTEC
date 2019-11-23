@@ -100,11 +100,14 @@ MonoBehaviour:
   - {fileID: 4771994900654628023, guid: ee3ef665fd7c36e4c8139102ab57b925, type: 3}
   - {fileID: 7798602798951907493, guid: 252f8755b2e4cde4d81d5855e4865790, type: 3}
   - {fileID: 3250931294493663760, guid: b3ce835660718b54fab719f6abfb53cb, type: 3}
-  explorerEngines: []
+  explorerEngines:
+  - {fileID: 1115772847887957893, guid: 27a8666fad7a19443934794d41c093da, type: 3}
   defaultEngines:
-  - {fileID: 4369712147853546786, guid: e75c7378b6b8f844eb289727151a8d86, type: 3}
-  traderEngines: []
-  constructEngine: []
+  - {fileID: 7600961632688489320, guid: d27987ff6eda96141af1de329b014f35, type: 3}
+  traderEngines:
+  - {fileID: 8799522980306141755, guid: 361d15d911d019443906611f2dd9f3fe, type: 3}
+  constructEngine:
+  - {fileID: 7113207445107268369, guid: da88b47475ae5764e83bc947b943e29e, type: 3}
   goExplorerGunBase: {fileID: 173963497452463579, guid: 8452c1851d0c8374993be696c40f7126,
     type: 3}
   goInitialGunBase: {fileID: 5249147796776496907, guid: 80d801963cbfc3c4dab3be1c1a08bdc2,

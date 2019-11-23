@@ -9,12 +9,16 @@ public class PauseMenuManagement : MonoBehaviour
 {
     [SerializeField, Tooltip("Settings Menu Object")]
     private GameObject m_settingsMenu;
+    [SerializeField, Tooltip("LoadGame Menu Object")]
+    private GameObject m_loadGameMenu;
     [SerializeField, Tooltip("All of the items on the menu to sort through")]
     private GameObject[] m_menuOptions;
     [SerializeField, Tooltip("UI sounds. First should be the scroll, second should be select")]
     private AudioClip[] m_sounds;
     [SerializeField, Tooltip("Audio Mixers")]
     private AudioMixer m_mixer;
+    [SerializeField, Tooltip("Game Saved Animator")]
+    private Animator m_gameSaved;
 
     private bool m_inputAllowed; //Tracks if the initial logo animation is done.
     private bool m_onMenu; //Tracks whether the player had progressed through from the logo to the menu yet.
@@ -45,7 +49,6 @@ public class PauseMenuManagement : MonoBehaviour
         {
             m_readyForInput = true;
         }
-
         if (m_readyForInput)
         {
             //If you've added an item to the menu and it's not selecting, it's because it doesn't exist here.
@@ -192,12 +195,16 @@ public class PauseMenuManagement : MonoBehaviour
 
     private void saveGame()
     {
-        Debug.Log("Load Game");
-        //m_onMenu = false;
+        Debug.Log("saveGame");
+        m_gameSaved.Play("GameSavedAnim");
+        string _saveIndex = PlayerPrefs.GetString("CurrentSave");
+
+        GameManager.Instance.SaveGame();
     }
     private void loadGame()
     {
-        Debug.Log("New Game");
+        m_loadGameMenu.SetActive(true);
+        this.gameObject.SetActive(false);
     }
     private void settings()
     {
@@ -207,6 +214,7 @@ public class PauseMenuManagement : MonoBehaviour
     }
     private void mainMenu()
     {
+        GameManager.Instance.SaveGame();
         SceneManager.LoadScene("MainMenu");
         Debug.Log("Quit");
     }

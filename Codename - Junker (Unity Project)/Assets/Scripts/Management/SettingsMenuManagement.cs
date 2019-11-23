@@ -37,6 +37,7 @@ public class SettingsMenuManagement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_selectedIndex = 0;
         m_audioCooldown = false;
         m_selectedIndex = 0;
         m_UIAudio = this.GetComponent<AudioSource>();
@@ -62,7 +63,6 @@ public class SettingsMenuManagement : MonoBehaviour
         {
             m_readyForInput = true;
         }
-
         //Arrow Control
         for(int i = 0; i < m_values.Length; i++)
         {
@@ -93,6 +93,7 @@ public class SettingsMenuManagement : MonoBehaviour
                     CloseBar(2);
                     CloseBar(3);
                     CloseBar(4);
+                    CloseBar(5);
                     break;
                 case 1:
                     m_controlScheme1.SetActive(false);
@@ -102,6 +103,7 @@ public class SettingsMenuManagement : MonoBehaviour
                     CloseBar(2);
                     CloseBar(3);
                     CloseBar(4);
+                    CloseBar(5);
                     break;
                 case 2:
                     m_controlScheme1.SetActive(false);
@@ -111,6 +113,7 @@ public class SettingsMenuManagement : MonoBehaviour
                     CloseBar(1);
                     CloseBar(3);
                     CloseBar(4);
+                    CloseBar(5);
                     break;
                 case 3:
                     m_controlScheme1.SetActive(false);
@@ -120,6 +123,7 @@ public class SettingsMenuManagement : MonoBehaviour
                     CloseBar(1);
                     CloseBar(2);
                     CloseBar(4);
+                    CloseBar(5);
                     break;
                 case 4:
                     AnimateBar(4);
@@ -127,7 +131,8 @@ public class SettingsMenuManagement : MonoBehaviour
                     CloseBar(1);
                     CloseBar(2);
                     CloseBar(3);
-                    if(m_controlSchemeValue.text == "1")
+                    CloseBar(5);
+                    if (m_controlSchemeValue.text == "1")
                     {
                         m_controlScheme2.SetActive(false);
                         m_controlScheme1.SetActive(true);
@@ -137,6 +142,16 @@ public class SettingsMenuManagement : MonoBehaviour
                         m_controlScheme1.SetActive(false);
                         m_controlScheme2.SetActive(true);
                     }
+                    break;
+                case 5:
+                    m_controlScheme1.SetActive(false);
+                    m_controlScheme2.SetActive(false);
+                    AnimateBar(5);
+                    CloseBar(0);
+                    CloseBar(1);
+                    CloseBar(2);
+                    CloseBar(3);
+                    CloseBar(4);
                     break;
             }
             if ((Input.GetAxis("MacroEngine") < -0.3) || (Input.GetAxis("Vertical") < -0.3))
@@ -167,9 +182,7 @@ public class SettingsMenuManagement : MonoBehaviour
                 m_UIAudio.clip = m_sounds[0];
                 m_UIAudio.Play();
             }
-
-
-            if (m_selectedIndex != 4 && m_audioCooldown == false)
+            if (m_selectedIndex != m_menuOptions.Length && m_audioCooldown == false)
             {
                 if ((Input.GetAxis("MacroEngine") < 0) || (Input.GetAxis("Horizontal") < -0.3))
                 {
@@ -232,6 +245,10 @@ public class SettingsMenuManagement : MonoBehaviour
                             PlayerPrefs.SetInt("ControlScheme", 0);
                             m_controlSchemeValue.text = "1";
                         }
+                        break;
+                    case 5:
+                        m_mainMenu.SetActive(true);
+                        gameObject.SetActive(false);
                         break;
                 }
             }

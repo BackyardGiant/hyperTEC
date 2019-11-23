@@ -30,6 +30,10 @@ public class AdvancedEnemyMovement : MonoBehaviour
     private float m_circleRadius;
     [SerializeField, Tooltip("The chance that the ship will chnage direction when wondering"), Range(0,1)]
     private float m_turnChance;
+    [SerializeField, Tooltip("The size of the max random offset when evading")]
+    private float m_evadeSize;
+    [SerializeField, Tooltip("The chance that the ship will chnage direction when evading"), Range(0, 1)]
+    private float m_evadeChance;
     #endregion
 
     #region Damping
@@ -55,6 +59,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
     [SerializeField, Tooltip("The distance from the oragin that the enemy will fly before tunring around and seeking back to the centre")]
     private float m_wanderRange;
     private bool m_canWander = true;
+    private bool m_canEvade = true;
     #endregion
 
     #region Slow Mo Manager
@@ -66,9 +71,13 @@ public class AdvancedEnemyMovement : MonoBehaviour
     private float m_angleVelocityDifferenceBetweenSlow;
     #endregion
 
+    private Vector3 m_startPosition;
+
     private Rigidbody m_rb;
 
     private EnemyManager m_manager;
+
+    public Vector3 StartPosition { get => m_startPosition; set => m_startPosition = value; }
 
     private void Awake()
     {
@@ -132,20 +141,36 @@ public class AdvancedEnemyMovement : MonoBehaviour
             m_target = m_manager.Target;
             m_attacking = m_manager.AttackingPlayer;
 
-            if (Vector3.Distance(transform.position, Vector3.zero) < m_wanderRange)
+            if (Vector3.Distance(transform.position, m_startPosition) < m_wanderRange)
             {
                 if (m_attacking)
                 {
                     if (m_target != null)
                     {
-                        if (m_fleeing)
+                        if (m_manager.m_behaviourState == EnemyManager.States.Flee)
                         {
                             m_steering = FleeTarget(m_target.transform);
                         }
-                        else
+                        else if(m_manager.m_behaviourState == EnemyManager.States.Pursue)
                         {
                             m_steering = PursueTarget(m_target.transform);
                         }
+                        else if(m_manager.m_behaviourState == EnemyManager.States.Evade)
+                        {
+                            m_steering = Evade(m_target.transform);
+                        }
+                        else if(m_manager.m_behaviourState == EnemyManager.States.PassBy)
+                        {
+                            m_steering = Forward();
+                        }
+                        else if(m_manager.m_behaviourState == EnemyManager.States.Wander)
+                        {
+                            m_steering = Wander();
+                        }
+                    }
+                    else
+                    {
+                        m_steering = Wander();
                     }
                 }
                 else
@@ -157,18 +182,26 @@ public class AdvancedEnemyMovement : MonoBehaviour
             {
                 if (m_target != null)
                 {
-                    if (m_fleeing)
+                    if (m_manager.m_behaviourState == EnemyManager.States.Flee)
                     {
                         m_steering = FleeTarget(m_target.transform);
                     }
-                    else
+                    else if (m_manager.m_behaviourState == EnemyManager.States.Pursue)
                     {
                         m_steering = PursueTarget(m_target.transform);
+                    }
+                    else if (m_manager.m_behaviourState == EnemyManager.States.Evade)
+                    {
+                        m_steering = Evade(m_target.transform);
+                    }
+                    else if (m_manager.m_behaviourState == EnemyManager.States.PassBy)
+                    {
+                        m_steering = Forward();
                     }
                 }
                 else
                 {
-                    m_steering = Seek(Vector3.zero);
+                    m_steering = Seek(m_startPosition);
                 }
             }
 
@@ -203,7 +236,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
 
     private Vector3 PursueTarget(Transform _target)
     {
-        Vector3 _estimatedPosition = _target.position + _target.GetComponent<Rigidbody>().velocity;
+        Vector3 _estimatedPosition = _target.position - _target.GetComponentInParent<Rigidbody>().velocity;
         Vector3 _steering = Seek(_estimatedPosition);
 
         return _steering;
@@ -219,8 +252,35 @@ public class AdvancedEnemyMovement : MonoBehaviour
 
     private Vector3 FleeTarget(Transform _target)
     {
-        Vector3 _estimatedPosition = _target.position + _target.GetComponent<Rigidbody>().velocity;
+        Vector3 _estimatedPosition = _target.position + _target.GetComponentInParent<Rigidbody>().velocity;
         Vector3 _steering = Flee(_estimatedPosition);
+
+        return _steering;
+    }
+
+    private Vector3 Evade(Transform _target)
+    {
+        Vector3 _steering = m_steering;
+
+        if (Random.value < m_evadeChance && m_canEvade)
+        {
+            m_canEvade = false;
+            StartCoroutine(ResetEvade());
+            Vector3 _desiredVelocity = new Vector3();
+            if (_target.GetComponentInParent<Rigidbody>().velocity.magnitude > 0)
+            {
+                _desiredVelocity = (Vector3.Normalize(_target.GetComponentInParent<Rigidbody>().velocity) * m_maxSpeed * m_acceleration) - m_rb.velocity;
+            }
+            else
+            {
+                _desiredVelocity = (_target.forward * m_maxSpeed * m_acceleration) - m_rb.velocity;
+            }
+            float _randomDisplacementX = Random.Range(-m_evadeSize, m_evadeSize);
+            float _randomDisplacementY = Random.Range(-m_evadeSize, m_evadeSize);
+            Vector3 _displacement = new Vector3(_randomDisplacementX, _randomDisplacementY, 0);
+
+            _steering = _desiredVelocity + _displacement;
+        }
 
         return _steering;
     }
@@ -248,14 +308,25 @@ public class AdvancedEnemyMovement : MonoBehaviour
             Vector2 randomPoint = Random.insideUnitCircle;
 
             Vector3 displacement = new Vector3(randomPoint.x, randomPoint.y) * m_circleRadius;
-            displacement = Quaternion.LookRotation(m_rb.velocity) * displacement;
 
+            if(m_rb.velocity != Vector3.zero)
+            {
+                displacement = Quaternion.LookRotation(m_rb.velocity) * displacement;
+            }
+           
             _wanderForce = _circleCentre + displacement;
             _wanderForce = (_wanderForce.normalized * m_maxSpeed * m_acceleration) - m_rb.velocity;
             m_wanderDirection = _wanderForce;
         }
 
         return _wanderForce;
+    }
+
+    private Vector3 Forward()
+    {
+        Vector3 forward = (transform.forward * m_maxSpeed) - m_rb.velocity;
+
+        return forward;
     }
 
     private Vector3 collisionAvoidance()
@@ -306,6 +377,12 @@ public class AdvancedEnemyMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         m_canWander = true;
+    }
+
+    private IEnumerator ResetEvade()
+    {
+        yield return new WaitForSeconds(3f);
+        m_canEvade = true;
     }
 
     #region SlowMoObject

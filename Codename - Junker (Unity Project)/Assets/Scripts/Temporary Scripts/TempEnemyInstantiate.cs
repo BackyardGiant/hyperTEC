@@ -6,7 +6,7 @@ public class TempEnemyInstantiate : MonoBehaviour
 {
     public GameObject[] weaponBodies;
 
-    public Transform spawnPoint;
+    public Transform[] spawnPoints;
 
     public GameObject enemyPrefab;
 
@@ -18,21 +18,39 @@ public class TempEnemyInstantiate : MonoBehaviour
     {
         for (int i = 0; i < enemyLimit; i++)
         {
-            SpawnEnemy();
+            if (i < 5)
+            {
+                SpawnEnemy(spawnPoints[0]);
+            }
+            else if (i < 10)
+            {
+                SpawnEnemy(spawnPoints[1]);
+            }
+            else if (i < 15)
+            {
+                SpawnEnemy(spawnPoints[2]);
+            }
+            else if (i < 20)
+            {
+                SpawnEnemy(spawnPoints[3]);
+            }
         }
     }
 
     private void Update()
     {
-        if(GameObject.FindGameObjectsWithTag("Enemy").Length < enemyLimit)
-        {
-            SpawnEnemy();
-        }
+        // Continously spawn enemies, ensuring that enemyLimit is met.
+        //if(GameObject.FindGameObjectsWithTag("Enemy").Length < enemyLimit)
+        //{
+        //    SpawnEnemy();
+        //}
     }
 
-    private void SpawnEnemy()
+    private void SpawnEnemy(Transform _spawnPoint)
     {
-        GameObject _tempEnemy = Instantiate(enemyPrefab, Random.insideUnitSphere * 300, spawnPoint.rotation);
+        GameObject _tempEnemy = Instantiate(enemyPrefab, _spawnPoint.position + (Random.insideUnitSphere * 300), _spawnPoint.rotation);
+
+        _tempEnemy.GetComponent<AdvancedEnemyMovement>().StartPosition = _spawnPoint.position;
 
         Transform _leftSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("LeftSnap");
         Transform _rightSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("RightSnap");

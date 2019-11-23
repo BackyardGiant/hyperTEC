@@ -11,9 +11,11 @@ public class QuestManager : MonoBehaviour
 {
     private static QuestManager s_instance;
     private List<Quest> m_currentQuests = new List<Quest>();
+    private int m_trackingQuestIndex;
 
     public List<Quest> CurrentQuests { get => m_currentQuests; set => m_currentQuests = value; }
     public static QuestManager Instance { get => s_instance; set => s_instance = value; }
+    public int TrackingQuestIndex { get => m_trackingQuestIndex; set => m_trackingQuestIndex = value; }
 
     private void Awake()
     {
@@ -62,13 +64,13 @@ public class QuestManager : MonoBehaviour
     #endregion
 
     #region Quest Progression
-    public void IncrimentKillQuests()
+    public void IncrementKillQuests()
     {
         foreach (Quest _quest in m_currentQuests)
         {
             if (_quest.QuestType == QuestType.kill)
             {
-                _quest.QuestIncriment(1);
+                _quest.QuestIncrement(1);
             }
         }
     }
@@ -88,7 +90,7 @@ public class QuestManager : MonoBehaviour
         {
             if (_quest.QuestType == QuestType.control)
             {
-                _quest.QuestIncriment(1);
+                _quest.QuestIncrement(1);
             }
         }
     }
@@ -98,7 +100,7 @@ public class QuestManager : MonoBehaviour
         {
             if (_quest.QuestType == QuestType.recon)
             {
-                _quest.QuestIncriment(1);
+                _quest.QuestIncrement(1);
             }
         }
     }
@@ -108,11 +110,17 @@ public class QuestManager : MonoBehaviour
         {
             if (_quest.QuestType == QuestType.targets)
             {
-                _quest.QuestIncriment(1);
+                _quest.QuestIncrement(1);
             }
         }
     }
     #endregion
+
+    public void ClearQuests()
+    {
+        m_currentQuests = new List<Quest>();
+        m_trackingQuestIndex = 0;
+    }
 
     public void CompleteQuest(Quest _completedQuest)
     {

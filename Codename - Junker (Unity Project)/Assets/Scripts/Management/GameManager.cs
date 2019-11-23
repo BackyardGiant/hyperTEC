@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +14,13 @@ public class GameManager : MonoBehaviour
     public GameEvent normalSpeed;
     public TempEnemyInstantiate spawner;
     public GameObject lootTemplate;
+    public Image blackOut;
+    public Animator fadeAnimator;
+    public DisplayOptions display;
+
+    private bool m_canLeaveScene = false;
+
+    private int m_enemiesKilledSoFar;
 
     private Vector3 m_defaultScale = new Vector3(1, 1, 1);
     private Vector3 m_defaultOffset = new Vector3(0.278f, -0.226f, -0.802f); // taken from eyeballing the offset in the inspector
@@ -26,6 +34,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get => s_instance; set => s_instance = value; }
     public float GameSpeed { get => m_gameSpeed; private set => m_gameSpeed = value; }
+    public int EnemiesKilledSoFar { get => m_enemiesKilledSoFar; set => m_enemiesKilledSoFar = value; }
 
     private void Awake()
     {
@@ -47,9 +56,41 @@ public class GameManager : MonoBehaviour
 
         if (_sceneName == "MainScene" && PlayerPrefs.GetInt("LoadFromSave", 0) == 1)
         {
-            spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
-            Invoke("LoadGame", 0.3f);
+            LoadInto();
         }
+        else if(_sceneName == "MainScene")
+        {
+            LoadInto();
+        }
+        else if(_sceneName == "ModularShip")
+        {
+            fadeAnimator.Play("Fade");
+            LoadInventory();
+        }
+
+        Debug.Log("<color=red>CURRENT SAVE: </color>" + PlayerPrefs.GetString("CurrentSave"));
+        Debug.Log("<color=red>LATEST SAVE: </color>" + PlayerPrefs.GetString("LatestSave"));
+    }
+
+    private void LoadInto()
+    {
+        PlayerPrefs.SetInt("LoadFromSave", 0);
+        spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<TempEnemyInstantiate>();
+        Invoke("LoadGame", 0.6f);
+        fadeAnimator.Play("Fade");
+    }
+
+    private void LoadOut()
+    {
+        SaveGame();
+        PlayerPrefs.SetInt("LoadFromSave", 1);
+        SceneManager.LoadScene("ModularShip");
+    }
+
+    private void InventoryLoadOut()
+    {
+        SaveWeapons();
+        SceneManager.LoadScene("MainScene");
     }
 
     private void Update()
@@ -62,16 +103,15 @@ public class GameManager : MonoBehaviour
         Scene _currentScene = SceneManager.GetActiveScene();
         string _sceneName = _currentScene.name;
 
-        if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene")
+        if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene" && m_canLeaveScene)
         {
-            SaveGame();
-            PlayerPrefs.SetInt("LoadFromSave", 1);
-            SceneManager.LoadScene("ModularShip");
+            fadeAnimator.Play("FadeOut");
+            Invoke("LoadOut",0.5f);
         }
-        else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip")
+        else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip" && m_canLeaveScene)
         {
-            SaveWeapons();
-            SceneManager.LoadScene("MainScene");
+            fadeAnimator.Play("FadeOut");
+            Invoke("InventoryLoadOut", 0.5f);
         }
 
         if (Input.GetKeyDown(KeyCode.F2))
@@ -119,6 +159,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("UserTesting");
     }
 
+    public void EnemyKilled()
+    {
+        m_enemiesKilledSoFar++;
+    }
+
     public void SaveWeapons()
     {
         string _fileName = PlayerPrefs.GetString("LatestSave", "NoSave");
@@ -138,7 +183,42 @@ public class GameManager : MonoBehaviour
 
             string _saveLine = "";
 
-            PlayerSavingObject playerSave = new PlayerSavingObject(new Vector3(float.Parse(_savedPlayer.positionX), float.Parse(_savedPlayer.positionY), float.Parse(_savedPlayer.positionZ)), new Quaternion(float.Parse(_savedPlayer.rotationX), float.Parse(_savedPlayer.rotationY), float.Parse(_savedPlayer.rotationZ), float.Parse(_savedPlayer.rotationW)), PlayerInventoryManager.Instance.EquippedRightWeapon.Seed, PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed, PlayerInventoryManager.Instance.EquippedEngine.Seed);
+            int _numberOfEnemies = int.Parse(_lines[1]);
+            int _numberOfItems = int.Parse(_lines[2 + _numberOfEnemies]);
+
+            string _leftSeed = "";
+            string _rightSeed = "";
+            string _engineSeed = "";
+
+            if(PlayerInventoryManager.Instance.EquippedRightWeapon != null)
+            {
+                _rightSeed = PlayerInventoryManager.Instance.EquippedRightWeapon.Seed;
+            }
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
+            {
+                _leftSeed = PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed;
+            }
+            if (PlayerInventoryManager.Instance.EquippedEngine != null)
+            {
+                _engineSeed = PlayerInventoryManager.Instance.EquippedEngine.Seed;
+            }
+            PlayerSavingObject playerSave = new PlayerSavingObject(new Vector3(float.Parse(_savedPlayer.positionX), float.Parse(_savedPlayer.positionY), float.Parse(_savedPlayer.positionZ)), new Quaternion(float.Parse(_savedPlayer.rotationX), float.Parse(_savedPlayer.rotationY), float.Parse(_savedPlayer.rotationZ), float.Parse(_savedPlayer.rotationW)), _rightSeed, _leftSeed, _engineSeed);
+
+            List<string> _weaponSeeds = new List<string>();
+            List<string> _engineSeeds = new List<string>();
+
+            foreach (WeaponData _weapon in PlayerInventoryManager.Instance.AvailableWeapons)
+            {
+                _weaponSeeds.Add(_weapon.Seed);
+            }
+            foreach (EngineData _engine in PlayerInventoryManager.Instance.AvailableEngines)
+            {
+                _engineSeeds.Add(_engine.Seed);
+            }
+
+            InventorySavingObject _inventory = new InventorySavingObject(_weaponSeeds, _engineSeeds, PlayerInventoryManager.Instance.EquippedEngineIndex.ToString(), PlayerInventoryManager.Instance.EquippedLeftIndex.ToString(), PlayerInventoryManager.Instance.EquippedRightIndex.ToString());
+
+            string _inventorySave = JsonUtility.ToJson(_inventory);
 
             _saveLine = JsonUtility.ToJson(playerSave);
 
@@ -149,6 +229,10 @@ public class GameManager : MonoBehaviour
                     if (currentLine == 0)
                     {
                         writer.WriteLine(_saveLine);
+                    }
+                    else if (currentLine == 3 + _numberOfEnemies + _numberOfItems)
+                    {
+                        writer.WriteLine(_inventorySave);
                     }
                     else
                     {
@@ -171,7 +255,24 @@ public class GameManager : MonoBehaviour
 
         GameObject _player = GameObject.FindGameObjectWithTag("Player");
 
-        PlayerSavingObject playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, PlayerInventoryManager.Instance.EquippedRightWeapon.Seed, PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed, PlayerInventoryManager.Instance.EquippedEngine.Seed);
+        string _rightWeaponSeed = "-1";
+        string _leftWeaponSeed = "-1";
+        string _engineSeed = "-1";
+
+        if(PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
+        {
+            _leftWeaponSeed = PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed;
+        }
+        if(PlayerInventoryManager.Instance.EquippedRightWeapon != null)
+        {
+            _rightWeaponSeed = PlayerInventoryManager.Instance.EquippedRightWeapon.Seed;
+        }
+        if (PlayerInventoryManager.Instance.EquippedEngine != null)
+        {
+            _engineSeed = PlayerInventoryManager.Instance.EquippedEngine.Seed;
+        }
+
+        PlayerSavingObject playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, _rightWeaponSeed, _leftWeaponSeed, _engineSeed);
 
         GameObject[] _enemies = GameObject.FindGameObjectsWithTag("Enemy");
         List<EnemySavingObject> _enemySaves = new List<EnemySavingObject>();
@@ -208,26 +309,74 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Loot has no type");
                 break;
             }
-            else
+            else if(_type == 0)
             {
-                string _seed = _target.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock.Seed;
-                _lootSaves.Add(new LootSavingObject(_target.transform.position, _target.transform.rotation, _seed, _type.ToString()));
+                try
+                {
+                    string _seed = _target.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock.Seed;
+                    _lootSaves.Add(new LootSavingObject(_target.transform.position, _target.transform.rotation, _seed, _type.ToString()));
+                }
+                catch
+                {
+                    Debug.Log("<color=red> Did not find stat block on engine </color>");
+                }
+            }
+            else if(_type == 1)
+            {
+                try
+                {
+                    string _seed = _target.transform.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock.Seed;
+                    _lootSaves.Add(new LootSavingObject(_target.transform.position, _target.transform.rotation, _seed, _type.ToString()));
+                }
+                catch
+                {
+                    Debug.Log("<color=red> Did not find stat block on engine </color>");
+                }
             }
         }
 
-        string amountOfLoot = _lootSaves.Count.ToString();
+        List<string> _weaponSeeds = new List<string>();
+        List<string> _engineSeeds = new List<string>();
+
+        foreach (WeaponData _weapon in PlayerInventoryManager.Instance.AvailableWeapons)
+        {
+            _weaponSeeds.Add(_weapon.Seed);
+        }
+        foreach (EngineData _engine in PlayerInventoryManager.Instance.AvailableEngines)
+        {
+            _engineSeeds.Add(_engine.Seed);
+        }
+
+        InventorySavingObject _inventory = new InventorySavingObject(_weaponSeeds, _engineSeeds, PlayerInventoryManager.Instance.EquippedEngineIndex.ToString(), PlayerInventoryManager.Instance.EquippedLeftIndex.ToString(), PlayerInventoryManager.Instance.EquippedRightIndex.ToString());
+
+        string _amountOfLoot = _lootSaves.Count.ToString();
 
         _saveLine = JsonUtility.ToJson(playerSave);
 
+        string _inventorySave = JsonUtility.ToJson(_inventory);
+
+        string _amountOfQuests = QuestManager.Instance.CurrentQuests.Count.ToString();
+        string _questIndex = QuestManager.Instance.TrackingQuestIndex.ToString();
+
+        List<QuestSavingObject> _questSavingObjects = new List<QuestSavingObject>();
+
+        foreach (Quest _quest in QuestManager.Instance.CurrentQuests)
+        {
+            QuestSavingObject _savedQuest = new QuestSavingObject(_quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.PercentageComplete.ToString(), _quest.Size.ToString(), _quest.CurrentAmountCompleted.ToString());
+            _questSavingObjects.Add(_savedQuest);
+        }
+
         //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
 
-        string _fileName = "SaveFile" + System.DateTime.UtcNow.ToString() + ".giant";
+        string _fileName = PlayerPrefs.GetString("CurrentSave") + ".giant";
 
         _fileName = _fileName.Replace("/", "_");
         _fileName = _fileName.Replace(" ", "_");
         _fileName = _fileName.Replace(":", "_");
 
         File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.Write).Dispose();
+
+        File.WriteAllText(_fileName, "");
 
         File.AppendAllText(_fileName, _saveLine + System.Environment.NewLine);
 
@@ -239,7 +388,7 @@ public class GameManager : MonoBehaviour
             File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
         }
 
-        File.AppendAllText(_fileName, amountOfLoot + System.Environment.NewLine);
+        File.AppendAllText(_fileName, _amountOfLoot + System.Environment.NewLine);
 
         foreach (LootSavingObject _lootSave in _lootSaves)
         {
@@ -247,97 +396,34 @@ public class GameManager : MonoBehaviour
             File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
         }
 
-        PlayerPrefs.SetString("LatestSave", _fileName);
-    }
+        File.AppendAllText(_fileName, _inventorySave + System.Environment.NewLine);
 
-    public void SaveGame(string _fileName)
-    {
-        string _saveLine = "";
-        string _enemySaveLine = "";
+        File.AppendAllText(_fileName, _amountOfQuests + System.Environment.NewLine);
+        File.AppendAllText(_fileName, _questIndex + System.Environment.NewLine);
 
-        GameObject _player = GameObject.FindGameObjectWithTag("Player");
-
-        PlayerSavingObject playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, PlayerInventoryManager.Instance.EquippedRightWeapon.Seed, PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed, PlayerInventoryManager.Instance.EquippedEngine.Seed);
-
-        GameObject[] _enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        List<EnemySavingObject> enemySaves = new List<EnemySavingObject>();
-
-        foreach (GameObject _enemy in _enemies)
+        foreach (QuestSavingObject _quest in _questSavingObjects)
         {
-            WeaponData _enemyWeaponRight = _enemy.transform.GetChild(0).Find("RightSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
-            WeaponData _enemyWeaponLeft = _enemy.transform.GetChild(0).Find("LeftSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
-            enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed));
+            string _questSaveLine = JsonUtility.ToJson(_quest);
+            File.AppendAllText(_fileName, _questSaveLine + System.Environment.NewLine);
         }
 
-        string amountOfEnemies = _enemies.Length.ToString();
+        PlayerPrefs.SetString("LastSave" + _fileName[4], System.DateTime.Now.ToString());
 
-        GameObject[] _targets = GameObject.FindGameObjectsWithTag("Component");
-        List<LootSavingObject> _lootSaves = new List<LootSavingObject>();
+        PlayerPrefs.SetInt("EnemiesKilled" + _fileName[4], m_enemiesKilledSoFar);
 
-        foreach (GameObject _target in _targets)
-        {
-            int _type = -1;
-            switch (_target.GetComponent<LootDetection>().LootType)
-            {
-                case LootDetection.m_lootTypes.Weapon:
-                    _type = 0;
-                    break;
-                case LootDetection.m_lootTypes.Engine:
-                    _type = 1;
-                    break;
-                case LootDetection.m_lootTypes.Shield:
-                    _type = 2;
-                    break;
-            }
-            if (_type == -1)
-            {
-                Debug.Log("Loot has no type");
-                break;
-            }
-            else
-            {
-                string _seed = _target.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock.Seed;
-                _lootSaves.Add(new LootSavingObject(_target.transform.position, _target.transform.rotation, _seed, _type.ToString()));
-            }
-        }
-
-        string amountOfLoot = _lootSaves.Count.ToString();
-
-        _saveLine = JsonUtility.ToJson(playerSave);
-
-        //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
-
-        File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.Write).Dispose();
-
-        File.WriteAllText(_fileName, System.String.Empty);
-
-        File.AppendAllText(_fileName, _saveLine + System.Environment.NewLine);
-
-        File.AppendAllText(_fileName, amountOfEnemies + System.Environment.NewLine);
-
-        foreach (EnemySavingObject _enemySave in enemySaves)
-        {
-            _enemySaveLine = JsonUtility.ToJson(_enemySave);
-            File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
-        }
-
-        File.AppendAllText(_fileName, amountOfLoot + System.Environment.NewLine);
-
-        foreach (LootSavingObject _lootSave in _lootSaves)
-        {
-            _enemySaveLine = JsonUtility.ToJson(_lootSave);
-            File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
-        }
+        PlayerPrefs.SetString("ChosenFaction" + _fileName[4], "initial");
 
         PlayerPrefs.SetString("LatestSave", _fileName);
     }
 
     public void LoadGame()
     {
-        string _fileName = PlayerPrefs.GetString("LatestSave", "NoSave");
+        string _fileName = PlayerPrefs.GetString("CurrentSave", "NoSave") + ".giant";
+        GameObject _player = GameObject.FindGameObjectWithTag("Player");
 
-        if(_fileName == "NoSave")
+        if (_fileName == "NoSave")
         {
+            m_canLeaveScene = true;
             return;
         }
 
@@ -347,10 +433,41 @@ public class GameManager : MonoBehaviour
         }
         catch
         {
+            _player.GetComponent<PlayerHealth>().ResetHealth(int.Parse(_fileName[4].ToString()) - 1);
+            if (PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
+            {
+                Transform _leftSnapPoint = _player.transform.Find("WeaponLeft");
+
+                GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedLeftWeapon);
+                _leftGun.transform.SetParent(_leftSnapPoint.transform);
+                _leftGun.transform.localPosition = Vector3.zero;
+                _leftGun.transform.localRotation = Quaternion.identity;
+                _leftGun.transform.localScale = new Vector3(1, 1, 1);
+            }
+
+            if (PlayerInventoryManager.Instance.EquippedRightWeapon != null)
+            {
+                Transform _rightSnapPoint = _player.transform.Find("WeaponRight");
+
+                GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedRightWeapon);
+                _rightGun.transform.SetParent(_rightSnapPoint.transform);
+                _rightGun.transform.position = Vector3.zero;
+                _rightGun.transform.localPosition = Vector3.zero;
+                _rightGun.transform.localRotation = Quaternion.identity;
+                _rightGun.transform.localScale = new Vector3(1, 1, 1);
+            }
+
+            m_canLeaveScene = true;
             return;
         }
 
         string[] _loadLines = File.ReadAllLines(_fileName);
+
+        if(_loadLines.Length < 1)
+        {
+            return;
+        }
+
 
         PlayerSavingObject _savedPlayer = JsonUtility.FromJson<PlayerSavingObject>(_loadLines[0]);
 
@@ -413,28 +530,42 @@ public class GameManager : MonoBehaviour
             GameObject _newLoot = Instantiate(lootTemplate, _lootPos, _lootRot);
             _newLoot.GetComponent<LootDetection>().LootType = (LootDetection.m_lootTypes)int.Parse(_savedLoot.type);
 
-            WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedLoot.seed);
-            GameObject _temp = ModuleManager.Instance.GenerateWeapon(_temp1);
-            _temp.GetComponent<WeaponGenerator>().statBlock = _temp1;
+            GameObject _temp = new GameObject();
+
+            if (_newLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
+            {
+                WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedLoot.seed);
+                _temp = ModuleManager.Instance.GenerateWeapon(_temp1);
+                _temp.GetComponent<WeaponGenerator>().statBlock = _temp1;
+            }
+            else if(_newLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Engine)
+            {
+                EngineData _temp1 = ModuleManager.Instance.CreateEngineBlock(_savedLoot.seed);
+                _temp = ModuleManager.Instance.GenerateEngine(_temp1);
+                _temp.GetComponent<EngineGenerator>().engineStatBlock = _temp1;
+            }
 
             _temp.transform.SetParent(_newLoot.transform);
 
             _temp.transform.localPosition = m_defaultOffset;
             _temp.transform.localRotation = Quaternion.identity;
-
             _temp.transform.localScale = m_defaultScale;
-        }
 
-        GameObject _player = GameObject.FindGameObjectWithTag("Player");
+            _newLoot.transform.localScale = m_scale;
+        }
 
         _player.transform.position = new Vector3(float.Parse(_savedPlayer.positionX), float.Parse(_savedPlayer.positionY), float.Parse(_savedPlayer.positionZ));
         _player.transform.rotation = new Quaternion(float.Parse(_savedPlayer.rotationX), float.Parse(_savedPlayer.rotationY), float.Parse(_savedPlayer.rotationZ), float.Parse(_savedPlayer.rotationW));
 
-        if (_savedPlayer.rightWeaponSeed != "")
+        if (_savedPlayer.rightWeaponSeed != "" && _savedPlayer.rightWeaponSeed != "-1" && _savedPlayer.rightWeaponSeed != "1")
         {
             Transform _rightSnapPoint = _player.transform.Find("WeaponRight");
 
-            Destroy(_rightSnapPoint.GetChild(0).gameObject);
+            try
+            {
+                Destroy(_rightSnapPoint.GetChild(0).gameObject);
+            }
+            catch { }
 
             WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.rightWeaponSeed);
             GameObject _tempRightGun = ModuleManager.Instance.GenerateWeapon(_temp1);
@@ -444,11 +575,15 @@ public class GameManager : MonoBehaviour
             _tempRightGun.transform.localRotation = Quaternion.identity;
             _tempRightGun.transform.localScale = m_scale;
         }
-        if (_savedPlayer.leftWeaponSeed != "")
+        if (_savedPlayer.leftWeaponSeed != "" && _savedPlayer.leftWeaponSeed != "-1" && _savedPlayer.leftWeaponSeed != "1")
         {
             Transform _leftSnapPoint = _player.transform.Find("WeaponLeft");
 
-            Destroy(_leftSnapPoint.GetChild(0).gameObject);
+            try
+            {
+                Destroy(_leftSnapPoint.GetChild(0).gameObject);
+            }
+            catch { }
 
             WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.leftWeaponSeed);
             GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1);
@@ -458,10 +593,348 @@ public class GameManager : MonoBehaviour
             _tempLeftGun.transform.localRotation = Quaternion.identity;
             _tempLeftGun.transform.localScale = m_scale;
         }
+        if(_savedPlayer.engineSeed != "" && _savedPlayer.engineSeed != "-1")
+        {
+            Transform _engineSnapPoint = _player.transform.Find("EngineShip");
+
+            try
+            {
+                Destroy(_engineSnapPoint.GetChild(0).gameObject);
+            }
+            catch { }
+
+            EngineData _temp1 = ModuleManager.Instance.CreateEngineBlock(_savedPlayer.engineSeed);
+            GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(_temp1);
+            _tempEngine.transform.GetChild(0).GetComponent<ThrustEffectController>().player = _player.GetComponent<PlayerMovement>();
+            _tempEngine.GetComponent<EngineGenerator>().engineStatBlock = _temp1;
+            _tempEngine.transform.SetParent(_engineSnapPoint);
+            _tempEngine.transform.localPosition = Vector3.zero;
+            _tempEngine.transform.localRotation = Quaternion.identity;
+            _tempEngine.transform.localScale = m_scale;
+        }
+
+        //PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
+
+        InventorySavingObject _inventory = JsonUtility.FromJson<InventorySavingObject>(_loadLines[3 + _numberOfEnemies + _numberOfItems]);
+
+        PlayerInventoryManager.Instance.WipeInventory();
+        
+        foreach(string _weapon in _inventory.availableWeapons)
+        {
+            if (_weapon != "1")
+            {
+                if (_weapon.Length > 0)
+                {
+                    WeaponData _tempWeapon = ModuleManager.Instance.CreateStatBlock(_weapon);
+                    PlayerInventoryManager.Instance.AvailableWeapons.Add(_tempWeapon);
+                }
+            }
+        }
+        foreach(string _engine in _inventory.availableEngines)
+        {
+            if (_engine.Length > 0)
+            {
+                EngineData _tempEngine = ModuleManager.Instance.CreateEngineBlock(_engine);
+                PlayerInventoryManager.Instance.AvailableEngines.Add(_tempEngine);
+            }
+        }
+
+        PlayerInventoryManager.Instance.EquippedLeftIndex = int.Parse(_inventory.equippedLeftIndex);
+        PlayerInventoryManager.Instance.EquippedRightIndex = int.Parse(_inventory.equippedRightIndex);
+        PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
+
+        if (_inventory.equippedLeftIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedLeftIndex];
+        }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedLeftWeapon = null;
+        }
+        if (_inventory.equippedRightIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedRightIndex];
+        }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedRightWeapon = null;
+        }
+        if (_inventory.equippedEngineIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[PlayerInventoryManager.Instance.EquippedEngineIndex];
+        }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = null;
+        }
+
+        if (_savedPlayer.rightWeaponSeed == "1")
+        {
+            Transform _RightSnap = _player.transform.Find("WeaponRight");
+
+            if(_RightSnap.childCount > 1)
+            { 
+                Destroy(_RightSnap.GetChild(0).gameObject);
+            }
+
+            GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedRightWeapon);
+            _rightGun.transform.SetParent(_RightSnap.transform);
+            _rightGun.transform.position = Vector3.zero;
+            _rightGun.transform.localPosition = Vector3.zero;
+            _rightGun.transform.localRotation = Quaternion.identity;
+            _rightGun.transform.localScale = new Vector3(1, 1, 1);
+        }
+        else
+        {
+            if (_savedPlayer.rightWeaponSeed != "" && _savedPlayer.rightWeaponSeed != "-1" && _savedPlayer.rightWeaponSeed != "1")
+            {
+                Transform _rightSnapPoint = _player.transform.Find("WeaponRight");
+
+                try
+                {
+                    Destroy(_rightSnapPoint.GetChild(0).gameObject);
+                }
+                catch { }
+
+                WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.rightWeaponSeed);
+                GameObject _tempRightGun = ModuleManager.Instance.GenerateWeapon(_temp1);
+                _tempRightGun.GetComponent<WeaponGenerator>().statBlock = _temp1;
+                _tempRightGun.transform.SetParent(_rightSnapPoint);
+                _tempRightGun.transform.localPosition = Vector3.zero;
+                _tempRightGun.transform.localRotation = Quaternion.identity;
+                _tempRightGun.transform.localScale = m_scale;
+            }
+            try
+            {
+                WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.rightWeaponSeed);
+
+                PlayerInventoryManager.Instance.EquippedRightWeapon = _temp1;
+            }
+            catch { }
+        }
+        if (_savedPlayer.leftWeaponSeed == "1")
+        {
+            Transform _LeftSnap = _player.transform.Find("WeaponLeft");
+
+
+            if (_LeftSnap.childCount > 1)
+            {
+                Destroy(_LeftSnap.GetChild(0).gameObject);
+            }
+
+            GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedLeftWeapon);
+            _leftGun.transform.SetParent(_LeftSnap.transform);
+            _leftGun.transform.localPosition = Vector3.zero;
+            _leftGun.transform.localRotation = Quaternion.identity;
+            _leftGun.transform.localScale = new Vector3(1, 1, 1);
+        }
+        else
+        {
+
+            if (_savedPlayer.leftWeaponSeed != "" && _savedPlayer.leftWeaponSeed != "-1" && _savedPlayer.leftWeaponSeed != "1")
+            {
+                Transform _leftSnapPoint = _player.transform.Find("WeaponLeft");
+
+                try
+                {
+                    Destroy(_leftSnapPoint.GetChild(0).gameObject);
+                }
+                catch { }
+
+                WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.leftWeaponSeed);
+                GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1);
+                _tempLeftGun.GetComponent<WeaponGenerator>().statBlock = _temp1;
+                _tempLeftGun.transform.SetParent(_leftSnapPoint);
+                _tempLeftGun.transform.localPosition = Vector3.zero;
+                _tempLeftGun.transform.localRotation = Quaternion.identity;
+                _tempLeftGun.transform.localScale = m_scale;
+            }
+            try
+            {
+                WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.leftWeaponSeed);
+
+                PlayerInventoryManager.Instance.EquippedLeftWeapon = _temp1;
+            }
+            catch { }
+        }
+
+        try
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[int.Parse(_inventory.equippedEngineIndex)];
+            PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
+        }
+        catch { }
+
+        //_loadLines[3 + _numberOfEnemies + _numberOfItems]
+        int _numberOfQuests = int.Parse(_loadLines[4 + _numberOfEnemies + _numberOfItems]);
+        int _questIndex = int.Parse(_loadLines[5 + _numberOfEnemies + _numberOfItems]);
+
+        QuestManager.Instance.ClearQuests();
+
+        QuestManager.Instance.TrackingQuestIndex = _questIndex;
+
+        for (int i = 0; i < _numberOfQuests; i++)
+        {
+            QuestSavingObject _quest = JsonUtility.FromJson<QuestSavingObject>(_loadLines[6 + _numberOfEnemies + _numberOfItems]);
+
+            switch ((QuestType)int.Parse(_quest.m_questType))
+            {
+                case QuestType.kill:
+                    QuestManager.Instance.CreateKillQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.control:
+                    QuestManager.Instance.CreateControlQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.collect:
+                    //QuestManager.Instance.CreateCollectQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.recon:
+                    QuestManager.Instance.CreateReconQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.targets:
+                    QuestManager.Instance.CreateTargetQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+            }
+        }
+
+        _player.GetComponent<PlayerShooting>().buildWeapons();
+
+        HUDManager.Instance.ClearAllDisplays();
+
+        m_canLeaveScene = true;
     }
 
-    public void LoadGame(string _fileName)
+    public void LoadInventory()
     {
+        string _fileName = PlayerPrefs.GetString("CurrentSave", "NoSave") + ".giant";
+        GameObject _player = GameObject.FindGameObjectWithTag("Player");
 
+        if (_fileName == "NoSave")
+        {
+            m_canLeaveScene = true;
+            return;
+        }
+
+        string[] _loadLines = File.ReadAllLines(_fileName);
+
+        int _numberOfEnemies = int.Parse(_loadLines[1]);
+        int _numberOfItems = int.Parse(_loadLines[2 + _numberOfEnemies]);
+
+
+        InventorySavingObject _inventory = JsonUtility.FromJson<InventorySavingObject>(_loadLines[3 + _numberOfEnemies + _numberOfItems]);
+
+        PlayerInventoryManager.Instance.WipeInventory();
+
+        foreach (string _weapon in _inventory.availableWeapons)
+        {
+            if (_weapon != "1")
+            {
+                if (_weapon.Length > 0)
+                {
+                    WeaponData _tempWeapon = ModuleManager.Instance.CreateStatBlock(_weapon);
+                    PlayerInventoryManager.Instance.AvailableWeapons.Add(_tempWeapon);
+                }
+            }
+        }
+        foreach (string _engine in _inventory.availableEngines)
+        {
+            if (_engine.Length > 0)
+            {
+                EngineData _tempEngine = ModuleManager.Instance.CreateEngineBlock(_engine);
+                PlayerInventoryManager.Instance.AvailableEngines.Add(_tempEngine);
+            }
+        }
+
+        PlayerInventoryManager.Instance.EquippedLeftIndex = int.Parse(_inventory.equippedLeftIndex);
+        PlayerInventoryManager.Instance.EquippedRightIndex = int.Parse(_inventory.equippedRightIndex);
+        PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
+
+        if (_inventory.equippedLeftIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedLeftIndex];
+        }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedLeftWeapon = null;
+        }
+        if (_inventory.equippedRightIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedRightIndex];
+        }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedRightWeapon = null;
+        }
+        if (_inventory.equippedEngineIndex != "-1")
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[PlayerInventoryManager.Instance.EquippedEngineIndex];
+        }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = null;
+        }
+
+        try
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[int.Parse(_inventory.equippedEngineIndex)];
+            PlayerInventoryManager.Instance.EquippedEngineIndex = int.Parse(_inventory.equippedEngineIndex);
+        }
+        catch { }
+
+        //_loadLines[3 + _numberOfEnemies + _numberOfItems]
+        int _numberOfQuests = int.Parse(_loadLines[4 + _numberOfEnemies + _numberOfItems]);
+        int _questIndex = int.Parse(_loadLines[5 + _numberOfEnemies + _numberOfItems]);
+
+        QuestManager.Instance.ClearQuests();
+
+        QuestManager.Instance.TrackingQuestIndex = _questIndex;
+
+        for (int i = 0; i < _numberOfQuests; i++)
+        {
+            QuestSavingObject _quest = JsonUtility.FromJson<QuestSavingObject>(_loadLines[6 + _numberOfEnemies + _numberOfItems]);
+
+            switch ((QuestType)int.Parse(_quest.m_questType))
+            {
+                case QuestType.kill:
+                    QuestManager.Instance.CreateKillQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.control:
+                    QuestManager.Instance.CreateControlQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.collect:
+                    //QuestManager.Instance.CreateCollectQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.recon:
+                    QuestManager.Instance.CreateReconQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+                case QuestType.targets:
+                    QuestManager.Instance.CreateTargetQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    break;
+            }
+        }
+
+        display.FillInventory();
+
+        m_canLeaveScene = true;
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ReturnToMenuDelayed(float _delay)
+    {
+        Invoke("ReturnToMenu", _delay);
     }
 }

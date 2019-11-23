@@ -12,6 +12,8 @@ TagManager:
   - InventoryManager
   - TargetUI
   - Spawner
+  - WeaponAudio
+  - QuestBeacon
   layers:
   - Default
   - TransparentFX

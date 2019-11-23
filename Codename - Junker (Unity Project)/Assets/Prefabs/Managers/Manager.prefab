@@ -49,4 +49,6 @@ MonoBehaviour:
   spawner: {fileID: 0}
   lootTemplate: {fileID: 5742531039650702400, guid: 341df5633658ae74189c875277192328,
     type: 3}
+  blackOut: {fileID: 0}
+  fadeAnimator: {fileID: 0}
   m_gameSpeed: 1

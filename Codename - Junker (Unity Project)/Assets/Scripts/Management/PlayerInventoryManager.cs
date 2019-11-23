@@ -33,7 +33,6 @@ public class PlayerInventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
 
         if (s_instance == null)
         {
@@ -43,5 +42,20 @@ public class PlayerInventoryManager : MonoBehaviour
         {
             Destroy(this);
         }
+    }
+
+    public void WipeInventory()
+    {
+        WeaponData DefaultLeft = m_availableWeapons[0];
+        WeaponData DefaultRight = m_availableWeapons[1];
+
+        m_availableEngines = new List<EngineData>();
+        m_availableWeapons = new List<WeaponData>();
+        m_availableWeapons.Add(DefaultLeft);
+        m_availableWeapons.Add(DefaultRight);
+
+        m_equippedEngineIndex = new int();
+        m_equippedLeftIndex = new int();
+        m_equippedRightIndex = new int();
     }
 }

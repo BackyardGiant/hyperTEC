@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +11,8 @@ public class HUDManager : MonoBehaviour
     public Camera Camera;
     public Sprite TargetSprite;
     public GameObject Explosion;
+    public Transform WaypointsAndMarkers;
+    public Image Healthbar;
 
     //public Inventory playerInv;
 
@@ -27,7 +29,6 @@ public class HUDManager : MonoBehaviour
     private int m_viewDistance;
     private float m_arrowClampAngle;
     #endregion
-
     #region LootIndicators
     [Header("Loot Indicator System"),Space(20)]
     public GameObject LootDisplay;
@@ -45,17 +46,54 @@ public class HUDManager : MonoBehaviour
     private float m_scanningFillSpeed;
     [SerializeField, Tooltip("How quickly the destroy occurs. Higher is faster."), Range(0.2f, 1f)]
     private float m_destroyFillSpeed;
-    [SerializeField,Header("Loot Display Elements"),Tooltip("Display elements of the Loot Display. This will show the stats of the visible loot item."),Space(20)]
-    private TextMeshProUGUI m_weaponTitle;
+    [SerializeField, Header("Loot Display Elements"), Tooltip("Display elements of the Loot Display. This will show the stats of the visible loot item."), Space(20)]
+    private Image m_lootItemIcon;
+    [SerializeField]
+    private Sprite m_weapon, m_engine, m_shield;
+    [SerializeField]
+    private TextMeshProUGUI m_lootDisplayTitle, m_lootTitle;
     [SerializeField, Tooltip("Each stat item. Needs the value first then the arrow second.")]
-    private GameObject[] m_damage, m_fireRate, m_reloadTime, m_accuracy;
+    private GameObject[] m_stat1, m_stat2, m_stat3, m_stat4;
     #endregion
-
+    #region QuestIndicators
+    [Header("Quest Indicator System"), Space(20)]
+    public GameObject QuestDisplay;
+    public Image QuestScanner;
+    public Image QuestDestroyer;
+    [SerializeField, Tooltip("Colour of the loot indicators")]
+    private Color m_questTargetColour;
+    [SerializeField, Tooltip("Scale of the loot indicators")]
+    private float m_questTargetSize;
+    [SerializeField, Tooltip("Distance at which loot should be detected")]
+    private int m_questViewDistance;
+    [SerializeField, Tooltip("How far away from the target that the loot display appears"), Range(0f, 0.2f)]
+    private float m_questDisplayOffset;
+    [SerializeField, Tooltip("How quickly the scan occurs. Higher is faster."), Range(0.2f, 1f)]
+    private float m_questScanningFillSpeed;
+    [SerializeField, Tooltip("How quickly the destroy occurs. Higher is faster."), Range(0.2f, 1f)]
+    private float m_questDestroyFillSpeed;
+    [SerializeField, Header("Loot Display Elements"), Tooltip("Display elements of the Loot Display. This will show the stats of the visible loot item."), Space(20)]
+    private Image m_questItemIcon;
+    [SerializeField]
+    private Sprite m_kill, m_collect, m_target, m_recon, m_control;
+    [SerializeField]
+    private TextMeshProUGUI m_questDisplayTitle, m_questDisplayObjectTitle;
+    #endregion
     #region AutoAim
     private GameObject m_closestEnemy;
     private Vector2 m_closestEnemyScreenPos;
     #endregion
+    #region QuestDisplay
+    [SerializeField, Header("Quest Display Text Elements")]
+    private TextMeshProUGUI m_questTitle;
+    [SerializeField]
+    private TextMeshProUGUI m_questDescription,m_questProgress;
+    [SerializeField]
+    private TextMeshProUGUI m_completedQuestTitle, m_completedQuestDescription;
+    [SerializeField]
+    private Animator m_completedQuestAnimator;
 
+    #endregion
 
     private bool m_displayAnimated;
     private bool m_enablePickup;
@@ -67,6 +105,9 @@ public class HUDManager : MonoBehaviour
     private Vector2 m_crosshairPosition;
     private float m_buttonHoldTime = 0;
     private int m_buttonBeingHeld = -1;
+
+    private GameObject m_currentBeacon;
+    private GameObject m_prevBeacon;
 
     #region Accessors
     public static HUDManager Instance { get => s_instance; set => s_instance = value; }
@@ -86,6 +127,10 @@ public class HUDManager : MonoBehaviour
         m_crosshairPosition = new Vector2(Screen.width / 2, Screen.height / 2);
         Destroyer.fillAmount = 0;
         Scanner.fillAmount = 0;
+
+
+        // 18/11/19 - TEMPORARILY MAKE SURE YOU'RE TRACKING THE RIGHT QUEST.
+        QuestManager.Instance.TrackingQuestIndex = 0;
     }
     void Awake()
     {
@@ -122,7 +167,7 @@ public class HUDManager : MonoBehaviour
             m_buttonHoldTime += Time.deltaTime * m_scanningFillSpeed;
         }
 
-        if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.1f && m_displayAnimated == true && m_enablePickup == true)
+        if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.3f && m_displayAnimated == true && m_enablePickup == true)
         {
             //Make pickup item code here
             GameObject _pickupLoot = m_currentLoot;
@@ -131,6 +176,11 @@ public class HUDManager : MonoBehaviour
             {
                 PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
             }
+            else if (m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Engine)
+            {
+                PlayerInventoryManager.Instance.AvailableEngines.Add(m_currentLoot.transform.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock);
+            }
+
 
             IncrementPlayerPref("WeaponsCollected");
             Debug.Log("Pickup Loot.");
@@ -144,9 +194,9 @@ public class HUDManager : MonoBehaviour
             m_buttonHoldTime = 0;
         }
 
-        if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.1f)
+        if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.3f)
         {
-            Scanner.fillAmount = m_buttonHoldTime - 0.1f;
+            Scanner.fillAmount = m_buttonHoldTime - 0.3f;
             DisplayLootStats(m_currentLoot);
         }
 
@@ -211,7 +261,7 @@ public class HUDManager : MonoBehaviour
             AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentLoot.gameObject, true, false);
             ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
             Destroy(m_currentLoot);
-            IncrementPlayerPref("WeaponsDestroyed");
+            IncrementPlayerPref("LootDestroyed");
             ClearLootDisplay();
 
         }
@@ -222,7 +272,13 @@ public class HUDManager : MonoBehaviour
             Scanner.fillAmount = 0;
             m_buttonHoldTime = 0;
         }
+
+        if(m_currentLoot == null && m_displayAnimated == true)
+        {
+            ClearLootDisplay();
+        }
         #endregion
+        DisplayActiveQuest();
     }
 
     #region Enemy Detection Methods
@@ -241,7 +297,7 @@ public class HUDManager : MonoBehaviour
         {
             _target = new GameObject();
             _target.name = "EnemyTarget";
-            _target.transform.parent = this.transform;
+            _target.transform.parent = WaypointsAndMarkers;
 
             //Setting the sprite
             _targetImage = _target.AddComponent<Image>();
@@ -310,7 +366,7 @@ public class HUDManager : MonoBehaviour
         {
             _target = new GameObject();
             _target.name = "EnemyTarget";
-            _target.transform.parent = this.transform;
+            _target.transform.parent = WaypointsAndMarkers;
 
             //Setting the sprite
             _targetImage = _target.AddComponent<Image>();
@@ -384,7 +440,7 @@ public class HUDManager : MonoBehaviour
         {
             _lootObject = new GameObject();
             _lootObject.name = "LootTarget";
-            _lootObject.transform.parent = this.transform;
+            _lootObject.transform.parent = WaypointsAndMarkers;
 
             //Setting the sprite
             _targetImage = _lootObject.AddComponent<Image>();
@@ -401,9 +457,8 @@ public class HUDManager : MonoBehaviour
         //Find all "component" tagged game objects
         GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
         m_currentLoot = ReturnTargetLoot(_lootObjects);
-
         //If targeted loot has changed, reset LootDisplay.
-        if(m_prevLoot != m_currentLoot)
+        if (m_prevLoot != m_currentLoot)
         {
             // Swapping over the LootDisplays to a different object
             m_displayAnimated = false;
@@ -495,6 +550,7 @@ public class HUDManager : MonoBehaviour
     //Draws the lootdisplay with appropriate offset based on the current function.
     private void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
     {
+        DisplayLootTitle(m_currentLoot);
         //Check player is going slow enough to look at it.
         Vector3 _displayTargetPos;
         if (Player.GetComponent<PlayerMovement>().CurrentSpeed/Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
@@ -530,130 +586,279 @@ public class HUDManager : MonoBehaviour
     {
         if (_currentLoot != null)
         {
-            try
-            {
-                WeaponData _lootData = _currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
-                float _currentDamage;
-                float _currentFireRate;
-                float _currentReloadTime;
-                float _currentAccuracy;
-
-                if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage < PlayerInventoryManager.Instance.EquippedRightWeapon.Damage) { _currentDamage = PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage; }
-                else { _currentDamage = PlayerInventoryManager.Instance.EquippedRightWeapon.Damage; }
-
-                if (PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate < PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate) { _currentFireRate = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate; }
-                else { _currentFireRate = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate; }
-
-                if (PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime < PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime) { _currentReloadTime = PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime; }
-                else { _currentReloadTime = PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime; }
-
-                if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy < PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy) { _currentAccuracy = PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy; }
-                else { _currentAccuracy = PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy; }
-
-
-                m_weaponTitle.text = _lootData.Name;
-
-
-                Image _damageArrow = m_damage[1].GetComponent<Image>();
-                Image _fireRateArrow = m_fireRate[1].GetComponent<Image>();
-                Image _reloadArrow = m_reloadTime[1].GetComponent<Image>();
-                Image _accuracyArrow = m_accuracy[1].GetComponent<Image>();
-
-                ///////////////////////////////////////////////
-                m_damage[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Damage);// _lootData.Damage.ToString();
-                if (_lootData.Damage > _currentDamage)
+            try { 
+                if(_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
                 {
-                    //Higher - Green Arrow
-                    _damageArrow.enabled = true;
-                    _damageArrow.color = Color.green;
-                    _damageArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
-                }
-                else if (_lootData.Damage < _currentDamage)
-                {
-                    //Lower - Red Arrow
-                    _damageArrow.enabled = true;
-                    _damageArrow.color = Color.red;
-                    _damageArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
-                }
-                else
-                {
-                    // Equal - Hide Arrow
-                    _damageArrow.enabled = false;
-                }
 
-                //////////////////////////////////////////////
-                m_fireRate[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.FireRate);// _lootData.FireRate.ToString();
-                if (_lootData.FireRate > _currentFireRate)
-                {
-                    //Higher - Green Arrow
-                    _fireRateArrow.enabled = true;
-                    _fireRateArrow.color = Color.green;
-                    _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
-                }
-                else if (_lootData.FireRate < _currentFireRate)
-                {
-                    //Lower - Red Arrow
-                    _fireRateArrow.enabled = true;
-                    _fireRateArrow.color = Color.red;
-                    _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
-                }
-                else
-                {
-                    // Equal - Hide Arrow
-                    _fireRateArrow.enabled = false;
-                }
+                    WeaponData _lootData = _currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+                    float _currentDamage = 0;
+                    float _currentFireRate = 0;
+                    float _currentReloadTime = 0;
+                    float _currentAccuracy = 0;
 
-                /////////////////////////////////////////////////
-                m_reloadTime[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.ReloadTime);// _lootData.ReloadTime.ToString();
-                if (_lootData.ReloadTime > _currentReloadTime)
-                {
-                    //Higher - Green Arrow
-                    _reloadArrow.enabled = true;
-                    _reloadArrow.color = Color.green;
-                    _reloadArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
-                }
-                else if (_lootData.ReloadTime < _currentReloadTime)
-                {
-                    //Lower - Red Arrow
-                    _reloadArrow.enabled = true;
-                    _reloadArrow.color = Color.red;
-                    _reloadArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
-                }
-                else
-                {
-                    // Equal - Hide Arrow
-                    _reloadArrow.enabled = false;
-                }
+                    try
+                    {
+                        if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage < PlayerInventoryManager.Instance.EquippedRightWeapon.Damage) { _currentDamage = PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage; }
+                        else { _currentDamage = PlayerInventoryManager.Instance.EquippedRightWeapon.Damage; }
+
+                        if (PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate < PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate) { _currentFireRate = PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate; }
+                        else { _currentFireRate = PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate; }
+
+                        if (PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime < PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime) { _currentReloadTime = PlayerInventoryManager.Instance.EquippedLeftWeapon.ReloadTime; }
+                        else { _currentReloadTime = PlayerInventoryManager.Instance.EquippedRightWeapon.ReloadTime; }
+
+                        if (PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy < PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy) { _currentAccuracy = PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy; }
+                        else { _currentAccuracy = PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy; }
+                    }
+                    catch { };
+                        
+                    m_lootTitle.text = _lootData.Name;
+
+                    Image _damageArrow = m_stat1[2].GetComponent<Image>();
+                    Image _fireRateArrow = m_stat2[2].GetComponent<Image>();
+                    Image _reloadArrow = m_stat3[2].GetComponent<Image>();
+                    Image _accuracyArrow = m_stat4[2].GetComponent<Image>();
+
+                    ///////////////////////////////////////////////
+                    m_stat1[0].GetComponent<TextMeshProUGUI>().text = "Damage";
+                    m_stat1[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Damage);// _lootData.Damage.ToString();
+                    if (_lootData.Damage > _currentDamage)
+                    {
+                        //Higher - Green Arrow
+                        _damageArrow.enabled = true;
+                        _damageArrow.color = Color.green;
+                        _damageArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.Damage < _currentDamage)
+                    {
+                        //Lower - Red Arrow
+                        _damageArrow.enabled = true;
+                        _damageArrow.color = Color.red;
+                        _damageArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _damageArrow.enabled = false;
+                    }
+
+                    //////////////////////////////////////////////
+                    m_stat2[0].GetComponent<TextMeshProUGUI>().text = "Fire Rate";
+                    m_stat2[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.FireRate);// _lootData.FireRate.ToString();
+                    if (_lootData.FireRate > _currentFireRate)
+                    {
+                        //Higher - Green Arrow
+                        _fireRateArrow.enabled = true;
+                        _fireRateArrow.color = Color.green;
+                        _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.FireRate < _currentFireRate)
+                    {
+                        //Lower - Red Arrow
+                        _fireRateArrow.enabled = true;
+                        _fireRateArrow.color = Color.red;
+                        _fireRateArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _fireRateArrow.enabled = false;
+                    }
+
+                    /////////////////////////////////////////////////
+                    m_stat3[0].GetComponent<TextMeshProUGUI>().text = "Reload Time";
+                    m_stat3[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.ReloadTime);// _lootData.ReloadTime.ToString();
+                    if (_lootData.ReloadTime > _currentReloadTime)
+                    {
+                        //Higher - Green Arrow
+                        _reloadArrow.enabled = true;
+                        _reloadArrow.color = Color.green;
+                        _reloadArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.ReloadTime < _currentReloadTime)
+                    {
+                        //Lower - Red Arrow
+                        _reloadArrow.enabled = true;
+                        _reloadArrow.color = Color.red;
+                        _reloadArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _reloadArrow.enabled = false;
+                    }
 
 
 
-                ////////////////////////////////////////////////
-                m_accuracy[0].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Accuracy); //_lootData.Accuracy.ToString();
-                if (_lootData.Accuracy > _currentAccuracy)
-                {
-                    //Higher - Green Arrow
-                    _accuracyArrow.enabled = true;
-                    _accuracyArrow.color = Color.green;
-                    _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    ////////////////////////////////////////////////
+                    m_stat4[0].GetComponent<TextMeshProUGUI>().text = "Accuracy";
+                    m_stat4[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Accuracy); //_lootData.Accuracy.ToString();
+                    if (_lootData.Accuracy > _currentAccuracy)
+                    {
+                        //Higher - Green Arrow
+                        _accuracyArrow.enabled = true;
+                        _accuracyArrow.color = Color.green;
+                        _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.Accuracy < _currentAccuracy)
+                    {
+                        //Lower - Red Arrow
+                        _accuracyArrow.enabled = true;
+                        _accuracyArrow.color = Color.red;
+                        _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _accuracyArrow.enabled = false;
+                    }
                 }
-                else if (_lootData.Accuracy < _currentAccuracy)
+                if (_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Engine)
                 {
-                    //Lower - Red Arrow
-                    _accuracyArrow.enabled = true;
-                    _accuracyArrow.color = Color.red;
-                    _accuracyArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
-                }
-                else
-                {
-                    // Equal - Hide Arrow
-                    _accuracyArrow.enabled = false;
-                }
+                    float _currentTopSpeed = 0;
+                    float _currentAcceleration = 0;
+                    float _currentBoostPower = 0;
+                    float _currentHandling = 0;
+
+                    EngineData _lootData = _currentLoot.transform.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock;
+                    try
+                    {
+                        _currentTopSpeed = PlayerInventoryManager.Instance.EquippedEngine.TopSpeed;
+                        _currentAcceleration = PlayerInventoryManager.Instance.EquippedEngine.Acceleration;
+                        _currentBoostPower = PlayerInventoryManager.Instance.EquippedEngine.BoostPower;
+                        _currentHandling = PlayerInventoryManager.Instance.EquippedEngine.Handling;
+                    }
+                    catch
+                    { };
+                    
+
+                    m_stat1[0].GetComponent<TextMeshProUGUI>().text = "Top Speed";
+                    m_stat2[0].GetComponent<TextMeshProUGUI>().text = "Acceleration";
+                    m_stat3[0].GetComponent<TextMeshProUGUI>().text = "Boost Power";
+                    m_stat4[0].GetComponent<TextMeshProUGUI>().text = "Handling";
+
+                    m_stat1[1].GetComponent<TextMeshProUGUI>().text = _lootData.TopSpeed.ToString();
+                    m_stat2[1].GetComponent<TextMeshProUGUI>().text = _lootData.Acceleration.ToString();
+                    m_stat3[1].GetComponent<TextMeshProUGUI>().text = _lootData.BoostPower.ToString();
+                    m_stat4[1].GetComponent<TextMeshProUGUI>().text = _lootData.Handling.ToString();
+
+                    Image _topSpeedArrow = m_stat1[2].GetComponent<Image>();
+                    Image _accelerationArrow = m_stat2[2].GetComponent<Image>();
+                    Image _boostPowerArrow = m_stat3[2].GetComponent<Image>();
+                    Image _handlingArrow = m_stat4[2].GetComponent<Image>();
+
+                    m_lootTitle.text = _lootData.Name;
+
+                    ////////////////TOP SPEED ARROW
+                    if (_lootData.TopSpeed > _currentTopSpeed)
+                    {
+                        //Higher - Green Arrow
+                        _topSpeedArrow.enabled = true;
+                        _topSpeedArrow.color = Color.green;
+                        _topSpeedArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.TopSpeed < _currentTopSpeed)
+                    {
+                        //Lower - Red Arrow
+                        _topSpeedArrow.enabled = true;
+                        _topSpeedArrow.color = Color.red;
+                        _topSpeedArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _topSpeedArrow.enabled = false;
+                    }
+
+                    ////////////////ACCELERATION ARROW
+                    if (_lootData.Acceleration > _currentAcceleration)
+                    {
+                        //Higher - Green Arrow
+                        _accelerationArrow.enabled = true;
+                        _accelerationArrow.color = Color.green;
+                        _accelerationArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.Acceleration < _currentAcceleration)
+                    {
+                        //Lower - Red Arrow
+                        _accelerationArrow.enabled = true;
+                        _accelerationArrow.color = Color.red;
+                        _accelerationArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _accelerationArrow.enabled = false;
+                    }
 
 
+                    ////////////////BOOST POWER
+                    if (_lootData.BoostPower > _currentBoostPower)
+                    {
+                        //Higher - Green Arrow
+                        _boostPowerArrow.enabled = true;
+                        _boostPowerArrow.color = Color.green;
+                        _boostPowerArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.BoostPower < _currentBoostPower)
+                    {
+                        //Lower - Red Arrow
+                        _boostPowerArrow.enabled = true;
+                        _boostPowerArrow.color = Color.red;
+                        _boostPowerArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _boostPowerArrow.enabled = false;
+                    }
+
+                    ////////////////HANDLING
+                    if (_lootData.Handling > _currentHandling)
+                    {
+                        //Higher - Green Arrow
+                        _handlingArrow.enabled = true;
+                        _handlingArrow.color = Color.green;
+                        _handlingArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    }
+                    else if (_lootData.Handling < _currentHandling)
+                    {
+                        //Lower - Red Arrow
+                        _handlingArrow.enabled = true;
+                        _handlingArrow.color = Color.red;
+                        _handlingArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else
+                    {
+                        // Equal - Hide Arrow
+                        _handlingArrow.enabled = false;
+                    }
+                }
             }
-            catch { Debug.LogError("Error with displaying loot stats."); }
+            catch { }
         }
     }
+    private void DisplayLootTitle(GameObject _currentLoot)
+    {
+        if (_currentLoot != null)
+        {
+            if (_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
+            {
+                m_lootItemIcon.sprite = m_weapon;
+                m_lootDisplayTitle.text = "WEAPON";
+            }
+            if (_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Engine)
+            {
+                m_lootItemIcon.sprite = m_engine;
+                m_lootDisplayTitle.text = "ENGINE";
+            }
+            if (_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Shield)
+            {
+                m_lootItemIcon.sprite = m_shield;
+                m_lootDisplayTitle.text = "SHIELD";
+            }
+        }
+    }      
     private string DisplayNiceStats(float _value)
     {
         string _returnVal;
@@ -669,6 +874,208 @@ public class HUDManager : MonoBehaviour
     }
     #endregion
 
+    #region Quest Becon Detection Methods
+    public void DrawBeaconTarget(Vector2 _screenPos, QuestBeconDetection _beacon)
+    {
+        GameObject _beaconObject;
+        Image _targetImage;
+
+        if (_beacon.QuestTarget != null)
+        {
+            _beaconObject = _beacon.QuestTarget;
+            _targetImage = _beaconObject.GetComponent<Image>();
+        }
+        else
+        {
+            _beaconObject = new GameObject();
+            _beaconObject.name = "BeconTarget";
+            _beaconObject.transform.parent = WaypointsAndMarkers;
+
+            //Setting the sprite
+            _targetImage = _beaconObject.AddComponent<Image>();
+            _targetImage.color = m_questTargetColour;
+            _beacon.QuestTarget = _beaconObject;
+        }
+        //moveit
+        _targetImage.rectTransform.localScale = new Vector3(m_questTargetSize, m_questTargetSize, m_questTargetSize);
+        _targetImage.sprite = TargetSprite;
+        _targetImage.transform.position = _screenPos;
+        _targetImage.transform.localEulerAngles = Vector3.zero;
+
+
+        //Find all "component" tagged game objects
+        GameObject[] _questObjects = GameObject.FindGameObjectsWithTag("QuestBeacon");
+        m_currentBeacon = ReturnTargetBeacon(_questObjects);
+        //If targeted loot has changed, reset LootDisplay.
+        if (m_prevBeacon != m_currentBeacon)
+        {
+            // Swapping over the LootDisplays to a different object
+            m_displayAnimated = false;
+            m_currentlyScanning = false;
+            Destroyer.fillAmount = 0;
+            Scanner.fillAmount = 0;
+        }
+        m_prevBeacon = m_currentBeacon;
+
+        if (m_currentBeacon == null)
+        {
+            Debug.Log("<color=red> Current beacon is null. </color> Do all loot objects have the component tag?");
+        }
+
+        //Screenpos of loot, and LootDetection script. This will aid in automatically entering values from a piece of loot.
+        _screenPos = Camera.WorldToScreenPoint(m_currentBeacon.transform.position);
+        _beacon = m_currentBeacon.GetComponent<QuestBeconDetection>();
+
+
+        DrawBeaconDisplay(_screenPos, _beacon);
+
+    }
+
+    private void DrawBeaconDisplay(Vector2 _targetPos, QuestBeconDetection _beacon)
+    {
+        DisplayBeconTitle(m_currentBeacon);
+        //Check player is going slow enough to look at it.
+        Vector3 _displayTargetPos;
+        if (Player.GetComponent<PlayerMovement>().CurrentSpeed / Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
+        {
+            if (!m_displayAnimated)
+            {
+                QuestDisplay.GetComponent<Animator>().Play("ShowLoot");
+                m_displayAnimated = true;
+            }
+        }
+        if (m_currentlyScanning)
+        {
+            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + (m_displayOffset * Screen.height * 3f));
+            QuestDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.08f);
+
+        }
+        else if (m_currentlyClosingScan)
+        {
+            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
+            QuestDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.000006f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
+            if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 10)
+            {
+                m_currentlyClosingScan = false;
+            }
+        }
+        else
+        {
+            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
+            QuestDisplay.GetComponent<RectTransform>().position = _displayTargetPos;
+        }
+    }
+
+    public void ClearBeaconTarget(QuestBeconDetection _beacon)
+    {
+        Destroy(_beacon.QuestTarget);
+        //Need to make it clear the loot Display if there isn't any loot left on screen.
+        if (countTargets() == 0 && m_displayAnimated == true)
+        {
+            ClearBeaconDisplay();
+        }
+    }
+
+    //Clears the Loot Display
+    private void ClearBeaconDisplay()
+    {
+        Scanner.fillAmount = 0;
+        Destroyer.fillAmount = 0;
+        m_displayAnimated = false;
+        m_currentlyClosingScan = false;
+        m_currentlyScanning = false;
+        if (m_currentlyScanning == true)
+        {
+            QuestDisplay.GetComponent<Animator>().Play("CloseFromScanned");
+        }
+        else if (m_currentlyScanning == false)
+        {
+            QuestDisplay.GetComponent<Animator>().Play("CloseFromUnscanned");
+        }
+
+
+    }
+
+    private void DisplayBeconTitle(GameObject _currentBeacon)
+    {
+        if (_currentBeacon != null)
+        {
+            if (_currentBeacon.GetComponent<QuestBeconDetection>().QuestType == QuestType.kill)
+            {
+                m_lootItemIcon.sprite = m_weapon;
+                m_lootDisplayTitle.text = "WEAPON";
+            }
+            if (_currentBeacon.GetComponent<QuestBeconDetection>().QuestType == QuestType.control)
+            {
+                m_lootItemIcon.sprite = m_engine;
+                m_lootDisplayTitle.text = "ENGINE";
+            }
+            if (_currentBeacon.GetComponent<QuestBeconDetection>().QuestType == QuestType.collect)
+            {
+                m_lootItemIcon.sprite = m_shield;
+                m_lootDisplayTitle.text = "SHIELD";
+            }
+            if (_currentBeacon.GetComponent<QuestBeconDetection>().QuestType == QuestType.recon)
+            {
+                m_lootItemIcon.sprite = m_shield;
+                m_lootDisplayTitle.text = "SHIELD";
+            }
+            if (_currentBeacon.GetComponent<QuestBeconDetection>().QuestType == QuestType.targets)
+            {
+                m_lootItemIcon.sprite = m_shield;
+                m_lootDisplayTitle.text = "SHIELD";
+            }
+        }
+    }
+
+    private GameObject ReturnTargetBeacon(GameObject[] _visibleBeacons)
+    {
+        GameObject _target = null;
+        float _currentDistance = 0f;
+        float _minimumDistance = Mathf.Infinity;
+        Vector2 _crosshairPosition = new Vector2(Screen.width / 2, Screen.height / 2);
+
+        foreach (GameObject _objTarget in _visibleBeacons)
+        {
+            _currentDistance = Vector2.Distance(_crosshairPosition, Camera.WorldToScreenPoint(_objTarget.transform.position));
+            if (_currentDistance < _minimumDistance && Vector3.Distance(_objTarget.transform.position, Player.transform.position) < m_lootViewDistance)
+            {
+                _target = _objTarget;
+                _minimumDistance = _currentDistance;
+            }
+        }
+
+        return _target;
+    }
+    #endregion
+
+    #region QuestDisplay
+    private void DisplayActiveQuest()
+    {
+        try {
+            if (QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Complete == false)
+            {
+                    m_questTitle.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Name;
+                    m_questDescription.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Description;
+                    m_questProgress.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].CurrentAmountCompleted.ToString() + "/" + QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Size.ToString();
+            }
+            else
+            {
+                m_completedQuestAnimator.Play("QuestCompletedAnim");
+                m_questTitle.text = "";
+                m_questDescription.text = "";
+                m_questProgress.text = "";
+                m_completedQuestTitle.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Name;
+                m_completedQuestDescription.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Description;
+                QuestManager.Instance.TrackingQuestIndex += 1;
+            }
+        } catch { }
+    }
+
+
+
+    #endregion
+
 
     #region Universal Methods
     private bool IsVisibleFrom(Renderer renderer, Camera camera)
@@ -681,6 +1088,16 @@ public class HUDManager : MonoBehaviour
     {
         int _value = PlayerPrefs.GetInt(_name);
         PlayerPrefs.SetInt(_name, _value + 1);
+    }
+
+    public void ClearAllDisplays()
+    {
+        int _waypointCount = WaypointsAndMarkers.transform.childCount;
+
+        for(int i=0; i<_waypointCount; i++)
+        {
+            Destroy(WaypointsAndMarkers.GetChild(i).gameObject);
+        }
     }
     #endregion
 }

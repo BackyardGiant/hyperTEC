@@ -36,11 +36,11 @@ public class Quest
         m_description = _description;
     }
 
-    public void QuestIncriment(int _incriment)
+    public void QuestIncrement(int _incriment)
     {
         m_currentAmountCompleted += _incriment;
 
-        m_percentageComplete = ((float)m_size / (float)m_currentAmountCompleted) * 100;
+        m_percentageComplete = ((float)m_currentAmountCompleted / (float)m_size) * 100;
 
         CheckComplete();
     }

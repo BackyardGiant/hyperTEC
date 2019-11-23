@@ -43,4 +43,178 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccb45686c6d7f224ca805344699f48f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds: []
+  fx: {fileID: 7151011947025543638, guid: 57be78bc14380a64f8d5d54333ee278b, type: 2}
+  music: {fileID: 8401425657891938991, guid: 57be78bc14380a64f8d5d54333ee278b, type: 2}
+  ui: {fileID: -1865234789856240357, guid: 57be78bc14380a64f8d5d54333ee278b, type: 2}
+  localSounds:
+  - name: EngineIdle
+    clip: {fileID: 8300000, guid: a26528b75921d0d488c92f4e5be4ba05, type: 3}
+    volume: 0
+    pitch: 0
+    priority: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: EngineAccelerating
+    clip: {fileID: 8300000, guid: 75b5d731bad598c42b61175a9dfbfa25, type: 3}
+    volume: 0
+    pitch: 0
+    priority: 2
+    loop: 1
+    source: {fileID: 0}
+  - name: EngineOverworking
+    clip: {fileID: 8300000, guid: 1e8713cb8ca0ab2458cc91353979b014, type: 3}
+    volume: 0
+    pitch: 0.9
+    priority: 3
+    loop: 1
+    source: {fileID: 0}
+  - name: EngineBacking
+    clip: {fileID: 8300000, guid: 334b8fccffd5766479166220e29f4335, type: 3}
+    volume: 1
+    pitch: 0.5
+    priority: 4
+    loop: 1
+    source: {fileID: 0}
+  - name: EngineBoost
+    clip: {fileID: 8300000, guid: d6a1fd89474b8044ba9dd441029fc8ca, type: 3}
+    volume: 0.9
+    pitch: 2
+    priority: 5
+    loop: 0
+    source: {fileID: 0}
+  worldSounds:
+  - name: ExplosionLong1
+    clip: {fileID: 8300000, guid: 5b5334d1fec7e784aae92a846e91510b, type: 3}
+    volume: 0.7
+    pitch: 1
+    priority: 10
+    loop: 0
+    source: {fileID: 0}
+  - name: ExplosionLong2
+    clip: {fileID: 8300000, guid: 00d9d67b7029e5a4ab91676c3f4c6d98, type: 3}
+    volume: 0.7
+    pitch: 1
+    priority: 10
+    loop: 0
+    source: {fileID: 0}
+  - name: ExplosionLong3
+    clip: {fileID: 8300000, guid: 2d496debdfbf3a9498ea54908502cffd, type: 3}
+    volume: 0.7
+    pitch: 1
+    priority: 10
+    loop: 0
+    source: {fileID: 0}
+  - name: ExplosionLong4
+    clip: {fileID: 8300000, guid: 359a65bb46320404e87ae220ee62ea95, type: 3}
+    volume: 0.7
+    pitch: 1
+    priority: 10
+    loop: 0
+    source: {fileID: 0}
+  - name: ExplosionShort1
+    clip: {fileID: 8300000, guid: 5d19de4735c516f42a7f423c8646759e, type: 3}
+    volume: 0.7
+    pitch: 1
+    priority: 10
+    loop: 0
+    source: {fileID: 0}
+  - name: ExplosionShort2
+    clip: {fileID: 8300000, guid: 57e0e9750b24a1641a71879dc46e38ad, type: 3}
+    volume: 0.7
+    pitch: 1
+    priority: 10
+    loop: 0
+    source: {fileID: 0}
+  - name: ExplosionShort3
+    clip: {fileID: 8300000, guid: 726ccd05931fa7c4f914753c57b6505b, type: 3}
+    volume: 0.7
+    pitch: 1
+    priority: 10
+    loop: 0
+    source: {fileID: 0}
+  - name: ExplosionShort4
+    clip: {fileID: 8300000, guid: b33137486d862aa42ac278f281e941b7, type: 3}
+    volume: 0.7
+    pitch: 1
+    priority: 10
+    loop: 0
+    source: {fileID: 0}
+  shortWeaponSounds:
+  - name: ShortWeapon1
+    clip: {fileID: 8300000, guid: 4c43afd696442024c924a5ed401efd63, type: 3}
+    volume: 1
+    pitch: 0.5
+    priority: 20
+    loop: 0
+    source: {fileID: 0}
+  - name: ShortWeapon2
+    clip: {fileID: 8300000, guid: 84be1175de693394ca63a0a4dc564eb7, type: 3}
+    volume: 1
+    pitch: 0.5
+    priority: 21
+    loop: 0
+    source: {fileID: 0}
+  mediumWeaponSounds:
+  - name: MediumWeapon1
+    clip: {fileID: 8300000, guid: 01f549c4c9308f34fbca43ac4578d2f5, type: 3}
+    volume: 1
+    pitch: 0.5
+    priority: 22
+    loop: 0
+    source: {fileID: 0}
+  - name: MediumWeapon2
+    clip: {fileID: 8300000, guid: fbbc0bb2733d5334eae281d4aa0db610, type: 3}
+    volume: 1
+    pitch: 0.5
+    priority: 23
+    loop: 0
+    source: {fileID: 0}
+  - name: MediumWeapon3
+    clip: {fileID: 8300000, guid: 3308974d9c48d9e41a26a27f8b739112, type: 3}
+    volume: 1
+    pitch: 1
+    priority: 24
+    loop: 0
+    source: {fileID: 0}
+  longWeaponSounds:
+  - name: LongWeapon1
+    clip: {fileID: 8300000, guid: 481719cd194697c4a95b6dd442917e7f, type: 3}
+    volume: 1
+    pitch: 1
+    priority: 25
+    loop: 0
+    source: {fileID: 0}
+  - name: LongWeapon2
+    clip: {fileID: 8300000, guid: 1b3feaf47a319e4458e70b2ba64cae23, type: 3}
+    volume: 1
+    pitch: 0.5
+    priority: 26
+    loop: 0
+    source: {fileID: 0}
+  - name: LongWeapon3
+    clip: {fileID: 8300000, guid: c14ea01dbc37466419898e0e0436a61c, type: 3}
+    volume: 1
+    pitch: 0.5
+    priority: 27
+    loop: 0
+    source: {fileID: 0}
+  - name: LongWeapon4
+    clip: {fileID: 8300000, guid: 0d39da8c5e1fb0c46b13db23f995665b, type: 3}
+    volume: 1
+    pitch: 0.5
+    priority: 28
+    loop: 0
+    source: {fileID: 0}
+  - name: LongWeapon5
+    clip: {fileID: 8300000, guid: 3308974d9c48d9e41a26a27f8b739112, type: 3}
+    volume: 1
+    pitch: 0.5
+    priority: 29
+    loop: 0
+    source: {fileID: 0}
+  longWeaponDelays:
+  - 0.45
+  - 0.45
+  - 0.2
+  - 0.1
+  - 0.1

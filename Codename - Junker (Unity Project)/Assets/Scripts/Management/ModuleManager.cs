@@ -39,24 +39,19 @@ public class ModuleManager : MonoBehaviour
     {
         GameObject _goTempEngine;
 
-        data.Seed = data.EngineId.ToString();
         switch(data.CurrentFaction)
         {
             case EngineData.faction.trader:
-                _goTempEngine = traderEngines[data.EngineId];
-                Instantiate(_goTempEngine);
+                _goTempEngine = Instantiate(traderEngines[data.EngineId]);
                 return _goTempEngine;
             case EngineData.faction.construction:
-                _goTempEngine = constructEngine[data.EngineId];
-                Instantiate(_goTempEngine);
+                _goTempEngine = Instantiate(constructEngine[data.EngineId]);
                 return _goTempEngine;
             case EngineData.faction.explorer:
-                _goTempEngine = explorerEngines[data.EngineId];
-                Instantiate(_goTempEngine);
+                _goTempEngine = Instantiate(explorerEngines[data.EngineId]);
                 return _goTempEngine;
             case EngineData.faction.initial:
-                _goTempEngine = defaultEngines[data.EngineId];
-                Instantiate(_goTempEngine);
+                _goTempEngine = Instantiate(defaultEngines[data.EngineId]);
                 return _goTempEngine;
             default:
                 return null;
@@ -133,6 +128,56 @@ public class ModuleManager : MonoBehaviour
             default:
                 return null;
         }
+    }
+
+    public EngineData CreateEngineBlock()
+    {
+        EngineData _tempEngineData = ScriptableObject.CreateInstance<EngineData>();
+
+        //Put engine generation stuff here
+        _tempEngineData.CurrentFaction = EngineData.faction.initial;
+
+        return _tempEngineData;
+    }
+
+    public EngineData CreateEngineBlock(string _seed)
+    {
+        EngineData _tempEngineData = ScriptableObject.CreateInstance<EngineData>();
+
+        try
+        {
+            //Put engine generation stuff here
+            _tempEngineData.CurrentFaction = (EngineData.faction)int.Parse(_seed[0].ToString());
+
+            switch (_tempEngineData.CurrentFaction)
+            {
+                case EngineData.faction.explorer:
+                    _tempEngineData.Seed = "0";
+                    _tempEngineData.name = "Default explorer engine";
+                    _tempEngineData.EngineId = 0;
+                    break;
+                case EngineData.faction.initial:
+                    _tempEngineData.Seed = "1";
+                    _tempEngineData.name = "Default engine";
+                    _tempEngineData.EngineId = 0;
+                    break;
+                case EngineData.faction.trader:
+                    _tempEngineData.Seed = "2";
+                    _tempEngineData.name = "Default trader engine";
+                    _tempEngineData.EngineId = 0;
+                    break;
+                case EngineData.faction.construction:
+                    _tempEngineData.Seed = "3";
+                    _tempEngineData.name = "Default construction engine";
+                    _tempEngineData.EngineId = 0;
+                    break;
+            }
+        }
+        catch
+        {
+        }
+
+        return _tempEngineData;
     }
 
     public WeaponData CreateStatBlock()
