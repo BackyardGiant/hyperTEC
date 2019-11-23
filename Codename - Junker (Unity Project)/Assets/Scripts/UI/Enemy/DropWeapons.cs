@@ -111,7 +111,7 @@ public class DropWeapons : MonoBehaviour
         try
         {
             GameObject _lootItem = Instantiate(lootItemParent, leftSnap.position, leftSnap.rotation);
-            GameObject _temp = ModuleManager.Instance.GenerateWeapon(m_weapon1);
+            GameObject _temp = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedLeftWeapon);
             _temp.GetComponent<WeaponGenerator>().statBlock = m_weapon1;
             _temp.transform.SetParent(_lootItem.transform);
             _temp.transform.localPosition = m_defaultOffset;
@@ -120,9 +120,12 @@ public class DropWeapons : MonoBehaviour
             _temp.transform.localScale = m_defaultScale;
 
             AddExplosionForce(_lootItem, leftSnap);
-
-            _lootItem = Instantiate(lootItemParent, rightSnap.position, rightSnap.rotation);
-            _temp = ModuleManager.Instance.GenerateWeapon(m_weapon2);
+        }
+        catch { }
+        try
+        {
+            GameObject _lootItem = Instantiate(lootItemParent, rightSnap.position, rightSnap.rotation);
+            GameObject _temp = ModuleManager.Instance.GenerateWeapon(PlayerInventoryManager.Instance.EquippedRightWeapon);
             _temp.GetComponent<WeaponGenerator>().statBlock = m_weapon2;
             _temp.transform.SetParent(_lootItem.transform);
             _temp.transform.localPosition = m_defaultOffset;

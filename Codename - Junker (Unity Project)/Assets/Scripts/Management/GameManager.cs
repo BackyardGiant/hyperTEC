@@ -17,7 +17,9 @@ public class GameManager : MonoBehaviour
     public Image blackOut;
     public Animator fadeAnimator;
     public DisplayOptions display;
-    
+
+    private bool m_canLeaveScene = false;
+
     private int m_enemiesKilledSoFar;
 
     private Vector3 m_defaultScale = new Vector3(1, 1, 1);
@@ -101,12 +103,12 @@ public class GameManager : MonoBehaviour
         Scene _currentScene = SceneManager.GetActiveScene();
         string _sceneName = _currentScene.name;
 
-        if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene")
+        if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene" && m_canLeaveScene)
         {
             fadeAnimator.Play("FadeOut");
             Invoke("LoadOut",0.5f);
         }
-        else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip")
+        else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip" && m_canLeaveScene)
         {
             fadeAnimator.Play("FadeOut");
             Invoke("InventoryLoadOut", 0.5f);
@@ -421,6 +423,7 @@ public class GameManager : MonoBehaviour
 
         if (_fileName == "NoSave")
         {
+            m_canLeaveScene = true;
             return;
         }
 
@@ -453,6 +456,8 @@ public class GameManager : MonoBehaviour
                 _rightGun.transform.localRotation = Quaternion.identity;
                 _rightGun.transform.localScale = new Vector3(1, 1, 1);
             }
+
+            m_canLeaveScene = true;
             return;
         }
 
@@ -642,13 +647,25 @@ public class GameManager : MonoBehaviour
         {
             PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedLeftIndex];
         }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedLeftWeapon = null;
+        }
         if (_inventory.equippedRightIndex != "-1")
         {
             PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedRightIndex];
         }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedRightWeapon = null;
+        }
         if (_inventory.equippedEngineIndex != "-1")
         {
             PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[PlayerInventoryManager.Instance.EquippedEngineIndex];
+        }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = null;
         }
 
         if (_savedPlayer.rightWeaponSeed == "1")
@@ -669,6 +686,24 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            if (_savedPlayer.rightWeaponSeed != "" && _savedPlayer.rightWeaponSeed != "-1" && _savedPlayer.rightWeaponSeed != "1")
+            {
+                Transform _rightSnapPoint = _player.transform.Find("WeaponRight");
+
+                try
+                {
+                    Destroy(_rightSnapPoint.GetChild(0).gameObject);
+                }
+                catch { }
+
+                WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.rightWeaponSeed);
+                GameObject _tempRightGun = ModuleManager.Instance.GenerateWeapon(_temp1);
+                _tempRightGun.GetComponent<WeaponGenerator>().statBlock = _temp1;
+                _tempRightGun.transform.SetParent(_rightSnapPoint);
+                _tempRightGun.transform.localPosition = Vector3.zero;
+                _tempRightGun.transform.localRotation = Quaternion.identity;
+                _tempRightGun.transform.localScale = m_scale;
+            }
             try
             {
                 WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.rightWeaponSeed);
@@ -695,6 +730,25 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+
+            if (_savedPlayer.leftWeaponSeed != "" && _savedPlayer.leftWeaponSeed != "-1" && _savedPlayer.leftWeaponSeed != "1")
+            {
+                Transform _leftSnapPoint = _player.transform.Find("WeaponLeft");
+
+                try
+                {
+                    Destroy(_leftSnapPoint.GetChild(0).gameObject);
+                }
+                catch { }
+
+                WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.leftWeaponSeed);
+                GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1);
+                _tempLeftGun.GetComponent<WeaponGenerator>().statBlock = _temp1;
+                _tempLeftGun.transform.SetParent(_leftSnapPoint);
+                _tempLeftGun.transform.localPosition = Vector3.zero;
+                _tempLeftGun.transform.localRotation = Quaternion.identity;
+                _tempLeftGun.transform.localScale = m_scale;
+            }
             try
             {
                 WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedPlayer.leftWeaponSeed);
@@ -751,6 +805,8 @@ public class GameManager : MonoBehaviour
         _player.GetComponent<PlayerShooting>().buildWeapons();
 
         HUDManager.Instance.ClearAllDisplays();
+
+        m_canLeaveScene = true;
     }
 
     public void LoadInventory()
@@ -760,6 +816,7 @@ public class GameManager : MonoBehaviour
 
         if (_fileName == "NoSave")
         {
+            m_canLeaveScene = true;
             return;
         }
 
@@ -801,13 +858,25 @@ public class GameManager : MonoBehaviour
         {
             PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedLeftIndex];
         }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedLeftWeapon = null;
+        }
         if (_inventory.equippedRightIndex != "-1")
         {
             PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[PlayerInventoryManager.Instance.EquippedRightIndex];
         }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedRightWeapon = null;
+        }
         if (_inventory.equippedEngineIndex != "-1")
         {
             PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[PlayerInventoryManager.Instance.EquippedEngineIndex];
+        }
+        else
+        {
+            PlayerInventoryManager.Instance.EquippedEngine = null;
         }
 
         try
@@ -855,6 +924,8 @@ public class GameManager : MonoBehaviour
         }
 
         display.FillInventory();
+
+        m_canLeaveScene = true;
     }
 
     public void ReturnToMenu()
