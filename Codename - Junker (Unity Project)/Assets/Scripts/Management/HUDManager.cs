@@ -95,8 +95,12 @@ public class HUDManager : MonoBehaviour
 
     #endregion
 
-    [SerializeField, Header("On Screen Warning"), Space(20)]
+    [SerializeField, Header("On Screen Objects"), Space(20)]
     private GameObject m_warningObject;
+    [SerializeField]
+    private GameObject m_hitmarkerObject;
+
+
 
     private bool m_displayAnimated;
     private bool m_enablePickup;
@@ -1109,7 +1113,6 @@ public class HUDManager : MonoBehaviour
         return _target;
     }
     #endregion
-
     #region QuestDisplay
     private void DisplayActiveQuest()
     {
@@ -1136,7 +1139,6 @@ public class HUDManager : MonoBehaviour
 
 
     #endregion
-
     #region DisplayWarningMethods
     public void DisplayWarning(string _warningText)
     {
@@ -1158,7 +1160,10 @@ public class HUDManager : MonoBehaviour
 
     #endregion
 
-
+    public void playHitmarker()
+    {
+        m_hitmarkerObject.GetComponent<Animator>().Play("HitmarkerFlash");
+    }
     #region Universal Methods
     private bool IsVisibleFrom(Renderer renderer, Camera camera)
     {

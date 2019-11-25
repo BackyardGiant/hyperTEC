@@ -807,6 +807,8 @@ public class GameManager : MonoBehaviour
         HUDManager.Instance.ClearAllDisplays();
 
         m_canLeaveScene = true;
+
+
     }
 
     public void LoadInventory()
