@@ -216,52 +216,54 @@ public class EnemyShooting : MonoBehaviour
 
         if (m_target != null)
         {
-
-            RaycastHit _hit;
-
-            m_lookAtPlayer.transform.LookAt(m_player.transform); // Game object that always looks towards the target
-
-            if (Vector3.Angle(m_player.transform.position - transform.position, transform.forward) < m_attackAngle && Physics.Raycast(m_lookAtPlayer.transform.position + (m_lookAtPlayer.transform.forward * 30), m_lookAtPlayer.transform.forward, out _hit, Mathf.Infinity))
+            if (GameManager.Instance.GameSpeed != 0)
             {
-                if (_hit.transform.gameObject.tag == "Player")
+                RaycastHit _hit;
+
+                m_lookAtPlayer.transform.LookAt(m_player.transform); // Game object that always looks towards the target
+
+                if (Vector3.Angle(m_player.transform.position - transform.position, transform.forward) < m_attackAngle && Physics.Raycast(m_lookAtPlayer.transform.position + (m_lookAtPlayer.transform.forward * 30), m_lookAtPlayer.transform.forward, out _hit, Mathf.Infinity))
                 {
-                    m_targetInSight = true;
+                    if (_hit.transform.gameObject.tag == "Player")
+                    {
+                        m_targetInSight = true;
+                    }
+                    else
+                    {
+                        m_targetInSight = false;
+                    }
                 }
                 else
                 {
                     m_targetInSight = false;
                 }
-            }
-            else
-            {
-                m_targetInSight = false;
-            }
 
-            if (m_targetInSight)
-            {
-                Vector3 offset1 = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_player.transform.position, transform.position) / m_range));
-                Vector3 offset2 = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_player.transform.position, transform.position) / m_range));
-
-                m_spawnLocations[0].transform.LookAt(m_player.transform.position + (offset1 * (1 - m_rightBulletAccuracy)));
-                m_spawnLocations[1].transform.LookAt(m_player.transform.position + (offset2 * (1 - m_leftBulletAccuracy)));
-
-                float _random1 = Random.Range(1f, 2f);
-                float _random2 = Random.Range(1f, 2f);
-
-                if (m_rightWeaponActive)
+                if (m_targetInSight)
                 {
-                    m_rightWeaponSound.pitch = _random1;
-                    m_rightWeaponSound.Play();
-                    m_rightWeaponActive = false;
-                    StartCoroutine(rightCooldown());
-                }
+                    Vector3 offset1 = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_player.transform.position, transform.position) / m_range));
+                    Vector3 offset2 = Random.insideUnitSphere * (m_universalBulletSpread * (Vector3.Distance(m_player.transform.position, transform.position) / m_range));
 
-                if (m_leftWeaponActive)
-                {
-                    m_leftWeaponSound.pitch = _random2;
-                    m_leftWeaponSound.Play();
-                    m_leftWeaponActive = false;
-                    StartCoroutine(leftCooldown());
+                    m_spawnLocations[0].transform.LookAt(m_player.transform.position + (offset1 * (1 - m_rightBulletAccuracy)));
+                    m_spawnLocations[1].transform.LookAt(m_player.transform.position + (offset2 * (1 - m_leftBulletAccuracy)));
+
+                    float _random1 = Random.Range(1f, 2f);
+                    float _random2 = Random.Range(1f, 2f);
+
+                    if (m_rightWeaponActive)
+                    {
+                        m_rightWeaponSound.pitch = _random1;
+                        m_rightWeaponSound.Play();
+                        m_rightWeaponActive = false;
+                        StartCoroutine(rightCooldown());
+                    }
+
+                    if (m_leftWeaponActive)
+                    {
+                        m_leftWeaponSound.pitch = _random2;
+                        m_leftWeaponSound.Play();
+                        m_leftWeaponActive = false;
+                        StartCoroutine(leftCooldown());
+                    }
                 }
             }
         }
