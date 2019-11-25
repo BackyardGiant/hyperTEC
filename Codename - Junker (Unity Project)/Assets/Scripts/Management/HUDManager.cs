@@ -100,14 +100,14 @@ public class HUDManager : MonoBehaviour
     private bool m_currentlyClosingScan = false;
     private bool m_currentlyScanning = false;
     private GameObject m_displayDismissed;
-    private GameObject m_currentLoot;
-    private GameObject m_prevLoot;
+    private GameObject m_currentTarget;
+    private GameObject m_prevTarget;
     private Vector2 m_crosshairPosition;
     private float m_buttonHoldTime = 0;
     private int m_buttonBeingHeld = -1;
 
-    private GameObject m_currentBeacon;
-    private GameObject m_prevBeacon;
+    //private GameObject m_currentBeacon;
+    //private GameObject m_prevBeacon;
 
     #region Accessors
     public static HUDManager Instance { get => s_instance; set => s_instance = value; }
@@ -148,7 +148,8 @@ public class HUDManager : MonoBehaviour
     void Update()
     {
         #region LootInteraction
-        if(m_displayAnimated == false)
+
+        if (m_displayAnimated == false)
         {
             m_buttonBeingHeld = -1;
         }
@@ -170,24 +171,31 @@ public class HUDManager : MonoBehaviour
         if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.3f && m_displayAnimated == true && m_enablePickup == true)
         {
             //Make pickup item code here
-            GameObject _pickupLoot = m_currentLoot;
+            GameObject _pickupLoot = m_currentTarget;
 
-            if (m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
+            if (m_currentTarget.tag == "Component")
             {
-                PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentLoot.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
+                if (m_currentTarget.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Weapon)
+                {
+                    PlayerInventoryManager.Instance.AvailableWeapons.Add(m_currentTarget.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock);
+                }
+                else if (m_currentTarget.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Engine)
+                {
+                    PlayerInventoryManager.Instance.AvailableEngines.Add(m_currentTarget.transform.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock);
+                }
             }
-            else if (m_currentLoot.GetComponent<LootDetection>().LootType == LootDetection.m_lootTypes.Engine)
+            else if (m_currentTarget.tag == "QuestBeacon")
             {
-                PlayerInventoryManager.Instance.AvailableEngines.Add(m_currentLoot.transform.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock);
+
             }
 
 
             IncrementPlayerPref("WeaponsCollected");
             Debug.Log("Pickup Loot.");
 
-            Destroy(m_currentLoot);
+            Destroy(m_currentTarget);
             ClearLootDisplay();
-            ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
+            ClearLootTarget(m_currentTarget.GetComponent<LootDetection>());
 
             Scanner.fillAmount = 0;
             m_buttonBeingHeld = -1;
@@ -197,7 +205,7 @@ public class HUDManager : MonoBehaviour
         if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.3f)
         {
             Scanner.fillAmount = m_buttonHoldTime - 0.3f;
-            DisplayLootStats(m_currentLoot);
+            DisplayLootStats(m_currentTarget);
         }
 
         if (Input.GetButtonUp("Interact"))
@@ -256,11 +264,18 @@ public class HUDManager : MonoBehaviour
             Destroyer.fillAmount = 0;
             m_buttonBeingHeld = -1;
             m_buttonHoldTime = 0;
-            GameObject explosion = Instantiate(Explosion,m_currentLoot.transform.position,m_currentLoot.transform.rotation);
+            GameObject explosion = Instantiate(Explosion,m_currentTarget.transform.position, m_currentTarget.transform.rotation);
             explosion.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentLoot.gameObject, true, false);
-            ClearLootTarget(m_currentLoot.GetComponent<LootDetection>());
-            Destroy(m_currentLoot);
+            AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentTarget.gameObject, true, false);
+            if (m_currentTarget.tag == "Component")
+            {
+                ClearLootTarget(m_currentTarget.GetComponent<LootDetection>());
+            }
+            else if (m_currentTarget.tag == "QuestBeacon")
+            {
+                ClearBeaconTarget(m_currentTarget.GetComponent<QuestBeconDetection>());
+            }
+            Destroy(m_currentTarget);
             IncrementPlayerPref("LootDestroyed");
             ClearLootDisplay();
 
@@ -273,10 +288,11 @@ public class HUDManager : MonoBehaviour
             m_buttonHoldTime = 0;
         }
 
-        if(m_currentLoot == null && m_displayAnimated == true)
+        if(m_currentTarget == null && m_displayAnimated == true)
         {
             ClearLootDisplay();
         }
+        
         #endregion
         DisplayActiveQuest();
     }
@@ -456,9 +472,16 @@ public class HUDManager : MonoBehaviour
 
         //Find all "component" tagged game objects
         GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
-        m_currentLoot = ReturnTargetLoot(_lootObjects);
+        GameObject[] _questObjects = GameObject.FindGameObjectsWithTag("QuestBeacon");
+
+        GameObject[] _objects = new GameObject[_lootObjects.Length + _questObjects.Length];
+
+        _lootObjects.CopyTo(_objects, 0);
+        _questObjects.CopyTo(_objects, _lootObjects.Length);
+
+        m_currentTarget = ReturnTarget(_objects);
         //If targeted loot has changed, reset LootDisplay.
-        if (m_prevLoot != m_currentLoot)
+        if (m_prevTarget != m_currentTarget)
         {
             // Swapping over the LootDisplays to a different object
             m_displayAnimated = false;
@@ -466,19 +489,22 @@ public class HUDManager : MonoBehaviour
             Destroyer.fillAmount = 0;
             Scanner.fillAmount = 0;
         }
-        m_prevLoot = m_currentLoot;
+        m_prevTarget = m_currentTarget;
 
-        if (m_currentLoot == null)
+        if (m_currentTarget == null)
         {
             Debug.Log("<color=red> Current Loot is null. </color> Do all loot objects have the component tag?");
         }
 
-        //Screenpos of loot, and LootDetection script. This will aid in automatically entering values from a piece of loot.
-        _screenPos = Camera.WorldToScreenPoint(m_currentLoot.transform.position);
-        _loot = m_currentLoot.GetComponent<LootDetection>();
+        if (m_currentTarget.tag == "Component")
+        {
+            //Screenpos of loot, and LootDetection script. This will aid in automatically entering values from a piece of loot.
+            _screenPos = Camera.WorldToScreenPoint(m_currentTarget.transform.position);
+            _loot = m_currentTarget.GetComponent<LootDetection>();
 
 
-        DrawLootDisplay(_screenPos,_loot);
+            DrawDisplay(_screenPos);
+        }
 
     }
     //Clear the target for a loot. Also close/hide the Loot Display.
@@ -511,14 +537,14 @@ public class HUDManager : MonoBehaviour
 
     }
     //Returns the loot which is closest to the crosshair. This acts as automatic targetting of loot.
-    private GameObject ReturnTargetLoot(GameObject[] _visibleLoot)
+    private GameObject ReturnTarget(GameObject[] _visibleObjects)
     {
         GameObject _target = null;
         float _currentDistance = 0f;
         float _minimumDistance = Mathf.Infinity;
         Vector2 _crosshairPosition = new Vector2(Screen.width / 2,Screen.height / 2);
 
-        foreach (GameObject _objTarget in _visibleLoot)
+        foreach (GameObject _objTarget in _visibleObjects)
         {
             _currentDistance = Vector2.Distance(_crosshairPosition, Camera.WorldToScreenPoint(_objTarget.transform.position));
             if (_currentDistance <_minimumDistance && Vector3.Distance(_objTarget.transform.position,Player.transform.position) < m_lootViewDistance)
@@ -534,52 +560,121 @@ public class HUDManager : MonoBehaviour
     {
         int _targetCount = 0;
         GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
-        List<GameObject> _visibleLootObjects = new List<GameObject>();
+        GameObject[] _questObjects = GameObject.FindGameObjectsWithTag("QuestBeacon");
 
-        for(int i = 0; i < _lootObjects.Length; i++)
+        GameObject[] _objects = new GameObject[_lootObjects.Length + _questObjects.Length];
+
+        _lootObjects.CopyTo(_objects, 0);
+        _questObjects.CopyTo(_objects, _lootObjects.Length);
+
+        List<GameObject> _visibleObjects = new List<GameObject>();
+
+        for(int i = 0; i < _objects.Length; i++)
         {
-            float _distance = Vector3.Distance(Player.transform.position, _lootObjects[i].transform.position);
-            if (IsVisibleFrom(_lootObjects[i].GetComponent<Renderer>(), Camera) && _distance < m_lootViewDistance)
+            float _distance = Vector3.Distance(Player.transform.position, _objects[i].transform.position);
+            if (IsVisibleFrom(_objects[i].GetComponent<Renderer>(), Camera) && _distance < m_lootViewDistance)
             {
-                _visibleLootObjects.Add(_lootObjects[i]);
+                _visibleObjects.Add(_objects[i]);
             }
         }
-        _targetCount = _visibleLootObjects.Count;
+        _targetCount = _visibleObjects.Count;
         return _targetCount;
     }
     //Draws the lootdisplay with appropriate offset based on the current function.
-    private void DrawLootDisplay(Vector2 _targetPos, LootDetection _loot)
+    private void DrawDisplay(Vector2 _targetPos)
     {
-        DisplayLootTitle(m_currentLoot);
         //Check player is going slow enough to look at it.
         Vector3 _displayTargetPos;
-        if (Player.GetComponent<PlayerMovement>().CurrentSpeed/Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
-        {
-            if (!m_displayAnimated)
-            {
-                LootDisplay.GetComponent<Animator>().Play("ShowLoot");
-                m_displayAnimated = true;
-            }
-        }
-        if (m_currentlyScanning)
-        {
-            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + (m_displayOffset * Screen.height * 3f));
-            LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.08f);
 
-        }
-        else if (m_currentlyClosingScan)
+        if (m_currentTarget.tag == "Component")
         {
-            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
-            LootDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.000006f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
-            if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 10)
+            DisplayLootTitle(m_currentTarget);
+
+            if (QuestDisplay.transform.localScale.x >= 0.17)
             {
-                m_currentlyClosingScan = false;
+                if (m_currentlyScanning == true)
+                {
+                    QuestDisplay.GetComponent<Animator>().Play("CloseFromScanned");
+                }
+                else if (m_currentlyScanning == false)
+                {
+                    QuestDisplay.GetComponent<Animator>().Play("CloseFromUnscanned");
+                }
+            }
+
+            if (Player.GetComponent<PlayerMovement>().CurrentSpeed / Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
+            {
+                if (!m_displayAnimated)
+                {
+                    LootDisplay.GetComponent<Animator>().Play("ShowLoot");
+                    m_displayAnimated = true;
+                }
+            }
+            if (m_currentlyScanning)
+            {
+                _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + (m_displayOffset * Screen.height * 3f));
+                LootDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.08f);
+
+            }
+            else if (m_currentlyClosingScan)
+            {
+                _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
+                LootDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.000006f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
+                if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 10)
+                {
+                    m_currentlyClosingScan = false;
+                }
+            }
+            else
+            {
+                _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
+                LootDisplay.GetComponent<RectTransform>().position = _displayTargetPos;
             }
         }
-        else
+        else if(m_currentTarget.tag == "QuestBeacon")
         {
-            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
-            LootDisplay.GetComponent<RectTransform>().position = _displayTargetPos;
+            DisplayBeconTitle(m_currentTarget);
+
+            if (LootDisplay.transform.localScale.x >= 0.17)
+            {
+                if (m_currentlyScanning == true)
+                {
+                    LootDisplay.GetComponent<Animator>().Play("CloseFromScanned");
+                }
+                else if (m_currentlyScanning == false)
+                {
+                    LootDisplay.GetComponent<Animator>().Play("CloseFromUnscanned");
+                }
+            }
+
+            if (Player.GetComponent<PlayerMovement>().CurrentSpeed / Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
+            {
+                if (!m_displayAnimated)
+                {
+                    QuestDisplay.GetComponent<Animator>().Play("ShowLoot");
+                    m_displayAnimated = true;
+                }
+            }
+            if (m_currentlyScanning)
+            {
+                _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + (m_displayOffset * Screen.height * 3f));
+                QuestDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.08f);
+
+            }
+            else if (m_currentlyClosingScan)
+            {
+                _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
+                QuestDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.000006f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
+                if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 10)
+                {
+                    m_currentlyClosingScan = false;
+                }
+            }
+            else
+            {
+                _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
+                QuestDisplay.GetComponent<RectTransform>().position = _displayTargetPos;
+            }
         }
     }
     private void DisplayLootStats(GameObject _currentLoot)
@@ -902,12 +997,8 @@ public class HUDManager : MonoBehaviour
         _targetImage.transform.position = _screenPos;
         _targetImage.transform.localEulerAngles = Vector3.zero;
 
-
-        //Find all "component" tagged game objects
-        GameObject[] _questObjects = GameObject.FindGameObjectsWithTag("QuestBeacon");
-        m_currentBeacon = ReturnTargetBeacon(_questObjects);
         //If targeted loot has changed, reset LootDisplay.
-        if (m_prevBeacon != m_currentBeacon)
+        if (m_prevTarget != m_currentTarget)
         {
             // Swapping over the LootDisplays to a different object
             m_displayAnimated = false;
@@ -915,55 +1006,22 @@ public class HUDManager : MonoBehaviour
             Destroyer.fillAmount = 0;
             Scanner.fillAmount = 0;
         }
-        m_prevBeacon = m_currentBeacon;
+        m_prevTarget = m_currentTarget;
 
-        if (m_currentBeacon == null)
+        if (m_currentTarget == null)
         {
             Debug.Log("<color=red> Current beacon is null. </color> Do all loot objects have the component tag?");
         }
-
-        //Screenpos of loot, and LootDetection script. This will aid in automatically entering values from a piece of loot.
-        _screenPos = Camera.WorldToScreenPoint(m_currentBeacon.transform.position);
-        _beacon = m_currentBeacon.GetComponent<QuestBeconDetection>();
-
-
-        DrawBeaconDisplay(_screenPos, _beacon);
-
-    }
-
-    private void DrawBeaconDisplay(Vector2 _targetPos, QuestBeconDetection _beacon)
-    {
-        DisplayBeconTitle(m_currentBeacon);
-        //Check player is going slow enough to look at it.
-        Vector3 _displayTargetPos;
-        if (Player.GetComponent<PlayerMovement>().CurrentSpeed / Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
+        else if (m_currentTarget.tag == "QuestBeacon")
         {
-            if (!m_displayAnimated)
-            {
-                QuestDisplay.GetComponent<Animator>().Play("ShowLoot");
-                m_displayAnimated = true;
-            }
-        }
-        if (m_currentlyScanning)
-        {
-            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + (m_displayOffset * Screen.height * 3f));
-            QuestDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.08f);
+            //Screenpos of loot, and LootDetection script. This will aid in automatically entering values from a piece of loot.
+            _screenPos = Camera.WorldToScreenPoint(m_currentTarget.transform.position);
+            _beacon = m_currentTarget.GetComponent<QuestBeconDetection>();
 
+
+            DrawDisplay(_screenPos);
         }
-        else if (m_currentlyClosingScan)
-        {
-            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
-            QuestDisplay.GetComponent<RectTransform>().position = Vector3.MoveTowards(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.000006f * Mathf.Pow(Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos), 3));
-            if (Vector3.Distance(LootDisplay.GetComponent<RectTransform>().position, _displayTargetPos) < 10)
-            {
-                m_currentlyClosingScan = false;
-            }
-        }
-        else
-        {
-            _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + m_displayOffset * Screen.height);
-            QuestDisplay.GetComponent<RectTransform>().position = _displayTargetPos;
-        }
+
     }
 
     public void ClearBeaconTarget(QuestBeconDetection _beacon)
