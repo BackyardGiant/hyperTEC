@@ -72,7 +72,7 @@ public class HUDManager : MonoBehaviour
     private float m_questScanningFillSpeed;
     [SerializeField, Tooltip("How quickly the destroy occurs. Higher is faster."), Range(0.2f, 1f)]
     private float m_questDestroyFillSpeed;
-    [SerializeField, Header("Loot Display Elements"), Tooltip("Display elements of the Loot Display. This will show the stats of the visible loot item."), Space(20)]
+    [SerializeField, Header("Quest Display Elements"), Tooltip("Display elements of the Loot Display. This will show the stats of the visible loot item."), Space(20)]
     private Image m_questItemIcon;
     [SerializeField]
     private Sprite m_kill, m_collect, m_target, m_recon, m_control;
@@ -94,6 +94,9 @@ public class HUDManager : MonoBehaviour
     private Animator m_completedQuestAnimator;
 
     #endregion
+
+    [SerializeField, Header("On Screen Warning"), Space(20)]
+    private GameObject m_warningObject;
 
     private bool m_displayAnimated;
     private bool m_enablePickup;
@@ -119,6 +122,7 @@ public class HUDManager : MonoBehaviour
 
     void Start()
     {
+        HideWarning();
         m_enablePickup = true;
         //Calculate Clamp angle of arrow. This is equal to the angle at which the enemy is to the behind of the player. Working out this value prevents arrows floating around the screen.
         m_displayAnimated = false;
@@ -127,8 +131,6 @@ public class HUDManager : MonoBehaviour
         m_crosshairPosition = new Vector2(Screen.width / 2, Screen.height / 2);
         Destroyer.fillAmount = 0;
         Scanner.fillAmount = 0;
-
-
         // 18/11/19 - TEMPORARILY MAKE SURE YOU'RE TRACKING THE RIGHT QUEST.
         QuestManager.Instance.TrackingQuestIndex = 0;
     }
@@ -439,6 +441,7 @@ public class HUDManager : MonoBehaviour
         Destroy(_enemy.EnemyTarget);
     }
     #endregion
+
     #region Loot Detection Methods
 
     //Draws the diamond on the screenspace position of the loot.
@@ -1134,6 +1137,27 @@ public class HUDManager : MonoBehaviour
 
     #endregion
 
+    #region DisplayWarningMethods
+    public void DisplayWarning(string _warningText)
+    {
+        if (m_warningObject.activeSelf == true)
+        {
+            Debug.LogWarning("Warning is already active.");
+        }
+        else
+        {
+            m_warningObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _warningText;
+            m_warningObject.SetActive(true);
+        }
+    }
+
+    public void HideWarning()
+    {
+        m_warningObject.SetActive(false);
+    }
+
+    #endregion
+
 
     #region Universal Methods
     private bool IsVisibleFrom(Renderer renderer, Camera camera)
@@ -1155,6 +1179,11 @@ public class HUDManager : MonoBehaviour
         for(int i=0; i<_waypointCount; i++)
         {
             Destroy(WaypointsAndMarkers.GetChild(i).gameObject);
+        }
+
+        if (PlayerInventoryManager.Instance.EquippedEngine == null)
+        {
+            DisplayWarning("No Engine");
         }
     }
     #endregion
