@@ -80,11 +80,11 @@ public class GameManager : MonoBehaviour
 
         if (PlayerPrefs.GetInt("Invert", 0) == 0)
         {
-            PlayerMove.InvertY = false;
+            m_playerMove.InvertY = false;
         }
         else if (PlayerPrefs.GetInt("Invert", 0) == 1)
         {
-            PlayerMove.InvertY = true;
+            m_playerMove.InvertY = true;
         }
     }
 
@@ -473,6 +473,8 @@ public class GameManager : MonoBehaviour
                 _rightGun.transform.localScale = new Vector3(1, 1, 1);
             }
 
+            _player.GetComponent<PlayerMovement>().UpdateValues();
+
             m_canLeaveScene = true;
             return;
         }
@@ -819,6 +821,7 @@ public class GameManager : MonoBehaviour
         }
 
         _player.GetComponent<PlayerShooting>().buildWeapons();
+        _player.GetComponent<PlayerMovement>().UpdateValues();
 
         HUDManager.Instance.ClearAllDisplays();
 
