@@ -9993,7 +9993,7 @@ MonoBehaviour:
   QuestDisplay: {fileID: 1216164424}
   QuestScanner: {fileID: 772363563}
   QuestDestroyer: {fileID: 833591184}
-  m_questTargetColour: {r: 0.7924528, g: 0.632885, b: 0, a: 0}
+  m_questTargetColour: {r: 0.88235295, g: 0.7294118, b: 0.1254902, a: 1}
   m_questTargetSize: 0.3
   m_questViewDistance: 150
   m_questDisplayOffset: 0.057
@@ -10005,8 +10005,10 @@ MonoBehaviour:
   m_target: {fileID: 0}
   m_recon: {fileID: 0}
   m_control: {fileID: 0}
-  m_questDisplayTitle: {fileID: 0}
-  m_questDisplayObjectTitle: {fileID: 0}
+  m_questDisplayTitle: {fileID: 1445717715}
+  m_questDisplayObjectTitle: {fileID: 1334931535}
+  questDescription: {fileID: 0}
+  questReward: {fileID: 0}
   m_questTitle: {fileID: 2033961832}
   m_questDescription: {fileID: 1054750336}
   m_questProgress: {fileID: 267072568}
