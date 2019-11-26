@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum faction { explorer, initial, trader, construction}
+
 public class EnemyStats : MonoBehaviour
 {
     [SerializeField, Header("Basic"), Tooltip("The maximum HP for an enemy")]
@@ -15,6 +17,8 @@ public class EnemyStats : MonoBehaviour
 
     [SerializeField]
     private DropWeapons m_dropWeaponsScript;
+
+    public faction m_currentFaction;
 
     public float CurrentHealth { get => m_currentHealth; }
 

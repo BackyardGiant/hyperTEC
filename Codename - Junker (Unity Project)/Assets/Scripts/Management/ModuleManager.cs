@@ -130,13 +130,54 @@ public class ModuleManager : MonoBehaviour
         }
     }
 
-    public EngineData CreateEngineBlock()
+    public EngineData CreateEngineBlock(int _factionIndex)
     {
+        string _seed = GenerateEngineSeed(_factionIndex);
+
         EngineData _tempEngineData = ScriptableObject.CreateInstance<EngineData>();
 
-        //Put engine generation stuff here
-        _tempEngineData.CurrentFaction = EngineData.faction.initial;
+        _tempEngineData.Seed = _seed;
 
+        _tempEngineData.Description = ""; // Desc gen here
+
+        _tempEngineData.CurrentFaction = (EngineData.faction)int.Parse(_seed[0].ToString());
+
+        _tempEngineData.TopSpeed = float.Parse(_seed.Substring(1, 3));
+
+        _tempEngineData.Acceleration = float.Parse(_seed.Substring(4, 3));
+
+        _tempEngineData.BoostPower = float.Parse(_seed.Substring(7, 3));
+
+        _tempEngineData.Handling = float.Parse(_seed.Substring(10, 3));
+
+        _tempEngineData.Value = float.Parse(_seed.Substring(13, 3));
+
+        switch (_tempEngineData.CurrentFaction)
+        {
+            case EngineData.faction.explorer:
+                _tempEngineData.Name = "Explorer Engine";
+
+                _tempEngineData.EngineId = int.Parse(_seed[16].ToString());
+
+                break;
+            case EngineData.faction.construction:
+                _tempEngineData.Name = "Construction Engine";
+
+                _tempEngineData.EngineId = int.Parse(_seed[16].ToString());
+                break;
+            case EngineData.faction.initial:
+                _tempEngineData.Name = "Default Engine";
+
+                _tempEngineData.EngineId = int.Parse(_seed[16].ToString());
+                break;
+            case EngineData.faction.trader:
+                _tempEngineData.Name = "Trader Engine";
+
+                _tempEngineData.EngineId = int.Parse(_seed[16].ToString());
+                break;
+        }
+
+        _tempEngineData.name = "Engine";
         return _tempEngineData;
     }
 
@@ -144,39 +185,48 @@ public class ModuleManager : MonoBehaviour
     {
         EngineData _tempEngineData = ScriptableObject.CreateInstance<EngineData>();
 
-        try
-        {
-            //Put engine generation stuff here
-            _tempEngineData.CurrentFaction = (EngineData.faction)int.Parse(_seed[0].ToString());
+        _tempEngineData.Seed = _seed;
 
-            switch (_tempEngineData.CurrentFaction)
-            {
-                case EngineData.faction.explorer:
-                    _tempEngineData.Seed = "0";
-                    _tempEngineData.name = "Default explorer engine";
-                    _tempEngineData.EngineId = 0;
-                    break;
-                case EngineData.faction.initial:
-                    _tempEngineData.Seed = "1";
-                    _tempEngineData.name = "Default engine";
-                    _tempEngineData.EngineId = 0;
-                    break;
-                case EngineData.faction.trader:
-                    _tempEngineData.Seed = "2";
-                    _tempEngineData.name = "Default trader engine";
-                    _tempEngineData.EngineId = 0;
-                    break;
-                case EngineData.faction.construction:
-                    _tempEngineData.Seed = "3";
-                    _tempEngineData.name = "Default construction engine";
-                    _tempEngineData.EngineId = 0;
-                    break;
-            }
-        }
-        catch
+        _tempEngineData.Description = ""; // Desc gen here
+
+        _tempEngineData.CurrentFaction = (EngineData.faction)int.Parse(_seed[0].ToString());
+
+        _tempEngineData.TopSpeed = float.Parse(_seed.Substring(1, 3));
+
+        _tempEngineData.Acceleration = float.Parse(_seed.Substring(4, 3));
+
+        _tempEngineData.BoostPower = float.Parse(_seed.Substring(7, 3));
+
+        _tempEngineData.Handling = float.Parse(_seed.Substring(10, 3));
+
+        _tempEngineData.Value = float.Parse(_seed.Substring(13, 3));
+
+        switch (_tempEngineData.CurrentFaction)
         {
+            case EngineData.faction.explorer:
+                _tempEngineData.Name = "Explorer Engine";
+
+                _tempEngineData.EngineId = int.Parse(_seed[16].ToString());
+
+                break;
+            case EngineData.faction.construction:
+                _tempEngineData.Name = "Construction Engine";
+
+                _tempEngineData.EngineId = int.Parse(_seed[16].ToString());
+                break;
+            case EngineData.faction.initial:
+                _tempEngineData.Name = "Default Engine";
+
+                _tempEngineData.EngineId = int.Parse(_seed[16].ToString());
+                break;
+            case EngineData.faction.trader:
+                _tempEngineData.Name = "Trader Engine";
+
+                _tempEngineData.EngineId = int.Parse(_seed[16].ToString());
+                break;
         }
 
+        _tempEngineData.name = "Engine";
         return _tempEngineData;
     }
 
@@ -478,6 +528,121 @@ public class ModuleManager : MonoBehaviour
         #endregion
 
         _seed = _factionData.ToString() + _fireRateString + _accuracyString + _damageString + _reloadTimeString + _valueString + _barrelId.ToString() + _batteryId.ToString() + _magazineId.ToString() + _targetId.ToString() + _fireSoundIndexString + _fireRateTypeData.ToString(); 
+
+        return _seed;
+    }
+
+    private string GenerateEngineSeed(int _factionIndex)
+    {
+        string _seed = "";
+
+        float _maxSpeed = Random.Range(1, 100);
+        string _maxSpeedString;
+
+        float _acceleration = Random.Range(1, 100);
+        string _accelerationString;
+
+        float _boostPower = Random.Range(1, 100);
+        string _boostPowerString;
+
+        float _handling = Random.Range(1, 100);
+        string _handlingString;
+
+        float _value = Random.Range(1, 100);
+        string _valueString;
+
+        int _engineId;
+
+        int _factionData = _factionIndex;
+        WeaponData.faction _faction = (WeaponData.faction)_factionData;
+
+        switch (_faction)
+        {
+            case WeaponData.faction.explorer:
+                _engineId = Random.Range(0, explorerEngines.Count);
+                break;
+            case WeaponData.faction.construction:
+                _engineId = Random.Range(0, constructEngine.Count);
+                break;
+            case WeaponData.faction.initial:
+                _engineId = Random.Range(0, defaultEngines.Count);
+                break;
+            case WeaponData.faction.trader:
+                _engineId = Random.Range(0, traderEngines.Count);
+                break;
+            default:
+                _engineId = 0;
+                break;
+        }
+
+        #region Creating corecctly formated string
+        if (_maxSpeed < 10)
+        {
+            _maxSpeedString = "00" + _maxSpeed;
+        }
+        else if (_maxSpeed < 100)
+        {
+            _maxSpeedString = "0" + _maxSpeed;
+        }
+        else
+        {
+            _maxSpeedString = _maxSpeed.ToString();
+        }
+
+        if (_acceleration < 10)
+        {
+            _accelerationString = "00" + _acceleration;
+        }
+        else if (_acceleration < 100)
+        {
+            _accelerationString = "0" + _acceleration;
+        }
+        else
+        {
+            _accelerationString = _acceleration.ToString();
+        }
+
+        if (_boostPower < 10)
+        {
+            _boostPowerString = "00" + _boostPower;
+        }
+        else if (_boostPower < 100)
+        {
+            _boostPowerString = "0" + _boostPower;
+        }
+        else
+        {
+            _boostPowerString = _boostPower.ToString();
+        }
+
+        if (_handling < 10)
+        {
+            _handlingString = "00" + _handling;
+        }
+        else if (_handling < 100)
+        {
+            _handlingString = "0" + _handling;
+        }
+        else
+        {
+            _handlingString = _handling.ToString();
+        }
+
+        if (_value < 10)
+        {
+            _valueString = "00" + _value;
+        }
+        else if (_value < 100)
+        {
+            _valueString = "0" + _value;
+        }
+        else
+        {
+            _valueString = _value.ToString();
+        }
+        #endregion
+
+        _seed = _factionData.ToString() + _maxSpeedString + _accelerationString + _boostPowerString + _handlingString + _valueString + _engineId.ToString();
 
         return _seed;
     }
