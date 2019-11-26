@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public Animator fadeAnimator;
     public DisplayOptions display;
 
+    private PlayerMovement m_playerMove;
+
     private bool m_canLeaveScene = false;
 
     private int m_enemiesKilledSoFar;
@@ -35,6 +37,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get => s_instance; set => s_instance = value; }
     public float GameSpeed { get => m_gameSpeed; private set => m_gameSpeed = value; }
     public int EnemiesKilledSoFar { get => m_enemiesKilledSoFar; set => m_enemiesKilledSoFar = value; }
+    public PlayerMovement PlayerMove { get => m_playerMove; set => m_playerMove = value; }
+    public bool CanLeaveScene { get => m_canLeaveScene; set => m_canLeaveScene = value; }
 
     private void Awake()
     {
@@ -47,6 +51,8 @@ public class GameManager : MonoBehaviour
             Destroy(s_instance.gameObject);
             s_instance = this;
         }
+
+        m_playerMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
     }
 
     private void Start()
@@ -103,12 +109,12 @@ public class GameManager : MonoBehaviour
         Scene _currentScene = SceneManager.GetActiveScene();
         string _sceneName = _currentScene.name;
 
-        if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene" && m_canLeaveScene)
+        if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene" && m_canLeaveScene && m_gameSpeed != 0)
         {
             fadeAnimator.Play("FadeOut");
             Invoke("LoadOut",0.5f);
         }
-        else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip" && m_canLeaveScene)
+        else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip" && m_canLeaveScene && m_gameSpeed != 0)
         {
             fadeAnimator.Play("FadeOut");
             Invoke("InventoryLoadOut", 0.5f);

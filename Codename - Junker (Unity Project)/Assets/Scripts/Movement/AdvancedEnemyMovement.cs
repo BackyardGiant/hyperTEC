@@ -15,7 +15,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
     [Header("Core Values")]
     [SerializeField, Tooltip("If the ship is trying to turn more than the angle it will add a shunt force to avoid instant flips (in degrees)")]
     private float m_flipAngle;
-    [SerializeField, Tooltip("The speed that the enemy accelerates towards it's maximum speed"), Range(0f,1f)]
+    [SerializeField, Tooltip("The speed that the enemy accelerates towards it's maximum speed"), Range(0f,3f)]
     private float m_acceleration;
     [SerializeField, Tooltip("The maximum speed of the enemy")]
     private float m_maxSpeed;
@@ -180,29 +180,8 @@ public class AdvancedEnemyMovement : MonoBehaviour
             }
             else
             {
-                if (m_target != null)
-                {
-                    if (m_manager.m_behaviourState == EnemyManager.States.Flee)
-                    {
-                        m_steering = FleeTarget(m_target.transform);
-                    }
-                    else if (m_manager.m_behaviourState == EnemyManager.States.Pursue)
-                    {
-                        m_steering = PursueTarget(m_target.transform);
-                    }
-                    else if (m_manager.m_behaviourState == EnemyManager.States.Evade)
-                    {
-                        m_steering = Evade(m_target.transform);
-                    }
-                    else if (m_manager.m_behaviourState == EnemyManager.States.PassBy)
-                    {
-                        m_steering = Forward();
-                    }
-                }
-                else
-                {
-                    m_steering = Seek(m_startPosition);
-                }
+                m_steering = Seek(m_startPosition);
+                m_manager.Target = null;
             }
 
             m_steeringWithAvoidence = collisionAvoidance() + m_steering;

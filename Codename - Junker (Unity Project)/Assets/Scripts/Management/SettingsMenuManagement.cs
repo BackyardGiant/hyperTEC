@@ -27,6 +27,8 @@ public class SettingsMenuManagement : MonoBehaviour
     private GameObject m_controlScheme1;
     [SerializeField]
     private GameObject m_controlScheme2;
+    [SerializeField]
+    private TextMeshProUGUI m_invertControlValue;
 
 
     private bool m_readyForInput;
@@ -94,6 +96,7 @@ public class SettingsMenuManagement : MonoBehaviour
                     CloseBar(3);
                     CloseBar(4);
                     CloseBar(5);
+                    CloseBar(6);
                     break;
                 case 1:
                     m_controlScheme1.SetActive(false);
@@ -152,6 +155,18 @@ public class SettingsMenuManagement : MonoBehaviour
                     CloseBar(2);
                     CloseBar(3);
                     CloseBar(4);
+                    CloseBar(6);
+                    break;
+                case 6:
+                    m_controlScheme1.SetActive(false);
+                    m_controlScheme2.SetActive(false);
+                    AnimateBar(6);
+                    CloseBar(0);
+                    CloseBar(1);
+                    CloseBar(2);
+                    CloseBar(3);
+                    CloseBar(4);
+                    CloseBar(5);
                     break;
             }
             if ((Input.GetAxis("MacroEngine") < -0.3) || (Input.GetAxis("Vertical") < -0.3))
@@ -247,6 +262,18 @@ public class SettingsMenuManagement : MonoBehaviour
                         }
                         break;
                     case 5:
+                        if (m_invertControlValue.text == "NO")
+                        {
+                            GameManager.Instance.PlayerMove.InvertY = true;
+                            m_invertControlValue.text = "YES";
+                        }
+                        else
+                        {
+                            GameManager.Instance.PlayerMove.InvertY = false;
+                            m_invertControlValue.text = "NO";
+                        }
+                        break;
+                    case 6:
                         m_mainMenu.SetActive(true);
                         gameObject.SetActive(false);
                         break;

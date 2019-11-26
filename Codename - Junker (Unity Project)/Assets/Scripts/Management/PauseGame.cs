@@ -41,7 +41,7 @@ public class PauseGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("XboxStart") && m_gamePaused == false)
+        if (Input.GetButtonDown("XboxStart") && m_gamePaused == false && GameManager.Instance.CanLeaveScene)
         {
             //PAUSE GAME HERE & DISABLE INPUTS
             GameManager.Instance.SetSlowMo(0);
@@ -50,7 +50,7 @@ public class PauseGame : MonoBehaviour
             m_pauseMenu.SetActive(true);
             m_overlay.SetActive(true);
         }
-        else if (Input.GetButtonDown("XboxStart") && m_gamePaused == true)
+        else if (Input.GetButtonDown("XboxStart") && m_gamePaused == true && GameManager.Instance.CanLeaveScene)
         {
             CloseMenu();
         }

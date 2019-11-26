@@ -94,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
     public float CurrentSpeed { get => m_currentSpeed; }
     public float MaxAcceleration { get => m_maxAcceleration; }
     public ControlType ControlScheme { get => m_controlScheme; set => m_controlScheme = value; }
+    public bool InvertY { get => m_invertY; set => m_invertY = value; }
 
     private void Awake()
     {
