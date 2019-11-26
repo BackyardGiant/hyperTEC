@@ -14,9 +14,10 @@ public class EnemySavingObject
     public string rotationW;
     public string rightWeaponSeed;
     public string leftWeaponSeed;
+    public string engineSeed;
 
 
-    public EnemySavingObject(Vector3 _pos, Quaternion _rot, string _rightSeed, string _leftSeed)
+    public EnemySavingObject(Vector3 _pos, Quaternion _rot, string _rightSeed, string _leftSeed, string _engineSeed)
     {
         positionX = _pos.x.ToString();
         positionY = _pos.y.ToString();
@@ -27,6 +28,7 @@ public class EnemySavingObject
         rotationW = _rot.w.ToString();
         rightWeaponSeed = _rightSeed;
         leftWeaponSeed = _leftSeed;
+        engineSeed = _engineSeed;
     }
 
 }

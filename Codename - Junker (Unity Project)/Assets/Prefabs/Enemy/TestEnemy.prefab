@@ -188,8 +188,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_flipAngle: 160
-  m_acceleration: 1
+  m_maxSpeedHigh: 70
+  m_maxSpeedLow: 30
   m_maxSpeed: 50
+  m_maxAccelerationHigh: 1.4
+  m_maxAccelerationLow: 0.8
+  m_maxAcceleration: 1
+  m_handlingHigh: 1.4
+  m_handlingLow: 0.9
+  m_handling: 1
   m_detectionRange: 200
   m_wanderCircleDistance: 9
   m_circleRadius: 10

@@ -15,10 +15,24 @@ public class AdvancedEnemyMovement : MonoBehaviour
     [Header("Core Values")]
     [SerializeField, Tooltip("If the ship is trying to turn more than the angle it will add a shunt force to avoid instant flips (in degrees)")]
     private float m_flipAngle;
-    [SerializeField, Tooltip("The speed that the enemy accelerates towards it's maximum speed"), Range(0f,3f)]
-    private float m_acceleration;
-    [SerializeField, Tooltip("The maximum speed of the enemy")]
+    [SerializeField, Tooltip("The maximum speed that the ship can fly with the best engine")]
+    private float m_maxSpeedHigh;
+    [SerializeField, Tooltip("The maximum speed that the ship can fly with the worst engine")]
+    private float m_maxSpeedLow;
+    [SerializeField]
     private float m_maxSpeed;
+    [SerializeField, Tooltip("The maximum speed that the ship can accelerate with the best engine")]
+    private float m_maxAccelerationHigh;
+    [SerializeField, Tooltip("The maximum speed that the ship can accelerate with the best engine")]
+    private float m_maxAccelerationLow;
+    [SerializeField]
+    private float m_maxAcceleration;
+    [SerializeField, Tooltip("The speed of the massive boost with the best engine")]
+    private float m_handlingHigh;
+    [SerializeField, Tooltip("The speed of the massive boost with the worst engine")]
+    private float m_handlingLow;
+    [SerializeField, Tooltip("The speed of the massive boost with the worst engine")]
+    private float m_handling;
     [SerializeField, Tooltip("The distance that the enemy will detect obsticles")]
     private float m_detectionRange;
     private float m_detectedRange;
@@ -86,6 +100,11 @@ public class AdvancedEnemyMovement : MonoBehaviour
         m_rb = GetComponent<Rigidbody>();
         m_target = m_manager.Target;
         m_rb.inertiaTensor = new Vector3(0.2f, 0.2f, 0.2f);
+    }
+
+    private void Start()
+    {
+        UpdateValues();
     }
 
     // Update is called once per frame
@@ -193,14 +212,14 @@ public class AdvancedEnemyMovement : MonoBehaviour
                 m_steeringWithAvoidence += transform.right * 100;
             }
 
-            m_rb.AddForce(m_steeringWithAvoidence * m_acceleration * GameManager.Instance.GameSpeed);
+            m_rb.AddForce(m_steeringWithAvoidence * m_maxAcceleration * GameManager.Instance.GameSpeed);
 
             if (m_rb.velocity.magnitude > m_maxSpeed)
             {
                 m_rb.AddForce((-m_steeringWithAvoidence) * (m_rb.velocity.magnitude - m_maxSpeed));
             }
 
-            transform.forward = Vector3.Lerp(transform.forward, m_steeringWithAvoidence.normalized * m_maxSpeed, 0.0002f);
+            transform.forward = Vector3.Lerp(transform.forward, m_steeringWithAvoidence.normalized * m_maxSpeed, 0.0008f * m_handling);
             //transform.forward = m_steering;
         }
     }
@@ -248,11 +267,11 @@ public class AdvancedEnemyMovement : MonoBehaviour
             Vector3 _desiredVelocity = new Vector3();
             if (_target.GetComponentInParent<Rigidbody>().velocity.magnitude > 0)
             {
-                _desiredVelocity = (Vector3.Normalize(_target.GetComponentInParent<Rigidbody>().velocity) * m_maxSpeed * m_acceleration) - m_rb.velocity;
+                _desiredVelocity = (Vector3.Normalize(_target.GetComponentInParent<Rigidbody>().velocity) * m_maxSpeed * m_maxAcceleration) - m_rb.velocity;
             }
             else
             {
-                _desiredVelocity = (_target.forward * m_maxSpeed * m_acceleration) - m_rb.velocity;
+                _desiredVelocity = (_target.forward * m_maxSpeed * m_maxAcceleration) - m_rb.velocity;
             }
             float _randomDisplacementX = Random.Range(-m_evadeSize, m_evadeSize);
             float _randomDisplacementY = Random.Range(-m_evadeSize, m_evadeSize);
@@ -294,7 +313,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
             }
            
             _wanderForce = _circleCentre + displacement;
-            _wanderForce = (_wanderForce.normalized * m_maxSpeed * m_acceleration) - m_rb.velocity;
+            _wanderForce = (_wanderForce.normalized * m_maxSpeed * m_maxAcceleration) - m_rb.velocity;
             m_wanderDirection = _wanderForce;
         }
 
@@ -398,4 +417,33 @@ public class AdvancedEnemyMovement : MonoBehaviour
         m_rb.angularVelocity += m_rb.angularVelocity.normalized * m_angleVelocityDifferenceBetweenSlow;
     }
     #endregion
+
+    public void UpdateValues()
+    {
+        EngineData _engine = null;
+
+        Transform _engineSnap = transform.Find("ConstructionShip#1").Find("EngineSnap");
+
+        _engine = _engineSnap.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock;
+
+        float _rangeMaxSpeed = (m_maxSpeedHigh - m_maxSpeedLow);
+        float _rangeMaxAccleration = (m_maxAccelerationHigh - m_maxAccelerationLow);
+        float _rangeHandling = (m_handlingHigh - m_handlingLow);
+
+        float _maxSpeedPercentage;
+        float _maxAcclerationPercentage;
+        float _handlingPercentage;
+
+        if (_engine != null)
+        {
+            _maxSpeedPercentage = _engine.TopSpeed / 100;
+            _maxAcclerationPercentage = _engine.Acceleration / 100;
+            _handlingPercentage = _engine.Handling / 100;
+
+            m_maxSpeed = m_maxSpeedLow + (_maxSpeedPercentage * _rangeMaxSpeed);
+            m_maxAcceleration = m_maxAccelerationLow + (_maxAcclerationPercentage * _rangeMaxAccleration);
+            m_handling = m_handlingLow + (_handlingPercentage * _rangeHandling);
+
+        }
+    }
 }

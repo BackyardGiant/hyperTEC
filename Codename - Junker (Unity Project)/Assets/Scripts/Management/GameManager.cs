@@ -297,7 +297,8 @@ public class GameManager : MonoBehaviour
         {
             WeaponData _enemyWeaponRight = _enemy.transform.GetChild(0).Find("RightSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
             WeaponData _enemyWeaponLeft = _enemy.transform.GetChild(0).Find("LeftSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
-            _enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed));
+            EngineData _enemyEngine = _enemy.transform.GetChild(0).Find("EngineSnap").GetChild(0).GetComponent<EngineGenerator>().engineStatBlock;
+            _enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed, _enemyEngine.Seed));
         }
 
         string amountOfEnemies = _enemies.Length.ToString();
@@ -513,6 +514,7 @@ public class GameManager : MonoBehaviour
 
             Transform _leftSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("LeftSnap");
             Transform _rightSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("RightSnap");
+            Transform _engineSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("EngineSnap");
 
             WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedEnemy.rightWeaponSeed);
             GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _leftSnap);
@@ -529,6 +531,11 @@ public class GameManager : MonoBehaviour
             _tempRightGun.transform.localPosition = Vector3.zero;
             _tempRightGun.transform.localRotation = Quaternion.identity;
             _tempRightGun.transform.localScale = m_scale;
+
+            EngineData _tempEngine = ModuleManager.Instance.CreateEngineBlock(_savedEnemy.engineSeed);
+            GameObject _tempEngineObject = ModuleManager.Instance.GenerateEngine(_tempEngine);
+            _tempEngineObject.GetComponent<EngineGenerator>().engineStatBlock = _tempEngine;
+            _tempEngineObject.transform.SetParent(_engineSnap);
         }
 
         GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
