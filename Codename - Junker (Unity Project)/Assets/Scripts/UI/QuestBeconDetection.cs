@@ -12,10 +12,14 @@ public class QuestBeconDetection : MonoBehaviour
     [SerializeField, Tooltip("Select/Set Loot Type")]
     private QuestType m_questType;
 
+    [SerializeField, Tooltip("Put quest here")]
+    private Quest m_quest;
+
     private GameObject m_questTarget;
 
     public GameObject QuestTarget { get => m_questTarget; set => m_questTarget = value; }
     public QuestType QuestType { get => m_questType; set => m_questType = value; }
+    public Quest Quest { get => m_quest; set => m_quest = value; }
 
     private void Start()
     {

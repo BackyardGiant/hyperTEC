@@ -2,14 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Quest
+[CreateAssetMenu]
+public class Quest : ScriptableObject
 {
+    [SerializeField]
     private string m_name;
+    [SerializeField]
     private string m_description;
+    [SerializeField]
+    private GameObject m_reward;
+    [SerializeField]
+    private string m_rewardName;
+    [SerializeField]
     private QuestType m_questType;
     private bool m_complete;
     private float m_percentageComplete;
+    [SerializeField]
     private int m_size;
     private int m_currentAmountCompleted;
 
@@ -20,6 +28,8 @@ public class Quest
     public int CurrentAmountCompleted { get => m_currentAmountCompleted; }
     public string Name { get => m_name; }
     public string Description { get => m_description; }
+    public string RewardName { get => m_rewardName; set => m_rewardName = value; }
+    public GameObject Reward { get => m_reward; set => m_reward = value; }
 
     public Quest(QuestType _questType, int _size, string _name, string _description)
     {

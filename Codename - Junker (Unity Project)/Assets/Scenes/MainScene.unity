@@ -5914,6 +5914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_questType: 0
+  m_quest: {fileID: 11400000, guid: 6a3fbd54a7fbb7446891b38907a5c80b, type: 2}
 --- !u!1 &845517596
 GameObject:
   m_ObjectHideFlags: 0
