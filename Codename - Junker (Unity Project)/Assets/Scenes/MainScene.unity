@@ -9797,16 +9797,6 @@ PrefabInstance:
       propertyPath: m_aimingCrosshair
       value: 
       objectReference: {fileID: 663232755}
-    - target: {fileID: 388294911365480841, guid: 5f833fa36dfcf7c41b867d1460102cf2,
-        type: 3}
-      propertyPath: m_rechargeRate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 388294911365480841, guid: 5f833fa36dfcf7c41b867d1460102cf2,
-        type: 3}
-      propertyPath: m_rechargePeriod
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f833fa36dfcf7c41b867d1460102cf2, type: 3}
 --- !u!1 &1608534288 stripped
