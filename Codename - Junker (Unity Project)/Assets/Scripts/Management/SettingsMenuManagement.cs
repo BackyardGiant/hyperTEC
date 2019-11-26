@@ -49,6 +49,14 @@ public class SettingsMenuManagement : MonoBehaviour
         m_values[2].text = PlayerPrefs.GetInt("fxVolume").ToString();
         m_values[3].text = PlayerPrefs.GetInt("uiVolume").ToString();
         m_controlSchemeValue.text = (PlayerPrefs.GetInt("ControlScheme") + 1).ToString();
+        if(PlayerPrefs.GetInt("Invert", 0) == 0)
+        {
+            m_invertControlValue.text = "NO";
+        }
+        else if (PlayerPrefs.GetInt("Invert", 0) == 1)
+        {
+            m_invertControlValue.text = "YES";
+        }
 
 
         m_mixer.SetFloat("masterVol", -80 + PlayerPrefs.GetInt("masterVolume"));
@@ -262,15 +270,23 @@ public class SettingsMenuManagement : MonoBehaviour
                         }
                         break;
                     case 5:
-                        if (m_invertControlValue.text == "NO")
+                        if (m_invertControlValue.text == "YES")
                         {
-                            GameManager.Instance.PlayerMove.InvertY = true;
-                            m_invertControlValue.text = "YES";
+                            PlayerPrefs.SetInt("Invert", 1);
+                            if (GameManager.Instance != null)
+                            {
+                                GameManager.Instance.PlayerMove.InvertY = true;
+                            }
+                            m_invertControlValue.text = "NO";
                         }
                         else
                         {
-                            GameManager.Instance.PlayerMove.InvertY = false;
-                            m_invertControlValue.text = "NO";
+                            PlayerPrefs.SetInt("Invert", 0);
+                            if (GameManager.Instance != null)
+                            {
+                                GameManager.Instance.PlayerMove.InvertY = false;
+                            }
+                            m_invertControlValue.text = "YES";
                         }
                         break;
                     case 6:

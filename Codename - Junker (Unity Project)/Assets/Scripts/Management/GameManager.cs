@@ -76,6 +76,16 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("<color=red>CURRENT SAVE: </color>" + PlayerPrefs.GetString("CurrentSave"));
         Debug.Log("<color=red>LATEST SAVE: </color>" + PlayerPrefs.GetString("LatestSave"));
+
+
+        if (PlayerPrefs.GetInt("Invert", 0) == 0)
+        {
+            PlayerMove.InvertY = false;
+        }
+        else if (PlayerPrefs.GetInt("Invert", 0) == 1)
+        {
+            PlayerMove.InvertY = true;
+        }
     }
 
     private void LoadInto()

@@ -199,7 +199,14 @@ public class PlayerMovement : MonoBehaviour
         switch (m_controlScheme)
         {
             case ControlType.YawLeftAxis:
-                _pitch = Input.GetAxis("Vertical");
+                if (InvertY)
+                {
+                    _pitch = -Input.GetAxis("Vertical");
+                }
+                else if (!InvertY)
+                {
+                    _pitch = Input.GetAxis("Vertical");
+                }
                 _yaw = Input.GetAxis("Horizontal");
                 _roll = Input.GetAxis("Axis12");
 
@@ -213,7 +220,14 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             case ControlType.RollLeftAxis:
-                _pitch = Input.GetAxis("Vertical");
+                if (InvertY)
+                {
+                    _pitch = -Input.GetAxis("Vertical");
+                }
+                else if (!InvertY)
+                {
+                    _pitch = Input.GetAxis("Vertical");
+                }
                 _roll = Input.GetAxis("Horizontal");
                 _yaw = Input.GetAxis("Axis12");
 
