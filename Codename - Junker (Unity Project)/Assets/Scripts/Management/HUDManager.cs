@@ -100,8 +100,6 @@ public class HUDManager : MonoBehaviour
     [SerializeField]
     private GameObject m_hitmarkerObject;
 
-
-
     private bool m_displayAnimated;
     private bool m_enablePickup;
     private bool m_currentlyClosingScan = false;
@@ -317,47 +315,46 @@ public class HUDManager : MonoBehaviour
                 ClearBeaconDisplay();
                 ClearBeaconTarget(m_currentTarget.GetComponent<QuestBeconDetection>());
 
-                Scanner.fillAmount = 0;
+                QuestScanner.fillAmount = 0;
                 m_buttonBeingHeld = -1;
                 m_buttonHoldTime = 0;
             }
 
             if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.3f)
             {
-                Scanner.fillAmount = m_buttonHoldTime - 0.3f;
+                QuestScanner.fillAmount = m_buttonHoldTime - 0.3f;
                 //DisplayLootStats(m_currentTarget);
             }
 
             if (Input.GetButtonUp("Interact"))
             {
-                Scanner.fillAmount = 0;
+                QuestScanner.fillAmount = 0;
                 m_buttonBeingHeld = -1;
                 m_buttonHoldTime = 0;
             }
 
             //Full scan complete, open and animate display.
-            if (Scanner.fillAmount == 1 && m_currentlyScanning == false)
+            if (QuestScanner.fillAmount == 1 && m_currentlyScanning == false)
             {
                 m_enablePickup = false;
                 m_currentlyScanning = true;
-                IncrementPlayerPref("WeaponsScanned");
-                Scanner.fillAmount = 0;
+                QuestScanner.fillAmount = 0;
                 m_buttonBeingHeld = -1;
                 m_buttonHoldTime = 0;
-                LootDisplay.GetComponent<Animator>().Play("DisplayStats");
+                QuestDisplay.GetComponent<Animator>().Play("DisplayStats");
 
                 Invoke("togglePickup", .2f);
             }
 
             //Full close complete, close and animate display.
-            if (Scanner.fillAmount == 1 && m_currentlyScanning == true)
+            if (QuestScanner.fillAmount == 1 && m_currentlyScanning == true)
             {
                 m_enablePickup = false;
                 m_currentlyScanning = false;
-                Scanner.fillAmount = 0;
+                QuestScanner.fillAmount = 0;
                 m_buttonBeingHeld = -1;
                 m_buttonHoldTime = 0;
-                LootDisplay.GetComponent<Animator>().Play("HideStats");
+                QuestDisplay.GetComponent<Animator>().Play("HideStats");
                 m_currentlyClosingScan = true;
 
                 Invoke("togglePickup", .2f);
@@ -366,33 +363,29 @@ public class HUDManager : MonoBehaviour
             //Dismiss being held down fills in the button.
             if (m_buttonBeingHeld == 1 && m_displayAnimated == true)
             {
-                Destroyer.fillAmount = m_buttonHoldTime;
+                QuestDestroyer.fillAmount = m_buttonHoldTime;
             }
 
             //Letting go of the Dismiss button clears the progress
             if (Input.GetButtonUp("Dismiss"))
             {
-                Destroyer.fillAmount = 0;
+                QuestDestroyer.fillAmount = 0;
                 m_buttonBeingHeld = -1;
                 m_buttonHoldTime = 0;
             }
 
             //Destroy the target object.
-            if (Destroyer.fillAmount == 1 && m_displayAnimated == true)
+            if (QuestDestroyer.fillAmount == 1 && m_displayAnimated == true)
             {
                 //Make it explode in here
-                Destroyer.fillAmount = 0;
+                QuestDestroyer.fillAmount = 0;
                 m_buttonBeingHeld = -1;
                 m_buttonHoldTime = 0;
                 GameObject explosion = Instantiate(Explosion, m_currentTarget.transform.position, m_currentTarget.transform.rotation);
                 explosion.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentTarget.gameObject, true, false);
-                if (m_currentTarget.tag == "Component")
-                {
-                    ClearLootTarget(m_currentTarget.GetComponent<LootDetection>());
-                }
+                ClearLootTarget(m_currentTarget.GetComponent<LootDetection>());
                 Destroy(m_currentTarget);
-                IncrementPlayerPref("LootDestroyed");
                 ClearLootDisplay();
 
             }
