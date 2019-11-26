@@ -50,10 +50,22 @@ public class TempEnemyInstantiate : MonoBehaviour
     {
         GameObject _tempEnemy = Instantiate(enemyPrefab, _spawnPoint.position + (Random.insideUnitSphere * 300), _spawnPoint.rotation);
 
+        // Currently all are construction
+        _tempEnemy.GetComponent<EnemyStats>().m_currentFaction = faction.construction;
+        //
+
         _tempEnemy.GetComponent<AdvancedEnemyMovement>().StartPosition = _spawnPoint.position;
 
         Transform _leftSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("LeftSnap");
         Transform _rightSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("RightSnap");
+        Transform _engineSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("EngineSnap");
+
+        EngineData _tempEngineBlock = ModuleManager.Instance.CreateEngineBlock((int)_tempEnemy.GetComponent<EnemyStats>().m_currentFaction);
+        GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(_tempEngineBlock);
+        _tempEngine.GetComponent<EngineGenerator>().engineStatBlock = _tempEngineBlock;
+        _tempEngine.transform.SetParent(_engineSnap);
+
+        _tempEngine.transform.localPosition = Vector3.zero;
 
         WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock();
         GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _leftSnap);
