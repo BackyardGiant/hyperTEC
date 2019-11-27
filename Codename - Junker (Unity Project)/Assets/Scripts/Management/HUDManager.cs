@@ -1364,10 +1364,30 @@ public class HUDManager : MonoBehaviour
             Destroy(WaypointsAndMarkers.GetChild(i).gameObject);
         }
 
+        m_enablePickup = true;
+        m_enableQuestPickup = true;
+        //Calculate Clamp angle of arrow. This is equal to the angle at which the enemy is to the behind of the player. Working out this value prevents arrows floating around the screen.
+        m_displayAnimated = false;
+        m_displayQuestAnimated = false;
+        m_arrowClampAngle = Mathf.Asin((Screen.height) / Mathf.Sqrt((m_viewDistance * m_viewDistance) + (Screen.height * Screen.height)));
+        m_arrowClampAngle = m_arrowClampAngle * Mathf.Rad2Deg;
+        m_crosshairPosition = new Vector2(Screen.width / 2, Screen.height / 2);
+        Destroyer.fillAmount = 0;
+        Scanner.fillAmount = 0;
+        QuestDisplay.transform.localScale = new Vector3(0, 0, 0);
+        LootDisplay.transform.localScale = new Vector3(0, 0, 0);
+        QuestDisplay.SetActive(false);
+        LootDisplay.SetActive(false);
+        QuestDestroyer.fillAmount = 0;
+        QuestScanner.fillAmount = 0;
+
+
         if (PlayerInventoryManager.Instance.EquippedEngine == null)
         {
             DisplayWarning("No Engine");
         }
+        QuestDisplay.SetActive(true);
+        LootDisplay.SetActive(true);
     }
     #endregion
 }

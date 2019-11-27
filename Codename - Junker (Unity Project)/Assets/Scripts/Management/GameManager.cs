@@ -79,14 +79,16 @@ public class GameManager : MonoBehaviour
         Debug.Log("<color=red>CURRENT SAVE: </color>" + PlayerPrefs.GetString("CurrentSave"));
         Debug.Log("<color=red>LATEST SAVE: </color>" + PlayerPrefs.GetString("LatestSave"));
 
-
-        if (PlayerPrefs.GetInt("Invert", 0) == 0)
+        if (m_playerMove != null)
         {
-            m_playerMove.InvertY = false;
-        }
-        else if (PlayerPrefs.GetInt("Invert", 0) == 1)
-        {
-            m_playerMove.InvertY = true;
+            if (PlayerPrefs.GetInt("Invert", 0) == 0)
+            {
+                m_playerMove.InvertY = false;
+            }
+            else if (PlayerPrefs.GetInt("Invert", 0) == 1)
+            {
+                m_playerMove.InvertY = true;
+            }
         }
     }
 

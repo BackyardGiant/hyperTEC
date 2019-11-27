@@ -119,7 +119,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: QuestClosedFromUnscanned
-  m_Speed: -2
+  m_Speed: -4
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 5523097502891854273}
@@ -216,7 +216,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: QuestClosedFromScanned
-  m_Speed: -2
+  m_Speed: -4
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 4271706883415599882}
@@ -243,7 +243,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: QuestCloseScan
-  m_Speed: -1.5
+  m_Speed: -3
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
