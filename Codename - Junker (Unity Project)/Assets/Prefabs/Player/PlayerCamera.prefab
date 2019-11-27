@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 9078455122496417122}
   - component: {fileID: 9078455122496417125}
   - component: {fileID: 9078455123152224274}
+  - component: {fileID: 342089107}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: MainCamera
@@ -115,7 +116,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_cameraPosition: 0
   m_trPlayerTransform: {fileID: 0}
-  m_offSet: {x: 1.13, y: 0, z: 0}
   m_cameraFollowPos: {x: 0, y: 6.3, z: -20}
   m_zSmooth: 0.1
   m_smoothTime: 0.09
@@ -123,6 +123,7 @@ MonoBehaviour:
   m_orbitalCameraRig: {fileID: 0}
   m_focusObject: {fileID: 0}
   m_crosshair: {fileID: 9078455123152224274}
+  m_hudObject: {fileID: 0}
 --- !u!114 &9078455123152224274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,6 +140,19 @@ MonoBehaviour:
   m_nuetralOpacity: 0.4
   crosshairDot: {fileID: 2800000, guid: df0af7b2d196f144b8e4262a3d406e42, type: 3}
   hudImage: {fileID: 0}
+--- !u!114 &342089107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9078455122496417121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: f96b2c5ede70dfe45bc76f3c3fee3524, type: 2}
 --- !u!1001 &656077619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -225,6 +239,10 @@ PrefabInstance:
     - target: {fileID: 19822192, guid: e9a6501da28be2b4986e8ba47c2e017c, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 19822192, guid: e9a6501da28be2b4986e8ba47c2e017c, type: 3}
+      propertyPath: VelocityModule.z.scalar
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 19910812, guid: e9a6501da28be2b4986e8ba47c2e017c, type: 3}
       propertyPath: m_Materials.Array.data[0]

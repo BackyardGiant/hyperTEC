@@ -19,6 +19,8 @@ public class OrbitalCamera : MonoBehaviour
     public float rotateSpeed = 5;
     Vector3 offset;
 
+    public float snapSpeed;
+
     public float CameraDistance;
     public float CameraAngle;
 
@@ -32,8 +34,16 @@ public class OrbitalCamera : MonoBehaviour
 
     private void Update()
     {
-        CurrentY = Input.GetAxis("LookX") * turningSpeed * Y_ANGLE_MAX;
-        CurrentX = Input.GetAxis("LookY") * turningSpeed * X_ANGLE_MAX;
+        if (Mathf.Abs(Input.GetAxis("LookX")) > 0 || Mathf.Abs(Input.GetAxis("LookY")) > 0)
+        {
+            CurrentY += Input.GetAxis("LookX") * turningSpeed;
+            CurrentX += Input.GetAxis("LookY") * turningSpeed;
+        }
+        else
+        {
+            CurrentY = Mathf.Lerp(CurrentY, 0, snapSpeed / 100);
+            CurrentX = Mathf.Lerp(CurrentX, 0, snapSpeed / 100);
+        }
 
         CurrentY = Mathf.Clamp(currentY, Y_ANGLE_MIN, Y_ANGLE_MAX);
         CurrentX = Mathf.Clamp(currentX, X_ANGLE_MIN, X_ANGLE_MAX);
