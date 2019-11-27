@@ -33,17 +33,28 @@ public class CameraMovement : MonoBehaviour
     [SerializeField, Header("Crosshair")]
     private Crosshair m_crosshair;
 
+    [SerializeField, Header("HUD")]
+    private GameObject m_hudObject;
+
     void Update()
     {
         if (GameManager.Instance.GameSpeed != 0)
         {
             if (Mathf.Abs(Input.GetAxis("LookX")) > 0 || Mathf.Abs(Input.GetAxis("LookY")) > 0)
             {
+                if (m_hudObject.activeInHierarchy)
+                {
+                    m_hudObject.SetActive(false);
+                }
                 m_crosshair.enabled = false;
                 FollowCameraMovement(m_orbitalCameraRig.position, true);
             }
             else if (Vector3.Distance(m_trPlayerTransform.TransformPoint(m_cameraFollowPos), transform.position) > 25f && Vector3.Distance(m_trPlayerTransform.position, transform.position) < 25f)
             {
+                if (!m_hudObject.activeInHierarchy)
+                {
+                    m_hudObject.SetActive(true);
+                }
                 m_crosshair.enabled = false;
                 m_orbitalCameraRig.GetComponent<OrbitalCamera>().CurrentX = 0;
                 m_orbitalCameraRig.GetComponent<OrbitalCamera>().CurrentY = 0;
@@ -51,6 +62,10 @@ public class CameraMovement : MonoBehaviour
             }
             else
             {
+                if (!m_hudObject.activeInHierarchy)
+                {
+                    m_hudObject.SetActive(true);
+                }
                 m_crosshair.enabled = true;
                 m_orbitalCameraRig.GetComponent<OrbitalCamera>().CurrentX = 0;
                 m_orbitalCameraRig.GetComponent<OrbitalCamera>().CurrentY = 0;
