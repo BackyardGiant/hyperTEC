@@ -22,4 +22,4 @@ MonoBehaviour:
   boostPower: 0
   handling: 0
   engineId: 0
-  seed: 2
+  seed: 20000000000000000

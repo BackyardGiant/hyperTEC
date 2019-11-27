@@ -40,7 +40,6 @@ public class EngineData : ScriptableObject
     public float Value { get => value; set => this.value = value; }
     public float TopSpeed { get => topSpeed; set => topSpeed = value; }
     public float Acceleration { get => acceleration; set => acceleration = value; }
-    public float Acceleration1 { get => acceleration; set => acceleration = value; }
     public float Handling { get => handling; set => handling = value; }
     private moduleType CurrentModuleType { get => currentModuleType; }
     public int EngineId { get => engineId; set => engineId = value; }

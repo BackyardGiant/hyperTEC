@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour
     public Animator fadeAnimator;
     public DisplayOptions display;
 
+    public GameObject questBeacon;
+
+    private PlayerMovement m_playerMove;
+
     private bool m_canLeaveScene = false;
 
     private int m_enemiesKilledSoFar;
@@ -35,6 +39,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get => s_instance; set => s_instance = value; }
     public float GameSpeed { get => m_gameSpeed; private set => m_gameSpeed = value; }
     public int EnemiesKilledSoFar { get => m_enemiesKilledSoFar; set => m_enemiesKilledSoFar = value; }
+    public PlayerMovement PlayerMove { get => m_playerMove; set => m_playerMove = value; }
+    public bool CanLeaveScene { get => m_canLeaveScene; set => m_canLeaveScene = value; }
 
     private void Awake()
     {
@@ -47,6 +53,8 @@ public class GameManager : MonoBehaviour
             Destroy(s_instance.gameObject);
             s_instance = this;
         }
+
+        m_playerMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
     }
 
     private void Start()
@@ -70,6 +78,18 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("<color=red>CURRENT SAVE: </color>" + PlayerPrefs.GetString("CurrentSave"));
         Debug.Log("<color=red>LATEST SAVE: </color>" + PlayerPrefs.GetString("LatestSave"));
+
+        if (m_playerMove != null)
+        {
+            if (PlayerPrefs.GetInt("Invert", 0) == 0)
+            {
+                m_playerMove.InvertY = false;
+            }
+            else if (PlayerPrefs.GetInt("Invert", 0) == 1)
+            {
+                m_playerMove.InvertY = true;
+            }
+        }
     }
 
     private void LoadInto()
@@ -103,12 +123,12 @@ public class GameManager : MonoBehaviour
         Scene _currentScene = SceneManager.GetActiveScene();
         string _sceneName = _currentScene.name;
 
-        if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene" && m_canLeaveScene)
+        if (Input.GetButtonDown("Inventory") && _sceneName == "MainScene" && m_canLeaveScene && m_gameSpeed != 0)
         {
             fadeAnimator.Play("FadeOut");
             Invoke("LoadOut",0.5f);
         }
-        else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip" && m_canLeaveScene)
+        else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip" && m_canLeaveScene && m_gameSpeed != 0)
         {
             fadeAnimator.Play("FadeOut");
             Invoke("InventoryLoadOut", 0.5f);
@@ -281,7 +301,8 @@ public class GameManager : MonoBehaviour
         {
             WeaponData _enemyWeaponRight = _enemy.transform.GetChild(0).Find("RightSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
             WeaponData _enemyWeaponLeft = _enemy.transform.GetChild(0).Find("LeftSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
-            _enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed));
+            EngineData _enemyEngine = _enemy.transform.GetChild(0).Find("EngineSnap").GetChild(0).GetComponent<EngineGenerator>().engineStatBlock;
+            _enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed, _enemyEngine.Seed));
         }
 
         string amountOfEnemies = _enemies.Length.ToString();
@@ -366,6 +387,45 @@ public class GameManager : MonoBehaviour
             _questSavingObjects.Add(_savedQuest);
         }
 
+        GameObject[] _questBeacons = GameObject.FindGameObjectsWithTag("QuestBeacon");
+        List<BeaconSavingObject> _beaconSaves = new List<BeaconSavingObject>();
+
+        foreach(GameObject _questBeacon in _questBeacons)
+        {
+            int _type = -1;
+            Quest _quest = _questBeacon.GetComponent<QuestBeconDetection>().Quest;
+            switch (_questBeacon.GetComponent<QuestBeconDetection>().QuestType)
+            {
+                case QuestType.kill:
+                    _type = 0;
+                    break;
+                case QuestType.collect:
+                    _type = 1;
+                    break;
+                case QuestType.control:
+                    _type = 2;
+                    break;
+                case QuestType.recon:
+                    _type = 3;
+                    break;
+                case QuestType.targets:
+                    _type = 4;
+                    break;
+            }
+            if (_type == -1)
+            {
+                Debug.Log("Quest has no type");
+                break;
+            }
+            else
+            {
+                BeaconSavingObject _savedBeacon = new BeaconSavingObject(_questBeacon.transform.position, _questBeacon.transform.rotation, _quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.Size.ToString(), _quest.RewardName);
+                _beaconSaves.Add(_savedBeacon);
+            }
+        }
+
+        string _amountOfBeacons = _beaconSaves.Count.ToString();
+
         //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
 
         string _fileName = PlayerPrefs.GetString("CurrentSave") + ".giant";
@@ -405,6 +465,14 @@ public class GameManager : MonoBehaviour
         {
             string _questSaveLine = JsonUtility.ToJson(_quest);
             File.AppendAllText(_fileName, _questSaveLine + System.Environment.NewLine);
+        }
+
+        File.AppendAllText(_fileName, _amountOfBeacons + System.Environment.NewLine);
+
+        foreach (BeaconSavingObject _beacon in _beaconSaves)
+        {
+            string _beaconSaveLine = JsonUtility.ToJson(_beacon);
+            File.AppendAllText(_fileName, _beaconSaveLine + System.Environment.NewLine);
         }
 
         PlayerPrefs.SetString("LastSave" + _fileName[4], System.DateTime.Now.ToString());
@@ -457,6 +525,10 @@ public class GameManager : MonoBehaviour
                 _rightGun.transform.localScale = new Vector3(1, 1, 1);
             }
 
+            _player.GetComponent<PlayerMovement>().UpdateValues();
+
+            HUDManager.Instance.ClearAllDisplays();
+
             m_canLeaveScene = true;
             return;
         }
@@ -473,6 +545,7 @@ public class GameManager : MonoBehaviour
 
         GameObject[] _enemies = GameObject.FindGameObjectsWithTag("Enemy");
         GameObject[] _targets = GameObject.FindGameObjectsWithTag("TargetUI");
+        GameObject[] _beacons = GameObject.FindGameObjectsWithTag("QuestBeacon");
 
         foreach(GameObject _enemy in _enemies)
         {
@@ -482,6 +555,11 @@ public class GameManager : MonoBehaviour
         foreach (GameObject _target in _targets)
         {
             Destroy(_target);
+        }
+
+        foreach (GameObject _beacon in _beacons)
+        {
+            Destroy(_beacon);
         }
 
         int _numberOfEnemies = int.Parse(_loadLines[1]);
@@ -495,6 +573,7 @@ public class GameManager : MonoBehaviour
 
             Transform _leftSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("LeftSnap");
             Transform _rightSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("RightSnap");
+            Transform _engineSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("EngineSnap");
 
             WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedEnemy.rightWeaponSeed);
             GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _leftSnap);
@@ -511,6 +590,15 @@ public class GameManager : MonoBehaviour
             _tempRightGun.transform.localPosition = Vector3.zero;
             _tempRightGun.transform.localRotation = Quaternion.identity;
             _tempRightGun.transform.localScale = m_scale;
+
+            EngineData _tempEngine = ModuleManager.Instance.CreateEngineBlock(_savedEnemy.engineSeed);
+            GameObject _tempEngineObject = ModuleManager.Instance.GenerateEngine(_tempEngine);
+            _tempEngineObject.GetComponent<EngineGenerator>().engineStatBlock = _tempEngine;
+            _tempEngineObject.transform.SetParent(_engineSnap);
+
+            _tempEngineObject.transform.localPosition = Vector3.zero;
+            _tempEngineObject.transform.localRotation = Quaternion.identity;
+            _tempEngineObject.transform.localEulerAngles = _tempEngineObject.transform.localEulerAngles + new Vector3(0, -90, 0);
         }
 
         GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
@@ -775,38 +863,60 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < _numberOfQuests; i++)
         {
-            QuestSavingObject _quest = JsonUtility.FromJson<QuestSavingObject>(_loadLines[6 + _numberOfEnemies + _numberOfItems]);
+            QuestSavingObject _quest = JsonUtility.FromJson<QuestSavingObject>(_loadLines[i + 6 + _numberOfEnemies + _numberOfItems]);
 
-            switch ((QuestType)int.Parse(_quest.m_questType))
+            switch ((QuestType)int.Parse(_quest.questType))
             {
                 case QuestType.kill:
-                    QuestManager.Instance.CreateKillQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    QuestManager.Instance.CreateKillQuest(int.Parse(_quest.size), _quest.name, _quest.description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
                     break;
                 case QuestType.control:
-                    QuestManager.Instance.CreateControlQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    QuestManager.Instance.CreateControlQuest(int.Parse(_quest.size), _quest.name, _quest.description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
                     break;
                 case QuestType.collect:
                     //QuestManager.Instance.CreateCollectQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
                     break;
                 case QuestType.recon:
-                    QuestManager.Instance.CreateReconQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    QuestManager.Instance.CreateReconQuest(int.Parse(_quest.size), _quest.name, _quest.description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
                     break;
                 case QuestType.targets:
-                    QuestManager.Instance.CreateTargetQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    QuestManager.Instance.CreateTargetQuest(int.Parse(_quest.size), _quest.name, _quest.description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
                     break;
             }
         }
 
+        int _numberOfBeacons = int.Parse(_loadLines[6 + _numberOfEnemies + _numberOfItems + _numberOfQuests]);
+
+        for(int i = 0; i < _numberOfBeacons; i++)
+        {
+            string str = _loadLines[i + 7 + _numberOfEnemies + _numberOfItems + _numberOfQuests];
+            BeaconSavingObject _beacon = JsonUtility.FromJson<BeaconSavingObject>(_loadLines[i + 7 + _numberOfEnemies + _numberOfItems + _numberOfQuests]);
+
+            Quest _quest = ScriptableObject.CreateInstance<Quest>();
+            _quest.Name = _beacon.questName;
+            _quest.Description = _beacon.description;
+            _quest.Size = int.Parse(_beacon.size);
+            _quest.RewardName = _beacon.rewardName;
+            _quest.QuestType = (QuestType)int.Parse(_beacon.questType);
+
+            GameObject _newBeacon = Instantiate(questBeacon, new Vector3(float.Parse(_beacon.positionX), float.Parse(_beacon.positionY), float.Parse(_beacon.positionZ)), new Quaternion(float.Parse(_beacon.rotationX), float.Parse(_beacon.rotationY), float.Parse(_beacon.rotationZ), float.Parse(_beacon.rotationW)));
+            _newBeacon.GetComponent<QuestBeconDetection>().Quest = _quest;
+            _newBeacon.GetComponent<QuestBeconDetection>().QuestType = _quest.QuestType;
+        }
+
         _player.GetComponent<PlayerShooting>().buildWeapons();
+        _player.GetComponent<PlayerMovement>().UpdateValues();
 
         HUDManager.Instance.ClearAllDisplays();
 
         m_canLeaveScene = true;
+
+
     }
 
     public void LoadInventory()
@@ -898,27 +1008,27 @@ public class GameManager : MonoBehaviour
         {
             QuestSavingObject _quest = JsonUtility.FromJson<QuestSavingObject>(_loadLines[6 + _numberOfEnemies + _numberOfItems]);
 
-            switch ((QuestType)int.Parse(_quest.m_questType))
+            switch ((QuestType)int.Parse(_quest.questType))
             {
                 case QuestType.kill:
-                    QuestManager.Instance.CreateKillQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    QuestManager.Instance.CreateKillQuest(int.Parse(_quest.size), _quest.name, _quest.description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
                     break;
                 case QuestType.control:
-                    QuestManager.Instance.CreateControlQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    QuestManager.Instance.CreateControlQuest(int.Parse(_quest.size), _quest.name, _quest.description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
                     break;
                 case QuestType.collect:
                     //QuestManager.Instance.CreateCollectQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
                     break;
                 case QuestType.recon:
-                    QuestManager.Instance.CreateReconQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    QuestManager.Instance.CreateReconQuest(int.Parse(_quest.size), _quest.name, _quest.description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
                     break;
                 case QuestType.targets:
-                    QuestManager.Instance.CreateTargetQuest(int.Parse(_quest.m_size), _quest.m_name, _quest.m_description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.m_currentAmountCompleted));
+                    QuestManager.Instance.CreateTargetQuest(int.Parse(_quest.size), _quest.name, _quest.description);
+                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
                     break;
             }
         }

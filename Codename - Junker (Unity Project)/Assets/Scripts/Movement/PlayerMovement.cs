@@ -8,9 +8,17 @@ public class PlayerMovement : MonoBehaviour
 
     #region Speed
     [Header("Speed Settings")]
-    [SerializeField, Tooltip("The maximum speed that the ship can fly")]
+    [SerializeField, Tooltip("The maximum speed that the ship can fly with the best engine")]
+    private float m_maxSpeedHigh;
+    [SerializeField, Tooltip("The maximum speed that the ship can fly with the worst engine")]
+    private float m_maxSpeedLow;
+    [SerializeField]
     private float m_maxSpeed;
-    [SerializeField, Tooltip("The maximum speed that the ship can accelerate")]
+    [SerializeField, Tooltip("The maximum speed that the ship can accelerate with the best engine")]
+    private float m_maxAccelerationHigh;
+    [SerializeField, Tooltip("The maximum speed that the ship can accelerate with the best engine")]
+    private float m_maxAccelerationLow;
+    [SerializeField]
     private float m_maxAcceleration;
     [SerializeField, Tooltip("The current speed of the ship, between 0 and Max Speed")]
     private float m_currentSpeed;
@@ -28,6 +36,12 @@ public class PlayerMovement : MonoBehaviour
 
     #region Pitch, Yaw and Roll
     [Header("Pitch, Yaw and Roll speed")]
+    [SerializeField, Tooltip("The speed of the massive boost with the best engine")]
+    private float m_handlingHigh;
+    [SerializeField, Tooltip("The speed of the massive boost with the worst engine")]
+    private float m_handlingLow;
+    [SerializeField, Tooltip("The speed of the massive boost with the worst engine")]
+    private float m_handling;
     [SerializeField, Tooltip("This controls the speed at which the ship rolls (Z-Axis)")]
     private float m_rollSpeed;
     [SerializeField, Tooltip("This controls the speed at which the ships yaw is affected (Y-Axis)")]
@@ -63,12 +77,16 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Super Boost
-    [SerializeField, Header("Super Boost"), Tooltip("The speed of the massive boost")]
+    [SerializeField, Header("Super Boost"), Tooltip("The speed of the massive boost with the best engine")]
+    private float m_boostSpeedHigh;
+    [SerializeField, Tooltip("The speed of the massive boost with the worst engine")]
+    private float m_boostSpeedLow;
+    [SerializeField, Tooltip("The speed of the massive boost")]
     private float m_boostSpeed;
     [SerializeField, Tooltip("The speed of the massive boost")]
     private float m_boostDamping;
     [SerializeField, Tooltip("The maximum velocity of the ship")]
-    private float m_maxBoost;
+    private float m_maxBoostSpeed;
     [SerializeField, Tooltip("The time the boost is active for")]
     private float m_boostTime;
     private bool m_killedEngine;
@@ -94,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
     public float CurrentSpeed { get => m_currentSpeed; }
     public float MaxAcceleration { get => m_maxAcceleration; }
     public ControlType ControlScheme { get => m_controlScheme; set => m_controlScheme = value; }
+    public bool InvertY { get => m_invertY; set => m_invertY = value; }
 
     private void Awake()
     {
@@ -115,8 +134,7 @@ public class PlayerMovement : MonoBehaviour
         {
             m_controlScheme = ControlType.YawLeftAxis;
         }
-
-        m_boostSpeed = 8.5f * m_maxSpeed;
+        UpdateValues();
     }
 
     // Update is called once per frame
@@ -198,7 +216,14 @@ public class PlayerMovement : MonoBehaviour
         switch (m_controlScheme)
         {
             case ControlType.YawLeftAxis:
-                _pitch = Input.GetAxis("Vertical");
+                if (InvertY)
+                {
+                    _pitch = -Input.GetAxis("Vertical");
+                }
+                else if (!InvertY)
+                {
+                    _pitch = Input.GetAxis("Vertical");
+                }
                 _yaw = Input.GetAxis("Horizontal");
                 _roll = Input.GetAxis("Axis12");
 
@@ -212,7 +237,14 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             case ControlType.RollLeftAxis:
-                _pitch = Input.GetAxis("Vertical");
+                if (InvertY)
+                {
+                    _pitch = -Input.GetAxis("Vertical");
+                }
+                else if (!InvertY)
+                {
+                    _pitch = Input.GetAxis("Vertical");
+                }
                 _roll = Input.GetAxis("Horizontal");
                 _yaw = Input.GetAxis("Axis12");
 
@@ -234,25 +266,25 @@ public class PlayerMovement : MonoBehaviour
         if (PlayerInventoryManager.Instance.EquippedEngine != null)
         {
             // Add torque for the pitch based on the pitch input.
-            torque += _pitch * m_pitchSpeed * transform.right;
+            torque += _pitch * m_pitchSpeed * m_handling * transform.right;
             // Add torque for the yaw based on the yaw input.
-            torque += _yaw * m_yawSpeed * transform.up;
+            torque += _yaw * m_yawSpeed * m_handling * transform.up;
             // Add torque for the roll based on the roll input.
-            torque += -_roll * m_rollSpeed * transform.forward;
+            torque += -_roll * m_rollSpeed * m_handling * transform.forward;
         }
         else
         {
             // Add torque for the pitch based on the pitch input.
-            torque += _pitch * m_pitchSpeed * transform.right * 0.33f;
+            torque += _pitch * m_pitchSpeed * m_handling * transform.right * 0.33f;
             // Add torque for the yaw based on the yaw input.
-            torque += _yaw * m_yawSpeed * transform.up * 0.33f;
+            torque += _yaw * m_yawSpeed * m_handling * transform.up * 0.33f;
             // Add torque for the roll based on the roll input.
-            torque += -_roll * m_rollSpeed * transform.forward * 0.33f;
+            torque += -_roll * m_rollSpeed * m_handling * transform.forward * 0.33f;
         }
 
         if (m_boostOn)
         {
-            if (m_rbPlayer.velocity.magnitude < m_maxBoost)
+            if (m_rbPlayer.velocity.magnitude < m_maxBoostSpeed)
             {
                 m_rbPlayer.AddForce(m_boostSpeed * transform.forward * GameManager.Instance.GameSpeed);
             }
@@ -342,14 +374,38 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //Used for user testing
-    private void UpdateValues()
+    public void UpdateValues()
     {
-        m_maxSpeed = MovementUsabilityTestingManager.Instance.MaxSpeed * 150;
-        m_maxAcceleration = MovementUsabilityTestingManager.Instance.Acceleration * 40;
-        m_dampingSpeed = MovementUsabilityTestingManager.Instance.Damping * 1;
+        EngineData _engine = null;
 
-        m_rollSpeed = MovementUsabilityTestingManager.Instance.RollSpeed * 0.5f;
-        m_pitchSpeed = MovementUsabilityTestingManager.Instance.PitchSpeed * 0.5f;
-        m_yawSpeed = MovementUsabilityTestingManager.Instance.YawSpeed * 0.5f;
+        try
+        {
+            _engine = PlayerInventoryManager.Instance.EquippedEngine;
+        }
+        catch { }
+
+        float _rangeMaxSpeed = (m_maxSpeedHigh - m_maxSpeedLow);
+        float _rangeMaxAccleration = (m_maxAccelerationHigh - m_maxAccelerationLow);
+        float _rangeBoost = (m_boostSpeedHigh - m_boostSpeedLow);
+        float _rangeHandling = (m_handlingHigh - m_handlingLow);
+
+        float _maxSpeedPercentage;
+        float _maxAcclerationPercentage;
+        float _boostPercentage;
+        float _handlingPercentage;
+
+        if (_engine != null)
+        {
+            _maxSpeedPercentage = _engine.TopSpeed / 100;
+            _maxAcclerationPercentage = _engine.Acceleration / 100;
+            _boostPercentage = _engine.BoostPower / 100;
+            _handlingPercentage = _engine.Handling / 100;
+
+            m_maxSpeed = m_maxSpeedLow + (_maxSpeedPercentage * _rangeMaxSpeed);
+            m_maxAcceleration = m_maxAccelerationLow + (_maxAcclerationPercentage * _rangeMaxAccleration);
+            m_boostSpeed = m_boostSpeedLow + (_boostPercentage * _rangeBoost);
+            m_handling = m_handlingLow + (_handlingPercentage * _rangeHandling);
+
+        }
     }
 }

@@ -46,6 +46,7 @@ public class BulletBehaviour : MonoBehaviour
             if (m_target == "Enemy")
             {
                 other.transform.GetComponent<EnemyStats>().TakeDamage(m_damage);
+                HUDManager.Instance.playHitmarker();
             }
             else if(m_target == "Player")
             {

@@ -27,6 +27,8 @@ public class SettingsMenuManagement : MonoBehaviour
     private GameObject m_controlScheme1;
     [SerializeField]
     private GameObject m_controlScheme2;
+    [SerializeField]
+    private TextMeshProUGUI m_invertControlValue;
 
 
     private bool m_readyForInput;
@@ -47,6 +49,14 @@ public class SettingsMenuManagement : MonoBehaviour
         m_values[2].text = PlayerPrefs.GetInt("fxVolume").ToString();
         m_values[3].text = PlayerPrefs.GetInt("uiVolume").ToString();
         m_controlSchemeValue.text = (PlayerPrefs.GetInt("ControlScheme") + 1).ToString();
+        if(PlayerPrefs.GetInt("Invert", 0) == 0)
+        {
+            m_invertControlValue.text = "NO";
+        }
+        else if (PlayerPrefs.GetInt("Invert", 0) == 1)
+        {
+            m_invertControlValue.text = "YES";
+        }
 
 
         m_mixer.SetFloat("masterVol", -80 + PlayerPrefs.GetInt("masterVolume"));
@@ -94,6 +104,7 @@ public class SettingsMenuManagement : MonoBehaviour
                     CloseBar(3);
                     CloseBar(4);
                     CloseBar(5);
+                    CloseBar(6);
                     break;
                 case 1:
                     m_controlScheme1.SetActive(false);
@@ -152,6 +163,18 @@ public class SettingsMenuManagement : MonoBehaviour
                     CloseBar(2);
                     CloseBar(3);
                     CloseBar(4);
+                    CloseBar(6);
+                    break;
+                case 6:
+                    m_controlScheme1.SetActive(false);
+                    m_controlScheme2.SetActive(false);
+                    AnimateBar(6);
+                    CloseBar(0);
+                    CloseBar(1);
+                    CloseBar(2);
+                    CloseBar(3);
+                    CloseBar(4);
+                    CloseBar(5);
                     break;
             }
             if ((Input.GetAxis("MacroEngine") < -0.3) || (Input.GetAxis("Vertical") < -0.3))
@@ -247,6 +270,26 @@ public class SettingsMenuManagement : MonoBehaviour
                         }
                         break;
                     case 5:
+                        if (m_invertControlValue.text == "YES")
+                        {
+                            PlayerPrefs.SetInt("Invert", 1);
+                            if (GameManager.Instance != null)
+                            {
+                                GameManager.Instance.PlayerMove.InvertY = true;
+                            }
+                            m_invertControlValue.text = "NO";
+                        }
+                        else
+                        {
+                            PlayerPrefs.SetInt("Invert", 0);
+                            if (GameManager.Instance != null)
+                            {
+                                GameManager.Instance.PlayerMove.InvertY = false;
+                            }
+                            m_invertControlValue.text = "YES";
+                        }
+                        break;
+                    case 6:
                         m_mainMenu.SetActive(true);
                         gameObject.SetActive(false);
                         break;
