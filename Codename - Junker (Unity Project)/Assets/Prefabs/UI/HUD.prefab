@@ -2138,7 +2138,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -4153,7 +4153,7 @@ RectTransform:
   m_GameObject: {fileID: 1216164424}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children:
   - {fileID: 175393011}
   - {fileID: 1186564598}
@@ -7042,7 +7042,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4110417919
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -7793,7 +7793,7 @@ MonoBehaviour:
   - {fileID: 1148009767}
   QuestDisplay: {fileID: 1216164424}
   QuestScanner: {fileID: 772363563}
-  QuestDestroyer: {fileID: 0}
+  QuestDestroyer: {fileID: 4880098207933008534}
   m_questTargetColour: {r: 0.88235295, g: 0.7294118, b: 0.1254902, a: 1}
   m_questTargetSize: 0.3
   m_questViewDistance: 150
@@ -8951,7 +8951,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 2
   m_UseSpriteMesh: 0

@@ -476,6 +476,8 @@ public class GameManager : MonoBehaviour
 
             _player.GetComponent<PlayerMovement>().UpdateValues();
 
+            HUDManager.Instance.ClearAllDisplays();
+
             m_canLeaveScene = true;
             return;
         }
