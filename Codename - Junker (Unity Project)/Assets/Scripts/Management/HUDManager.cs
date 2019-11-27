@@ -77,7 +77,7 @@ public class HUDManager : MonoBehaviour
     [SerializeField]
     private Sprite m_kill, m_collect, m_target, m_recon, m_control;
     [SerializeField]
-    private TextMeshProUGUI m_questDisplayTitle, m_questDisplayObjectTitle, questDescription, questReward;
+    private TextMeshProUGUI m_questDisplayTitle, m_questDisplayObjectTitle, m_questTaskDescription, m_questReward;
     #endregion
     #region AutoAim
     private GameObject m_closestEnemy;
@@ -130,15 +130,17 @@ public class HUDManager : MonoBehaviour
     {
         HideWarning();
         m_enablePickup = true;
+        m_enableQuestPickup = true;
         //Calculate Clamp angle of arrow. This is equal to the angle at which the enemy is to the behind of the player. Working out this value prevents arrows floating around the screen.
         m_displayAnimated = false;
+        m_displayQuestAnimated = false;
         m_arrowClampAngle = Mathf.Asin((Screen.height) / Mathf.Sqrt((m_viewDistance * m_viewDistance) + (Screen.height * Screen.height)));
         m_arrowClampAngle = m_arrowClampAngle * Mathf.Rad2Deg;
         m_crosshairPosition = new Vector2(Screen.width / 2, Screen.height / 2);
         Destroyer.fillAmount = 0;
         Scanner.fillAmount = 0;
         // 18/11/19 - TEMPORARILY MAKE SURE YOU'RE TRACKING THE RIGHT QUEST.
-        QuestManager.Instance.TrackingQuestIndex = 0;
+        //QuestManager.Instance.TrackingQuestIndex = 0;
     }
     void Awake()
     {
@@ -157,21 +159,21 @@ public class HUDManager : MonoBehaviour
     {
         #region LootInteraction
 
-        if (m_displayAnimated == false)
+        if (m_displayAnimated == false || m_displayQuestAnimated == false)
         {
             m_buttonBeingHeld = -1;
         }
 
-        if(Input.GetButton("Interact") && m_displayAnimated == true)
+        if(Input.GetButton("Interact") && (m_displayAnimated == true || m_displayQuestAnimated == true))
         {
             m_buttonBeingHeld = 0;
         }
-        else if(Input.GetButton("Dismiss") && m_displayAnimated == true)
+        else if(Input.GetButton("Dismiss") && (m_displayAnimated == true || m_displayQuestAnimated == true))
         {
             m_buttonBeingHeld = 1;
         }
 
-        if (m_buttonBeingHeld != -1 && m_displayAnimated == true)
+        if (m_buttonBeingHeld != -1 && (m_displayAnimated == true || m_displayQuestAnimated == true))
         {
             m_buttonHoldTime += Time.deltaTime * m_scanningFillSpeed;
         }
@@ -293,7 +295,7 @@ public class HUDManager : MonoBehaviour
                 {
                     ClearLootDisplay();
                 }
-                if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.3f && m_displayAnimated == true && m_enableQuestPickup == true)
+                if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.3f && m_displayQuestAnimated == true && m_enableQuestPickup == true)
                 {
                     //Make pickup item code here
                     GameObject _questAccepted = m_currentTarget;
@@ -337,6 +339,7 @@ public class HUDManager : MonoBehaviour
                 {
                     QuestScanner.fillAmount = m_buttonHoldTime - 0.3f;
                     //DisplayLootStats(m_currentTarget);
+                    DisplayQuestData(m_currentTarget.GetComponent<QuestBeconDetection>().Quest);
                 }
 
                 if (Input.GetButtonUp("Interact"))
@@ -822,14 +825,13 @@ public class HUDManager : MonoBehaviour
                 if (!m_displayQuestAnimated)
                 {
                     QuestDisplay.GetComponent<Animator>().Play("OpenQuestDisplay");
-                    m_displayAnimated = true;   
+                    m_displayQuestAnimated = true;   
                 }
             }
             if (m_currentlyQuestScanning)
             {
                 _displayTargetPos = new Vector3(_targetPos.x, _targetPos.y + (m_displayOffset * Screen.height * 3f));
                 QuestDisplay.GetComponent<RectTransform>().position = Vector3.Lerp(QuestDisplay.GetComponent<RectTransform>().position, _displayTargetPos, 0.08f);
-
             }
             else if (m_currentlyClosingQuestScan)
             {
@@ -1284,8 +1286,8 @@ public class HUDManager : MonoBehaviour
     {
         if(_currentQuest != null)
         {
-            m_questDescription.text = _currentQuest.Description;
-            questReward.text = _currentQuest.RewardName;
+            m_questTaskDescription.text = _currentQuest.Description;
+            m_questReward.text = _currentQuest.RewardName;
         }
     }
     #endregion

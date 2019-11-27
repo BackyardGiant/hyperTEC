@@ -21,13 +21,13 @@ public class Quest : ScriptableObject
     private int m_size;
     private int m_currentAmountCompleted;
 
-    public QuestType QuestType { get => m_questType; }
+    public QuestType QuestType { get => m_questType; set => m_questType = value; }
     public bool Complete { get => m_complete; set => m_complete = value; }
     public float PercentageComplete { get => m_percentageComplete; set => m_percentageComplete = value; }
-    public int Size { get => m_size; }
+    public int Size { get => m_size; set => m_size = value; }
     public int CurrentAmountCompleted { get => m_currentAmountCompleted; }
-    public string Name { get => m_name; }
-    public string Description { get => m_description; }
+    public string Name { get => m_name; set => m_name = value; }
+    public string Description { get => m_description; set => m_description = value; }
     public string RewardName { get => m_rewardName; set => m_rewardName = value; }
     public GameObject Reward { get => m_reward; set => m_reward = value; }
 

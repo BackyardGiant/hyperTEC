@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7113264020713941147}
   - component: {fileID: 7113264020713941144}
+  - component: {fileID: 647031814}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -51,4 +52,35 @@ MonoBehaviour:
     type: 3}
   blackOut: {fileID: 0}
   fadeAnimator: {fileID: 0}
+  display: {fileID: 0}
+  questBeacon: {fileID: 0}
   m_gameSpeed: 1
+--- !u!114 &647031814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7113264020713941145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de0f8d0ca140234fbf8b666d08ec6e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 2b8b5d87f1895814a9d089bb729a47ab, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7113264020713941144}
+        m_MethodName: EnemyKilled
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null

@@ -63,10 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Art\Skybox\Starfield Skybox\Demo\Script\LookCamera.cs" />
-    <Compile Include="Assets\EngineGenerator.cs" />
-    <Compile Include="Assets\LoadGameManagement.cs" />
-    <Compile Include="Assets\NewGameManagement.cs" />
-    <Compile Include="Assets\PopulateStatDisplay.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\GetSetAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\TrackballAttribute.cs" />
@@ -112,7 +108,6 @@
     <Compile Include="Assets\PostProcessing\Runtime\Utils\MaterialFactory.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Utils\RenderTextureFactory.cs" />
     <Compile Include="Assets\PostProcessing\Utilities\CustomMotionTexture\ExampleWheelController.cs" />
-    <Compile Include="Assets\QuestManagerTEMPCREATION.cs" />
     <Compile Include="Assets\Scripts\Extensions\AudioSourceExtension.cs" />
     <Compile Include="Assets\Scripts\Extensions\ListExtension.cs" />
     <Compile Include="Assets\Scripts\Extensions\ObjectExtensions.cs" />
@@ -124,18 +119,22 @@
     <Compile Include="Assets\Scripts\Management\ExplosionController.cs" />
     <Compile Include="Assets\Scripts\Management\GameManager.cs" />
     <Compile Include="Assets\Scripts\Management\HUDManager.cs" />
+    <Compile Include="Assets\Scripts\Management\LoadGameManagement.cs" />
     <Compile Include="Assets\Scripts\Management\MainMenuManagement.cs" />
     <Compile Include="Assets\Scripts\Management\ModuleManager.cs" />
+    <Compile Include="Assets\Scripts\Management\NewGameManagement.cs" />
     <Compile Include="Assets\Scripts\Management\PauseGame.cs" />
     <Compile Include="Assets\Scripts\Management\PauseMenuManagement.cs" />
     <Compile Include="Assets\Scripts\Management\PlayerInventoryManager.cs" />
     <Compile Include="Assets\Scripts\Management\Quest.cs" />
     <Compile Include="Assets\Scripts\Management\QuestManager.cs" />
+    <Compile Include="Assets\Scripts\Management\QuestManagerTEMPCREATION.cs" />
     <Compile Include="Assets\Scripts\Management\SettingsMenuManagement.cs" />
     <Compile Include="Assets\Scripts\Management\Sound.cs" />
     <Compile Include="Assets\Scripts\Management\SpawnEngine.cs" />
     <Compile Include="Assets\Scripts\Management\StartGameControls.cs" />
     <Compile Include="Assets\Scripts\Management\TEMPInstantiateInventory.cs" />
+    <Compile Include="Assets\Scripts\Management\TEMPQuestCreation.cs" />
     <Compile Include="Assets\Scripts\Movement\AdvancedEnemyMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\BasicEnemyMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\BulletBehaviour.cs" />
@@ -144,7 +143,9 @@
     <Compile Include="Assets\Scripts\Movement\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\ReferenceMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\ThrustEffectController.cs" />
+    <Compile Include="Assets\Scripts\ProcGen\EngineGenerator.cs" />
     <Compile Include="Assets\Scripts\ProcGen\WeaponGenerator.cs" />
+    <Compile Include="Assets\Scripts\SavingAndLoading\BeaconSavingObject.cs" />
     <Compile Include="Assets\Scripts\SavingAndLoading\EnemySavingObject.cs" />
     <Compile Include="Assets\Scripts\SavingAndLoading\InventorySavingObject.cs" />
     <Compile Include="Assets\Scripts\SavingAndLoading\LootSavingObject.cs" />
@@ -174,9 +175,9 @@
     <Compile Include="Assets\Scripts\UI\ModularShip\ToggleElements.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\WeaponStatManager.cs" />
     <Compile Include="Assets\Scripts\UI\Player\Crosshair.cs" />
+    <Compile Include="Assets\Scripts\UI\PopulateStatDisplay.cs" />
     <Compile Include="Assets\Scripts\UI\QuestBeconDetection.cs" />
     <Compile Include="Assets\Scripts\UI\ScrollerScript.cs" />
-    <Compile Include="Assets\TEMPQuestCreation.cs" />
     <Compile Include="Assets\Usability Testing\FlightTestRecordCollision.cs" />
     <Compile Include="Assets\Usability Testing\IncrementFlightChallenge.cs" />
     <Compile Include="Assets\Usability Testing\MovementUsabilityTestingManager.cs" />

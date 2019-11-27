@@ -2560,7 +2560,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &726958073
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2745,7 +2745,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
@@ -6981,7 +6981,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &222590506431233837
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7808,8 +7808,8 @@ MonoBehaviour:
   m_control: {fileID: 0}
   m_questDisplayTitle: {fileID: 1445717715}
   m_questDisplayObjectTitle: {fileID: 1334931535}
-  questDescription: {fileID: 0}
-  questReward: {fileID: 0}
+  m_questTaskDescription: {fileID: 5366836511531934832}
+  m_questReward: {fileID: 5039544038638157530}
   m_questTitle: {fileID: 2033961832}
   m_questDescription: {fileID: 1054750336}
   m_questProgress: {fileID: 267072568}
