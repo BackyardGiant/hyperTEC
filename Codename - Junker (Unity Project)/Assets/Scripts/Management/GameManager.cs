@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
             fadeAnimator.Play("FadeOut");
             Invoke("LoadOut",0.5f);
         }
-        else if(Input.GetButtonDown("Inventory") && _sceneName == "ModularShip" && m_canLeaveScene && m_gameSpeed != 0)
+        else if((Input.GetButtonDown("Inventory") || Input.GetButtonDown("XboxB")) && _sceneName == "ModularShip" && m_canLeaveScene && m_gameSpeed != 0)
         {
             fadeAnimator.Play("FadeOut");
             Invoke("InventoryLoadOut", 0.5f);
