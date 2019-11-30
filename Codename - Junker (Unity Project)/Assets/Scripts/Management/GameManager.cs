@@ -907,6 +907,7 @@ public class GameManager : MonoBehaviour
             GameObject _newBeacon = Instantiate(questBeacon, new Vector3(float.Parse(_beacon.positionX), float.Parse(_beacon.positionY), float.Parse(_beacon.positionZ)), new Quaternion(float.Parse(_beacon.rotationX), float.Parse(_beacon.rotationY), float.Parse(_beacon.rotationZ), float.Parse(_beacon.rotationW)));
             _newBeacon.GetComponent<QuestBeconDetection>().Quest = _quest;
             _newBeacon.GetComponent<QuestBeconDetection>().QuestType = _quest.QuestType;
+            _newBeacon.GetComponent<QuestBeconDetection>().enabled = true;
         }
 
         _player.GetComponent<PlayerShooting>().buildWeapons();
