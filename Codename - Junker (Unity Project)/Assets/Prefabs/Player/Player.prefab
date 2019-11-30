@@ -77,6 +77,7 @@ MonoBehaviour:
   target: {fileID: 2872460002776077785}
   turningSpeed: 1
   rotateSpeed: 2
+  snapSpeed: 0
   CameraDistance: 1
   CameraAngle: 0
 --- !u!1 &1138647564
@@ -434,7 +435,7 @@ MonoBehaviour:
     type: 3}
   ExplorerEngine: {fileID: 1115772847887957893, guid: 27a8666fad7a19443934794d41c093da,
     type: 3}
-  ConstructionEngine: {fileID: 2669169145273278258, guid: 42aaf9279c015ee4da75b5447aecc70e,
+  ConstructionEngine: {fileID: 7113207445107268369, guid: da88b47475ae5764e83bc947b943e29e,
     type: 3}
   RightSnap: {fileID: 7900840253664833653}
   LeftSnap: {fileID: 3627947422364815315}
@@ -452,7 +453,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftSnap: {fileID: 7326393077191352418}
   rightSnap: {fileID: 5718154230315381651}
+  engineSnap: {fileID: 0}
   lootItemParent: {fileID: 5742531039650702400, guid: 341df5633658ae74189c875277192328,
+    type: 3}
+  lootItemParentEngine: {fileID: 5742531039650702400, guid: 8afd4e1468f74a94db1fe40ff73e444a,
     type: 3}
 --- !u!114 &388294911365480841
 MonoBehaviour:
@@ -472,7 +476,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8fc01d49d2c6f984ab88f28bc9cc6e14, type: 2}
   - {fileID: 11400000, guid: 55d5140163aac5741a1c5d48110a6d42, type: 2}
   - {fileID: 11400000, guid: f80af97534092ab449883536da0e6d44, type: 2}
-  m_healthMax: 100
+  m_healthMax: 10000
   m_rechargeRate: 1
   m_rechargePeriod: 2
   m_explosion: {fileID: 9084401648041963869, guid: 79596fda59e6ac3448c0da99c65fd615,

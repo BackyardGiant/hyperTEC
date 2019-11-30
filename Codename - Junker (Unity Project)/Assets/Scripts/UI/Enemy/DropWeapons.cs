@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class DropWeapons : MonoBehaviour
 {
-    public Transform leftSnap, rightSnap;
+    public Transform leftSnap, rightSnap, engineSnap;
 
-    public GameObject lootItemParent;
+    public GameObject lootItemParent, lootItemParentEngine;
 
     private WeaponData m_weapon1, m_weapon2;
+    private EngineData m_engine;
 
     private Vector3 m_defaultScale = new Vector3(1, 1, 1);
     private Vector3 m_defaultOffset = new Vector3(0.278f, -0.226f, -0.802f); // taken from eyeballing the offset in the inspector
+    private Vector3 m_engineOffset = new Vector3(0.94f, 0.71f, 1.17f); // taken from eyeballing the offset in the inspector
 
     private void Start()
     {
@@ -19,6 +21,7 @@ public class DropWeapons : MonoBehaviour
         {
             m_weapon1 = leftSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
             m_weapon2 = rightSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            m_engine = engineSnap.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock;
         }
         catch
         {
@@ -94,6 +97,30 @@ public class DropWeapons : MonoBehaviour
             Debug.Log(_randomFloat + "Dropped Two");
         }
         #endregion
+
+        #region engines
+        _randomFloat = Random.Range(0f, 1f);
+
+        if (_randomFloat <= 0.75f)
+        {
+            Debug.Log(_randomFloat + "Dropped Nothing");
+        }
+        else
+        {
+            GameObject _lootItem = Instantiate(lootItemParentEngine, engineSnap.position, engineSnap.rotation);
+            GameObject _temp = ModuleManager.Instance.GenerateEngine(m_engine);
+            _temp.GetComponent<EngineGenerator>().engineStatBlock = m_engine;
+            _temp.transform.SetParent(_lootItem.transform);
+            _temp.transform.localPosition = m_engineOffset;
+            _temp.transform.localRotation = Quaternion.identity;
+
+            _temp.transform.localScale = m_defaultScale;
+
+            AddExplosionForce(_lootItem, engineSnap);
+
+            Debug.Log(_randomFloat + "Dropped engine");
+        }
+        #endregion
     }
 
     public void DropWithoutChance()
@@ -102,6 +129,7 @@ public class DropWeapons : MonoBehaviour
         {
             m_weapon1 = leftSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
             m_weapon2 = rightSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            m_engine = engineSnap.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock;
         }
         catch
         {
@@ -133,6 +161,21 @@ public class DropWeapons : MonoBehaviour
             _temp.transform.localScale = m_defaultScale;
 
             AddExplosionForce(_lootItem, rightSnap);
+        }
+        catch { }
+
+        try
+        {
+            GameObject _lootItem = Instantiate(lootItemParentEngine, engineSnap.position, engineSnap.rotation);
+            GameObject _temp = ModuleManager.Instance.GenerateEngine(m_engine);
+            _temp.GetComponent<EngineGenerator>().engineStatBlock = m_engine;
+            _temp.transform.SetParent(_lootItem.transform);
+            _temp.transform.localPosition = m_engineOffset;
+            _temp.transform.localRotation = Quaternion.identity;
+
+            _temp.transform.localScale = m_defaultScale;
+
+            AddExplosionForce(_lootItem, engineSnap);
         }
         catch { }
     }
