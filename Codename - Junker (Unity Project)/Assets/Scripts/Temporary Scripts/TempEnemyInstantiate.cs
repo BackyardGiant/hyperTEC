@@ -20,19 +20,19 @@ public class TempEnemyInstantiate : MonoBehaviour
         {
             if (i < 5)
             {
-                SpawnEnemy(spawnPoints[0]);
+                SpawnEnemy(spawnPoints[0], faction.construction);
             }
             else if (i < 10)
             {
-                SpawnEnemy(spawnPoints[1]);
+                SpawnEnemy(spawnPoints[1], faction.trader);
             }
             else if (i < 15)
             {
-                SpawnEnemy(spawnPoints[2]);
+                SpawnEnemy(spawnPoints[2], faction.explorer);
             }
             else if (i < 20)
             {
-                SpawnEnemy(spawnPoints[3]);
+                SpawnEnemy(spawnPoints[3], faction.trader);
             }
         }
     }
@@ -46,13 +46,11 @@ public class TempEnemyInstantiate : MonoBehaviour
         //}
     }
 
-    private void SpawnEnemy(Transform _spawnPoint)
+    private void SpawnEnemy(Transform _spawnPoint, faction enemyFaction)
     {
         GameObject _tempEnemy = Instantiate(enemyPrefab, _spawnPoint.position + (Random.insideUnitSphere * 300), _spawnPoint.rotation);
 
-        // Currently all are construction
-        _tempEnemy.GetComponent<EnemyStats>().m_currentFaction = faction.construction;
-        //
+        _tempEnemy.GetComponent<EnemyStats>().m_currentFaction = enemyFaction;
 
         _tempEnemy.GetComponent<AdvancedEnemyMovement>().StartPosition = _spawnPoint.position;
 
