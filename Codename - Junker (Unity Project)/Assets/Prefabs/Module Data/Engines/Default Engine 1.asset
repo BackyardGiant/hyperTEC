@@ -15,7 +15,7 @@ MonoBehaviour:
   engineName: Default Engine
   description: 
   currentFaction: 1
-  thumbnail: {fileID: 21300000, guid: bf9d19a657d83a347b9957e6b288b17a, type: 3}
+  thumbnail: {fileID: 21300000, guid: ccbd40ca46b123c47850957ee5ebea8c, type: 3}
   value: 0
   topSpeed: 0
   acceleration: 0

@@ -431,3 +431,8 @@ MonoBehaviour:
   name: {fileID: 8653508449830888075}
   thumbnail: {fileID: 5625411668726338498}
   data: {fileID: 0}
+  m_constructionEngine: {fileID: 21300000, guid: 79789e0ea40d04a45990a523b8d0680d,
+    type: 3}
+  m_defaultEngine: {fileID: 21300000, guid: ccbd40ca46b123c47850957ee5ebea8c, type: 3}
+  m_traderEngine: {fileID: 21300000, guid: 157e2703c74dabd4688bb5ef9ba38bf3, type: 3}
+  m_explorerEngine: {fileID: 21300000, guid: 67c717a9c65ae6c489f8b31d63e97a48, type: 3}
