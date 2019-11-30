@@ -8,7 +8,9 @@ public class SelectionManager : MonoBehaviour
     public DisplayOptions display;
     public GameObject goShipEngineSnap, goShipLeftSnap, goShipRightSnap;
 
-    public TextMeshProUGUI currentPreviewtext; 
+    public TextMeshProUGUI currentPreviewtext;
+
+    public Material previewMaterial, leftGunMaterial, rightGunMaterial, engineMaterial;
 
     [SerializeField]
     private int m_currentlySelectedIndex = 0;
@@ -143,8 +145,6 @@ public class SelectionManager : MonoBehaviour
             {
                 GameObject selected = display.ModulesList[m_currentlySelectedIndex];
 
-
-
                 if (selected.GetComponent<EngineStatManager>())
                 {
                     if (m_equippedEngineIndex != m_currentlySelectedIndex)
@@ -227,7 +227,7 @@ public class SelectionManager : MonoBehaviour
 
                 }
 
-                PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+                PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);              
                 display.UpdateEquipped(m_takenIndexes);
             }
         }
@@ -258,6 +258,8 @@ public class SelectionManager : MonoBehaviour
             EngineData statBlock = display.ModulesList[(int)m_equippedEngineIndex].GetComponent<EngineStatManager>().Data;
             GameObject tempEngine = ModuleManager.Instance.GenerateEngine(statBlock);
 
+            tempEngine.transform.GetChild(0).GetComponent<MeshRenderer>().material = engineMaterial;
+
             tempEngine.transform.GetChild(0).GetComponent<ThrustEffectController>().enabled = false;
 
             tempEngine.transform.SetParent(goShipEngineSnap.transform);
@@ -273,6 +275,8 @@ public class SelectionManager : MonoBehaviour
         {
             WeaponData statBlock = display.ModulesList[(int)m_equippedLeftIndex].GetComponent<WeaponStatManager>().Data;
             GameObject tempWeapon = ModuleManager.Instance.GenerateWeapon(statBlock);
+
+            tempWeapon.transform.GetChild(0).GetComponent<MeshRenderer>().material = leftGunMaterial;
 
             tempWeapon.transform.SetParent(goShipLeftSnap.transform);
             tempWeapon.transform.position = goShipLeftSnap.transform.position;
@@ -290,6 +294,8 @@ public class SelectionManager : MonoBehaviour
         {
             WeaponData statBlock = display.ModulesList[(int)m_equippedRightIndex].GetComponent<WeaponStatManager>().Data;
             GameObject tempWeapon = ModuleManager.Instance.GenerateWeapon(statBlock);
+
+            tempWeapon.transform.GetChild(0).GetComponent<MeshRenderer>().material = rightGunMaterial;
 
             tempWeapon.transform.SetParent(goShipRightSnap.transform);
             tempWeapon.transform.position = goShipRightSnap.transform.position;
@@ -317,6 +323,10 @@ public class SelectionManager : MonoBehaviour
                 EngineData _statBlock = selectedObject.GetComponent<EngineStatManager>().Data;
                 GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(_statBlock);
 
+                engineMaterial = _tempEngine.transform.GetChild(0).GetComponent<MeshRenderer>().material;
+
+                _tempEngine.transform.GetChild(0).GetComponent<MeshRenderer>().material = previewMaterial;
+
                 _tempEngine.transform.GetChild(0).GetComponent<ThrustEffectController>().enabled = false;
 
                 _tempEngine.transform.SetParent(goShipEngineSnap.transform);
@@ -336,10 +346,16 @@ public class SelectionManager : MonoBehaviour
 
                 WeaponData _statBlock = selectedObject.GetComponent<WeaponStatManager>().Data;
                 GameObject _tempWeapon = ModuleManager.Instance.GenerateWeapon(_statBlock);
+
                 Debug.Log("Instantiated gun" + _statBlock.Name);
 
                 if (m_leftSideSelected)
                 {
+                    leftGunMaterial = _tempWeapon.transform.GetChild(0).GetComponent<MeshRenderer>().material;
+                    rightGunMaterial = _tempWeapon.transform.GetChild(0).GetComponent<MeshRenderer>().material;
+
+                    _tempWeapon.transform.GetChild(0).GetComponent<MeshRenderer>().material = previewMaterial;
+
                     _tempWeapon.transform.SetParent(goShipLeftSnap.transform);
                     _tempWeapon.transform.position = goShipLeftSnap.transform.position;
                     _tempWeapon.transform.rotation = goShipLeftSnap.transform.rotation;
@@ -348,6 +364,11 @@ public class SelectionManager : MonoBehaviour
                 }
                 else
                 {
+                    leftGunMaterial = _tempWeapon.transform.GetChild(0).GetComponent<MeshRenderer>().material;
+                    rightGunMaterial = _tempWeapon.transform.GetChild(0).GetComponent<MeshRenderer>().material;
+
+                    _tempWeapon.transform.GetChild(0).GetComponent<MeshRenderer>().material = previewMaterial;
+
                     _tempWeapon.transform.SetParent(goShipRightSnap.transform);
                     _tempWeapon.transform.position = goShipRightSnap.transform.position;
                     _tempWeapon.transform.rotation = goShipRightSnap.transform.rotation;
