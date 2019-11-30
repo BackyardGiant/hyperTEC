@@ -73,6 +73,7 @@ public class QuestManager : MonoBehaviour
                 _quest.QuestIncrement(1);
             }
         }
+        GameManager.Instance.SaveGame();
     }
     public void IncrimentCollectQuests()
     {
@@ -83,6 +84,7 @@ public class QuestManager : MonoBehaviour
                 _quest.QuestIncriment();
             }
         }
+        GameManager.Instance.SaveGame();
     }
     public void IncrimentControlQuests()
     {
@@ -93,6 +95,7 @@ public class QuestManager : MonoBehaviour
                 _quest.QuestIncrement(1);
             }
         }
+        GameManager.Instance.SaveGame();
     }
     public void IncrimentReconQuests()
     {
@@ -103,6 +106,7 @@ public class QuestManager : MonoBehaviour
                 _quest.QuestIncrement(1);
             }
         }
+        GameManager.Instance.SaveGame();
     }
     public void IncrimentTargetQuests()
     {
@@ -113,6 +117,7 @@ public class QuestManager : MonoBehaviour
                 _quest.QuestIncrement(1);
             }
         }
+        GameManager.Instance.SaveGame();
     }
     #endregion
 
@@ -124,6 +129,6 @@ public class QuestManager : MonoBehaviour
 
     public void CompleteQuest(Quest _completedQuest)
     {
-
+        GameManager.Instance.SaveGame();
     }
 }
