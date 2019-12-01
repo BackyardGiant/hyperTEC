@@ -828,6 +828,11 @@ PrefabInstance:
       propertyPath: goShipRightSnap
       value: 
       objectReference: {fileID: 560616353}
+    - target: {fileID: 4184237703054802604, guid: f1bb74b66b975ec429dbd6d5c76b84c1,
+        type: 3}
+      propertyPath: previewMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 55f9135dcea6e8844a85a27f3b5f473c, type: 2}
     - target: {fileID: 2060242282, guid: f1bb74b66b975ec429dbd6d5c76b84c1, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0

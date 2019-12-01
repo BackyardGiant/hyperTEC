@@ -230,9 +230,9 @@ public class ModuleManager : MonoBehaviour
         return _tempEngineData;
     }
 
-    public WeaponData CreateStatBlock()
+    public WeaponData CreateStatBlock(int factionIndex)
     {
-        string _seed = GenerateSeed();
+        string _seed = GenerateSeed(factionIndex);
 
         WeaponData _tempWeaponData = ScriptableObject.CreateInstance<WeaponData>();
 
@@ -362,7 +362,7 @@ public class ModuleManager : MonoBehaviour
         return _tempWeaponData;
     }
 
-    private string GenerateSeed()
+    private string GenerateSeed(int _factionIndex)
     {
         string _seed = "";
 
@@ -416,7 +416,7 @@ public class ModuleManager : MonoBehaviour
         string _reloadTimeString;
         float _value = Random.Range(1, 100); 
         string _valueString;
-        int _factionData = Random.Range(0, 4);
+        int _factionData = _factionIndex;
         WeaponData.faction _faction = (WeaponData.faction)_factionData;
 
         switch (_faction)

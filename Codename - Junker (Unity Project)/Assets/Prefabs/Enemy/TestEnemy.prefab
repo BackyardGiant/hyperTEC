@@ -283,7 +283,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftSnap: {fileID: 33173457477444034}
   rightSnap: {fileID: 5911650556500961526}
+  engineSnap: {fileID: 8601941222207728698}
   lootItemParent: {fileID: 5742531039650702400, guid: 341df5633658ae74189c875277192328,
+    type: 3}
+  lootItemParentEngine: {fileID: 5742531039650702400, guid: 8afd4e1468f74a94db1fe40ff73e444a,
     type: 3}
 --- !u!114 &5886213948899622329
 MonoBehaviour:
@@ -532,6 +535,12 @@ Transform:
 --- !u!4 &5911650556500961526 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 830460532338670464, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+    type: 3}
+  m_PrefabInstance: {fileID: 6452538586947244918}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8601941222207728698 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3381145998360772428, guid: 1fc09b7b7908b39428b358b3cfaf6225,
     type: 3}
   m_PrefabInstance: {fileID: 6452538586947244918}
   m_PrefabAsset: {fileID: 0}

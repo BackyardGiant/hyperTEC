@@ -20,19 +20,19 @@ public class TempEnemyInstantiate : MonoBehaviour
         {
             if (i < 5)
             {
-                SpawnEnemy(spawnPoints[0]);
+                SpawnEnemy(spawnPoints[0], 3);
             }
             else if (i < 10)
             {
-                SpawnEnemy(spawnPoints[1]);
+                SpawnEnemy(spawnPoints[1], 2);
             }
             else if (i < 15)
             {
-                SpawnEnemy(spawnPoints[2]);
+                SpawnEnemy(spawnPoints[2], 0);
             }
             else if (i < 20)
             {
-                SpawnEnemy(spawnPoints[3]);
+                SpawnEnemy(spawnPoints[3], 2);
             }
         }
     }
@@ -46,13 +46,11 @@ public class TempEnemyInstantiate : MonoBehaviour
         //}
     }
 
-    private void SpawnEnemy(Transform _spawnPoint)
+    private void SpawnEnemy(Transform _spawnPoint, int factionIndex)
     {
         GameObject _tempEnemy = Instantiate(enemyPrefab, _spawnPoint.position + (Random.insideUnitSphere * 300), _spawnPoint.rotation);
 
-        // Currently all are construction
-        _tempEnemy.GetComponent<EnemyStats>().m_currentFaction = faction.construction;
-        //
+        _tempEnemy.GetComponent<EnemyStats>().m_currentFaction = (faction)factionIndex;
 
         _tempEnemy.GetComponent<AdvancedEnemyMovement>().StartPosition = _spawnPoint.position;
 
@@ -67,7 +65,7 @@ public class TempEnemyInstantiate : MonoBehaviour
 
         _tempEngine.transform.localPosition = Vector3.zero;
 
-        WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock();
+        WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(factionIndex);
         GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _leftSnap);
         _tempLeftGun.GetComponent<WeaponGenerator>().statBlock = _temp1;
         _tempLeftGun.transform.SetParent(_leftSnap);
@@ -76,7 +74,7 @@ public class TempEnemyInstantiate : MonoBehaviour
         _tempLeftGun.transform.localScale = m_scale;
         //_tempLeftGun.GetComponent<WeaponGenerator>().GenerateGun();
 
-        WeaponData _temp2 = ModuleManager.Instance.CreateStatBlock();
+        WeaponData _temp2 = ModuleManager.Instance.CreateStatBlock(factionIndex);
         GameObject _tempRightGun = ModuleManager.Instance.GenerateWeapon(_temp2); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _rightSnap);
         _tempRightGun.GetComponent<WeaponGenerator>().statBlock = _temp2;
         _tempRightGun.transform.SetParent(_rightSnap);
