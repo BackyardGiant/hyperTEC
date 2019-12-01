@@ -76,8 +76,8 @@ public class GameManager : MonoBehaviour
             LoadInventory();
         }
 
-        Debug.Log("<color=red>CURRENT SAVE: </color>" + PlayerPrefs.GetString("CurrentSave"));
-        Debug.Log("<color=red>LATEST SAVE: </color>" + PlayerPrefs.GetString("LatestSave"));
+        Debug.Log("<color=green>CURRENT SAVE: </color>" + PlayerPrefs.GetString("CurrentSave"));
+        Debug.Log("<color=green>LATEST SAVE: </color>" + PlayerPrefs.GetString("LatestSave"));
 
         if (m_playerMove != null)
         {
