@@ -197,6 +197,7 @@ public class NewGameManagement : MonoBehaviour
     private void overrideSave()
     {
         PlayerPrefs.SetString("CurrentSave","Save" + m_saveIndex);
+        PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "initial");
         string _fileName = PlayerPrefs.GetString("CurrentSave") + ".giant";
         File.Delete(_fileName);
         SceneManager.LoadScene("MainScene");
@@ -204,6 +205,7 @@ public class NewGameManagement : MonoBehaviour
     private void newSave()
     {
         PlayerPrefs.SetString("CurrentSave", "Save" + m_saveIndex);
+        PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "initial");
         SceneManager.LoadScene("MainScene");
     }
 

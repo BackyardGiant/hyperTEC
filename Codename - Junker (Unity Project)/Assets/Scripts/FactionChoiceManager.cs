@@ -15,22 +15,30 @@ public class FactionChoiceManager : MonoBehaviour
     [SerializeField]
     private AudioSource m_UIAudio;
  
-    // Start is called before the first frame update
-    void Start()
+    //// Start is called before the first frame update
+    //void Start()
+    //{
+        
+
+    //}
+
+    public void onLoad()
     {
-        GameManager.Instance.SetSlowMo(0);
         Debug.Log(PlayerPrefs.GetString("CurrentSave"));
         m_selectedIndex = 0;
         if (PlayerPrefs.GetString("CurrentSave") == "Save1") { m_saveIndex = 1; }
         else if (PlayerPrefs.GetString("CurrentSave") == "Save2") { m_saveIndex = 2; }
         else if (PlayerPrefs.GetString("CurrentSave") == "Save3") { m_saveIndex = 3; }
         else if (PlayerPrefs.GetString("CurrentSave") == "Save4") { m_saveIndex = 4; }
-        else { Debug.LogWarning("Faction Selection : Save not properly configured. Did you go through the Main Menu?");}
+        else { Debug.LogWarning("Faction Selection : Save not properly configured. Did you go through the Main Menu?"); }
 
         Debug.Log("Save index is" + m_saveIndex);
         Debug.LogWarning(PlayerPrefs.GetString("ChosenFaction" + m_saveIndex));
-        if (PlayerPrefs.GetString("ChosenFaction"+ m_saveIndex) != "initial") { GameManager.Instance.SetNormalSpeed(); this.gameObject.SetActive(false);}
-
+        if (PlayerPrefs.GetString("ChosenFaction" + m_saveIndex) != "initial") { GameManager.Instance.SetNormalSpeed(); this.gameObject.SetActive(false); }
+        else
+        {
+            GameManager.Instance.SetSlowMo(0);
+        }
     }
 
     // Update is called once per frame
