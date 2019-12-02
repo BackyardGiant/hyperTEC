@@ -303,7 +303,7 @@ public class GameManager : MonoBehaviour
             WeaponData _enemyWeaponRight = _enemy.transform.GetChild(0).Find("RightSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
             WeaponData _enemyWeaponLeft = _enemy.transform.GetChild(0).Find("LeftSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
             EngineData _enemyEngine = _enemy.transform.GetChild(0).Find("EngineSnap").GetChild(0).GetComponent<EngineGenerator>().engineStatBlock;
-            _enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed, _enemyEngine.Seed));
+            _enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed, _enemyEngine.Seed, _enemy.GetComponent<EnemyManager>().enemySpawnPointIndex.ToString(), ((int)_enemy.GetComponent<EnemyStats>().m_currentFaction).ToString()));
         }
 
         string amountOfEnemies = _enemies.Length.ToString();
@@ -572,9 +572,12 @@ public class GameManager : MonoBehaviour
             Quaternion _enemyRot = new Quaternion(float.Parse(_savedEnemy.rotationX), float.Parse(_savedEnemy.rotationY), float.Parse(_savedEnemy.rotationZ), float.Parse(_savedEnemy.rotationW));
             GameObject _newEnemy = Instantiate(spawner.enemyPrefab, _enemyPos, _enemyRot);
 
-            Transform _leftSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("LeftSnap");
-            Transform _rightSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("RightSnap");
-            Transform _engineSnap = _newEnemy.transform.Find("ConstructionShip#1").Find("EngineSnap");
+            _newEnemy.GetComponent<EnemyStats>().m_currentFaction = (faction)int.Parse(_savedEnemy.factionType);
+            _newEnemy.GetComponent<EnemyManager>().enemySpawnPoint = spawner.spawnPoints[int.Parse(_savedEnemy.spawnIndex)];
+
+            Transform _leftSnap = _newEnemy.transform.Find("Ship").Find("LeftSnap");
+            Transform _rightSnap = _newEnemy.transform.Find("Ship").Find("RightSnap");
+            Transform _engineSnap = _newEnemy.transform.Find("Ship").Find("EngineSnap");
 
             WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(_savedEnemy.rightWeaponSeed);
             GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _leftSnap);

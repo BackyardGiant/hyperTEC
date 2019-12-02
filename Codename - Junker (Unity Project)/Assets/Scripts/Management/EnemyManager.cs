@@ -12,6 +12,7 @@ public class EnemyManager : MonoBehaviour
     private GameObject m_player;
 
     public Transform enemySpawnPoint;
+    public int enemySpawnPointIndex;
 
     [SerializeField]
     public States m_behaviourState;
