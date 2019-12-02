@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public Image blackOut;
     public Animator fadeAnimator;
     public DisplayOptions display;
+    public FactionChoiceManager choiceManager;
 
     public GameObject questBeacon;
 
@@ -479,8 +480,6 @@ public class GameManager : MonoBehaviour
 
         PlayerPrefs.SetInt("EnemiesKilled" + _fileName[4], m_enemiesKilledSoFar);
 
-        PlayerPrefs.SetString("ChosenFaction" + _fileName[4], "initial");
-
         PlayerPrefs.SetString("LatestSave", _fileName);
     }
 
@@ -526,6 +525,8 @@ public class GameManager : MonoBehaviour
             }
 
             _player.GetComponent<PlayerMovement>().UpdateValues();
+
+            choiceManager.onLoad();
 
             HUDManager.Instance.ClearAllDisplays();
 
@@ -913,11 +914,11 @@ public class GameManager : MonoBehaviour
         _player.GetComponent<PlayerShooting>().buildWeapons();
         _player.GetComponent<PlayerMovement>().UpdateValues();
 
+        choiceManager.onLoad();
+
         HUDManager.Instance.ClearAllDisplays();
 
         m_canLeaveScene = true;
-
-
     }
 
     public void LoadInventory()
