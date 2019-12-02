@@ -1,12 +1,11 @@
 /target:library
 /nowarn:0169
-/out:Temp/Assembly-CSharp-Editor.dll
+/out:Temp/Assembly-CSharp.dll
 /debug:portable
 /optimize-
 /nostdlib+
 /preferreduilang:en-US
 /langversion:latest
-/reference:Library/ScriptAssemblies/Assembly-CSharp.dll
 /reference:"C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.dll"
 /reference:"C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll"
 /reference:"C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.ARModule.dll"
@@ -68,8 +67,6 @@
 /reference:"C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.WindModule.dll"
 /reference:"C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll"
 /reference:"C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll"
-/reference:Library/ScriptAssemblies/UnityEditor.TestRunner.dll
-/reference:Library/ScriptAssemblies/UnityEngine.TestRunner.dll
 /reference:Library/ScriptAssemblies/Unity.Timeline.Editor.dll
 /reference:Library/ScriptAssemblies/Unity.VSCode.Editor.dll
 /reference:Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll
@@ -79,13 +76,6 @@
 /reference:Library/ScriptAssemblies/Unity.Rider.Editor.dll
 /reference:Library/ScriptAssemblies/Unity.TextMeshPro.dll
 /reference:Library/ScriptAssemblies/UnityEditor.UI.dll
-/reference:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll"
-/reference:"C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll"
-/reference:"C:/Program Files/Unity/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll"
-/reference:"C:/Program Files/Unity/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll"
-/reference:"C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll"
-/reference:"C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll"
-/reference:"C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll"
 /reference:"C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll"
 /reference:"C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll"
 /reference:"C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll"
@@ -278,7 +268,7 @@
 /define:ENABLE_AR
 /define:ENABLE_WEBSOCKET_HOST
 /define:ENABLE_MONO
-/define:NET_4_6
+/define:NET_STANDARD_2_0
 /define:ENABLE_PROFILER
 /define:DEBUG
 /define:TRACE
@@ -300,37 +290,127 @@
 /define:ENABLE_TIMELINE
 /define:CSHARP_7_OR_LATER
 /define:CSHARP_7_3_OR_NEWER
-Assets\PostProcessing\Editor\Attributes\PostProcessingModelEditorAttribute.cs
-Assets\PostProcessing\Editor\Models\AmbientOcclusionModelEditor.cs
-Assets\PostProcessing\Editor\Models\AntialiasingModelEditor.cs
-Assets\PostProcessing\Editor\Models\BloomModelEditor.cs
-Assets\PostProcessing\Editor\Models\BuiltinDebugViewsEditor.cs
-Assets\PostProcessing\Editor\Models\ChromaticAberrationEditor.cs
-Assets\PostProcessing\Editor\Models\ColorGradingModelEditor.cs
-Assets\PostProcessing\Editor\Models\DefaultPostFxModelEditor.cs
-Assets\PostProcessing\Editor\Models\DepthOfFieldModelEditor.cs
-Assets\PostProcessing\Editor\Models\DitheringModelEditor.cs
-Assets\PostProcessing\Editor\Models\EyeAdaptationModelEditor.cs
-Assets\PostProcessing\Editor\Models\FogModelEditor.cs
-Assets\PostProcessing\Editor\Models\GrainModelEditor.cs
-Assets\PostProcessing\Editor\Models\MotionBlurModelEditor.cs
-Assets\PostProcessing\Editor\Models\ScreenSpaceReflectionModelEditor.cs
-Assets\PostProcessing\Editor\Models\UserLutModelEditor.cs
-Assets\PostProcessing\Editor\Models\VignetteModelEditor.cs
-Assets\PostProcessing\Editor\Monitors\HistogramMonitor.cs
-Assets\PostProcessing\Editor\Monitors\ParadeMonitor.cs
-Assets\PostProcessing\Editor\Monitors\VectorscopeMonitor.cs
-Assets\PostProcessing\Editor\Monitors\WaveformMonitor.cs
-Assets\PostProcessing\Editor\PostProcessingBehaviourEditor.cs
-Assets\PostProcessing\Editor\PostProcessingFactory.cs
-Assets\PostProcessing\Editor\PostProcessingInspector.cs
-Assets\PostProcessing\Editor\PostProcessingModelEditor.cs
-Assets\PostProcessing\Editor\PostProcessingMonitor.cs
-Assets\PostProcessing\Editor\PropertyDrawers\GetSetDrawer.cs
-Assets\PostProcessing\Editor\PropertyDrawers\MinDrawer.cs
-Assets\PostProcessing\Editor\PropertyDrawers\TrackballGroupDrawer.cs
-Assets\PostProcessing\Editor\Utils\CurveEditor.cs
-Assets\PostProcessing\Editor\Utils\EditorGUIHelper.cs
-Assets\PostProcessing\Editor\Utils\EditorResources.cs
-Assets\PostProcessing\Editor\Utils\FxStyles.cs
-Assets\PostProcessing\Editor\Utils\ReflectionUtils.cs
+"Assets\Art\Skybox\Starfield Skybox\Demo\Script\LookCamera.cs"
+Assets\PostProcessing\Runtime\Attributes\GetSetAttribute.cs
+Assets\PostProcessing\Runtime\Attributes\MinAttribute.cs
+Assets\PostProcessing\Runtime\Attributes\TrackballAttribute.cs
+Assets\PostProcessing\Runtime\Attributes\TrackballGroupAttribute.cs
+Assets\PostProcessing\Runtime\Components\AmbientOcclusionComponent.cs
+Assets\PostProcessing\Runtime\Components\BloomComponent.cs
+Assets\PostProcessing\Runtime\Components\BuiltinDebugViewsComponent.cs
+Assets\PostProcessing\Runtime\Components\ChromaticAberrationComponent.cs
+Assets\PostProcessing\Runtime\Components\ColorGradingComponent.cs
+Assets\PostProcessing\Runtime\Components\DepthOfFieldComponent.cs
+Assets\PostProcessing\Runtime\Components\DitheringComponent.cs
+Assets\PostProcessing\Runtime\Components\EyeAdaptationComponent.cs
+Assets\PostProcessing\Runtime\Components\FogComponent.cs
+Assets\PostProcessing\Runtime\Components\FxaaComponent.cs
+Assets\PostProcessing\Runtime\Components\GrainComponent.cs
+Assets\PostProcessing\Runtime\Components\MotionBlurComponent.cs
+Assets\PostProcessing\Runtime\Components\ScreenSpaceReflectionComponent.cs
+Assets\PostProcessing\Runtime\Components\TaaComponent.cs
+Assets\PostProcessing\Runtime\Components\UserLutComponent.cs
+Assets\PostProcessing\Runtime\Components\VignetteComponent.cs
+Assets\PostProcessing\Runtime\Models\AmbientOcclusionModel.cs
+Assets\PostProcessing\Runtime\Models\AntialiasingModel.cs
+Assets\PostProcessing\Runtime\Models\BloomModel.cs
+Assets\PostProcessing\Runtime\Models\BuiltinDebugViewsModel.cs
+Assets\PostProcessing\Runtime\Models\ChromaticAberrationModel.cs
+Assets\PostProcessing\Runtime\Models\ColorGradingModel.cs
+Assets\PostProcessing\Runtime\Models\DepthOfFieldModel.cs
+Assets\PostProcessing\Runtime\Models\DitheringModel.cs
+Assets\PostProcessing\Runtime\Models\EyeAdaptationModel.cs
+Assets\PostProcessing\Runtime\Models\FogModel.cs
+Assets\PostProcessing\Runtime\Models\GrainModel.cs
+Assets\PostProcessing\Runtime\Models\MotionBlurModel.cs
+Assets\PostProcessing\Runtime\Models\ScreenSpaceReflectionModel.cs
+Assets\PostProcessing\Runtime\Models\UserLutModel.cs
+Assets\PostProcessing\Runtime\Models\VignetteModel.cs
+Assets\PostProcessing\Runtime\PostProcessingBehaviour.cs
+Assets\PostProcessing\Runtime\PostProcessingComponent.cs
+Assets\PostProcessing\Runtime\PostProcessingContext.cs
+Assets\PostProcessing\Runtime\PostProcessingModel.cs
+Assets\PostProcessing\Runtime\PostProcessingProfile.cs
+Assets\PostProcessing\Runtime\Utils\ColorGradingCurve.cs
+Assets\PostProcessing\Runtime\Utils\GraphicsUtils.cs
+Assets\PostProcessing\Runtime\Utils\MaterialFactory.cs
+Assets\PostProcessing\Runtime\Utils\RenderTextureFactory.cs
+Assets\PostProcessing\Utilities\CustomMotionTexture\ExampleWheelController.cs
+Assets\Scripts\Editors\TerrainGenEditor.cs
+Assets\Scripts\Extensions\AudioSourceExtension.cs
+Assets\Scripts\Extensions\ListExtension.cs
+Assets\Scripts\Extensions\ObjectExtensions.cs
+Assets\Scripts\Extensions\TransformExtensions.cs
+Assets\Scripts\Management\AudioManager.cs
+Assets\Scripts\Management\DustManager.cs
+Assets\Scripts\Management\EndPlaysessionController.cs
+Assets\Scripts\Management\EnemyManager.cs
+Assets\Scripts\Management\ExplosionController.cs
+Assets\Scripts\Management\FactionChoiceManager.cs
+Assets\Scripts\Management\GameManager.cs
+Assets\Scripts\Management\HUDManager.cs
+Assets\Scripts\Management\LoadGameManagement.cs
+Assets\Scripts\Management\MainMenuManagement.cs
+Assets\Scripts\Management\ModuleManager.cs
+Assets\Scripts\Management\NewGameManagement.cs
+Assets\Scripts\Management\PauseGame.cs
+Assets\Scripts\Management\PauseMenuManagement.cs
+Assets\Scripts\Management\PlayerInventoryManager.cs
+Assets\Scripts\Management\Quest.cs
+Assets\Scripts\Management\QuestManager.cs
+Assets\Scripts\Management\QuestManagerTEMPCREATION.cs
+Assets\Scripts\Management\SettingsMenuManagement.cs
+Assets\Scripts\Management\Sound.cs
+Assets\Scripts\Management\SpawnEngine.cs
+Assets\Scripts\Management\StartGameControls.cs
+Assets\Scripts\Management\TEMPInstantiateInventory.cs
+Assets\Scripts\Management\TEMPQuestCreation.cs
+Assets\Scripts\Movement\AdvancedEnemyMovement.cs
+Assets\Scripts\Movement\BasicEnemyMovement.cs
+Assets\Scripts\Movement\BulletBehaviour.cs
+Assets\Scripts\Movement\CameraMovement.cs
+Assets\Scripts\Movement\CameraShake.cs
+Assets\Scripts\Movement\OrbitalCamera.cs
+Assets\Scripts\Movement\PlayerMovement.cs
+Assets\Scripts\Movement\ReferenceMovement.cs
+Assets\Scripts\Movement\ThrustEffectController.cs
+Assets\Scripts\ProcGen\asteroidClass.cs
+Assets\Scripts\ProcGen\EngineGenerator.cs
+Assets\Scripts\ProcGen\TerrainGenerator.cs
+Assets\Scripts\ProcGen\WeaponGenerator.cs
+Assets\Scripts\SavingAndLoading\BeaconSavingObject.cs
+Assets\Scripts\SavingAndLoading\EnemySavingObject.cs
+Assets\Scripts\SavingAndLoading\InventorySavingObject.cs
+Assets\Scripts\SavingAndLoading\LootSavingObject.cs
+Assets\Scripts\SavingAndLoading\PlayerSavingObject.cs
+Assets\Scripts\SavingAndLoading\QuestSavingObject.cs
+"Assets\Scripts\Scriptable Objects\BoolVariable.cs"
+"Assets\Scripts\Scriptable Objects\EngineData.cs"
+"Assets\Scripts\Scriptable Objects\FloatVariable.cs"
+"Assets\Scripts\Scriptable Objects\GameEvent.cs"
+"Assets\Scripts\Scriptable Objects\GameEventListener.cs"
+"Assets\Scripts\Scriptable Objects\IntVariable.cs"
+"Assets\Scripts\Scriptable Objects\WeaponData.cs"
+Assets\Scripts\Shooting\EnemyShooting.cs
+Assets\Scripts\Shooting\PlayerHealth.cs
+Assets\Scripts\Shooting\PlayerShooting.cs
+Assets\Scripts\Stats\EnemyStats.cs
+"Assets\Scripts\Temporary Scripts\TempEnemyInstantiate.cs"
+"Assets\Scripts\Temporary Scripts\TempGeneration.cs"
+"Assets\Scripts\Temporary Scripts\TestModularShip.cs"
+Assets\Scripts\UI\Enemy\EnemyDetection.cs
+Assets\Scripts\UI\InventoryItemResize.cs
+Assets\Scripts\UI\LootDetection.cs
+Assets\Scripts\UI\ModularShip\DisplayOptions.cs
+Assets\Scripts\UI\ModularShip\EngineStatManager.cs
+Assets\Scripts\UI\ModularShip\SelectionManager.cs
+Assets\Scripts\UI\ModularShip\ToggleElements.cs
+Assets\Scripts\UI\ModularShip\WeaponStatManager.cs
+Assets\Scripts\UI\Player\Crosshair.cs
+Assets\Scripts\UI\PopulateStatDisplay.cs
+Assets\Scripts\UI\QuestBeconDetection.cs
+Assets\Scripts\UI\ScrollerScript.cs
+"Assets\Usability Testing\FlightTestRecordCollision.cs"
+"Assets\Usability Testing\IncrementFlightChallenge.cs"
+"Assets\Usability Testing\MovementUsabilityTestingManager.cs"
+"Assets\Usability Testing\StartFlightTest.cs"
