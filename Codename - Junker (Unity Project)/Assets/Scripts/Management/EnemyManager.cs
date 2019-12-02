@@ -59,7 +59,7 @@ public class EnemyManager : MonoBehaviour
         {
             if (m_stats.CurrentHealth >= m_minEngageHealth  && m_canEngage)
             {
-                if (Vector3.Distance(m_player.transform.position, transform.position) > 50)
+                if (Vector3.Distance(m_player.transform.position, transform.position) > 40)
                 {
                     Vector3 heading = m_player.transform.position - transform.position;
                     float dotProduct = Vector3.Dot(heading.normalized, transform.forward);
@@ -83,6 +83,7 @@ public class EnemyManager : MonoBehaviour
                 else
                 {
                     m_canEngage = false;
+                    m_behaviourState = States.PassBy;
                 }
             }
             else
