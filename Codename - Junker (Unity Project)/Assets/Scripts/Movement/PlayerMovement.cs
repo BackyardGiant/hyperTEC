@@ -115,6 +115,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float m_normalFOV;
 
+    [SerializeField]
+    private float m_minimumOpimalTiming;
+    [SerializeField]
+    private float m_maximumOpimalTiming;
+    private float m_pefectTiming;
+    private float m_boostTimer;
+
+    [SerializeField]
+    private float m_boostCooldown;
+    private bool m_canBoost = true;
+
 
     public float CurrentSpeed { get => m_currentSpeed; }
     public float MaxAcceleration { get => m_maxAcceleration; }
@@ -163,7 +174,7 @@ public class PlayerMovement : MonoBehaviour
                 m_negativeSpeed = 0;
             }
 
-            if (Input.GetAxis("MacroEngine") > 0.1f && m_killedEngine)
+            if (Input.GetAxis("MacroEngine") > 0.1f && m_killedEngine && m_canBoost)
             {
                 m_killedEngine = false;
                 m_engageBoost = true;
@@ -211,6 +222,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_engageBoost)
         {
+            m_canBoost = false;
+            StartCoroutine(boostCooldown());
             boostOn.Raise();
             m_boostOn = true;
             m_rbPlayer.velocity = new Vector3(0,0,0);
@@ -419,5 +432,11 @@ public class PlayerMovement : MonoBehaviour
             m_handling = m_handlingLow + (_handlingPercentage * _rangeHandling);
 
         }
+    }
+
+    public IEnumerator boostCooldown()
+    {
+        yield return new WaitForSeconds(m_boostCooldown);
+        m_canBoost = true;
     }
 }
