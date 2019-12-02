@@ -15,9 +15,11 @@ public class EnemySavingObject
     public string rightWeaponSeed;
     public string leftWeaponSeed;
     public string engineSeed;
+    public string spawnIndex;
+    public string factionType;
 
 
-    public EnemySavingObject(Vector3 _pos, Quaternion _rot, string _rightSeed, string _leftSeed, string _engineSeed)
+    public EnemySavingObject(Vector3 _pos, Quaternion _rot, string _rightSeed, string _leftSeed, string _engineSeed, string _spawnIndex, string _factionType)
     {
         positionX = _pos.x.ToString();
         positionY = _pos.y.ToString();
@@ -29,6 +31,8 @@ public class EnemySavingObject
         rightWeaponSeed = _rightSeed;
         leftWeaponSeed = _leftSeed;
         engineSeed = _engineSeed;
+        spawnIndex = _spawnIndex;
+        factionType = _factionType;
     }
 
 }
