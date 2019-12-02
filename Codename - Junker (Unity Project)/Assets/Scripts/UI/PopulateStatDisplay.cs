@@ -16,10 +16,10 @@ public class PopulateStatDisplay : MonoBehaviour
         m_stat2Value.text = DisplayNiceStats(_data.FireRate);
         //m_stat3Title.text = "Reload Time";
         //m_stat3Value.text = DisplayNiceStats(_data.ReloadTime);
-        m_stat3Title.text = "";
-        m_stat3Value.text = "";
-        m_stat4Title.text = "Accuracy";
-        m_stat4Value.text = DisplayNiceStats(_data.Accuracy);
+        m_stat4Title.text = "";
+        m_stat4Value.text = "";
+        m_stat3Title.text = "Accuracy";
+        m_stat3Value.text = DisplayNiceStats(_data.Accuracy);
     }
     public void PopulateEngine(EngineData _data)
     {
