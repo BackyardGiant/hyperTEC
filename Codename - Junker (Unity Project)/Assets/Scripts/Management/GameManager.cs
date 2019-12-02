@@ -570,9 +570,28 @@ public class GameManager : MonoBehaviour
             EnemySavingObject _savedEnemy = JsonUtility.FromJson<EnemySavingObject>(_loadLines[i + 2]);
             Vector3 _enemyPos = new Vector3(float.Parse(_savedEnemy.positionX), float.Parse(_savedEnemy.positionY), float.Parse(_savedEnemy.positionZ));
             Quaternion _enemyRot = new Quaternion(float.Parse(_savedEnemy.rotationX), float.Parse(_savedEnemy.rotationY), float.Parse(_savedEnemy.rotationZ), float.Parse(_savedEnemy.rotationW));
+
+            faction _newEnemyFaction = (faction)int.Parse(_savedEnemy.factionType);
+
+            switch (_newEnemyFaction)
+            {
+                case faction.trader:
+                    spawner.enemyPrefab = spawner.traderPrefab;
+                    break;
+                case faction.construction:
+                    spawner.enemyPrefab = spawner.constructionPrefab;
+                    break;
+                case faction.explorer:
+                    spawner.enemyPrefab = spawner.explorerPrefab;
+                    break;
+            }
+
+
+
+
             GameObject _newEnemy = Instantiate(spawner.enemyPrefab, _enemyPos, _enemyRot);
 
-            _newEnemy.GetComponent<EnemyStats>().m_currentFaction = (faction)int.Parse(_savedEnemy.factionType);
+            _newEnemy.GetComponent<EnemyStats>().m_currentFaction = _newEnemyFaction;
             _newEnemy.GetComponent<EnemyManager>().enemySpawnPoint = spawner.spawnPoints[int.Parse(_savedEnemy.spawnIndex)];
 
             Transform _leftSnap = _newEnemy.transform.Find("Ship").Find("LeftSnap");
@@ -597,6 +616,10 @@ public class GameManager : MonoBehaviour
 
             EngineData _tempEngine = ModuleManager.Instance.CreateEngineBlock(_savedEnemy.engineSeed);
             GameObject _tempEngineObject = ModuleManager.Instance.GenerateEngine(_tempEngine);
+
+            ThrustEffectController thrust = _tempEngineObject.GetComponentInChildren<ThrustEffectController>();
+            thrust.enabled = false;
+
             _tempEngineObject.GetComponent<EngineGenerator>().engineStatBlock = _tempEngine;
             _tempEngineObject.transform.SetParent(_engineSnap);
 

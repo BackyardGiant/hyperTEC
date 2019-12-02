@@ -14775,7 +14775,7 @@ GameObject:
   - component: {fileID: 7113207445107268370}
   - component: {fileID: 4382853787399700519}
   m_Layer: 0
-  m_Name: ConstructionEngine#1 1
+  m_Name: ConstructionEngine#1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

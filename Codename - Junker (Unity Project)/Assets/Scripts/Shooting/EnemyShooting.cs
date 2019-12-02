@@ -90,8 +90,8 @@ public class EnemyShooting : MonoBehaviour
         WeaponData _rightWeapon = null;
         WeaponData _leftWeapon = null;
 
-        Transform _leftSnap = transform.Find("ConstructionShip#1").Find("LeftSnap");
-        Transform _rightSnap = transform.Find("ConstructionShip#1").Find("RightSnap");
+        Transform _leftSnap = transform.Find("Ship").Find("LeftSnap");
+        Transform _rightSnap = transform.Find("Ship").Find("RightSnap");
 
         _rightWeapon = _rightSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
         _leftWeapon = _leftSnap.GetChild(0).GetComponent<WeaponGenerator>().statBlock;
