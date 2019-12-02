@@ -75,9 +75,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookAt: {fileID: 2872460002776077784}
   target: {fileID: 2872460002776077785}
-  turningSpeed: 1
+  turningSpeed: 1.5
   rotateSpeed: 2
-  snapSpeed: 0
+  offset: {x: 0, y: 0, z: 0}
+  snapSpeed: 1
   CameraDistance: 1
   CameraAngle: 0
 --- !u!1 &1138647564
@@ -263,6 +264,8 @@ MonoBehaviour:
   m_controlScheme: 0
   m_uiCorrection: 2.8
   m_inUserTesting: 0
+  m_topFOV: 90
+  m_normalFOV: 60
 --- !u!54 &2872460001895466301
 Rigidbody:
   m_ObjectHideFlags: 0

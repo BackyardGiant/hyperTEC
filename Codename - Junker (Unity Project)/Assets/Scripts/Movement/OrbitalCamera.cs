@@ -17,6 +17,7 @@ public class OrbitalCamera : MonoBehaviour
     public float turningSpeed = 60;
 
     public float rotateSpeed = 5;
+    [SerializeField]
     Vector3 offset;
 
     public float snapSpeed;
@@ -29,7 +30,7 @@ public class OrbitalCamera : MonoBehaviour
 
     private void Start()
     {
-        offset = target.transform.localPosition - transform.localPosition;
+        offset = (target.transform.localPosition - transform.localPosition);
     }
 
     private void Update()

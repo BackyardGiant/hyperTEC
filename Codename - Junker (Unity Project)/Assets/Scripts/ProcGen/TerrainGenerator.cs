@@ -17,6 +17,7 @@ public class TerrainGenerator : MonoBehaviour
 
     public void generate()
     {
+        clear();
         Vector3 randomPosition;
         Vector3 randomRotation;
         GameObject asteroidObj;
@@ -49,8 +50,9 @@ public class TerrainGenerator : MonoBehaviour
 
     public void clear()
     {
-        foreach(GameObject obj in asteroids)
+        for(int i=0; i < transform.childCount; i++)
         {
+            GameObject obj = transform.GetChild(i).gameObject;
             DestroyImmediate(obj);
         }
         asteroids = new List<GameObject>();
