@@ -207,19 +207,19 @@ public class AdvancedEnemyMovement : MonoBehaviour
 
             ApplyDamping();
 
-            if (Vector3.Angle(m_steeringWithAvoidence.normalized, m_rb.velocity.normalized) > m_flipAngle)
+            if (Vector3.Angle(transform.forward, m_rb.velocity.normalized) > m_flipAngle)
             {
                 m_steeringWithAvoidence += transform.right * 100;
             }
 
-            m_rb.AddForce(m_steeringWithAvoidence * m_maxAcceleration * GameManager.Instance.GameSpeed);
+            m_rb.AddForce(transform.forward * m_maxAcceleration * GameManager.Instance.GameSpeed * 20);
 
             if (m_rb.velocity.magnitude > m_maxSpeed)
             {
-                m_rb.AddForce((-m_steeringWithAvoidence) * (m_rb.velocity.magnitude - m_maxSpeed));
+                m_rb.AddForce((-transform.forward) * (m_rb.velocity.magnitude - m_maxSpeed));
             }
 
-            transform.forward = Vector3.Lerp(transform.forward, m_steeringWithAvoidence.normalized * m_maxSpeed, 0.0008f * m_handling);
+            transform.forward = Vector3.Lerp(transform.forward, m_steeringWithAvoidence.normalized * m_maxSpeed, 0.00008f * m_handling);
             //transform.forward = m_steering;
         }
     }

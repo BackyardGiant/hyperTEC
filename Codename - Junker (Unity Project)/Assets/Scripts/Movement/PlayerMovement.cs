@@ -109,6 +109,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private bool m_inUserTesting;
 
+    private Camera m_playerCam;
+    [SerializeField]
+    private float m_topFOV;
+    [SerializeField]
+    private float m_normalFOV;
+
+
     public float CurrentSpeed { get => m_currentSpeed; }
     public float MaxAcceleration { get => m_maxAcceleration; }
     public ControlType ControlScheme { get => m_controlScheme; set => m_controlScheme = value; }
@@ -122,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         m_rbPlayer = gameObject.GetComponent<Rigidbody>();
+        m_playerCam = Camera.main;
     }
 
     private void Start()
@@ -285,6 +293,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_boostOn)
         {
+            m_playerCam.fieldOfView = Mathf.Lerp(m_playerCam.fieldOfView, m_topFOV, 0.01f);
+            CameraShake.Instance.Shake(0.2f, 0.2f);
             if (m_rbPlayer.velocity.magnitude < m_maxBoostSpeed)
             {
                 m_rbPlayer.AddForce(m_boostSpeed * transform.forward * GameManager.Instance.GameSpeed);
@@ -296,6 +306,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // This takes the total torque of pitch, yaw and roll and applies it as a force to the player rigidbody
             m_rbPlayer.AddTorque(torque * GameManager.Instance.GameSpeed);
+            m_playerCam.fieldOfView = Mathf.Lerp(m_playerCam.fieldOfView, m_normalFOV, 0.01f);
         }
 
         if (!m_boostOn && !m_killedEngine && !m_engageBoost)

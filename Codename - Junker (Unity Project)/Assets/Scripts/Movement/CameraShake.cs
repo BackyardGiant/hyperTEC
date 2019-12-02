@@ -45,12 +45,18 @@ public class CameraShake : MonoBehaviour
 
     public void Shake(float _shakeDuration, float _amplitude)
     {
-        shakeDuration = _shakeDuration;
-        shakeAmount = _amplitude;
+        if (shakeDuration <= 0)
+        {
+            shakeDuration = _shakeDuration;
+            shakeAmount = _amplitude;
+        }
     }
     public void Shake(float _amplitude)
     {
-        shakeDuration = 0.4f;
-        shakeAmount = _amplitude;
+        if (shakeDuration <= 0)
+        {
+            shakeDuration = 0.4f;
+            shakeAmount = _amplitude;
+        }
     }
 }

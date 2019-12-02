@@ -194,7 +194,7 @@ MonoBehaviour:
   m_maxAccelerationHigh: 1.4
   m_maxAccelerationLow: 0.8
   m_maxAcceleration: 1
-  m_handlingHigh: 1.4
+  m_handlingHigh: 1.1
   m_handlingLow: 0.9
   m_handling: 1
   m_detectionRange: 200
@@ -202,14 +202,14 @@ MonoBehaviour:
   m_circleRadius: 10
   m_turnChance: 0.007
   m_evadeSize: 0.2
-  m_evadeChance: 1
+  m_evadeChance: 0.585
   m_dampingSpeed: 1
   m_correctionForce: 0.4
-  m_dampingAngleThreshold: 0.95
+  m_dampingAngleThreshold: 0.9
   m_fleeing: 0
   m_attacking: 1
   m_avoidenceForce: 100
-  m_wanderRange: 600
+  m_wanderRange: 300
 --- !u!114 &679149893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +442,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5610633641536775856}
     m_Modifications:
+    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+        type: 3}
+      propertyPath: m_Name
+      value: ConstructionShip#1
+      objectReference: {fileID: 0}
     - target: {fileID: 5731347806934350786, guid: 1fc09b7b7908b39428b358b3cfaf6225,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -496,11 +501,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
-        type: 3}
-      propertyPath: m_Name
-      value: ConstructionShip#1
       objectReference: {fileID: 0}
     - target: {fileID: 3662219012777312756, guid: 1fc09b7b7908b39428b358b3cfaf6225,
         type: 3}

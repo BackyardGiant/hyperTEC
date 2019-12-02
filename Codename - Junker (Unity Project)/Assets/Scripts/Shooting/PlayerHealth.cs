@@ -77,7 +77,7 @@ public class PlayerHealth : MonoBehaviour
             HUDManager.Instance.Healthbar.fillAmount = (float)m_playerHealth[_currentSave].Value / m_healthMax;
             m_timeSinceDamage = 0;
             Debug.Log("<color=green>CURRENT HEALTH : </color>" + m_playerHealth[_currentSave].Value);
-            CameraShake.Instance.Shake(0.3f, 0.6f);
+            CameraShake.Instance.Shake(0.15f, 0.3f);
         }
         else
         {
