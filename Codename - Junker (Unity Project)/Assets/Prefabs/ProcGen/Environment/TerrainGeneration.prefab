@@ -43,8 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf62e4a576b9374fa9b6cda6c80f368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_environmentSize: 10000
-  m_asteroidCount: 10000
+  m_environmentSize: 3000
+  m_clusterCount: 10
+  m_asteroidsPerCluster: 355
+  m_clusterSize: 1000
   m_asteroidTypes:
   - asteroidObject: {fileID: 9215590986151358317, guid: 551a7dfbfde8fd349a1d19d1ce2a514f,
       type: 3}

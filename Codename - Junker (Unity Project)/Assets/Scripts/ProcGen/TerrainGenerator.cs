@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 public class TerrainGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private int m_environmentSize;
+    [Header ("Environment Variables"), Tooltip("The range at which clusters will generate.")]
+    [SerializeField] private int m_environmentSize;
 
-    [SerializeField]
-    private int m_asteroidCount;
+    [Header ("Asteroid Cluster Variables"),Space(20)]
+    [SerializeField] private int m_clusterCount;
+    [SerializeField] private int m_asteroidsPerCluster;
+    [SerializeField, Tooltip("The range at which asteroids will spawn within the cluster.")] private int m_clusterSize;
 
-    [SerializeField,Space(20)]
+    [SerializeField,Header ("Asteroid Types"),Space(20),Tooltip("All of the different types of asteroid.")]
     private asteroidClass[] m_asteroidTypes;
 
     private List<GameObject> asteroids = new List<GameObject>();
@@ -18,48 +20,58 @@ public class TerrainGenerator : MonoBehaviour
     public void generate()
     {
         clear();
-        Vector3 randomPosition;
-        Vector3 randomRotation;
-        GameObject asteroidObj;
-        for (int i = 0; i < m_asteroidCount; i++)
+
+        Vector3 _clusterLocation;
+        Vector3 _randomLocation;
+   
+        for (int i = 0; i < m_clusterCount; i++)
         {
-            //Choose a random asteroid to spawn.
-            asteroidClass asteroid = m_asteroidTypes[Random.Range(0, m_asteroidTypes.Length)];
-            asteroidObj = asteroid.asteroidObject;
-
-            //Chance roll on the random asteroid, if false, try again.
-            if (chanceRoll(asteroid.rarity))
+            //Spawn a Cluster at a randomPosition
+            _clusterLocation = Random.insideUnitSphere * m_environmentSize;
+            m_asteroidsPerCluster = (int)Random.Range(m_asteroidsPerCluster * 0.8f, m_asteroidsPerCluster * 1.2f);
+            for (int j = 0; j < m_asteroidsPerCluster; j++)
             {
-                randomPosition = Random.insideUnitSphere * m_environmentSize;
-                float _randomX = Random.Range(0f, 360f);
-                float _randomY = Random.Range(0f, 360f);
-                float _randomZ = Random.Range(0f, 360f);
-
-                GameObject obj = Instantiate(asteroidObj);
-                obj.transform.position = randomPosition;
-                obj.transform.rotation = new Quaternion(_randomX, _randomY, _randomZ, 1);
-                obj.transform.parent = this.transform;
-                asteroids.Add(obj);
-            }
-            else
-            {
-                i = i - 1;
+                _randomLocation = (Random.insideUnitSphere * m_clusterSize) + _clusterLocation;
+                spawnAsteroid(_randomLocation);
             }
         }
     }
 
     public void clear()
     {
-        for(int i=0; i < transform.childCount; i++)
+        for(int i=0; i < this.transform.childCount; i++)
         {
-            GameObject obj = transform.GetChild(i).gameObject;
+            GameObject obj = this.transform.GetChild(i).gameObject;
+            DestroyImmediate(obj);
+        }
+        foreach(GameObject obj in asteroids)
+        {
             DestroyImmediate(obj);
         }
         asteroids = new List<GameObject>();
 
     }
+    private void spawnAsteroid(Vector3 _position)
+    {
+        //Choose a random asteroid to spawn.
+        asteroidClass asteroid = m_asteroidTypes[Random.Range(0, m_asteroidTypes.Length)];
+        GameObject asteroidObj = asteroid.asteroidObject;
 
+        if (chanceRoll(asteroid.rarity))
+        {
+            float _randomX = Random.Range(0f, 360f);
+            float _randomY = Random.Range(0f, 360f);
+            float _randomZ = Random.Range(0f, 360f);
 
+            GameObject obj = Instantiate(asteroidObj);
+            obj.transform.position = _position;
+            obj.transform.rotation = new Quaternion(_randomX, _randomY, _randomZ, 1);
+            obj.transform.parent = this.transform;
+            asteroids.Add(obj);
+        }
+    }
+
+    #region Helpful Methods
     private bool chanceRoll(float _chance)
     {
         float _random = Random.Range(0.0f, 1.0f);
@@ -72,4 +84,5 @@ public class TerrainGenerator : MonoBehaviour
             return false;
         }
     }
+    #endregion
 }

@@ -3880,12 +3880,12 @@ PrefabInstance:
         type: 3}
       propertyPath: blackOut
       value: 
-      objectReference: {fileID: 726958074}
+      objectReference: {fileID: 0}
     - target: {fileID: 7113264020713941144, guid: 8a85022b65d0bad4f870bebc81cb8f84,
         type: 3}
       propertyPath: fadeAnimator
       value: 
-      objectReference: {fileID: 726958076}
+      objectReference: {fileID: 0}
     - target: {fileID: 7113264020713941144, guid: 8a85022b65d0bad4f870bebc81cb8f84,
         type: 3}
       propertyPath: questBeacon
@@ -4450,24 +4450,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 726904555}
   m_CullTransparentMesh: 0
---- !u!114 &726958074 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 726958074, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1706699861}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!95 &726958076 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 726958076, guid: 1888cbe4f75b6114ab617ae04f52ae0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1706699861}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &757525780
 GameObject:
   m_ObjectHideFlags: 0
