@@ -932,28 +932,32 @@ public class HUDManager : MonoBehaviour
                         _fireRateArrow.enabled = false;
                     }
 
-                    /////////////////////////////////////////////////
-                    m_stat3[0].GetComponent<TextMeshProUGUI>().text = "Reload Time";
-                    m_stat3[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.ReloadTime);// _lootData.ReloadTime.ToString();
-                    if (_lootData.ReloadTime > _currentReloadTime)
-                    {
-                        //Higher - Green Arrow
-                        _reloadArrow.enabled = true;
-                        _reloadArrow.color = Color.green;
-                        _reloadArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
-                    }
-                    else if (_lootData.ReloadTime < _currentReloadTime)
-                    {
-                        //Lower - Red Arrow
-                        _reloadArrow.enabled = true;
-                        _reloadArrow.color = Color.red;
-                        _reloadArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
-                    }
-                    else
-                    {
-                        // Equal - Hide Arrow
-                        _reloadArrow.enabled = false;
-                    }
+                    ///////////////////////////////////////////////////
+                    m_stat3[0].GetComponent<TextMeshProUGUI>().text = "";
+                    m_stat3[1].GetComponent<TextMeshProUGUI>().text = "";
+                    _reloadArrow.enabled = false;
+                    // _lootData.ReloadTime.ToString();
+                    //m_stat3[0].GetComponent<TextMeshProUGUI>().text = "Reload Time";
+                    //m_stat3[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.ReloadTime);// _lootData.ReloadTime.ToString();
+                    //if (_lootData.ReloadTime > _currentReloadTime)
+                    //{
+                    //    //Higher - Green Arrow
+                    //    _reloadArrow.enabled = true;
+                    //    _reloadArrow.color = Color.green;
+                    //    _reloadArrow.rectTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                    //}
+                    //else if (_lootData.ReloadTime < _currentReloadTime)
+                    //{
+                    //    //Lower - Red Arrow
+                    //    _reloadArrow.enabled = true;
+                    //    _reloadArrow.color = Color.red;
+                    //    _reloadArrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+                    //}
+                    //else
+                    //{
+                    //    // Equal - Hide Arrow
+                    //    _reloadArrow.enabled = false;
+                    //}
 
 
 
@@ -1004,10 +1008,10 @@ public class HUDManager : MonoBehaviour
                     m_stat3[0].GetComponent<TextMeshProUGUI>().text = "Boost Power";
                     m_stat4[0].GetComponent<TextMeshProUGUI>().text = "Handling";
 
-                    m_stat1[1].GetComponent<TextMeshProUGUI>().text = _lootData.TopSpeed.ToString();
-                    m_stat2[1].GetComponent<TextMeshProUGUI>().text = _lootData.Acceleration.ToString();
-                    m_stat3[1].GetComponent<TextMeshProUGUI>().text = _lootData.BoostPower.ToString();
-                    m_stat4[1].GetComponent<TextMeshProUGUI>().text = _lootData.Handling.ToString();
+                    m_stat1[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.TopSpeed);
+                    m_stat2[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Acceleration);
+                    m_stat3[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.BoostPower);
+                    m_stat4[1].GetComponent<TextMeshProUGUI>().text = DisplayNiceStats(_lootData.Handling);
 
                     Image _topSpeedArrow = m_stat1[2].GetComponent<Image>();
                     Image _accelerationArrow = m_stat2[2].GetComponent<Image>();
