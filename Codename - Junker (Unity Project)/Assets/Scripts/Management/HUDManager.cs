@@ -1311,7 +1311,13 @@ public class HUDManager : MonoBehaviour
                 m_completedQuestDescription.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Description;
                 QuestManager.Instance.TrackingQuestIndex += 1;
             }
-        } catch { }
+        }
+        catch
+        {
+            m_questTitle.text = "";
+            m_questDescription.text = "";
+            m_questProgress.text = "";
+        }
     }
 
 

@@ -422,7 +422,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
     {
         EngineData _engine = null;
 
-        Transform _engineSnap = transform.Find("ConstructionShip#1").Find("EngineSnap");
+        Transform _engineSnap = transform.Find("Ship").Find("EngineSnap");
 
         _engine = _engineSnap.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock;
 
