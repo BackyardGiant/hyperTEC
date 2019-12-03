@@ -266,6 +266,9 @@ MonoBehaviour:
   m_inUserTesting: 0
   m_topFOV: 90
   m_normalFOV: 60
+  m_minimumOpimalTiming: 0
+  m_maximumOpimalTiming: 0
+  m_boostCooldown: 5
 --- !u!54 &2872460001895466301
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -451,12 +454,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2872460001895466296}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b207ac7995d99043bbd07fd399af59d, type: 3}
+  m_Script: {fileID: 11500000, guid: a671cdec7a77fd54aa281c5bbad395f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftSnap: {fileID: 7326393077191352418}
   rightSnap: {fileID: 5718154230315381651}
-  engineSnap: {fileID: 0}
+  engineSnap: {fileID: 4698530898101933364}
   lootItemParent: {fileID: 5742531039650702400, guid: 341df5633658ae74189c875277192328,
     type: 3}
   lootItemParentEngine: {fileID: 5742531039650702400, guid: 8afd4e1468f74a94db1fe40ff73e444a,
@@ -479,7 +482,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8fc01d49d2c6f984ab88f28bc9cc6e14, type: 2}
   - {fileID: 11400000, guid: 55d5140163aac5741a1c5d48110a6d42, type: 2}
   - {fileID: 11400000, guid: f80af97534092ab449883536da0e6d44, type: 2}
-  m_healthMax: 10000
+  m_healthMax: 10
   m_rechargeRate: 1
   m_rechargePeriod: 2
   m_explosion: {fileID: 9084401648041963869, guid: 79596fda59e6ac3448c0da99c65fd615,

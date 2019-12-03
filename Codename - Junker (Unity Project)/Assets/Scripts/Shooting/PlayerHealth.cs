@@ -81,7 +81,9 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
+
             _isDead = true;
+            GameManager.Instance.SaveGame(_isDead);
             m_playerDeath.Raise();
 
             HUDManager.Instance.Healthbar.fillAmount = 0;

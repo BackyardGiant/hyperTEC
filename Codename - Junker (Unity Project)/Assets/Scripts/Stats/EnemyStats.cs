@@ -18,6 +18,8 @@ public class EnemyStats : MonoBehaviour
     [SerializeField]
     private DropWeapons m_dropWeaponsScript;
 
+    private EnemyManager m_manager; // For temp stuff but don't remove 03/12/2019
+
     public faction m_currentFaction;
 
     public float CurrentHealth { get => m_currentHealth; }
@@ -25,12 +27,21 @@ public class EnemyStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_manager = GetComponent<EnemyManager>();
         m_currentHealth = m_maxHealth;
     }
 
     public void TakeDamage(float _damageTaken)
     {
         m_currentHealth -= _damageTaken;
+
+        /////////////////////////////////////////////
+        // For temp stuff 03/12/2019
+
+        m_manager.AttackingPlayer = true;
+
+        /////////////////////////////////////////////
+       
         ReactToHealthChange();
     }
 
