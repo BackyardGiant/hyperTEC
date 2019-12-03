@@ -180,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
                 m_engageBoost = true;
             }
 
-            if (Input.GetAxis("MacroEngine") < -0.1f && !m_killedEngine && !m_boostOn && !m_engageBoost)
+            if (Input.GetAxis("MacroEngine") < -0.1f && !m_killedEngine && !m_boostOn && !m_engageBoost && m_canBoost)
             {
                 engineOff.Raise();
                 m_killedEngine = true;
