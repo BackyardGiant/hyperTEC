@@ -17,9 +17,9 @@ MonoBehaviour:
   currentFaction: 1
   thumbnail: {fileID: 21300000, guid: ccbd40ca46b123c47850957ee5ebea8c, type: 3}
   value: 0
-  topSpeed: 0
-  acceleration: 0
-  boostPower: 0
-  handling: 0
+  topSpeed: 30
+  acceleration: 30
+  boostPower: 30
+  handling: 30
   engineId: 0
-  seed: 10000000000000000
+  seed: 10300300300300000
