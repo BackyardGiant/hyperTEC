@@ -593,6 +593,7 @@ public class GameManager : MonoBehaviour
 
             _newEnemy.GetComponent<EnemyStats>().m_currentFaction = _newEnemyFaction;
             _newEnemy.GetComponent<EnemyManager>().enemySpawnPoint = spawner.spawnPoints[int.Parse(_savedEnemy.spawnIndex)];
+            _newEnemy.GetComponent<EnemyManager>().enemySpawnPointIndex = int.Parse(_savedEnemy.spawnIndex);
 
             Transform _leftSnap = _newEnemy.transform.Find("Ship").Find("LeftSnap");
             Transform _rightSnap = _newEnemy.transform.Find("Ship").Find("RightSnap");

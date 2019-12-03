@@ -18,6 +18,9 @@ public class FactionChoiceManager : MonoBehaviour
     private int m_saveIndex;
     [SerializeField]
     private AudioSource m_UIAudio;
+
+    [SerializeField]
+    GameEvent factionChosen;
  
     //// Start is called before the first frame update
     //void Start()
@@ -124,21 +127,24 @@ public class FactionChoiceManager : MonoBehaviour
                     case 1:
                         Debug.Log("Chosen Trader");
                         SpawnTraderEngine();
-                        PlayerPrefs.SetString("ChosenFaction" + m_saveIndex,"Trader");
+                        factionChosen.Raise();
+                        PlayerPrefs.SetString("ChosenFaction" + m_saveIndex,"trader");
                         GameManager.Instance.SetNormalSpeed();
                         this.gameObject.SetActive(false);
                         break;
                     case 2:
                         Debug.Log("Exploration");
                         SpawnExplorationEngine();
-                        PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "Exploration");
+                        factionChosen.Raise();
+                        PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "exploratory");
                         GameManager.Instance.SetNormalSpeed();
                         this.gameObject.SetActive(false);
                         break;
                     case 3:
                         Debug.Log("Construction");
                         SpawnConstructionEngine();
-                        PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "Construction");
+                        factionChosen.Raise();
+                        PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "construction");
                         GameManager.Instance.SetNormalSpeed();
                         this.gameObject.SetActive(false);
                         break;

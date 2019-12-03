@@ -359,7 +359,7 @@ public class HUDManager : MonoBehaviour
                     m_buttonHoldTime = 0;
                     QuestDisplay.GetComponent<Animator>().Play("QuestScan");
 
-                    Invoke("toggleQuestPickup", .2f);
+                    Invoke("toggleQuestPickup", .4f);
                 }
 
                 //Full close complete, close and animate display.
@@ -373,7 +373,7 @@ public class HUDManager : MonoBehaviour
                     QuestDisplay.GetComponent<Animator>().Play("QuestCloseScan");
                     m_currentlyClosingQuestScan = true;
 
-                    Invoke("toggleQuestPickup", .2f);
+                    Invoke("toggleQuestPickup", .4f);
                 }
 
                 //Dismiss being held down fills in the button.
@@ -806,7 +806,7 @@ public class HUDManager : MonoBehaviour
         }
         else if(m_currentTarget.tag == "QuestBeacon")
         {
-            DisplayBeconTitle(m_currentTarget);
+            DisplayBeaconTitle(m_currentTarget);
 
             if (QuestDisplay.transform.localScale.x >= 0.17)
             {
@@ -1177,6 +1177,17 @@ public class HUDManager : MonoBehaviour
         _targetImage.transform.position = _screenPos;
         _targetImage.transform.localEulerAngles = Vector3.zero;
 
+        //Find all "component" tagged game objects
+        GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
+        GameObject[] _questObjects = GameObject.FindGameObjectsWithTag("QuestBeacon");
+
+        GameObject[] _objects = new GameObject[_lootObjects.Length + _questObjects.Length];
+
+        _lootObjects.CopyTo(_objects, 0);
+        _questObjects.CopyTo(_objects, _lootObjects.Length);
+
+        m_currentTarget = ReturnTarget(_objects);
+
         //If targeted loot has changed, reset LootDisplay.
         if (m_prevTarget != m_currentTarget)
         {
@@ -1234,7 +1245,7 @@ public class HUDManager : MonoBehaviour
 
     }
 
-    private void DisplayBeconTitle(GameObject _currentBeacon)
+    private void DisplayBeaconTitle(GameObject _currentBeacon)
     {
         if (_currentBeacon != null)
         {

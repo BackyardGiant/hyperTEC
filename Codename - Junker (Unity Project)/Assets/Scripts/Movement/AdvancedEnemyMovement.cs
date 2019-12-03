@@ -199,7 +199,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
             }
             else
             {
-                m_steering = Seek(m_startPosition);
+                m_steering = Seek(m_manager.enemySpawnPoint.position);
                 m_manager.Target = null;
             }
 

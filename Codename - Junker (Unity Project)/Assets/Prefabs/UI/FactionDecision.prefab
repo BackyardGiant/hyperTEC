@@ -1985,6 +1985,13 @@ MonoBehaviour:
   m_sounds:
   - {fileID: 8300000, guid: 3e8dd43abaed9f14c8b2a7cc3e6c5d85, type: 3}
   - {fileID: 8300000, guid: 70ec1d91922317b44893ef22539ebb35, type: 3}
+  traderEngine: {fileID: 11400000, guid: 31da79afc978e0649876439be7ab2b12, type: 2}
+  explorerEngine: {fileID: 11400000, guid: 5f05a6eaff3aa9e4db3c58511bdd45ee, type: 2}
+  constructionEngine: {fileID: 11400000, guid: 56d71c48d2d235c44b5c6a7f77e34464, type: 2}
+  m_engineLootParent: {fileID: 5742531039650702400, guid: 8afd4e1468f74a94db1fe40ff73e444a,
+    type: 3}
+  m_UIAudio: {fileID: 1896071597432571812}
+  factionChosen: {fileID: 11400000, guid: 0559db46913908c47a12dbcb97292276, type: 2}
 --- !u!82 &1896071597432571812
 AudioSource:
   m_ObjectHideFlags: 0
