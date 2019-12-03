@@ -101,7 +101,7 @@ public class DropWeapons : MonoBehaviour
         #region engines
         _randomFloat = Random.Range(0f, 1f);
 
-        if (_randomFloat <= 0.75f)
+        if (_randomFloat <= 0.5f)
         {
             Debug.Log(_randomFloat + "Dropped Nothing");
         }

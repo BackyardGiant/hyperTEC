@@ -8,6 +8,8 @@ public class FactionChoiceManager : MonoBehaviour
     private GameObject m_player, m_traderHighlight, m_explorationHighlight, m_constructionHighlight;
     [SerializeField]
     private AudioClip[] m_sounds;
+    [SerializeField]
+    private EngineData traderEngine, explorerEngine, constructionEngine;
 
     private bool m_readyForInput;
     private int m_selectedIndex;
@@ -146,7 +148,7 @@ public class FactionChoiceManager : MonoBehaviour
 
     void SpawnTraderEngine()
     {
-        //This is a script that's on a canvas. m_player is a reference within this script that can be used for a spawn position.
+        GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(traderEngine);
     }
 
     void SpawnExplorationEngine()
