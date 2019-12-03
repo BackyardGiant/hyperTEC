@@ -532,7 +532,7 @@ public class ModuleManager : MonoBehaviour
         return _seed;
     }
 
-    private string GenerateEngineSeed(int _factionIndex)
+    public string GenerateEngineSeed(int _factionIndex)
     {
         string _seed = "";
 
