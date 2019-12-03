@@ -182,7 +182,7 @@ public class DropWeapons : MonoBehaviour
 
     private void AddExplosionForce(GameObject _lootItem, Transform _snap)
     {
-        _lootItem.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)) * Random.Range(1, 5) + (transform.forward * Random.Range(2f,3f)), ForceMode.Impulse);
+        _lootItem.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)) * Random.Range(1, 5) + (transform.forward * Random.Range(2f, 3f)), ForceMode.Impulse);
         _lootItem.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)) * Random.Range(1, 5), ForceMode.Impulse);
     }
 }

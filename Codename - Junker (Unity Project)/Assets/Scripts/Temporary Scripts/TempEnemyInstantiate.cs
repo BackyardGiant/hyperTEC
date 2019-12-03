@@ -26,22 +26,22 @@ public class TempEnemyInstantiate : MonoBehaviour
             if (i < 5)
             {
                 enemyPrefab = constructionPrefab;
-                SpawnEnemy(spawnPoints[0], 3);
+                SpawnEnemy(spawnPoints[0], 3, 0);
             }
             else if (i < 10)
             {
                 enemyPrefab = traderPrefab;
-                SpawnEnemy(spawnPoints[1], 2);
+                SpawnEnemy(spawnPoints[1], 2, 1);
             }
             else if (i < 15)
             {
                 enemyPrefab = explorerPrefab;
-                SpawnEnemy(spawnPoints[2], 0);
+                SpawnEnemy(spawnPoints[2], 0, 2);
             }
             else if (i < 20)
             {
                 enemyPrefab = traderPrefab;
-                SpawnEnemy(spawnPoints[3], 2);
+                SpawnEnemy(spawnPoints[3], 2, 3);
             }
         }
     }
@@ -55,13 +55,14 @@ public class TempEnemyInstantiate : MonoBehaviour
         //}
     }
 
-    private void SpawnEnemy(Transform _spawnPoint, int factionIndex)
+    private void SpawnEnemy(Transform _spawnPoint, int factionIndex, int index)
     {
         GameObject _tempEnemy = Instantiate(enemyPrefab, _spawnPoint.position + (Random.insideUnitSphere * 300), _spawnPoint.rotation);
 
         _tempEnemy.GetComponent<EnemyStats>().m_currentFaction = (faction)factionIndex;
 
         _tempEnemy.GetComponent<AdvancedEnemyMovement>().StartPosition = _spawnPoint.position;
+        _tempEnemy.GetComponent<EnemyManager>().enemySpawnPointIndex = index;
 
         Transform _leftSnap = _tempEnemy.transform.Find("Ship").Find("LeftSnap");
         Transform _rightSnap = _tempEnemy.transform.Find("Ship").Find("RightSnap");
