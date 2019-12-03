@@ -10,6 +10,8 @@ public class FactionChoiceManager : MonoBehaviour
     private AudioClip[] m_sounds;
     [SerializeField]
     private EngineData traderEngine, explorerEngine, constructionEngine;
+    [SerializeField]
+    private GameObject m_engineLootParent;
 
     private bool m_readyForInput;
     private int m_selectedIndex;
@@ -148,16 +150,31 @@ public class FactionChoiceManager : MonoBehaviour
 
     void SpawnTraderEngine()
     {
+        GameObject _lootParent = Instantiate(m_engineLootParent);
+        _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 20);
+
         GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(traderEngine);
+        _tempEngine.transform.SetParent(_lootParent.transform);
+        _tempEngine.transform.localPosition = Vector3.zero;
     }
 
     void SpawnExplorationEngine()
     {
-        //This is a script that's on a canvas. m_player is a reference within this script that can be used for a spawn position.
+        GameObject _lootParent = Instantiate(m_engineLootParent);
+        _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 20);
+
+        GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(explorerEngine);
+        _tempEngine.transform.SetParent(_lootParent.transform);
+        _tempEngine.transform.localPosition = Vector3.zero;
     }
 
     void SpawnConstructionEngine()
     {
-        //This is a script that's on a canvas. m_player is a reference within this script that can be used for a spawn position.
+        GameObject _lootParent = Instantiate(m_engineLootParent);
+        _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 20);
+
+        GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(constructionEngine);
+        _tempEngine.transform.SetParent(_lootParent.transform);
+        _tempEngine.transform.localPosition = Vector3.zero;
     }
 }
