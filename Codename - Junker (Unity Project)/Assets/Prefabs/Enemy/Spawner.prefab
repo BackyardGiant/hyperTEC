@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5699840118843401054}
   m_Layer: 0
   m_Name: Spawner
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,7 +48,17 @@ MonoBehaviour:
   - {fileID: 5249147796776496907, guid: 80d801963cbfc3c4dab3be1c1a08bdc2, type: 3}
   - {fileID: 173963497452463579, guid: 8452c1851d0c8374993be696c40f7126, type: 3}
   - {fileID: 7986433555038933874, guid: 9121d4f8b76cb984b8bb69e447c1e086, type: 3}
-  spawnPoint: {fileID: 0}
+  spawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  traderPrefab: {fileID: 5610633641536775860, guid: 1805e3d3959363f43acd3e45da0e472a,
+    type: 3}
+  explorerPrefab: {fileID: 5610633641536775860, guid: 5d137e507a809404f97546d356652622,
+    type: 3}
+  constructionPrefab: {fileID: 5610633641536775860, guid: 811b84aca9f3a7141b5bf285859b01a5,
+    type: 3}
   enemyPrefab: {fileID: 5610633641536775860, guid: 811b84aca9f3a7141b5bf285859b01a5,
     type: 3}
-  enemyLimit: 20
+  enemyLimit: 30
