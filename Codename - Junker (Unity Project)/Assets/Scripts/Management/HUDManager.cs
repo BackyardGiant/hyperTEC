@@ -390,21 +390,21 @@ public class HUDManager : MonoBehaviour
                     m_buttonHoldTime = 0;
                 }
 
-                //Destroy the target object.
-                if (QuestDestroyer.fillAmount == 1 && m_displayQuestAnimated == true)
-                {
-                    //Make it explode in here
-                    QuestDestroyer.fillAmount = 0;
-                    m_buttonBeingHeld = -1;
-                    m_buttonHoldTime = 0;
-                    GameObject explosion = Instantiate(Explosion, m_currentTarget.transform.position, m_currentTarget.transform.rotation);
-                    explosion.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                    AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentTarget.gameObject, true, false);
-                    ClearBeaconTarget(m_currentTarget.GetComponent<QuestBeconDetection>());
-                    Destroy(m_currentTarget);
-                    ClearBeaconDisplay();
+                ////Destroy the target object.
+                //if (QuestDestroyer.fillAmount == 1 && m_displayQuestAnimated == true)
+                //{
+                //    //Make it explode in here
+                //    QuestDestroyer.fillAmount = 0;
+                //    m_buttonBeingHeld = -1;
+                //    m_buttonHoldTime = 0;
+                //    GameObject explosion = Instantiate(Explosion, m_currentTarget.transform.position, m_currentTarget.transform.rotation);
+                //    explosion.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                //    AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentTarget.gameObject, true, false);
+                //    ClearBeaconTarget(m_currentTarget.GetComponent<QuestBeconDetection>());
+                //    Destroy(m_currentTarget);
+                //    ClearBeaconDisplay();
 
-                }
+                //}
             }
         }
 
@@ -1194,7 +1194,7 @@ public class HUDManager : MonoBehaviour
             // Swapping over the LootDisplays to a different object
             m_displayQuestAnimated = false;
             m_currentlyQuestScanning = false;
-            QuestDestroyer.fillAmount = 0;
+            //QuestDestroyer.fillAmount = 0;
             QuestScanner.fillAmount = 0;
         }
         m_prevTarget = m_currentTarget;
@@ -1399,7 +1399,7 @@ public class HUDManager : MonoBehaviour
         LootDisplay.transform.localScale = new Vector3(0, 0, 0);
         QuestDisplay.SetActive(false);
         LootDisplay.SetActive(false);
-        QuestDestroyer.fillAmount = 0;
+        //QuestDestroyer.fillAmount = 0;
         QuestScanner.fillAmount = 0;
 
 
