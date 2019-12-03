@@ -21,7 +21,7 @@ MonoBehaviour:
   value: 100
   damage: 10
   reloadTime: 20
-  fireRate: 90
+  fireRate: 81
   accuracy: 20
   barrelId: 0
   magazineId: 0

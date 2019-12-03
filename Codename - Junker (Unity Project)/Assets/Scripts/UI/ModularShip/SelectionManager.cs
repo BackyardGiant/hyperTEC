@@ -440,7 +440,23 @@ public class SelectionManager : MonoBehaviour
         //DPS
 
         //OI AIDEN PUT DPS HERE PLS
-        float DPS = 9.9999f;
+
+        float _damageMin = 5;
+        float _damageMax = 30;
+
+        float _fireRateMin = 0.1f;
+        float _fireRateMax = 1.3f;
+
+        float _accuracyMin = 0;
+        float _accuracyMax = 1;
+
+        float _damageValue, _shotsPerSecond, _accuracyValue;
+
+        _damageValue = _damageMin + ((_damageMax - _damageMin) * (_statblock.Damage / 100f));
+        _shotsPerSecond = 1/(_fireRateMin + ((_fireRateMax - _fireRateMin) * ((100 - _statblock.FireRate) / 100f)));
+        _accuracyValue = _accuracyMin + ((_accuracyMax - _accuracyMin) * (_statblock.Accuracy / 100f));
+
+        float DPS = _accuracyValue * _damageValue * _shotsPerSecond;
 
         string BASE_URL = "https://docs.google.com/forms/u/1/d/e/1FAIpQLSc73TkV2ctEU0mOeKFUf-l1y2ZlP_QX0qE2KkUZmPG03j9_5A/formResponse";
         WWWForm form = new WWWForm();
