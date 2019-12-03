@@ -366,13 +366,78 @@ public class ModuleManager : MonoBehaviour
     {
         string _seed = "";
 
+        string _fireRateString;
+        string _accuracyString;
+        string _damageString;
+        string _reloadTimeString;
+        string _valueString;
+
+        float _fireRate = 0f;
+        float _damage = 0f;
+        float _accuracy = 0f;
+
         int _barrelId = 0;
         int _batteryId = 0;
         int _magazineId = 0;
         int _targetId = 0;
 
-        float _fireRate = Random.Range(1, 100);
-        string _fireRateString;
+        int _factionData = _factionIndex;
+        WeaponData.faction _faction = (WeaponData.faction)_factionData;
+
+        switch (_faction)
+        {
+            case WeaponData.faction.explorer:
+                _barrelId = Random.Range(0, explorerBarrels.Count);
+                _batteryId = Random.Range(0, explorerBatteries.Count);
+                _magazineId = Random.Range(0, explorerMag.Count);
+                _targetId = Random.Range(0, explorerTargeting.Count);
+                break;
+            case WeaponData.faction.construction:
+                _barrelId = Random.Range(0, constructBarrels.Count);
+                _batteryId = Random.Range(0, constructBatteries.Count);
+                _magazineId = Random.Range(0, constructMag.Count);
+                _targetId = Random.Range(0, constructTargeting.Count);
+                break;
+            case WeaponData.faction.initial:
+                _barrelId = Random.Range(0, defaultBarrels.Count);
+                _batteryId = Random.Range(0, defaultBatteries.Count);
+                _magazineId = Random.Range(0, defaultMag.Count);
+                _targetId = Random.Range(0, defaultTargeting.Count);
+                break;
+            case WeaponData.faction.trader:
+                _barrelId = Random.Range(0, traderBarrels.Count);
+                _batteryId = Random.Range(0, traderBatteries.Count);
+                _magazineId = Random.Range(0, traderMag.Count);
+                _targetId = Random.Range(0, traderTargeting.Count);
+                break;
+        }
+
+        switch(_faction)
+        {
+            case WeaponData.faction.explorer:
+                _damage = Random.Range(10, 40);
+                _accuracy = Random.Range(20, 40);
+                _fireRate = Random.Range(85, 96);
+                break;
+
+            case WeaponData.faction.trader:
+                _damage = Random.Range(70, 100);
+                _accuracy = Random.Range(80, 100);
+                _fireRate = Random.Range(1, 40);
+                break;
+
+            case WeaponData.faction.construction:
+                _damage = Random.Range(40, 55);
+                _accuracy = Random.Range(70, 90);
+                _fireRate = Random.Range(70, 80);
+                break;
+
+            case WeaponData.faction.initial:
+                _damage = Random.Range(1, 100);
+                _accuracy = Random.Range(1, 100);
+                _fireRate = Random.Range(1, 100);
+                break;
+        }
 
         int _fireRateTypeData;
 
@@ -407,45 +472,9 @@ public class ModuleManager : MonoBehaviour
         }
 
         string _fireSoundIndexString = _fireSoundIndex.ToString();
-
-        float _accuracy = Random.Range(1, 100);
-        string _accuracyString;
-        float _damage = Random.Range(1, 100);
-        string _damageString;
+        
+        float _value = Random.Range(1, 100);
         float _reloadTime = Random.Range(1, 100);
-        string _reloadTimeString;
-        float _value = Random.Range(1, 100); 
-        string _valueString;
-        int _factionData = _factionIndex;
-        WeaponData.faction _faction = (WeaponData.faction)_factionData;
-
-        switch (_faction)
-        {
-            case WeaponData.faction.explorer:
-                _barrelId = Random.Range(0, explorerBarrels.Count);
-                _batteryId = Random.Range(0, explorerBatteries.Count);
-                _magazineId = Random.Range(0, explorerMag.Count);
-                _targetId = Random.Range(0, explorerTargeting.Count);
-                break;
-            case WeaponData.faction.construction:
-                _barrelId = Random.Range(0, constructBarrels.Count);
-                _batteryId = Random.Range(0, constructBatteries.Count);
-                _magazineId = Random.Range(0, constructMag.Count);
-                _targetId = Random.Range(0, constructTargeting.Count);
-                break;
-            case WeaponData.faction.initial:
-                _barrelId = Random.Range(0, defaultBarrels.Count);
-                _batteryId = Random.Range(0, defaultBatteries.Count);
-                _magazineId = Random.Range(0, defaultMag.Count);
-                _targetId = Random.Range(0, defaultTargeting.Count);
-                break;
-            case WeaponData.faction.trader:
-                _barrelId = Random.Range(0, traderBarrels.Count);
-                _batteryId = Random.Range(0, traderBatteries.Count);
-                _magazineId = Random.Range(0, traderMag.Count);
-                _targetId = Random.Range(0, traderTargeting.Count);
-                break;
-        }
 
         #region Creating corecctly formated string
         if (_fireRate < 10)
