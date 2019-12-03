@@ -34,11 +34,11 @@ public class DropWeapons : MonoBehaviour
         #region weapons
         float _randomFloat = Random.Range(0f, 1f);
 
-        if (_randomFloat <= 0.5f)
+        if (_randomFloat <= 0.3f)
         {
             Debug.Log(_randomFloat + "Dropped Nothing");
         }
-        else if (_randomFloat > 0.5f && _randomFloat <= 0.9f)
+        else if (_randomFloat > 0.3f && _randomFloat <= 0.9f)
         {
             if (Random.Range(0, 1) < 0.5f)
             {

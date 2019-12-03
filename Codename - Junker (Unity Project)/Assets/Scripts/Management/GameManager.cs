@@ -293,7 +293,7 @@ public class GameManager : MonoBehaviour
             _engineSeed = PlayerInventoryManager.Instance.EquippedEngine.Seed;
         }
 
-        PlayerSavingObject playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, _rightWeaponSeed, _leftWeaponSeed, _engineSeed);
+        PlayerSavingObject _playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, _rightWeaponSeed, _leftWeaponSeed, _engineSeed);
 
         GameObject[] _enemies = GameObject.FindGameObjectsWithTag("Enemy");
         List<EnemySavingObject> _enemySaves = new List<EnemySavingObject>();
@@ -373,7 +373,7 @@ public class GameManager : MonoBehaviour
 
         string _amountOfLoot = _lootSaves.Count.ToString();
 
-        _saveLine = JsonUtility.ToJson(playerSave);
+        _saveLine = JsonUtility.ToJson(_playerSave);
 
         string _inventorySave = JsonUtility.ToJson(_inventory);
 
@@ -444,6 +444,229 @@ public class GameManager : MonoBehaviour
         File.AppendAllText(_fileName, amountOfEnemies + System.Environment.NewLine);
 
         foreach(EnemySavingObject _enemySave in _enemySaves)
+        {
+            _enemySaveLine = JsonUtility.ToJson(_enemySave);
+            File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
+        }
+
+        File.AppendAllText(_fileName, _amountOfLoot + System.Environment.NewLine);
+
+        foreach (LootSavingObject _lootSave in _lootSaves)
+        {
+            _enemySaveLine = JsonUtility.ToJson(_lootSave);
+            File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
+        }
+
+        File.AppendAllText(_fileName, _inventorySave + System.Environment.NewLine);
+
+        File.AppendAllText(_fileName, _amountOfQuests + System.Environment.NewLine);
+        File.AppendAllText(_fileName, _questIndex + System.Environment.NewLine);
+
+        foreach (QuestSavingObject _quest in _questSavingObjects)
+        {
+            string _questSaveLine = JsonUtility.ToJson(_quest);
+            File.AppendAllText(_fileName, _questSaveLine + System.Environment.NewLine);
+        }
+
+        File.AppendAllText(_fileName, _amountOfBeacons + System.Environment.NewLine);
+
+        foreach (BeaconSavingObject _beacon in _beaconSaves)
+        {
+            string _beaconSaveLine = JsonUtility.ToJson(_beacon);
+            File.AppendAllText(_fileName, _beaconSaveLine + System.Environment.NewLine);
+        }
+
+        PlayerPrefs.SetString("LastSave" + _fileName[4], System.DateTime.Now.ToString());
+
+        PlayerPrefs.SetInt("EnemiesKilled" + _fileName[4], m_enemiesKilledSoFar);
+
+        PlayerPrefs.SetString("LatestSave", _fileName);
+    }
+
+    public void SaveGame(bool _isPlayerDead)
+    {
+        string _saveLine = "";
+        string _enemySaveLine = "";
+
+        GameObject _player = GameObject.FindGameObjectWithTag("Player");
+
+        string _rightWeaponSeed = "-1";
+        string _leftWeaponSeed = "-1";
+        string _engineSeed = "-1";
+
+        if (PlayerInventoryManager.Instance.EquippedLeftWeapon != null)
+        {
+            _leftWeaponSeed = PlayerInventoryManager.Instance.EquippedLeftWeapon.Seed;
+        }
+        if (PlayerInventoryManager.Instance.EquippedRightWeapon != null)
+        {
+            _rightWeaponSeed = PlayerInventoryManager.Instance.EquippedRightWeapon.Seed;
+        }
+        if (PlayerInventoryManager.Instance.EquippedEngine != null)
+        {
+            _engineSeed = PlayerInventoryManager.Instance.EquippedEngine.Seed;
+        }
+
+        PlayerSavingObject _playerSave = null;
+
+        if (_isPlayerDead)
+        {
+            _playerSave = new PlayerSavingObject(new Vector3(-6.6f,0,0), Quaternion.identity, _rightWeaponSeed, _leftWeaponSeed, _engineSeed);
+        }
+        else
+        {
+            _playerSave = new PlayerSavingObject(_player.transform.position, _player.transform.rotation, _rightWeaponSeed, _leftWeaponSeed, _engineSeed);
+        }
+
+        GameObject[] _enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<EnemySavingObject> _enemySaves = new List<EnemySavingObject>();
+
+        foreach (GameObject _enemy in _enemies)
+        {
+            WeaponData _enemyWeaponRight = _enemy.transform.GetChild(0).Find("RightSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            WeaponData _enemyWeaponLeft = _enemy.transform.GetChild(0).Find("LeftSnap").GetChild(0).GetComponent<WeaponGenerator>().statBlock;
+            EngineData _enemyEngine = _enemy.transform.GetChild(0).Find("EngineSnap").GetChild(0).GetComponent<EngineGenerator>().engineStatBlock;
+            _enemySaves.Add(new EnemySavingObject(_enemy.transform.position, _enemy.transform.rotation, _enemyWeaponRight.Seed, _enemyWeaponLeft.Seed, _enemyEngine.Seed, _enemy.GetComponent<EnemyManager>().enemySpawnPointIndex.ToString(), ((int)_enemy.GetComponent<EnemyStats>().m_currentFaction).ToString()));
+        }
+
+        string amountOfEnemies = _enemies.Length.ToString();
+
+        GameObject[] _targets = GameObject.FindGameObjectsWithTag("Component");
+        List<LootSavingObject> _lootSaves = new List<LootSavingObject>();
+
+        foreach (GameObject _target in _targets)
+        {
+            int _type = -1;
+            switch (_target.GetComponent<LootDetection>().LootType)
+            {
+                case LootDetection.m_lootTypes.Weapon:
+                    _type = 0;
+                    break;
+                case LootDetection.m_lootTypes.Engine:
+                    _type = 1;
+                    break;
+                case LootDetection.m_lootTypes.Shield:
+                    _type = 2;
+                    break;
+            }
+            if (_type == -1)
+            {
+                Debug.Log("Loot has no type");
+                break;
+            }
+            else if (_type == 0)
+            {
+                try
+                {
+                    string _seed = _target.transform.GetChild(0).GetComponent<WeaponGenerator>().statBlock.Seed;
+                    _lootSaves.Add(new LootSavingObject(_target.transform.position, _target.transform.rotation, _seed, _type.ToString()));
+                }
+                catch
+                {
+                    Debug.Log("<color=red> Did not find stat block on engine </color>");
+                }
+            }
+            else if (_type == 1)
+            {
+                try
+                {
+                    string _seed = _target.transform.GetChild(0).GetComponent<EngineGenerator>().engineStatBlock.Seed;
+                    _lootSaves.Add(new LootSavingObject(_target.transform.position, _target.transform.rotation, _seed, _type.ToString()));
+                }
+                catch
+                {
+                    Debug.Log("<color=red> Did not find stat block on engine </color>");
+                }
+            }
+        }
+
+        List<string> _weaponSeeds = new List<string>();
+        List<string> _engineSeeds = new List<string>();
+
+        foreach (WeaponData _weapon in PlayerInventoryManager.Instance.AvailableWeapons)
+        {
+            _weaponSeeds.Add(_weapon.Seed);
+        }
+        foreach (EngineData _engine in PlayerInventoryManager.Instance.AvailableEngines)
+        {
+            _engineSeeds.Add(_engine.Seed);
+        }
+
+        InventorySavingObject _inventory = new InventorySavingObject(_weaponSeeds, _engineSeeds, PlayerInventoryManager.Instance.EquippedEngineIndex.ToString(), PlayerInventoryManager.Instance.EquippedLeftIndex.ToString(), PlayerInventoryManager.Instance.EquippedRightIndex.ToString());
+
+        string _amountOfLoot = _lootSaves.Count.ToString();
+
+        _saveLine = JsonUtility.ToJson(_playerSave);
+
+        string _inventorySave = JsonUtility.ToJson(_inventory);
+
+        string _amountOfQuests = QuestManager.Instance.CurrentQuests.Count.ToString();
+        string _questIndex = QuestManager.Instance.TrackingQuestIndex.ToString();
+
+        List<QuestSavingObject> _questSavingObjects = new List<QuestSavingObject>();
+
+        foreach (Quest _quest in QuestManager.Instance.CurrentQuests)
+        {
+            QuestSavingObject _savedQuest = new QuestSavingObject(_quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.PercentageComplete.ToString(), _quest.Size.ToString(), _quest.CurrentAmountCompleted.ToString());
+            _questSavingObjects.Add(_savedQuest);
+        }
+
+        GameObject[] _questBeacons = GameObject.FindGameObjectsWithTag("QuestBeacon");
+        List<BeaconSavingObject> _beaconSaves = new List<BeaconSavingObject>();
+
+        foreach (GameObject _questBeacon in _questBeacons)
+        {
+            int _type = -1;
+            Quest _quest = _questBeacon.GetComponent<QuestBeconDetection>().Quest;
+            switch (_questBeacon.GetComponent<QuestBeconDetection>().QuestType)
+            {
+                case QuestType.kill:
+                    _type = 0;
+                    break;
+                case QuestType.collect:
+                    _type = 1;
+                    break;
+                case QuestType.control:
+                    _type = 2;
+                    break;
+                case QuestType.recon:
+                    _type = 3;
+                    break;
+                case QuestType.targets:
+                    _type = 4;
+                    break;
+            }
+            if (_type == -1)
+            {
+                Debug.Log("Quest has no type");
+                break;
+            }
+            else
+            {
+                BeaconSavingObject _savedBeacon = new BeaconSavingObject(_questBeacon.transform.position, _questBeacon.transform.rotation, _quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.Size.ToString(), _quest.RewardName);
+                _beaconSaves.Add(_savedBeacon);
+            }
+        }
+
+        string _amountOfBeacons = _beaconSaves.Count.ToString();
+
+        //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
+
+        string _fileName = PlayerPrefs.GetString("CurrentSave") + ".giant";
+
+        _fileName = _fileName.Replace("/", "_");
+        _fileName = _fileName.Replace(" ", "_");
+        _fileName = _fileName.Replace(":", "_");
+
+        File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.Write).Dispose();
+
+        File.WriteAllText(_fileName, "");
+
+        File.AppendAllText(_fileName, _saveLine + System.Environment.NewLine);
+
+        File.AppendAllText(_fileName, amountOfEnemies + System.Environment.NewLine);
+
+        foreach (EnemySavingObject _enemySave in _enemySaves)
         {
             _enemySaveLine = JsonUtility.ToJson(_enemySave);
             File.AppendAllText(_fileName, _enemySaveLine + System.Environment.NewLine);
