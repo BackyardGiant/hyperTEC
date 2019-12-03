@@ -155,6 +155,7 @@ public class SelectionManager : MonoBehaviour
                         // Set equipped in player inventory
                         PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[(int)m_equippedEngineIndex];
                         PlayerInventoryManager.Instance.EquippedEngineIndex = (int)m_equippedEngineIndex;
+                        StartCoroutine(SendEngineData(PlayerInventoryManager.Instance.EquippedEngine));
                     }
                     else
                     {
@@ -203,10 +204,10 @@ public class SelectionManager : MonoBehaviour
                             m_takenIndexes[1] = m_equippedLeftIndex;
                             Debug.Log("Equipped left gun " + m_equippedLeftIndex);
                             int _engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
-
                             // Set equipped in player inventory
                             PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedLeftIndex - _engineLength];
                             PlayerInventoryManager.Instance.EquippedLeftIndex = (int)m_equippedLeftIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
+                            StartCoroutine(SendWeaponData(PlayerInventoryManager.Instance.EquippedLeftWeapon));
                         }
 
                         if (m_equippedRightIndex != m_currentlySelectedIndex && !m_leftSideSelected)
@@ -219,6 +220,7 @@ public class SelectionManager : MonoBehaviour
                             // Set equipped in player inventory
                             PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedRightIndex - _engineLength];
                             PlayerInventoryManager.Instance.EquippedRightIndex = (int)m_equippedRightIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
+                            StartCoroutine(SendWeaponData(PlayerInventoryManager.Instance.EquippedRightWeapon));
                         }
                     }
 
@@ -427,4 +429,59 @@ public class SelectionManager : MonoBehaviour
         }
     }
     #endregion
+
+
+    IEnumerator SendWeaponData(WeaponData _statblock)
+    {
+        //Faction
+        //Damage
+        //FireRate
+        //Accuracy
+        //DPS
+
+        //OI AIDEN PUT DPS HERE PLS
+        float DPS = 9.9999f;
+
+        string BASE_URL = "https://docs.google.com/forms/u/1/d/e/1FAIpQLSc73TkV2ctEU0mOeKFUf-l1y2ZlP_QX0qE2KkUZmPG03j9_5A/formResponse";
+        WWWForm form = new WWWForm();
+
+
+        form.AddField("entry.1977573003", _statblock.CurrentFaction.ToString());
+        form.AddField("entry.1564794063", _statblock.Damage.ToString());
+        form.AddField("entry.1413229124", _statblock.FireRate.ToString());
+        form.AddField("entry.476948232", _statblock.Accuracy.ToString());
+        form.AddField("entry.906396447", DPS.ToString());
+
+
+        byte[] rawData = form.data;
+        WWW www = new WWW(BASE_URL, rawData);
+        yield return www;
+
+    }
+
+    IEnumerator SendEngineData(EngineData _statblock)
+    {
+        //Faction
+        //Speed
+        //Acceleration
+        //Boost Power
+        //Handling
+
+
+        string BASE_URL = "https://docs.google.com/forms/u/1/d/e/1FAIpQLSfroDYTkAwKmMXGbmHctdYf0tuFEcYyeb15J5wRRtsq1GdWLw/formResponse";
+        WWWForm form = new WWWForm();
+
+
+        form.AddField("entry.1853573029", _statblock.CurrentFaction.ToString());
+        form.AddField("entry.1516976851", _statblock.TopSpeed.ToString());
+        form.AddField("entry.737210474", _statblock.Acceleration.ToString());
+        form.AddField("entry.974680751", _statblock.BoostPower.ToString());
+        form.AddField("entry.1903627046", _statblock.Handling.ToString());
+
+
+        byte[] rawData = form.data;
+        WWW www = new WWW(BASE_URL, rawData);
+        yield return www;
+
+    }
 }
