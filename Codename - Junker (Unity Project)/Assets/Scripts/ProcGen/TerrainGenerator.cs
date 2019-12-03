@@ -5,6 +5,7 @@ public class TerrainGenerator : MonoBehaviour
 {
     [Header ("Environment Variables"), Tooltip("The range at which clusters will generate.")]
     [SerializeField] private int m_environmentSize;
+    [SerializeField] private int m_ambientAsteroids;
 
     [Header ("Asteroid Cluster Variables"),Space(20)]
     [SerializeField] private int m_clusterCount;
@@ -23,6 +24,12 @@ public class TerrainGenerator : MonoBehaviour
 
         Vector3 _clusterLocation;
         Vector3 _randomLocation;
+
+        for (int i = 0; i < m_ambientAsteroids; i++)
+        {
+            _randomLocation = (Random.insideUnitSphere * m_environmentSize);
+            spawnAsteroid(_randomLocation);
+        }
    
         for (int i = 0; i < m_clusterCount; i++)
         {
@@ -53,21 +60,25 @@ public class TerrainGenerator : MonoBehaviour
     }
     private void spawnAsteroid(Vector3 _position)
     {
-        //Choose a random asteroid to spawn.
-        asteroidClass asteroid = m_asteroidTypes[Random.Range(0, m_asteroidTypes.Length)];
-        GameObject asteroidObj = asteroid.asteroidObject;
-
-        if (chanceRoll(asteroid.rarity))
+        while (true)
         {
-            float _randomX = Random.Range(0f, 360f);
-            float _randomY = Random.Range(0f, 360f);
-            float _randomZ = Random.Range(0f, 360f);
+            //Choose a random asteroid to spawn.
+            asteroidClass asteroid = m_asteroidTypes[Random.Range(0, m_asteroidTypes.Length)];
+            GameObject asteroidObj = asteroid.asteroidObject;
 
-            GameObject obj = Instantiate(asteroidObj);
-            obj.transform.position = _position;
-            obj.transform.rotation = new Quaternion(_randomX, _randomY, _randomZ, 1);
-            obj.transform.parent = this.transform;
-            asteroids.Add(obj);
+            if (chanceRoll(asteroid.rarity))
+            {
+                float _randomX = Random.Range(0f, 360f);
+                float _randomY = Random.Range(0f, 360f);
+                float _randomZ = Random.Range(0f, 360f);
+
+                GameObject obj = Instantiate(asteroidObj);
+                obj.transform.position = _position;
+                obj.transform.rotation = new Quaternion(_randomX, _randomY, _randomZ, 1);
+                obj.transform.parent = this.transform;
+                asteroids.Add(obj);
+                break;
+            }
         }
     }
 

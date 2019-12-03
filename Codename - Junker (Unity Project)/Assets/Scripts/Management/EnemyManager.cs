@@ -50,7 +50,7 @@ public class EnemyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_attackingPlayer = true;
+        UpdatePlayerAttack();
     }
 
     // Update is called once per frame
@@ -111,5 +111,40 @@ public class EnemyManager : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         m_canEngage = true;
+    }
+
+    public void UpdatePlayerAttack()
+    {
+        // initial,trader,exploratory,construction
+
+        string _saveName = PlayerPrefs.GetString("CurrentSave", "NoSave");
+        char _saveIndex = _saveName[4];
+        string _factionName = PlayerPrefs.GetString("ChosenFaction" + _saveIndex);
+        faction _playerFaction = faction.initial;
+
+        switch (_factionName)
+        {
+            case "initial":
+                _playerFaction = faction.initial;
+                break;
+            case "trader":
+                _playerFaction = faction.trader;
+                break;
+            case "exploratory":
+                _playerFaction = faction.explorer;
+                break;
+            case "construction":
+                _playerFaction = faction.construction;
+                break;
+        }
+
+        if (_playerFaction == m_stats.m_currentFaction)
+        {
+            m_attackingPlayer = false;
+        }
+        else
+        {
+            m_attackingPlayer = true;
+        }
     }
 }
