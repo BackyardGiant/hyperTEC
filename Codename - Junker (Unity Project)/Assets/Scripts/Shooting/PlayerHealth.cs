@@ -121,4 +121,51 @@ public class PlayerHealth : MonoBehaviour
             healthBar.Value = m_healthMax;
         }
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.name.Contains("asteroid") || collision.gameObject.name.Contains("Asteroid"))
+        {
+            //Explode when you hit an asteroid
+            Vector3 _impactVelocity = transform.GetComponent<Rigidbody>().GetPointVelocity(collision.transform.position);
+            Vector3 _impactVelAbs = new Vector3(Mathf.Abs(_impactVelocity.x), Mathf.Abs(_impactVelocity.y), Mathf.Abs(_impactVelocity.z));
+
+            //If the impact velocity is above a certain threshold, die on impact. I have tested this to be suitable at 40.
+            if (_impactVelAbs.x > 40.0f || _impactVelAbs.y > 40.0f || _impactVelAbs.z > 40.0f)
+            {
+                Debug.Log("DIE REBEL SCUM");
+                _isDead = true;
+                GameManager.Instance.SaveGame(_isDead);
+                m_playerDeath.Raise();
+
+                HUDManager.Instance.Healthbar.fillAmount = 0;
+
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+                GetComponent<Collider>().enabled = false;
+                GetComponent<PlayerMovement>().enabled = false;
+
+                m_dropWeaponsScript.DropWithoutChance();
+                Instantiate(m_explosion, transform.position, transform.rotation);
+                int _random = Random.Range(1, 4);
+                AudioManager.Instance.PlayWorld("ExplosionLong" + _random, this.gameObject, true, true);
+
+                foreach (GameObject _objectToDestroy in m_playerToBeDestroyed)
+                {
+                    Destroy(_objectToDestroy);
+                }
+
+                GameManager.Instance.ReturnToMenuDelayed(2f);
+
+                Debug.Log("<color=green>DEAD</color>");
+            }
+            else if (_impactVelAbs.x > 20.0f || _impactVelAbs.y > 20.0f || _impactVelAbs.z > 20.0f)
+            {
+                //Take a third of your health if you hit an asteroid at a decent speed
+                TakeDamage(m_healthMax / 3);
+            }
+            Debug.Log("HIT : Speed of ship was " + _impactVelAbs.ToString());
+        }
+    }
+
 }
