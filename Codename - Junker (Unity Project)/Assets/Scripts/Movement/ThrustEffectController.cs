@@ -361,7 +361,7 @@ public class ThrustEffectController : MonoBehaviour
             {
                 _emission = m_engineParticles[i].emission;
                 _emissionMain = m_engineParticles[i].main;
-                _emission.rateOverTime = 1000;
+                _emission.rateOverTime = 800;
                 _emissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
                 _emissionMain.simulationSpeed = 2.5f;
             }
@@ -373,7 +373,7 @@ public class ThrustEffectController : MonoBehaviour
             {
                 _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
                 _highSpeedEmissionMain = m_highSpeedEngineParticles[i].main;
-                _highSpeedEmission.rateOverTime = 800;
+                _highSpeedEmission.rateOverTime = 500;
                 _highSpeedEmissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
                 _highSpeedEmissionMain.simulationSpeed = 2.5f;
             }

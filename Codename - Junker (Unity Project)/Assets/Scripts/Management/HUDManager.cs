@@ -536,6 +536,14 @@ public class HUDManager : MonoBehaviour
         Quaternion _newRotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, _rotZ + 270f));
         _targetImage.rectTransform.rotation = _newRotation;
 
+        //rotate arrow towards edge of circle.
+        //Vector2 newVector = new Vector2(_screenPos.x,_screenPos.y) - Vector2.zero;
+        //float _rotZ = Mathf.Atan2(newVector.y, newVector.x) * Mathf.Rad2Deg;
+        //Quaternion _newRotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, _rotZ + 270f));
+        //_targetImage.rectTransform.rotation = _newRotation;
+
+
+
         //Clamp arrow position to edge of the screen.
         _screenPos.y = Mathf.Clamp(_screenPos.y, 20, Screen.height - 20);
         _screenPos.x = Mathf.Clamp(_screenPos.x, 20, Screen.width - 20);
