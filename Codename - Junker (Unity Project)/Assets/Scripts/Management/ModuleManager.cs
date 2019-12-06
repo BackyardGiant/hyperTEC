@@ -427,8 +427,8 @@ public class ModuleManager : MonoBehaviour
                 break;
 
             case WeaponData.faction.construction:
-                _damage = Random.Range(40, 55);
-                _accuracy = Random.Range(70, 90);
+                _damage = Random.Range(40, 50);
+                _accuracy = Random.Range(60, 70);
                 _fireRate = Random.Range(70, 80);
                 break;
 
