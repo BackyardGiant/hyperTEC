@@ -1462,5 +1462,25 @@ public class HUDManager : MonoBehaviour
         }
         return _result;
     }
+
+    private void OnDisable()
+    {
+        ClearAllDisplays();
+        if (m_displayAnimated)
+        {
+            ClearLootDisplay();
+        }
+        if (m_displayQuestAnimated)
+        {
+            ClearBeaconDisplay();
+        }
+
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
+    }
     #endregion
 }
