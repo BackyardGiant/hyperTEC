@@ -49,13 +49,14 @@ public class SettingsMenuManagement : MonoBehaviour
         m_values[2].text = PlayerPrefs.GetInt("fxVolume").ToString();
         m_values[3].text = PlayerPrefs.GetInt("uiVolume").ToString();
         m_controlSchemeValue.text = (PlayerPrefs.GetInt("ControlScheme") + 1).ToString();
+
         if(PlayerPrefs.GetInt("Invert", 0) == 0)
         {
-            m_invertControlValue.text = "NO";
+            m_invertControlValue.text = "YES";
         }
         else if (PlayerPrefs.GetInt("Invert", 0) == 1)
         {
-            m_invertControlValue.text = "YES";
+            m_invertControlValue.text = "NO";
         }
 
 
