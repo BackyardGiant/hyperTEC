@@ -1468,18 +1468,27 @@ public class HUDManager : MonoBehaviour
         ClearAllDisplays();
         if (m_displayAnimated)
         {
+            LootDisplay.GetComponent<Animator>().Play("ShowLoot");
             ClearLootDisplay();
         }
         if (m_displayQuestAnimated)
         {
+            QuestDisplay.GetComponent<Animator>().Play("OpenQuestDisplay");
             ClearBeaconDisplay();
         }
 
+
+
         transform.GetChild(0).gameObject.SetActive(false);
+
+        m_displayAnimated = false;
+        m_displayQuestAnimated = false;
     }
 
     private void OnEnable()
     {
+        m_currentTarget = null;
+        m_prevTarget = null;
         transform.GetChild(0).gameObject.SetActive(true);
     }
     #endregion
