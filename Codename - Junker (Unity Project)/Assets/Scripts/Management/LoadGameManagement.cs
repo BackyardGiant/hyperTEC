@@ -157,24 +157,28 @@ public class LoadGameManagement : MonoBehaviour
                         //SAVE GAME 1
                         Debug.Log("SAVE GAME 1 - Load");
                         PlayerPrefs.SetString("CurrentSave", "Save1");
+                        if (returnFaction(1) == "NotSet") { PlayerPrefs.SetString("ChosenFaction1", "initial"); }
                         SceneManager.LoadScene("MainScene");
                         break;
                     case 1:
                         //SAVE GAME 2
                         Debug.Log("SAVE GAME 2 - Load");
                         PlayerPrefs.SetString("CurrentSave", "Save2");
+                        if (returnFaction(2) == "NotSet") { PlayerPrefs.SetString("ChosenFaction2", "initial"); }
                         SceneManager.LoadScene("MainScene");
                         break;
                     case 2:
                         //SAVE GAME 2
                         Debug.Log("SAVE GAME 3 - Load");
                         PlayerPrefs.SetString("CurrentSave", "Save3");
+                        if (returnFaction(3) == "NotSet") { PlayerPrefs.SetString("ChosenFaction3", "initial"); }
                         SceneManager.LoadScene("MainScene");
                         break;
                     case 3:
                         //SAVE GAME 2
                         Debug.Log("SAVE GAME 4 - Load");
                         PlayerPrefs.SetString("CurrentSave", "Save4");
+                        if (returnFaction(4) == "NotSet") { PlayerPrefs.SetString("ChosenFaction4", "initial"); }
                         SceneManager.LoadScene("MainScene");
                         break;
                     case 4:
@@ -270,5 +274,28 @@ public class LoadGameManagement : MonoBehaviour
         {
             m_lastSaved.text = PlayerPrefs.GetString("LastSave" + m_saveIndex);
         }
+    }
+
+    private string returnFaction(int _saveIndex)
+    {
+        string _result = "NotSet";
+        string _factionName = PlayerPrefs.GetString("ChosenFaction" + _saveIndex);
+
+        switch (_factionName)
+        {
+            case "initial":
+                _result = "initial";
+                break;
+            case "trader":
+                _result = "trader";
+                break;
+            case "exploratory":
+                _result = "explorer";
+                break;
+            case "construction":
+                _result = "construction";
+                break;
+        }
+        return _result;
     }
 }

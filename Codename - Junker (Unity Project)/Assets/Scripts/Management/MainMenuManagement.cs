@@ -255,7 +255,8 @@ public class MainMenuManagement : MonoBehaviour
         if (System.DateTime.Compare(save4, currentlyLatest) > 0 && save4 != failedDate){ currentlyLatest = save4; lowestIndex = 4;}
         Debug.Log(currentlyLatest);
         //No save files currentlyLatest.
-        if (lowestIndex == 0){m_continueText.text = "Play Game"; m_recentSave = "Save1"; } else { m_continueText.text = "Continue - Save " + lowestIndex; m_recentSave = "Save" + lowestIndex;}
+        if (lowestIndex == 0){m_continueText.text = "Play Game"; m_recentSave = "Save1"; PlayerPrefs.SetString("ChosenFaction1", "initial");  } else { m_continueText.text = "Continue - Save " + lowestIndex; m_recentSave = "Save" + lowestIndex;}
+
     }
 
 
