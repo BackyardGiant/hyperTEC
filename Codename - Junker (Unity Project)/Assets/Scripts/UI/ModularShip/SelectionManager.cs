@@ -59,10 +59,6 @@ public class SelectionManager : MonoBehaviour
             m_takenIndexes[2] = -1;
         }
             
-        
-        
-        
-
         display.UpdateHighlightPosition();
         display.UpdateEquipped(m_takenIndexes);
         DisplayEquipped();
@@ -171,12 +167,17 @@ public class SelectionManager : MonoBehaviour
             // Equip an option from the inventory
             if (Input.GetButtonDown("Throttle Up"))
             {
+                RemoveEngine();
+                RemoveLeft();
+                RemoveRight();
+
                 GameObject selected = display.ModulesList[m_currentlySelectedIndex];
 
                 if (selected.GetComponent<EngineStatManager>())
                 {
                     if (m_equippedEngineIndex != m_currentlySelectedIndex)
                     {
+
                         m_equippedEngineIndex = m_currentlySelectedIndex;
                         m_takenIndexes[0] = (int)m_equippedEngineIndex;
                         Debug.Log("Equipped engine " + m_equippedEngineIndex);
@@ -256,6 +257,8 @@ public class SelectionManager : MonoBehaviour
 
 
                 }
+
+                DisplayEquipped();
 
                 PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);              
                 display.UpdateEquipped(m_takenIndexes);
