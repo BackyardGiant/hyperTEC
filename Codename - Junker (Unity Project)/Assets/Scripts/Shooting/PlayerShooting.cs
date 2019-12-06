@@ -122,7 +122,7 @@ public class PlayerShooting : MonoBehaviour
                     m_target.position = (m_aimingCamera.transform.position + (m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range));
                 }
 
-                if (HUDManager.Instance.ClosetEnemy != null)
+                if (HUDManager.Instance.ClosetEnemy != null && HUDManager.Instance.ClosetEnemy.GetComponent<EnemyStats>().m_currentFaction.ToString() != returnFaction())
                 {
                     if (Vector2.Distance(HUDManager.Instance.ClosestEnemyScreenPos, new Vector2(Screen.width / 2, Screen.height / 2)) < m_autoAimDistance)
                     {
@@ -345,5 +345,31 @@ public class PlayerShooting : MonoBehaviour
 
 
         }
+    }
+
+    private string returnFaction()
+    {
+        string _result = "NotSet";
+
+        string _saveName = PlayerPrefs.GetString("CurrentSave", "NoSave");
+        char _saveIndex = _saveName[4];
+        string _factionName = PlayerPrefs.GetString("ChosenFaction" + _saveIndex);
+
+        switch (_factionName)
+        {
+            case "initial":
+                _result = "initial";
+                break;
+            case "trader":
+                _result = "trader";
+                break;
+            case "exploratory":
+                _result = "explorer";
+                break;
+            case "construction":
+                _result = "construction";
+                break;
+        }
+        return _result;
     }
 }
