@@ -160,6 +160,10 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (m_invertY)
+        {
+            m_invertScale = -1;
+        }
         if (GameManager.Instance.GameSpeed != 0 && PlayerInventoryManager.Instance.EquippedEngine != null)
         {
             // Restets posative force application to the ship (If you let go of go forwards it stops applying force)
