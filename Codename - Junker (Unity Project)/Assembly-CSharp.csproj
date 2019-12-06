@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AnimateBeaconFlash.cs" />
     <Compile Include="Assets\Art\Skybox\Starfield Skybox\Demo\Script\LookCamera.cs" />
     <Compile Include="Assets\Editors\TerrainGenEditor.cs" />
     <Compile Include="Assets\HealthBarFormatting.cs" />
