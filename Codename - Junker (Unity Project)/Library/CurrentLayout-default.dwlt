@@ -70,10 +70,10 @@ MonoBehaviour:
     y: 899
     width: 2174
     height: 392
-  m_MinSize: {x: 336, y: 272}
-  m_MaxSize: {x: 14006, y: 10022}
+  m_MinSize: {x: 334, y: 272}
+  m_MaxSize: {x: 14004, y: 10022}
   vertical: 0
-  controlID: 141
+  controlID: 104
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -163,7 +163,7 @@ MonoBehaviour:
     width: 2544
     height: 1291
   m_MinSize: {x: 683, y: 494}
-  m_MaxSize: {x: 18008, y: 14044}
+  m_MaxSize: {x: 18006, y: 14044}
   vertical: 0
   controlID: 188
 --- !u!114 &8
@@ -188,7 +188,7 @@ MonoBehaviour:
     width: 2174
     height: 1291
   m_MinSize: {x: 406, y: 494}
-  m_MaxSize: {x: 14006, y: 14044}
+  m_MaxSize: {x: 14004, y: 14044}
   vertical: 1
   controlID: 79
 --- !u!114 &9
@@ -289,8 +289,8 @@ MonoBehaviour:
     y: 0
     width: 1293
     height: 392
-  m_MinSize: {x: 102, y: 122}
-  m_MaxSize: {x: 4002, y: 4022}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 20}
@@ -380,7 +380,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 1c410000
     m_LastClickedID: 16668
-    m_ExpandedIDs: 00000000a23a0000da3d0000cc450000
+    m_ExpandedIDs: 00000000ec2e00002c3200002a3a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -408,7 +408,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000a23a0000da3d0000cc450000
+    m_ExpandedIDs: 00000000ec2e00002c3200002a3a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -576,7 +576,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 6af6ffff
+      m_ExpandedIDs: 78fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -669,7 +669,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.19143163, y: 0.10923857, z: 0.029903691, w: 0.9750388}
     speed: 2
-    m_Value: {x: -0.19296649, y: 0.10625959, z: 0.029486187, w: 0.97498894}
+    m_Value: {x: -0.19141497, y: 0.109229065, z: 0.02990109, w: 0.974954}
   m_Size:
     m_Target: 27.79908
     speed: 2
@@ -770,15 +770,15 @@ MonoBehaviour:
   m_LastFolders:
   - Assets
   m_LastFoldersGridSize: 96
-  m_LastProjectPath: C:\Users\jjbrewer.SOCNET\Documents\GitKraken\hyperTEC\Codename
-    - Junker (Unity Project)
+  m_LastProjectPath: C:\Users\awebb4\Documents\GitHub\hyperTEC\Codename - Junker (Unity
+    Project)
   m_LockTracker:
     m_IsLocked: 1
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: a23a0000
-    m_LastClickedID: 15010
-    m_ExpandedIDs: 00000000a23a0000da3d0000cc45000000ca9a3b
+    m_SelectedIDs: ec2e0000
+    m_LastClickedID: 12012
+    m_ExpandedIDs: 00000000ec2e00002c3200002a3a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -806,7 +806,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000a23a0000da3d0000cc450000
+    m_ExpandedIDs: 00000000ec2e00002c3200002a3a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
