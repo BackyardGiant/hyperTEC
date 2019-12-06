@@ -419,8 +419,14 @@ public class HUDManager : MonoBehaviour
 
         if(m_currentTarget == null && m_displayAnimated == true)
         {
-            ClearLootDisplay();
-            ClearBeaconDisplay();
+            if (m_displayAnimated)
+            {
+                ClearLootDisplay();
+            }
+            if (m_displayQuestAnimated)
+            {
+                ClearBeaconDisplay();
+            }
         }
 
         #endregion
