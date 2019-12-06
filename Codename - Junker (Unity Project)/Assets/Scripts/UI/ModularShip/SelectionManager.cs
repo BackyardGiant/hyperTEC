@@ -26,13 +26,42 @@ public class SelectionManager : MonoBehaviour
     // Initialise all to "null" (-1)
     public void FillMenu()
     {
-        m_equippedEngineIndex = PlayerInventoryManager.Instance.EquippedEngineIndex;
-        m_equippedLeftIndex = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
-        m_equippedRightIndex = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
-
-        m_takenIndexes[0] = PlayerInventoryManager.Instance.EquippedEngineIndex;
-        m_takenIndexes[1] = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
-        m_takenIndexes[2] = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+        if(PlayerInventoryManager.Instance.EquippedEngineIndex != -1)
+        {
+            m_equippedEngineIndex = PlayerInventoryManager.Instance.EquippedEngineIndex;
+            m_takenIndexes[0] = PlayerInventoryManager.Instance.EquippedEngineIndex;
+        }
+        else
+        {
+            m_equippedEngineIndex = -1;
+            m_takenIndexes[0] = -1;
+        }
+            
+        if(PlayerInventoryManager.Instance.EquippedLeftIndex != -1)
+        {
+            m_equippedLeftIndex = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+            m_takenIndexes[1] = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+        }
+        else
+        {
+            m_equippedLeftIndex = -1;
+            m_takenIndexes[1] = -1;
+        }
+                 
+        if(PlayerInventoryManager.Instance.EquippedRightIndex != -1)
+        {
+            m_equippedRightIndex = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+            m_takenIndexes[2] = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+        }
+        else
+        {
+            m_equippedRightIndex = -1;
+            m_takenIndexes[2] = -1;
+        }
+            
+        
+        
+        
 
         display.UpdateHighlightPosition();
         display.UpdateEquipped(m_takenIndexes);
