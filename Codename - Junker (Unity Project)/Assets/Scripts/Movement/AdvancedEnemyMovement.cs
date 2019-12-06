@@ -145,6 +145,26 @@ public class AdvancedEnemyMovement : MonoBehaviour
             m_closestObsticle = _hit.transform.gameObject;
             CalculateDetectionRange(m_detectionRange / 1.2f);
         }
+        else if (Physics.Raycast(transform.position, transform.up, out _hit, m_detectionRange / 1.2f))
+        {
+            m_closestObsticle = _hit.transform.gameObject;
+            CalculateDetectionRange(m_detectionRange / 1.2f);
+        }
+        else if (Physics.Raycast(transform.position, -transform.up, out _hit, m_detectionRange / 1.2f))
+        {
+            m_closestObsticle = _hit.transform.gameObject;
+            CalculateDetectionRange(m_detectionRange / 1.2f);
+        }
+        else if (Physics.Raycast(transform.position, transform.right, out _hit, m_detectionRange / 1.2f))
+        {
+            m_closestObsticle = _hit.transform.gameObject;
+            CalculateDetectionRange(m_detectionRange / 1.2f);
+        }
+        else if (Physics.Raycast(transform.position, -transform.right, out _hit, m_detectionRange / 1.2f))
+        {
+            m_closestObsticle = _hit.transform.gameObject;
+            CalculateDetectionRange(m_detectionRange / 1.2f);
+        }
 
         if (m_closestObsticle != null)
         {
