@@ -21,8 +21,6 @@ public class HUDManager : MonoBehaviour
     public Sprite enemyArrowPointer;
     [SerializeField, Tooltip("Colour of the enemy indicators")]
     private Color m_enemyTargetColour;
-    [SerializeField, Tooltip("Colour of the friendly indicators")]
-    private Color m_friendlyTargetColour;
     [SerializeField, Tooltip("Scale of the enemy indicators")]
     private float m_enemyTargetSize;
     [SerializeField, Tooltip("Scale of the Arrow indicators")]
@@ -422,7 +420,7 @@ public class HUDManager : MonoBehaviour
             ClearLootDisplay();
             ClearBeaconDisplay();
         }
-
+        
         #endregion
         DisplayActiveQuest();
     }
@@ -447,15 +445,7 @@ public class HUDManager : MonoBehaviour
 
             //Setting the sprite
             _targetImage = _target.AddComponent<Image>();
-
-            if (_enemy.gameObject.GetComponent<EnemyStats>().m_currentFaction.ToString() == returnFaction()) 
-            {
-                _targetImage.color = m_friendlyTargetColour;
-            }
-            else
-            {
-                _targetImage.color = m_enemyTargetColour;
-            }
+            _targetImage.color = m_enemyTargetColour;
             _enemy.EnemyTarget = _target;
             _target.tag = "TargetUI";
         }
@@ -524,16 +514,7 @@ public class HUDManager : MonoBehaviour
 
             //Setting the sprite
             _targetImage = _target.AddComponent<Image>();
-            Debug.Log("Faction of Enemy is " + _enemy.gameObject.GetComponent<EnemyStats>().m_currentFaction.ToString());
-            Debug.Log("Return faction is " + returnFaction());
-            if (_enemy.gameObject.GetComponent<EnemyStats>().m_currentFaction.ToString() == returnFaction())
-            {
-                _targetImage.color = m_friendlyTargetColour;
-            }
-            else
-            {
-                _targetImage.color = m_enemyTargetColour;
-            }
+            _targetImage.color = m_enemyTargetColour;
             _enemy.EnemyTarget = _target;
             _target.tag = "TargetUI";
         }
@@ -1343,7 +1324,7 @@ public class HUDManager : MonoBehaviour
                     m_questDescription.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Description;
                     m_questProgress.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].CurrentAmountCompleted.ToString() + "/" + QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Size.ToString();
             }
-            else if (QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Complete == true)
+            else
             {
                 m_completedQuestAnimator.Play("QuestCompletedAnim");
                 m_questTitle.text = "";
@@ -1402,6 +1383,7 @@ public class HUDManager : MonoBehaviour
         int _value = PlayerPrefs.GetInt(_name);
         PlayerPrefs.SetInt(_name, _value + 1);
     }
+
     public void ClearAllDisplays()
     {
         int _waypointCount = WaypointsAndMarkers.transform.childCount;
@@ -1435,32 +1417,6 @@ public class HUDManager : MonoBehaviour
         }
         QuestDisplay.SetActive(true);
         LootDisplay.SetActive(true);
-    }
-
-    private string returnFaction()
-    {
-        string _result = "NotSet";
-
-        string _saveName = PlayerPrefs.GetString("CurrentSave", "NoSave");
-        char _saveIndex = _saveName[4];
-        string _factionName = PlayerPrefs.GetString("ChosenFaction" + _saveIndex);
-
-        switch (_factionName)
-        {
-            case "initial":
-                _result = "initial";
-                break;
-            case "trader":
-                _result = "trader";
-                break;
-            case "exploratory":
-                _result = "explorer";
-                break;
-            case "construction":
-                _result = "construction";
-                break;
-        }
-        return _result;
     }
     #endregion
 }
