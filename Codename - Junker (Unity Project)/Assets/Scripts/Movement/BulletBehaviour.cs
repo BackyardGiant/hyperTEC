@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BulletBehaviour : MonoBehaviour
 {
+    [SerializeField] private GameObject m_asteroidExplosion;
     private float m_lifeTime;
     private float m_speed;
     private float m_damage;
@@ -12,6 +13,7 @@ public class BulletBehaviour : MonoBehaviour
     private GameObject m_spawnedBy;
     private Rigidbody m_rbBullet;
     private bool m_hadPreSloMo;
+    private bool m_beenDestroyed;
 
     #region Slow Mo Manager
     private Vector3 m_velocityBeforeSlow;
@@ -32,6 +34,7 @@ public class BulletBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_beenDestroyed = false;
         m_rbBullet = gameObject.GetComponent<Rigidbody>();
     }
     private void Update()
@@ -41,21 +44,34 @@ public class BulletBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == m_target)
+        if(m_beenDestroyed == false)
         {
-            if (m_target == "Enemy")
+            Vector3 _hitPos = this.gameObject.transform.position;
+            if (other.transform.tag == m_target)
             {
-                other.transform.GetComponent<EnemyStats>().TakeDamage(m_damage);
-                HUDManager.Instance.playHitmarker();
+                if (m_target == "Enemy")
+                {
+                    other.transform.GetComponent<EnemyStats>().TakeDamage(m_damage);
+                    HUDManager.Instance.playHitmarker();
+
+                }
+                else if (m_target == "Player")
+                {
+                    other.transform.GetComponent<PlayerHealth>().TakeDamage(m_damage);
+                }
             }
-            else if(m_target == "Player")
+            if (other.transform.tag != "Bullet" && other.gameObject != m_spawnedBy)
             {
-                other.transform.GetComponent<PlayerHealth>().TakeDamage(m_damage);
+                //Play a little explosion when you hit an enemy
+                if (!other.gameObject.name.Contains("asteroid") || !other.gameObject.name.Contains("Asteroid"))
+                {
+                    GameObject explode = Instantiate(m_asteroidExplosion);
+                    explode.transform.position = other.ClosestPoint(GameManager.Instance.PlayerMove.gameObject.transform.position);
+                }
+
+                Destroy(gameObject);
+                m_beenDestroyed = true;
             }
-        }
-        if (other.transform.tag != "Bullet" && other.gameObject != m_spawnedBy)
-        {
-            Destroy(gameObject);
         }
     }
 
