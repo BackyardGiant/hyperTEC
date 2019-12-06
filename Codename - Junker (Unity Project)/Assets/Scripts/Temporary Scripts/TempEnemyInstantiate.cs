@@ -45,12 +45,12 @@ public class TempEnemyInstantiate : MonoBehaviour
             }
             else if (i < 25)
             {
-                enemyPrefab = traderPrefab;
+                enemyPrefab = explorerPrefab;
                 SpawnEnemy(spawnPoints[4], 0, 4);
             }
             else if (i < 30)
             {
-                enemyPrefab = traderPrefab;
+                enemyPrefab = constructionPrefab;
                 SpawnEnemy(spawnPoints[5], 3, 5);
             }
         }
