@@ -89,7 +89,7 @@ public class DisplayOptions : MonoBehaviour
 
             if (index != 0)
             {
-                _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 0.9f, _targetBlock.position.y);
+                _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 1.1f, _targetBlock.position.y);
                 _statsDisplayPosition.y = Mathf.Clamp(_statsDisplayPosition.y, statsPanel.sizeDelta.y, Screen.height - statsPanel.sizeDelta.y);
                 if (_statsDisplayPosition != _statsDisplayRequiredPosition)
                 {
@@ -98,7 +98,7 @@ public class DisplayOptions : MonoBehaviour
             }
             else
             {
-                _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 0.9f, +_targetBlock.position.y - _targetBlock.sizeDelta.y * 0.4f);
+                _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 1.1f, +_targetBlock.position.y - _targetBlock.sizeDelta.y * 0.4f);
                 if (_statsDisplayPosition != _statsDisplayRequiredPosition)
                 {
                     statsPanel.position = Vector2.Lerp(_statsDisplayPosition, _statsDisplayRequiredPosition, 0.1f);
