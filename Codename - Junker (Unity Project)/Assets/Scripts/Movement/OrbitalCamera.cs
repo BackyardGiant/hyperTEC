@@ -39,11 +39,19 @@ public class OrbitalCamera : MonoBehaviour
         {
             CurrentY += Input.GetAxis("LookX") * turningSpeed;
             CurrentX += Input.GetAxis("LookY") * turningSpeed;
+            if (HUDManager.Instance.isActiveAndEnabled)
+            {
+                HUDManager.Instance.enabled = false;
+            }
         }
         else
         {
             CurrentY = Mathf.Lerp(CurrentY, 0, snapSpeed / 100);
             CurrentX = Mathf.Lerp(CurrentX, 0, snapSpeed / 100);
+            if (!HUDManager.Instance.isActiveAndEnabled)
+            {
+                HUDManager.Instance.enabled = true;
+            }
         }
 
         CurrentY = Mathf.Clamp(currentY, Y_ANGLE_MIN, Y_ANGLE_MAX);
