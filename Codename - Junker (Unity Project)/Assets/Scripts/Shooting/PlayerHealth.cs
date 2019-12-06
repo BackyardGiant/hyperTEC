@@ -131,9 +131,8 @@ public class PlayerHealth : MonoBehaviour
             Vector3 _impactVelAbs = new Vector3(Mathf.Abs(_impactVelocity.x), Mathf.Abs(_impactVelocity.y), Mathf.Abs(_impactVelocity.z));
 
             //If the impact velocity is above a certain threshold, die on impact. I have tested this to be suitable at 40.
-            if (_impactVelAbs.x > 40.0f || _impactVelAbs.y > 40.0f || _impactVelAbs.z > 40.0f)
+            if (_impactVelAbs.x > 90.0f || _impactVelAbs.y > 90.0f || _impactVelAbs.z > 90.0f)
             {
-                Debug.Log("DIE REBEL SCUM");
                 _isDead = true;
                 GameManager.Instance.SaveGame(_isDead);
                 m_playerDeath.Raise();
@@ -156,15 +155,24 @@ public class PlayerHealth : MonoBehaviour
                 }
 
                 GameManager.Instance.ReturnToMenuDelayed(2f);
-
-                Debug.Log("<color=green>DEAD</color>");
             }
             else if (_impactVelAbs.x > 20.0f || _impactVelAbs.y > 20.0f || _impactVelAbs.z > 20.0f)
             {
                 //Take a third of your health if you hit an asteroid at a decent speed
+                TakeDamage(m_healthMax / 2);
+            }
+        }
+
+        if (collision.gameObject.tag == "Enemy")
+        {
+            //Explode when you hit an asteroid
+            Vector3 _impactVelocity = transform.GetComponent<Rigidbody>().GetPointVelocity(collision.transform.position);
+            Vector3 _impactVelAbs = new Vector3(Mathf.Abs(_impactVelocity.x), Mathf.Abs(_impactVelocity.y), Mathf.Abs(_impactVelocity.z));
+            if (_impactVelAbs.x > 60.0f || _impactVelAbs.y > 60.0f || _impactVelAbs.z > 60.0f)
+            {
+                //Take a third of your health if you hit an asteroid at a decent speed
                 TakeDamage(m_healthMax / 3);
             }
-            Debug.Log("HIT : Speed of ship was " + _impactVelAbs.ToString());
         }
     }
 
