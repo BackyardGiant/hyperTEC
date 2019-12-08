@@ -18,7 +18,13 @@ public class EnemyStats : MonoBehaviour
     [SerializeField]
     private DropWeapons m_dropWeaponsScript;
 
+
+    [SerializeField]
+    private ParticleSystem m_smokeEffect;
+
     private EnemyManager m_manager; // For temp stuff but don't remove 03/12/2019
+    private float m_smokeEmissionCount;
+    
 
     public faction m_currentFaction;
 
@@ -29,6 +35,10 @@ public class EnemyStats : MonoBehaviour
     {
         m_manager = GetComponent<EnemyManager>();
         m_currentHealth = m_maxHealth;
+
+        var emission = m_smokeEffect.emission;
+        m_smokeEmissionCount = emission.rateOverTime.constant;
+        emission.rateOverTime = 0;
     }
 
     public void TakeDamage(float _damageTaken)
@@ -54,6 +64,9 @@ public class EnemyStats : MonoBehaviour
 
     private void ReactToHealthChange()
     {
+        float _healthPercentage = 1 - m_currentHealth / m_maxHealth; //Inverted to control emission of smoke
+        var emission = m_smokeEffect.emission;
+        emission.rateOverTime = m_smokeEmissionCount * _healthPercentage;
         if (m_currentHealth <= 0)
         {
             Die();

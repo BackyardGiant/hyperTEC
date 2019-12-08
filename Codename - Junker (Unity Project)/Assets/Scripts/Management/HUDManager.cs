@@ -530,8 +530,6 @@ public class HUDManager : MonoBehaviour
 
             //Setting the sprite
             _targetImage = _target.AddComponent<Image>();
-            Debug.Log("Faction of Enemy is " + _enemy.gameObject.GetComponent<EnemyStats>().m_currentFaction.ToString());
-            Debug.Log("Return faction is " + returnFaction());
             if (_enemy.gameObject.GetComponent<EnemyStats>().m_currentFaction.ToString() == returnFaction())
             {
                 _targetImage.color = m_friendlyTargetColour;

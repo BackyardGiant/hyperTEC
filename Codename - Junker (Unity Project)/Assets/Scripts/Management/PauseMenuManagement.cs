@@ -9,7 +9,7 @@ public class PauseMenuManagement : MonoBehaviour
 {
 
     [SerializeField]
-    private EndPlaysessionController m_playsessionController;
+    private UsabilityTestingController m_playsessionController;
 
     [SerializeField, Tooltip("Settings Menu Object")]
     private GameObject m_settingsMenu;
@@ -148,7 +148,7 @@ public class PauseMenuManagement : MonoBehaviour
                         settings();
                         break;
                     case 4:
-                        m_playsessionController.SaveValues();
+                        m_playsessionController.SavePlaysession();
                         mainMenu();
                         break;
                 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [SerializeField] private UsabilityTestingController m_testing;
     [SerializeField]
     private GameEvent m_playerDeath;
 
@@ -70,6 +71,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float _dmg)
     {
+        m_testing.sendCombatPos();
         if (m_playerHealth[_currentSave].Value - _dmg > 0)
         {
             m_playerHealth[_currentSave].Value -= (int)_dmg;
