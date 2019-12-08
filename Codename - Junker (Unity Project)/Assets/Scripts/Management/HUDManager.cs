@@ -337,76 +337,76 @@ public class HUDManager : MonoBehaviour
                     m_buttonHoldTime = 0;
                 }
 
-                if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.3f)
-                {
-                    QuestScanner.fillAmount = m_buttonHoldTime - 0.3f;
-                    //DisplayLootStats(m_currentTarget);
-                    DisplayQuestData(m_currentTarget.GetComponent<QuestBeconDetection>().Quest);
-                }
-
-                if (Input.GetButtonUp("Interact"))
-                {
-                    QuestScanner.fillAmount = 0;
-                    m_buttonBeingHeld = -1;
-                    m_buttonHoldTime = 0;
-                }
-
-                //Full scan complete, open and animate display.
-                if (QuestScanner.fillAmount == 1 && m_currentlyQuestScanning == false)
-                {
-                    m_enableQuestPickup = false;
-                    m_currentlyQuestScanning = true;
-                    QuestScanner.fillAmount = 0;
-                    m_buttonBeingHeld = -1;
-                    m_buttonHoldTime = 0;
-                    QuestDisplay.GetComponent<Animator>().Play("QuestScan");
-
-                    Invoke("toggleQuestPickup", .4f);
-                }
-
-                //Full close complete, close and animate display.
-                if (QuestScanner.fillAmount == 1 && m_currentlyQuestScanning == true)
-                {
-                    m_enableQuestPickup = false;
-                    m_currentlyQuestScanning = false;
-                    QuestScanner.fillAmount = 0;
-                    m_buttonBeingHeld = -1;
-                    m_buttonHoldTime = 0;
-                    QuestDisplay.GetComponent<Animator>().Play("QuestCloseScan");
-                    m_currentlyClosingQuestScan = true;
-
-                    Invoke("toggleQuestPickup", .4f);
-                }
-
-                //Dismiss being held down fills in the button.
-                if (m_buttonBeingHeld == 1 && m_displayQuestAnimated == true)
-                {
-                    QuestDestroyer.fillAmount = m_buttonHoldTime;
-                }
-
-                //Letting go of the Dismiss button clears the progress
-                if (Input.GetButtonUp("Dismiss"))
-                {
-                    QuestDestroyer.fillAmount = 0;
-                    m_buttonBeingHeld = -1;
-                    m_buttonHoldTime = 0;
-                }
-
-                ////Destroy the target object.
-                //if (QuestDestroyer.fillAmount == 1 && m_displayQuestAnimated == true)
+                //if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.3f)
                 //{
-                //    //Make it explode in here
+                //    QuestScanner.fillAmount = m_buttonHoldTime - 0.3f;
+                //    //DisplayLootStats(m_currentTarget);
+                //    DisplayQuestData(m_currentTarget.GetComponent<QuestBeconDetection>().Quest);
+                //}
+
+                //if (Input.GetButtonUp("Interact"))
+                //{
+                //    QuestScanner.fillAmount = 0;
+                //    m_buttonBeingHeld = -1;
+                //    m_buttonHoldTime = 0;
+                //}
+
+                ////Full scan complete, open and animate display.
+                //if (QuestScanner.fillAmount == 1 && m_currentlyQuestScanning == false)
+                //{
+                //    m_enableQuestPickup = false;
+                //    m_currentlyQuestScanning = true;
+                //    QuestScanner.fillAmount = 0;
+                //    m_buttonBeingHeld = -1;
+                //    m_buttonHoldTime = 0;
+                //    QuestDisplay.GetComponent<Animator>().Play("QuestScan");
+
+                //    Invoke("toggleQuestPickup", .4f);
+                //}
+
+                ////Full close complete, close and animate display.
+                //if (QuestScanner.fillAmount == 1 && m_currentlyQuestScanning == true)
+                //{
+                //    m_enableQuestPickup = false;
+                //    m_currentlyQuestScanning = false;
+                //    QuestScanner.fillAmount = 0;
+                //    m_buttonBeingHeld = -1;
+                //    m_buttonHoldTime = 0;
+                //    QuestDisplay.GetComponent<Animator>().Play("QuestCloseScan");
+                //    m_currentlyClosingQuestScan = true;
+
+                //    Invoke("toggleQuestPickup", .4f);
+                //}
+
+                ////Dismiss being held down fills in the button.
+                //if (m_buttonBeingHeld == 1 && m_displayQuestAnimated == true)
+                //{
+                //    QuestDestroyer.fillAmount = m_buttonHoldTime;
+                //}
+
+                ////Letting go of the Dismiss button clears the progress
+                //if (Input.GetButtonUp("Dismiss"))
+                //{
                 //    QuestDestroyer.fillAmount = 0;
                 //    m_buttonBeingHeld = -1;
                 //    m_buttonHoldTime = 0;
-                //    GameObject explosion = Instantiate(Explosion, m_currentTarget.transform.position, m_currentTarget.transform.rotation);
-                //    explosion.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                //    AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentTarget.gameObject, true, false);
-                //    ClearBeaconTarget(m_currentTarget.GetComponent<QuestBeconDetection>());
-                //    Destroy(m_currentTarget);
-                //    ClearBeaconDisplay();
-
                 //}
+
+                //////Destroy the target object.
+                ////if (QuestDestroyer.fillAmount == 1 && m_displayQuestAnimated == true)
+                ////{
+                ////    //Make it explode in here
+                ////    QuestDestroyer.fillAmount = 0;
+                ////    m_buttonBeingHeld = -1;
+                ////    m_buttonHoldTime = 0;
+                ////    GameObject explosion = Instantiate(Explosion, m_currentTarget.transform.position, m_currentTarget.transform.rotation);
+                ////    explosion.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                ////    AudioManager.Instance.PlayWorld("ExplosionShort3", m_currentTarget.gameObject, true, false);
+                ////    ClearBeaconTarget(m_currentTarget.GetComponent<QuestBeconDetection>());
+                ////    Destroy(m_currentTarget);
+                ////    ClearBeaconDisplay();
+
+                ////}
             }
         }
 
@@ -841,14 +841,7 @@ public class HUDManager : MonoBehaviour
 
             if (QuestDisplay.transform.localScale.x >= 0.17)
             {
-                if (m_currentlyQuestScanning == true)
-                {
-                    QuestDisplay.GetComponent<Animator>().Play("QuestCloseFromScanned");
-                }
-                else if (m_currentlyQuestScanning == false)
-                {
-                    QuestDisplay.GetComponent<Animator>().Play("QuestCloseFromUnscanned");
-                }
+                QuestDisplay.GetComponent<Animator>().Play("QuestCloseFromScanned");
             }
 
             if (Player.GetComponent<PlayerMovement>().CurrentSpeed / Player.GetComponent<PlayerMovement>().MaxAcceleration < 0.5)
@@ -856,6 +849,7 @@ public class HUDManager : MonoBehaviour
                 if (!m_displayQuestAnimated)
                 {
                     QuestDisplay.GetComponent<Animator>().Play("OpenQuestDisplay");
+                    m_currentlyQuestScanning = true;
                     m_displayQuestAnimated = true;   
                 }
             }
@@ -1226,7 +1220,7 @@ public class HUDManager : MonoBehaviour
             m_displayQuestAnimated = false;
             m_currentlyQuestScanning = false;
             //QuestDestroyer.fillAmount = 0;
-            QuestScanner.fillAmount = 0;
+            //QuestScanner.fillAmount = 0;
         }
         m_prevTarget = m_currentTarget;
 
@@ -1306,6 +1300,7 @@ public class HUDManager : MonoBehaviour
                 m_questDisplayTitle.text = _currentBeacon.GetComponent<QuestBeconDetection>().Quest.Name;
             }
         }
+        DisplayQuestData(m_currentTarget.GetComponent<QuestBeconDetection>().Quest);
     }
 
     private GameObject ReturnTargetBeacon(GameObject[] _visibleBeacons)
@@ -1346,6 +1341,7 @@ public class HUDManager : MonoBehaviour
                     m_questTitle.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Name;
                     m_questDescription.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Description;
                     m_questProgress.text = QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].CurrentAmountCompleted.ToString() + "/" + QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Size.ToString();
+
             }
             else if (QuestManager.Instance.CurrentQuests[QuestManager.Instance.TrackingQuestIndex].Complete == true)
             {
@@ -1430,7 +1426,7 @@ public class HUDManager : MonoBehaviour
         QuestDisplay.SetActive(false);
         LootDisplay.SetActive(false);
         //QuestDestroyer.fillAmount = 0;
-        QuestScanner.fillAmount = 0;
+        //QuestScanner.fillAmount = 0;
 
 
         if (PlayerInventoryManager.Instance.EquippedEngine == null)

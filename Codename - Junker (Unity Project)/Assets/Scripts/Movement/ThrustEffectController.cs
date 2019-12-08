@@ -239,17 +239,20 @@ public class ThrustEffectController : MonoBehaviour
                 {
                     Color _emissionColour = m_planeMaterial[i].color;
                     float _transparency = 2 + _powerPercentage * 255;
+                    if (_transparency > 255)
+                    {
+                        _transparency = 255;
+                    }
                     Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
-                    Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _transparency);
-                    if (_emissionColour.a <= _transparency)
+                    Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, 255);
+                    if(m_planeMaterial[i].color.a < 255)
                     {
-                        m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed);
+                        if (_emissionColour.a < _transparency)
+                        {
+                            m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.4f);
+                        }
+                        else { m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.2f); }
                     }
-                    else
-                    {
-                        m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.4f);
-                    }
-
                 }
 
 
