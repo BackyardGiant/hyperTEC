@@ -147,8 +147,8 @@ public class PlayerShooting : MonoBehaviour
                 m_spawnLocations[0].transform.LookAt(m_target.position + (offset1 * (1 - m_rightBulletAccuracy)));
                 m_spawnLocations[1].transform.LookAt(m_target.position + (offset2 * (1 - m_leftBulletAccuracy)));
 
-                float _random1 = Random.Range(1f, 2f);
-                float _random2 = Random.Range(1f, 2f);
+                float _random1 = Random.Range(0.85f, 2f);
+                float _random2 = Random.Range(0.85f, 2f);
 
                 if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedRightWeapon != null)
                 {
