@@ -10,6 +10,7 @@ public class BasicFreeviewCamera : MonoBehaviour
     void Start()
     {
         m_camera = this.GetComponent<Camera>();
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     // Update is called once per frame
