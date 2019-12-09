@@ -10,15 +10,35 @@ public class PopulateStatDisplay : MonoBehaviour
 
     public void PopulateWeapon(WeaponData _data)
     {
+        string outcome;
+        string left;
+        string right;
         m_stat1Title.text = "Damage";
         m_stat1Value.text = DisplayNiceStats(_data.Damage);
-        try{m_equippedStat1.text = "L:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage) + "  R:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedRightWeapon.Damage); } catch { m_equippedStat1.text = ""; }
+        try{ left = "L:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedLeftWeapon.Damage); } catch { left = ""; }
+        try {right = " R:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedRightWeapon.Damage);} catch { right = ""; }
+        outcome = left + right;
+        m_equippedStat1.text = outcome; 
+
+
         m_stat2Title.text = "Fire Rate";
         m_stat2Value.text = DisplayNiceStats(_data.FireRate);
-        try { m_equippedStat2.text = "L:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate) + "  R:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate);} catch { m_equippedStat2.text = ""; }
+        try { left = "L:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedLeftWeapon.FireRate); } catch { left = ""; }
+        try { right = " R:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedRightWeapon.FireRate); } catch { right = ""; }
+        outcome = left + right;
+        m_equippedStat2.text = outcome;
+
+
+
         m_stat3Title.text = "Accuracy";
         m_stat3Value.text = DisplayNiceStats(_data.Accuracy);
-        try{m_equippedStat3.text = "L:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy) + "  R:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy);} catch { m_equippedStat3.text = ""; }
+        try { left = "L:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedLeftWeapon.Accuracy); } catch { left = ""; }
+        try { right = " R:" + DisplayNiceStats(PlayerInventoryManager.Instance.EquippedRightWeapon.Accuracy); } catch { right = ""; }
+        outcome = left + right;
+        m_equippedStat3.text = outcome;
+
+
+
         m_stat4Title.text = "";
         m_stat4Value.text = "";
         m_equippedStat4.text = "";
@@ -39,7 +59,13 @@ public class PopulateStatDisplay : MonoBehaviour
         try{m_equippedStat4.text = DisplayNiceStats(PlayerInventoryManager.Instance.EquippedEngine.Handling); } catch { m_equippedStat4.text = ""; }
     }
 
-
+    public void ClearEngine()
+    {
+        m_equippedStat1.text = "";
+        m_equippedStat2.text = "";
+        m_equippedStat3.text = "";
+        m_equippedStat4.text = "";
+    }
     private string DisplayNiceStats(float _value)
     {
         string _returnVal;

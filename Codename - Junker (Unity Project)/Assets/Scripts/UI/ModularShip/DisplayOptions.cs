@@ -152,6 +152,7 @@ public class DisplayOptions : MonoBehaviour
                 }
             }
         }
+
     }
 
     public void ScrollUpToSelected(int _diffBetweenTopAndBottom)

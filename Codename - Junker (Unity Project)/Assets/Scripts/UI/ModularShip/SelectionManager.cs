@@ -23,6 +23,7 @@ public class SelectionManager : MonoBehaviour
     private int m_bottomIndex;
 
     private bool m_filled = false;
+    private int m_engineLength;
     // Initialise all to "null" (-1)
     public void FillMenu()
     {
@@ -72,6 +73,7 @@ public class SelectionManager : MonoBehaviour
 
     private void Update()
     {
+
         if (m_filled == true)
         {
             // Reset input "cooldown"
@@ -196,6 +198,7 @@ public class SelectionManager : MonoBehaviour
                         PlayerInventoryManager.Instance.EquippedEngine = null;
                         PlayerInventoryManager.Instance.EquippedEngineIndex = -1;
                     }
+                    try { display.m_statsPanelUpdate.PopulateEngine(PlayerInventoryManager.Instance.EquippedEngine); } catch { display.m_statsPanelUpdate.ClearEngine(); };
                 }
 
                 if (selected.GetComponent<WeaponStatManager>())
@@ -233,9 +236,9 @@ public class SelectionManager : MonoBehaviour
                             m_equippedLeftIndex = m_currentlySelectedIndex;
                             m_takenIndexes[1] = m_equippedLeftIndex;
                             Debug.Log("Equipped left gun " + m_equippedLeftIndex);
-                            int _engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
+                            m_engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
                             // Set equipped in player inventory
-                            PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedLeftIndex - _engineLength];
+                            PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedLeftIndex - m_engineLength];
                             PlayerInventoryManager.Instance.EquippedLeftIndex = (int)m_equippedLeftIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
                             StartCoroutine(SendWeaponData(PlayerInventoryManager.Instance.EquippedLeftWeapon));
                         }
@@ -245,16 +248,16 @@ public class SelectionManager : MonoBehaviour
                             m_equippedRightIndex = m_currentlySelectedIndex;
                             m_takenIndexes[2] = m_equippedRightIndex;
                             Debug.Log("Equipped right gun " + m_equippedRightIndex);
-                            int _engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
+                            m_engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
 
                             // Set equipped in player inventory
-                            PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedRightIndex - _engineLength];
+                            PlayerInventoryManager.Instance.EquippedRightWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedRightIndex - m_engineLength];
                             PlayerInventoryManager.Instance.EquippedRightIndex = (int)m_equippedRightIndex - PlayerInventoryManager.Instance.AvailableEngines.Count;
                             StartCoroutine(SendWeaponData(PlayerInventoryManager.Instance.EquippedRightWeapon));
                         }
                     }
-
-
+                    m_engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
+                    try { display.m_statsPanelUpdate.PopulateWeapon(PlayerInventoryManager.Instance.AvailableWeapons[m_currentlySelectedIndex - m_engineLength]); } catch { }
 
                 }
 
