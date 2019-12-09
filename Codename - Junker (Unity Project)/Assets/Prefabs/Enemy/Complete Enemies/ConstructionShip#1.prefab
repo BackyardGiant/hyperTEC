@@ -190,6 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2d84f5c068eaff459d56b69c9b7df8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_target: {fileID: 0}
   m_flipAngle: 160
   m_maxSpeedHigh: 70
   m_maxSpeedLow: 30
@@ -212,7 +213,7 @@ MonoBehaviour:
   m_fleeing: 0
   m_attacking: 1
   m_avoidenceForce: 100
-  m_wanderRange: 600
+  m_wanderRange: 400
 --- !u!114 &679149893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5230,6 +5231,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5610633641536775856}
     m_Modifications:
+    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
+        type: 3}
+      propertyPath: m_Name
+      value: Ship
+      objectReference: {fileID: 0}
     - target: {fileID: 5731347806934350786, guid: 1fc09b7b7908b39428b358b3cfaf6225,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5284,11 +5290,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8778236601372232145, guid: 1fc09b7b7908b39428b358b3cfaf6225,
-        type: 3}
-      propertyPath: m_Name
-      value: Ship
       objectReference: {fileID: 0}
     - target: {fileID: 3662219012777312756, guid: 1fc09b7b7908b39428b358b3cfaf6225,
         type: 3}
