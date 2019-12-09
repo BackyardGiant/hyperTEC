@@ -75,7 +75,7 @@ public class PlayerHealth : MonoBehaviour
         if (m_playerHealth[_currentSave].Value - _dmg > 0)
         {
             m_playerHealth[_currentSave].Value -= (int)_dmg;
-            AudioManager.Instance.PlayWorld("ExplosionShort4", this.gameObject, false, true);
+            AudioManager.Instance.PlayWorld("PlayerTakeDamage", this.gameObject, false, true);
             HUDManager.Instance.Healthbar.fillAmount = (float)m_playerHealth[_currentSave].Value / m_healthMax;
             m_timeSinceDamage = 0;
             //Debug.Log("<color=green>CURRENT HEALTH : </color>" + m_playerHealth[_currentSave].Value);
