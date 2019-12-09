@@ -1661,7 +1661,7 @@ RectTransform:
   - {fileID: 987442251}
   - {fileID: 955782344}
   m_Father: {fileID: 1124719525}
-  m_RootOrder: 7
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -1893,13 +1893,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1358530520}
-  m_RootOrder: 2
+  m_Father: {fileID: 1124719525}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 349.49994, y: 157.56499}
-  m_SizeDelta: {x: 649.83, y: 392.72}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -341.14, y: -54.11}
+  m_SizeDelta: {x: 649.83, y: -123.217316}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &263593088
 MonoBehaviour:
@@ -7001,12 +7001,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1358530520}
-  m_RootOrder: 3
+  m_Father: {fileID: 1124719525}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 381.75, y: 157.45}
+  m_AnchoredPosition: {x: -308.88098, y: 203.5686}
   m_SizeDelta: {x: 585.32, y: 363.64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1004245167
@@ -7960,6 +7960,8 @@ RectTransform:
   - {fileID: 2041750221}
   - {fileID: 793028019}
   - {fileID: 1358530520}
+  - {fileID: 263593087}
+  - {fileID: 1003191056}
   - {fileID: 256009226}
   - {fileID: 1856323979}
   m_Father: {fileID: 0}
@@ -8909,8 +8911,6 @@ RectTransform:
   m_Children:
   - {fileID: 979503456}
   - {fileID: 1910223977}
-  - {fileID: 263593087}
-  - {fileID: 1003191056}
   m_Father: {fileID: 1124719525}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9090,7 +9090,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'HYPERTEC - MVP V1
+  m_text: 'HYPERTEC - V1
 
 '
   m_isRightToLeft: 0
@@ -9162,10 +9162,10 @@ MonoBehaviour:
   m_margin: {x: -2.6895964, y: 0, z: -2.671442, w: 0}
   m_textInfo:
     textComponent: {fileID: 1508027581}
-    characterCount: 18
+    characterCount: 14
     spriteCount: 0
-    spaceCount: 4
-    wordCount: 4
+    spaceCount: 3
+    wordCount: 3
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -11049,7 +11049,7 @@ RectTransform:
   m_Children:
   - {fileID: 44264546}
   m_Father: {fileID: 1124719525}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
