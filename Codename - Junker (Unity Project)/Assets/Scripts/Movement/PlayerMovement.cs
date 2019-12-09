@@ -92,6 +92,24 @@ public class PlayerMovement : MonoBehaviour
     private bool m_killedEngine;
     private bool m_engageBoost;
     private bool m_boostOn;
+    private bool m_perfectBoost;
+    private float m_boostScale;
+    [SerializeField]
+    private float m_minimumOpimalTiming;
+    [SerializeField]
+    private float m_maximumOpimalTiming;
+    [SerializeField]
+    private float m_pefectTimingRange;
+    [SerializeField]
+    private float m_pefectTiming;
+    [SerializeField]
+    private float m_boostTimer;
+
+    [SerializeField]
+    private float m_boostCooldown;
+    private bool m_canBoost = true;
+
+    private bool m_APressed = false;
     #endregion
 
     #region Engine Particle System
@@ -115,16 +133,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float m_normalFOV;
 
-    [SerializeField]
-    private float m_minimumOpimalTiming;
-    [SerializeField]
-    private float m_maximumOpimalTiming;
-    private float m_pefectTiming;
-    private float m_boostTimer;
-
-    [SerializeField]
-    private float m_boostCooldown;
-    private bool m_canBoost = true;
 
 
     public float CurrentSpeed { get => m_currentSpeed; }
@@ -180,6 +188,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (Input.GetAxis("MacroEngine") > 0.1f && m_killedEngine && m_canBoost)
             {
+                m_pefectTiming = Random.Range(m_minimumOpimalTiming + m_pefectTimingRange, m_maximumOpimalTiming - m_pefectTimingRange);
                 m_killedEngine = false;
                 m_engageBoost = true;
             }
@@ -197,6 +206,10 @@ public class PlayerMovement : MonoBehaviour
 
                 m_currentSpeed = m_posativeClampedSpeed * m_maxAcceleration;
 
+                if (m_engageBoost)
+                {
+                    m_APressed = true;
+                }
             }
             if (Input.GetButton("Throttle Down"))
             {
@@ -226,11 +239,37 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_engageBoost)
         {
+            m_boostTimer += Time.deltaTime;
+
+            if (m_APressed)
+            {
+                m_APressed = false;
+                if (m_boostTimer < m_minimumOpimalTiming || m_boostTimer > m_maximumOpimalTiming)
+                {
+                    m_boostScale = 0;
+                    m_perfectBoost = true;
+                }
+                else if (m_boostTimer < (m_pefectTiming - m_pefectTimingRange) || m_boostTimer > (m_pefectTiming + m_pefectTimingRange))
+                {
+                    m_boostScale = 0.75f;
+                    m_perfectBoost = true;
+                }
+                else
+                {
+                    m_boostScale = 1f;
+                    m_perfectBoost = true;
+                }
+            }
+        }
+
+        if (m_perfectBoost)
+        {
+            m_perfectBoost = false;
             m_canBoost = false;
             StartCoroutine(boostCooldown());
             boostOn.Raise();
             m_boostOn = true;
-            m_rbPlayer.velocity = new Vector3(0,0,0);
+            m_rbPlayer.velocity = new Vector3(0, 0, 0);
             m_engageBoost = false;
             StartCoroutine(boostTimer());
         }
@@ -314,7 +353,7 @@ public class PlayerMovement : MonoBehaviour
             CameraShake.Instance.Shake(0.2f, 0.2f);
             if (m_rbPlayer.velocity.magnitude < m_maxBoostSpeed)
             {
-                m_rbPlayer.AddForce(m_boostSpeed * transform.forward * GameManager.Instance.GameSpeed);
+                m_rbPlayer.AddForce(m_boostScale * m_boostSpeed * transform.forward * GameManager.Instance.GameSpeed);
             }
             m_rbPlayer.AddForce(transform.up * GameManager.Instance.GameSpeed * m_uiCorrection / 80f);
         }
