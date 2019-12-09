@@ -67,7 +67,7 @@ public class TempEnemyInstantiate : MonoBehaviour
 
     private void SpawnEnemy(Transform _spawnPoint, int factionIndex, int index)
     {
-        GameObject _tempEnemy = Instantiate(enemyPrefab, _spawnPoint.position + (Random.insideUnitSphere * 600), _spawnPoint.rotation);
+        GameObject _tempEnemy = Instantiate(enemyPrefab, _spawnPoint.position + (Random.insideUnitSphere * 400), _spawnPoint.rotation);
 
         _tempEnemy.GetComponent<EnemyStats>().m_currentFaction = (faction)factionIndex;
 

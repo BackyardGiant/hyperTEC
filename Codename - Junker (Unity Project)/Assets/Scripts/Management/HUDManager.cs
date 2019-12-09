@@ -299,6 +299,70 @@ public class HUDManager : MonoBehaviour
                 }
                 if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.3f && m_displayQuestAnimated == true && m_enableQuestPickup == true)
                 {
+                    ////Make pickup item code here
+                    //GameObject _questAccepted = m_currentTarget;
+
+                    //Quest _quest = m_currentTarget.GetComponent<QuestBeconDetection>().Quest;
+
+                    //switch (m_currentTarget.GetComponent<QuestBeconDetection>().QuestType)
+                    //{
+                    //    case QuestType.kill:
+                    //        QuestManager.Instance.CreateKillQuest(_quest.Size, _quest.Name, _quest.Description);
+                    //        break;
+                    //    case QuestType.collect:
+                    //        //QuestManager.Instance.CreateCollectQuest(_quest.)
+                    //        break;
+                    //    case QuestType.control:
+                    //        break;
+                    //    case QuestType.recon:
+                    //        break;
+                    //    case QuestType.targets:
+                    //        break;
+                    //}
+
+
+                    //if (m_currentTarget.GetComponent<QuestBeconDetection>().QuestType == QuestType.kill)
+                    //{
+                    //    QuestManager.Instance.CreateKillQuest(_quest.Size, _quest.Name, _quest.Description);
+                    //}
+
+                    //Debug.Log("Quest Collected");
+
+                    //Destroy(m_currentTarget);
+                    //ClearBeaconDisplay();
+                    //ClearBeaconTarget(m_currentTarget.GetComponent<QuestBeconDetection>());
+
+                    ////QuestScanner.fillAmount = 0;
+                    //m_buttonBeingHeld = -1;
+                    //m_buttonHoldTime = 0;
+                }
+
+                if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.3f)
+                {
+                    QuestScanner.fillAmount = m_buttonHoldTime - 0.3f;
+                    //DisplayLootStats(m_currentTarget);
+                    //DisplayQuestData(m_currentTarget.GetComponent<QuestBeconDetection>().Quest);
+                }
+
+                if (Input.GetButtonUp("Interact"))
+                {
+                    QuestScanner.fillAmount = 0;
+                    m_buttonBeingHeld = -1;
+                    m_buttonHoldTime = 0;
+                }
+
+                //Full scan complete, open and animate display.
+                if (QuestScanner.fillAmount == 1 && m_enableQuestPickup == true)
+                {
+                    //m_enableQuestPickup = false;
+                    //m_currentlyQuestScanning = true;
+                    //QuestScanner.fillAmount = 0;
+                    //m_buttonBeingHeld = -1;
+                    //m_buttonHoldTime = 0;
+                    //QuestDisplay.GetComponent<Animator>().Play("QuestScan");
+
+                    //Invoke("toggleQuestPickup", .4f);
+
                     //Make pickup item code here
                     GameObject _questAccepted = m_currentTarget;
 
@@ -336,47 +400,6 @@ public class HUDManager : MonoBehaviour
                     m_buttonBeingHeld = -1;
                     m_buttonHoldTime = 0;
                 }
-
-                //if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.3f)
-                //{
-                //    QuestScanner.fillAmount = m_buttonHoldTime - 0.3f;
-                //    //DisplayLootStats(m_currentTarget);
-                //    DisplayQuestData(m_currentTarget.GetComponent<QuestBeconDetection>().Quest);
-                //}
-
-                //if (Input.GetButtonUp("Interact"))
-                //{
-                //    QuestScanner.fillAmount = 0;
-                //    m_buttonBeingHeld = -1;
-                //    m_buttonHoldTime = 0;
-                //}
-
-                ////Full scan complete, open and animate display.
-                //if (QuestScanner.fillAmount == 1 && m_currentlyQuestScanning == false)
-                //{
-                //    m_enableQuestPickup = false;
-                //    m_currentlyQuestScanning = true;
-                //    QuestScanner.fillAmount = 0;
-                //    m_buttonBeingHeld = -1;
-                //    m_buttonHoldTime = 0;
-                //    QuestDisplay.GetComponent<Animator>().Play("QuestScan");
-
-                //    Invoke("toggleQuestPickup", .4f);
-                //}
-
-                ////Full close complete, close and animate display.
-                //if (QuestScanner.fillAmount == 1 && m_currentlyQuestScanning == true)
-                //{
-                //    m_enableQuestPickup = false;
-                //    m_currentlyQuestScanning = false;
-                //    QuestScanner.fillAmount = 0;
-                //    m_buttonBeingHeld = -1;
-                //    m_buttonHoldTime = 0;
-                //    QuestDisplay.GetComponent<Animator>().Play("QuestCloseScan");
-                //    m_currentlyClosingQuestScan = true;
-
-                //    Invoke("toggleQuestPickup", .4f);
-                //}
 
                 ////Dismiss being held down fills in the button.
                 //if (m_buttonBeingHeld == 1 && m_displayQuestAnimated == true)
