@@ -8,6 +8,7 @@ public class HUDManager : MonoBehaviour
 {
     private static HUDManager s_instance;
     public GameObject Player;
+    public int InventorySize;
     public Camera Camera;
     public Sprite TargetSprite;
     public GameObject Explosion;
@@ -188,7 +189,7 @@ public class HUDManager : MonoBehaviour
                 {
                     ClearBeaconDisplay();
                 }
-                if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.3f && m_displayAnimated == true && m_enablePickup == true)
+                if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.3f && m_displayAnimated == true && m_enablePickup == true && (PlayerInventoryManager.Instance.AvailableEngines.Count + PlayerInventoryManager.Instance.AvailableWeapons.Count) < InventorySize)
                 {
                     //Make pickup item code here
                     GameObject _pickupLoot = m_currentTarget;
@@ -215,6 +216,11 @@ public class HUDManager : MonoBehaviour
                     Scanner.fillAmount = 0;
                     m_buttonBeingHeld = -1;
                     m_buttonHoldTime = 0;
+                }
+                if (Input.GetButtonUp("Interact") && m_buttonHoldTime < 0.3f && m_displayAnimated == true && m_enablePickup == true && (PlayerInventoryManager.Instance.AvailableEngines.Count + PlayerInventoryManager.Instance.AvailableWeapons.Count) == InventorySize)
+                {
+                    DisplayWarning("Inventory Full!");
+                    Invoke("HideWarning", 1f);
                 }
 
                 if (m_buttonBeingHeld == 0 && m_buttonHoldTime >= 0.3f)
