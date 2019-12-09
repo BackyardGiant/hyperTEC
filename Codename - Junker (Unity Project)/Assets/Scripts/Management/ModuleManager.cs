@@ -441,11 +441,11 @@ public class ModuleManager : MonoBehaviour
 
         int _fireRateTypeData;
 
-        if (_fireRate <= 20)
+        if (_fireRate <= 40)
         {
             _fireRateTypeData = 0;
         }
-        else if(_fireRate > 20 && _fireRate <= 80)
+        else if(_fireRate > 40 && _fireRate < 80)
         {
             _fireRateTypeData = 1;
         }
