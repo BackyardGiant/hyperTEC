@@ -30,6 +30,13 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private EnemyStats m_stats;
 
+    private bool m_stopEvade = false;
+    private float m_timeEvading = 0;
+    [SerializeField]
+    private float m_timeTillAttack = 5f;
+    [SerializeField]
+    private float m_resetTimer = 5f;
+
     private bool m_canEngage = true;
 
     public GameObject Target { get => m_target; set => m_target = value; }
@@ -37,7 +44,7 @@ public class EnemyManager : MonoBehaviour
     public bool AttackingPlayer { get => m_attackingPlayer; set => m_attackingPlayer = value; }
     
     #region Behaviour States
-    public enum States { Wander, Pursue, Flee, Evade, PassBy }
+    public enum States { Wander, Pursue, Flee, Evade, PassBy, Seek }
     #endregion
 
 
@@ -58,27 +65,35 @@ public class EnemyManager : MonoBehaviour
     {
         if(Vector3.Distance(m_player.transform.position, transform.position) < m_detectionRange && m_attackingPlayer)
         {
-            if (m_stats.CurrentHealth >= m_minEngageHealth  && m_canEngage)
+            if (m_canEngage)
             {
-                if (Vector3.Distance(m_player.transform.position, transform.position) > 40)
+                if (Vector3.Distance(m_player.transform.position, transform.position) > 10)
                 {
                     Vector3 heading = m_player.transform.position - transform.position;
                     float dotProduct = Vector3.Dot(heading.normalized, transform.forward);
-                    if (dotProduct > 0)
+                    if (m_stats.CurrentHealth >= m_minEngageHealth && (dotProduct > -0.75 || m_stopEvade))
                     {
                         if (m_target == null)
                         {
                             m_target = GenerateTargetDisplacement(m_player);
                         }
-                        m_behaviourState = States.Pursue;
+                        m_behaviourState = States.Seek;
+                        m_timeEvading = 0;
                     }
-                    else if (dotProduct < 0)
+                    else if (dotProduct < -0.75)
                     {
                         if (m_target == null)
                         {
                             m_target = GenerateTargetDisplacement(m_player);
                         }
                         m_behaviourState = States.Evade;
+
+                        m_timeEvading += Time.deltaTime;
+
+                        if(m_timeEvading > m_timeTillAttack)
+                        {
+                            m_stopEvade = true;
+                        }
                     }
                 }
                 else
@@ -94,6 +109,7 @@ public class EnemyManager : MonoBehaviour
         }
         else
         {
+            Destroy(m_target);
             m_target = null;
             m_behaviourState = States.Wander;
         }
@@ -146,5 +162,11 @@ public class EnemyManager : MonoBehaviour
         {
             m_attackingPlayer = true;
         }
+    }
+
+    private IEnumerator m_evadeCooldown()
+    {
+        yield return new WaitForSeconds(m_resetTimer);
+        m_stopEvade = false;
     }
 }

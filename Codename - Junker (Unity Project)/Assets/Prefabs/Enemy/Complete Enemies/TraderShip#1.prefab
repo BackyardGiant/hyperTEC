@@ -4901,7 +4901,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.1
+  m_AngularDrag: 0.15
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -5013,14 +5013,14 @@ MonoBehaviour:
   m_handlingHigh: 1.1
   m_handlingLow: 0.9
   m_handling: 1
-  m_detectionRange: 200
+  m_detectionRange: 400
   m_wanderCircleDistance: 9
   m_circleRadius: 10
-  m_turnChance: 0.007
-  m_evadeSize: 0.2
-  m_evadeChance: 0.585
-  m_dampingSpeed: 1
-  m_correctionForce: 0.4
+  m_turnChance: 0.004
+  m_evadeSize: 1
+  m_evadeChance: 0.008
+  m_dampingSpeed: 0.5
+  m_correctionForce: 2
   m_dampingAngleThreshold: 0.9
   m_fleeing: 0
   m_attacking: 1
@@ -5045,10 +5045,12 @@ MonoBehaviour:
   enemySpawnPointIndex: 0
   m_behaviourState: 0
   m_attackingPlayer: 0
-  m_displacementRadius: 30
-  m_detectionRange: 300
+  m_displacementRadius: 10
+  m_detectionRange: 400
   m_minEngageHealth: 40
   m_stats: {fileID: 5610633641536775823}
+  m_timeTillAttack: 2
+  m_resetTimer: 3
 --- !u!114 &679149894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5066,7 +5068,7 @@ MonoBehaviour:
   m_bulletLifeTime: 2
   m_bulletSpeed: 1000
   m_attackAngle: 35
-  m_universalBulletSpread: 80
+  m_universalBulletSpread: 40
   m_quickerFireRate: 0.1
   m_slowerFireRate: 1.3
   m_defaultBulletPrefab: {fileID: 1168512049321899429, guid: dc8f6040eb1b72f4cb51691f82c16651,
@@ -5318,11 +5320,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5610633641536775856}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 256fad8918e54d34492817b160d3a929,
-        type: 3}
-      propertyPath: m_Name
-      value: Ship
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 256fad8918e54d34492817b160d3a929,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5392,6 +5389,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 256fad8918e54d34492817b160d3a929,
+        type: 3}
+      propertyPath: m_Name
+      value: Ship
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 256fad8918e54d34492817b160d3a929, type: 3}
