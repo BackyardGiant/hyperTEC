@@ -7,6 +7,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
 {
     #region Target
     private GameObject m_player;
+    [SerializeField]
     private GameObject m_target;
     private Quaternion m_targetRot;
     #endregion
@@ -86,6 +87,10 @@ public class AdvancedEnemyMovement : MonoBehaviour
     #endregion
 
     private Vector3 m_startPosition;
+
+    private float m_seekTimer = 0;
+    private float m_seekLimit = 0;
+    private bool m_aboveWander = false;
 
     private Rigidbody m_rb;
 
@@ -180,7 +185,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
             m_target = m_manager.Target;
             m_attacking = m_manager.AttackingPlayer;
 
-            if (Vector3.Distance(transform.position, m_startPosition) < m_wanderRange)
+            if (Vector3.Distance(gameObject.transform.position, m_manager.enemySpawnPoint.position) < m_wanderRange)
             {
                 if (m_attacking)
                 {
@@ -194,6 +199,10 @@ public class AdvancedEnemyMovement : MonoBehaviour
                         {
                             m_steering = PursueTarget(m_target.transform);
                         }
+                        else if (m_manager.m_behaviourState == EnemyManager.States.Seek)
+                        {
+                            m_steering = Seek(m_target.transform.position);
+                        }
                         else if(m_manager.m_behaviourState == EnemyManager.States.Evade)
                         {
                             m_steering = Evade(m_target.transform);
@@ -204,23 +213,47 @@ public class AdvancedEnemyMovement : MonoBehaviour
                         }
                         else if(m_manager.m_behaviourState == EnemyManager.States.Wander)
                         {
+                            if (m_seekTimer > m_seekLimit)
+                            {
+                                m_steering = Wander(true);
+                                m_seekTimer = 0;
+                            }
+                            else
+                            {
+                                m_steering = Wander();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (m_seekTimer > m_seekLimit)
+                        {
+                            m_steering = Wander(true);
+                            m_seekTimer = 0;
+                        }
+                        else
+                        {
                             m_steering = Wander();
                         }
+                    }
+                }
+                else
+                {
+                    if(m_seekTimer > m_seekLimit)
+                    {
+                        m_steering = Wander(true);
+                        m_seekTimer = 0;
                     }
                     else
                     {
                         m_steering = Wander();
                     }
                 }
-                else
-                {
-                    m_steering = Wander();
-                }
             }
             else
             {
                 m_steering = Seek(m_manager.enemySpawnPoint.position);
-                m_manager.Target = null;
+                m_seekTimer += Time.deltaTime;
             }
 
             m_steeringWithAvoidence = collisionAvoidance() + m_steering;
@@ -332,6 +365,43 @@ public class AdvancedEnemyMovement : MonoBehaviour
                 displacement = Quaternion.LookRotation(m_rb.velocity) * displacement;
             }
            
+            _wanderForce = _circleCentre + displacement;
+            _wanderForce = (_wanderForce.normalized * m_maxSpeed * m_maxAcceleration) - m_rb.velocity;
+            m_wanderDirection = _wanderForce;
+        }
+
+        return _wanderForce;
+    }
+
+    private Vector3 Wander(bool _noChanceWander)
+    {
+        Vector3 _wanderForce = m_steering;
+
+        if ((Random.value < m_turnChance && m_canWander) || _noChanceWander)
+        {
+            m_canWander = false;
+            StartCoroutine(ResetWander());
+            Vector3 _circleCentre;
+            if (m_rb.velocity != Vector3.zero)
+            {
+                _circleCentre = m_rb.velocity.normalized;
+            }
+            else
+            {
+                _circleCentre = transform.forward;
+            }
+
+            _circleCentre *= m_wanderCircleDistance;
+
+            Vector2 randomPoint = Random.insideUnitCircle;
+
+            Vector3 displacement = new Vector3(randomPoint.x, randomPoint.y) * m_circleRadius;
+
+            if (m_rb.velocity != Vector3.zero)
+            {
+                displacement = Quaternion.LookRotation(m_rb.velocity) * displacement;
+            }
+
             _wanderForce = _circleCentre + displacement;
             _wanderForce = (_wanderForce.normalized * m_maxSpeed * m_maxAcceleration) - m_rb.velocity;
             m_wanderDirection = _wanderForce;
