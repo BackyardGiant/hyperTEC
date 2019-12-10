@@ -1244,40 +1244,43 @@ public class HUDManager : MonoBehaviour
         _targetImage.transform.position = _screenPos;
         _targetImage.transform.localEulerAngles = Vector3.zero;
 
-        //Find all "component" tagged game objects
-        GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
-        GameObject[] _questObjects = GameObject.FindGameObjectsWithTag("QuestBeacon");
-
-        GameObject[] _objects = new GameObject[_lootObjects.Length + _questObjects.Length];
-
-        _lootObjects.CopyTo(_objects, 0);
-        _questObjects.CopyTo(_objects, _lootObjects.Length);
-
-        m_currentTarget = ReturnTarget(_objects);
-
-        //If targeted loot has changed, reset LootDisplay.
-        if (m_prevTarget != m_currentTarget)
+        if (Vector3.Distance(Player.transform.position, _beacon.GetComponent<Transform>().position) < m_lootViewDistance)
         {
-            // Swapping over the LootDisplays to a different object
-            m_displayQuestAnimated = false;
-            m_currentlyQuestScanning = false;
-            //QuestDestroyer.fillAmount = 0;
-            //QuestScanner.fillAmount = 0;
-        }
-        m_prevTarget = m_currentTarget;
+            //Find all "component" tagged game objects
+            GameObject[] _lootObjects = GameObject.FindGameObjectsWithTag("Component");
+            GameObject[] _questObjects = GameObject.FindGameObjectsWithTag("QuestBeacon");
 
-        if (m_currentTarget == null)
-        {
-            Debug.Log("<color=red> Current beacon is null. </color> Do all loot objects have the component tag?");
-        }
-        else if (m_currentTarget.tag == "QuestBeacon")
-        {
-            //Screenpos of loot, and LootDetection script. This will aid in automatically entering values from a piece of loot.
-            _screenPos = Camera.WorldToScreenPoint(m_currentTarget.transform.position);
-            _beacon = m_currentTarget.GetComponent<QuestBeconDetection>();
+            GameObject[] _objects = new GameObject[_lootObjects.Length + _questObjects.Length];
+
+            _lootObjects.CopyTo(_objects, 0);
+            _questObjects.CopyTo(_objects, _lootObjects.Length);
+
+            m_currentTarget = ReturnTarget(_objects);
+
+            //If targeted loot has changed, reset LootDisplay.
+            if (m_prevTarget != m_currentTarget)
+            {
+                // Swapping over the LootDisplays to a different object
+                m_displayQuestAnimated = false;
+                m_currentlyQuestScanning = false;
+                //QuestDestroyer.fillAmount = 0;
+                //QuestScanner.fillAmount = 0;
+            }
+            m_prevTarget = m_currentTarget;
+
+            if (m_currentTarget == null)
+            {
+                Debug.Log("<color=red> Current beacon is null. </color> Do all loot objects have the component tag?");
+            }
+            else if (m_currentTarget.tag == "QuestBeacon")
+            {
+                //Screenpos of loot, and LootDetection script. This will aid in automatically entering values from a piece of loot.
+                _screenPos = Camera.WorldToScreenPoint(m_currentTarget.transform.position);
+                _beacon = m_currentTarget.GetComponent<QuestBeconDetection>();
 
 
-            DrawDisplay(_screenPos);
+                DrawDisplay(_screenPos);
+            }
         }
 
     }
