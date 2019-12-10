@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class SelectionManager : MonoBehaviour
@@ -24,6 +25,11 @@ public class SelectionManager : MonoBehaviour
 
     private bool m_filled = false;
     private int m_engineLength;
+
+    private float m_timeDestroyHeld;
+    [SerializeField]
+    private Image m_destroyFill;
+
     // Initialise all to "null" (-1)
     public void FillMenu()
     {
@@ -144,7 +150,7 @@ public class SelectionManager : MonoBehaviour
             }
 
             // Swap from left to right side of the ship
-            if (Input.GetButtonDown("XboxY"))
+            if (Input.GetButtonDown("XboxX"))
             {
                 m_leftSideSelected = !m_leftSideSelected;
                 Debug.Log("Left side selected? : " + m_leftSideSelected);
@@ -164,6 +170,20 @@ public class SelectionManager : MonoBehaviour
                     DisplayEquipped();
                     PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
                 }
+            }
+
+            if(Input.GetButton("XboxY"))
+            {
+                m_destroyFill.fillAmount += 0.3f * Time.deltaTime;
+
+                if(m_destroyFill.fillAmount == 1f)
+                {
+                    //Destroy item
+                }
+            }
+            else
+            {
+                m_destroyFill.fillAmount = 0f;
             }
 
             // Equip an option from the inventory
