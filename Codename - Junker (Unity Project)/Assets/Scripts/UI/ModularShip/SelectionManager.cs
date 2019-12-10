@@ -37,33 +37,39 @@ public class SelectionManager : MonoBehaviour
         {
             m_equippedEngineIndex = PlayerInventoryManager.Instance.EquippedEngineIndex;
             m_takenIndexes[0] = PlayerInventoryManager.Instance.EquippedEngineIndex;
+            //display.UpdateEquippedIndividual(m_takenIndexes[0], "engine");
         }
         else
         {
             m_equippedEngineIndex = -1;
             m_takenIndexes[0] = -1;
+            //display.UpdateEquippedIndividual(m_takenIndexes[0], "engine");
         }
             
         if(PlayerInventoryManager.Instance.EquippedLeftIndex != -1)
         {
             m_equippedLeftIndex = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
             m_takenIndexes[1] = PlayerInventoryManager.Instance.EquippedLeftIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+            //display.UpdateEquippedIndividual(m_takenIndexes[1], "left");
         }
         else
         {
             m_equippedLeftIndex = -1;
             m_takenIndexes[1] = -1;
+            //display.UpdateEquippedIndividual(m_takenIndexes[1], "left");
         }
                  
         if(PlayerInventoryManager.Instance.EquippedRightIndex != -1)
         {
             m_equippedRightIndex = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
             m_takenIndexes[2] = PlayerInventoryManager.Instance.EquippedRightIndex + PlayerInventoryManager.Instance.AvailableEngines.Count;
+            //display.UpdateEquippedIndividual(m_takenIndexes[2], "right");
         }
         else
         {
             m_equippedRightIndex = -1;
             m_takenIndexes[2] = -1;
+            //display.UpdateEquippedIndividual(m_takenIndexes[2], "right");
         }
             
         display.UpdateHighlightPosition();
@@ -75,6 +81,38 @@ public class SelectionManager : MonoBehaviour
         m_bottomIndex = display.NumItemsOnScreen;
 
         m_filled = true;
+    }
+
+    private void ScrollUpInput()
+    {
+        if (m_currentlySelectedIndex >= display.ModulesList.Count - 1)
+        {
+            m_currentlySelectedIndex = display.ModulesList.Count - 1;
+        }
+        else
+        {
+            m_currentlySelectedIndex++;
+        }
+        Debug.Log("Index is " + m_currentlySelectedIndex);
+
+        if (m_currentlySelectedIndex >= display.NumItemsOnScreen)
+        {
+            if (m_bottomIndex != display.ModulesList.Count)
+            {
+                display.Index = m_currentlySelectedIndex + 1;
+                display.ScrollDownToSelected();
+                m_bottomIndex++;
+            }
+
+        }
+
+        RemovePreviousModule();
+        DisplayEquipped();
+        PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+
+        display.Index = m_currentlySelectedIndex;
+        display.UpdateHighlightPosition();
+        m_readyForInput = false;
     }
 
     private void Update()
@@ -174,11 +212,66 @@ public class SelectionManager : MonoBehaviour
 
             if(Input.GetButton("XboxY"))
             {
-                m_destroyFill.fillAmount += 0.3f * Time.deltaTime;
+                m_destroyFill.fillAmount += Time.deltaTime;
 
                 if(m_destroyFill.fillAmount == 1f)
                 {
+                    m_destroyFill.fillAmount = 0f;
                     //Destroy item
+                    bool _equipped = false;
+
+                    for (int i = 0; i < m_takenIndexes.Length; i++)
+                    {
+                        if(display.ModulesList.Count == 1 || m_currentlySelectedIndex == m_takenIndexes[i])
+                        {
+                            _equipped = true;
+                            break;
+                        }
+                    }
+
+                    if(!_equipped)
+                    {
+                        if(display.ModulesList[m_currentlySelectedIndex].TryGetComponent<EngineStatManager>(out EngineStatManager _engineComponent))
+                        {
+                            PlayerInventoryManager.Instance.RemoveEngine(m_currentlySelectedIndex);
+                        }
+                        else if (display.ModulesList[m_currentlySelectedIndex].TryGetComponent<WeaponStatManager>(out WeaponStatManager _weaponComponent))
+                        {
+                            PlayerInventoryManager.Instance.RemoveWeapon(m_currentlySelectedIndex);
+                        }
+
+                        Destroy(display.ModulesList[m_currentlySelectedIndex]);
+                        display.ModulesList.RemoveAt(m_currentlySelectedIndex);
+
+                        for (int i = 0; i < m_takenIndexes.Length; i++)
+                        {
+                            if(m_currentlySelectedIndex < m_takenIndexes[i])
+                            {
+                                m_takenIndexes[i]--;
+                            }
+                        }
+
+                        PlayerInventoryManager.Instance.FixEquippedIndex(m_takenIndexes);
+
+                        m_equippedEngineIndex = m_takenIndexes[0];
+                        m_equippedLeftIndex = m_takenIndexes[1];
+                        m_equippedRightIndex = m_takenIndexes[2];
+
+
+                        //if (m_currentlySelectedIndex == display.ModulesList.Count)
+                        //{
+                        //    m_currentlySelectedIndex--;
+                        //}
+
+                        //RemovePreviousModule();
+                        //DisplayEquipped();
+                        //PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+
+                        ScrollUpInput();
+
+                        FillMenu();
+                        display.UpdateEquipped(m_takenIndexes);
+                    }
                 }
             }
             else
@@ -204,6 +297,8 @@ public class SelectionManager : MonoBehaviour
                         m_takenIndexes[0] = (int)m_equippedEngineIndex;
                         Debug.Log("Equipped engine " + m_equippedEngineIndex);
 
+                        //display.UpdateEquippedIndividual(m_takenIndexes[0], "engine");
+
                         // Set equipped in player inventory
                         PlayerInventoryManager.Instance.EquippedEngine = PlayerInventoryManager.Instance.AvailableEngines[(int)m_equippedEngineIndex];
                         PlayerInventoryManager.Instance.EquippedEngineIndex = (int)m_equippedEngineIndex;
@@ -213,6 +308,8 @@ public class SelectionManager : MonoBehaviour
                     {
                         m_equippedEngineIndex = -1;
                         m_takenIndexes[0] = -1;
+
+                        //display.UpdateEquippedIndividual(m_takenIndexes[0], "engine");
 
                         // Set removed in player inventory
                         PlayerInventoryManager.Instance.EquippedEngine = null;
@@ -230,6 +327,8 @@ public class SelectionManager : MonoBehaviour
                             m_equippedRightIndex = -1;
                             m_takenIndexes[2] = -1;
 
+                            //display.UpdateEquippedIndividual(m_takenIndexes[2], "right");
+
                             // Set removed in player inventory
                             PlayerInventoryManager.Instance.EquippedRightWeapon = null;
                             PlayerInventoryManager.Instance.EquippedRightIndex = -1;
@@ -241,6 +340,8 @@ public class SelectionManager : MonoBehaviour
                         {
                             m_equippedLeftIndex = -1;
                             m_takenIndexes[1] = -1;
+
+                            //display.UpdateEquippedIndividual(m_takenIndexes[1], "left");
 
                             // Set removed in player inventory
                             PlayerInventoryManager.Instance.EquippedLeftWeapon = null;
@@ -256,6 +357,9 @@ public class SelectionManager : MonoBehaviour
                             m_equippedLeftIndex = m_currentlySelectedIndex;
                             m_takenIndexes[1] = m_equippedLeftIndex;
                             Debug.Log("Equipped left gun " + m_equippedLeftIndex);
+
+                            //display.UpdateEquippedIndividual(m_takenIndexes[1], "left");
+
                             m_engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
                             // Set equipped in player inventory
                             PlayerInventoryManager.Instance.EquippedLeftWeapon = PlayerInventoryManager.Instance.AvailableWeapons[m_equippedLeftIndex - m_engineLength];
@@ -268,6 +372,9 @@ public class SelectionManager : MonoBehaviour
                             m_equippedRightIndex = m_currentlySelectedIndex;
                             m_takenIndexes[2] = m_equippedRightIndex;
                             Debug.Log("Equipped right gun " + m_equippedRightIndex);
+
+                            //display.UpdateEquippedIndividual(m_takenIndexes[2], "right");
+
                             m_engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
 
                             // Set equipped in player inventory
@@ -278,7 +385,6 @@ public class SelectionManager : MonoBehaviour
                     }
                     m_engineLength = PlayerInventoryManager.Instance.AvailableEngines.Count;
                     try { display.m_statsPanelUpdate.PopulateWeapon(PlayerInventoryManager.Instance.AvailableWeapons[m_currentlySelectedIndex - m_engineLength]); } catch { }
-
                 }
 
                 DisplayEquipped();

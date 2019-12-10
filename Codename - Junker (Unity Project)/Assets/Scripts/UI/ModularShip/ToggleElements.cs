@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ToggleElements : MonoBehaviour
 {
@@ -21,6 +22,12 @@ public class ToggleElements : MonoBehaviour
     {
         GoHighlight.SetActive(false);
     }
+    public void EquippedOn(string _text)
+    {
+        GoEquipped.GetComponent<Text>().text = _text;
+        GoEquipped.SetActive(true);
+    }
+
     public void EquippedOn()
     {
         GoEquipped.SetActive(true);

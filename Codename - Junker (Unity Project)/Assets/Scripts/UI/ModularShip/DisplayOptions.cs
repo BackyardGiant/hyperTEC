@@ -155,6 +155,58 @@ public class DisplayOptions : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Updates the equipped status of an individual item
+    /// </summary>
+    /// <param name="_equippedIndex"> The index (in modules list) of the item to be updated </param>
+    /// <param name="_location"> string, either "engine" "left" or "right" </param>
+    public void UpdateEquippedIndividual(int _equippedIndex, string _location)
+    {
+        switch (_location)
+        {
+            case "engine":
+                if(_equippedIndex != -1)
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOn("Equipped");
+                }
+                else
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOff();
+                }               
+                break;
+            case "left":
+                if (_equippedIndex != -1)
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOn("Equipped Left");
+                }
+                else
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOff();
+                }
+                break;
+            case "right":
+                if (_equippedIndex != -1)
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOn("Equipped Right");
+                }
+                else
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOff();
+                }
+                break;
+            default:
+                if (_equippedIndex != -1)
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOn("Equipped Unknown");
+                }
+                else
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOff();
+                }
+                break;
+        }   
+    }
+
     public void ScrollUpToSelected(int _diffBetweenTopAndBottom)
     {
         //contentPanel.offsetMin = new Vector2(contentPanel.offsetMin.x, index * 100); //bottom    
