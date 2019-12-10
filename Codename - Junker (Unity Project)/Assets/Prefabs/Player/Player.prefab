@@ -260,17 +260,22 @@ MonoBehaviour:
   m_maxBoostSpeed: 200
   m_boostTime: 0.5
   m_minimumOpimalTiming: 0.2
-  m_maximumOpimalTiming: 0.3
-  m_pefectTimingRange: 0.3
-  m_pefectTiming: 0
+  m_minimumOpimalTimingOffset: 0.15
+  m_maximumOpimalTiming: 1.3
+  m_perfectTimingRange: 0.2
+  m_perfectTiming: 0
   m_boostTimer: 0
   m_boostCooldown: 5
+  m_superBoostPointer: {fileID: 0}
+  m_perfectBoostObject: {fileID: 0}
+  m_xboxAPrompt: {fileID: 0}
   boostOn: {fileID: 11400000, guid: ad04a98ad135b1646b455297742412a5, type: 2}
   engineOff: {fileID: 11400000, guid: 5a8e70726c7a06747a02101f21af9e4e, type: 2}
+  engineOn: {fileID: 11400000, guid: c49f06a85e9978547802662a2ce97b94, type: 2}
   m_controlScheme: 0
   m_uiCorrection: 2.8
   m_inUserTesting: 0
-  m_topFOV: 90
+  m_topFOV: 110
   m_normalFOV: 60
 --- !u!54 &2872460001895466301
 Rigidbody:
