@@ -135,6 +135,7 @@ public class PlayerHealth : MonoBehaviour
             //If the impact velocity is above a certain threshold, die on impact. I have tested this to be suitable at 40.
             if (_impactVelAbs.x > 90.0f || _impactVelAbs.y > 90.0f || _impactVelAbs.z > 90.0f)
             {
+                m_testing.sendCombatPos();
                 _isDead = true;
                 GameManager.Instance.SaveGame(_isDead);
                 m_playerDeath.Raise();
