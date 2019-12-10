@@ -62,12 +62,20 @@ public class DisplayOptions : MonoBehaviour
             m_modulesList.Add(_goTempWeaponElement);
         }
 
-        RectTransform _targetBlock = m_modulesList[0].GetComponent<RectTransform>();
-        statsPanel.sizeDelta = new Vector2(_targetBlock.sizeDelta.x /3,_targetBlock.sizeDelta.y * 1.7f);
+        if(m_modulesList.Count > 0)
+        {
+            RectTransform _targetBlock = m_modulesList[0].GetComponent<RectTransform>();
+            statsPanel.sizeDelta = new Vector2(_targetBlock.sizeDelta.x / 3, _targetBlock.sizeDelta.y * 1.7f);
 
-        index = 0;
-        UpdateHighlightPosition();
-        m_statsPanelUpdate = statsPanel.GetComponent<PopulateStatDisplay>();
+            index = 0;
+            UpdateHighlightPosition();
+            m_statsPanelUpdate = statsPanel.GetComponent<PopulateStatDisplay>();
+        }
+        else
+        {
+            statsPanel.gameObject.SetActive(false);
+        }
+        
 
         m_finishedLoad = true;
 
@@ -81,7 +89,7 @@ public class DisplayOptions : MonoBehaviour
 
     private void Update()
     {
-        if (m_finishedLoad)
+        if (m_finishedLoad && m_modulesList.Count > 0)
         {
             RectTransform _targetBlock = m_modulesList[index].GetComponent<RectTransform>();
             Vector2 _statsDisplayPosition = statsPanel.position;

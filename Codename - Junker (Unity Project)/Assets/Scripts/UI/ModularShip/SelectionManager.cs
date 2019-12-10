@@ -72,15 +72,18 @@ public class SelectionManager : MonoBehaviour
             //display.UpdateEquippedIndividual(m_takenIndexes[2], "right");
         }
             
-        display.UpdateHighlightPosition();
-        display.UpdateEquipped(m_takenIndexes);
-        DisplayEquipped();
+        if(display.ModulesList.Count > 0)
+        {
+            display.UpdateHighlightPosition();
+            display.UpdateEquipped(m_takenIndexes);
+            DisplayEquipped();
 
-        PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+            PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
 
-        m_bottomIndex = display.NumItemsOnScreen;
+            m_bottomIndex = display.NumItemsOnScreen;
 
-        m_filled = true;
+            m_filled = true;
+        }       
     }
 
     private void ScrollUpInput()
