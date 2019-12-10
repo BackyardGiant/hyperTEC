@@ -1194,13 +1194,10 @@ public class GameManager : MonoBehaviour
 
         foreach (string _weapon in _inventory.availableWeapons)
         {
-            if (_weapon != "1")
+            if (_weapon.Length > 0)
             {
-                if (_weapon.Length > 0)
-                {
-                    WeaponData _tempWeapon = ModuleManager.Instance.CreateStatBlock(_weapon);
-                    PlayerInventoryManager.Instance.AvailableWeapons.Add(_tempWeapon);
-                }
+                WeaponData _tempWeapon = ModuleManager.Instance.CreateStatBlock(_weapon);
+                PlayerInventoryManager.Instance.AvailableWeapons.Add(_tempWeapon);
             }
         }
         foreach (string _engine in _inventory.availableEngines)

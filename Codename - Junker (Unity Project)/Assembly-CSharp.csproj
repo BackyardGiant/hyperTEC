@@ -62,12 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\AnimateBeaconFlash.cs" />
     <Compile Include="Assets\Art\Skybox\Starfield Skybox\Demo\Script\LookCamera.cs" />
-    <Compile Include="Assets\BasicFreeviewCamera.cs" />
-    <Compile Include="Assets\DisplayUsabilityData.cs" />
     <Compile Include="Assets\Editors\TerrainGenEditor.cs" />
-    <Compile Include="Assets\HealthBarFormatting.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\GetSetAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\TrackballAttribute.cs" />
@@ -118,6 +114,7 @@
     <Compile Include="Assets\Scripts\Extensions\ObjectExtensions.cs" />
     <Compile Include="Assets\Scripts\Extensions\TransformExtensions.cs" />
     <Compile Include="Assets\Scripts\Management\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\Management\DisplayUsabilityData.cs" />
     <Compile Include="Assets\Scripts\Management\DustManager.cs" />
     <Compile Include="Assets\Scripts\Management\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Management\ExplosionController.cs" />
@@ -143,6 +140,7 @@
     <Compile Include="Assets\Scripts\Management\UsabilityTestingController.cs" />
     <Compile Include="Assets\Scripts\Movement\AdvancedEnemyMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\BasicEnemyMovement.cs" />
+    <Compile Include="Assets\Scripts\Movement\BasicFreeviewCamera.cs" />
     <Compile Include="Assets\Scripts\Movement\BulletBehaviour.cs" />
     <Compile Include="Assets\Scripts\Movement\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\CameraShake.cs" />
@@ -175,8 +173,10 @@
     <Compile Include="Assets\Scripts\Temporary Scripts\TempEnemyWanderVisuals.cs" />
     <Compile Include="Assets\Scripts\Temporary Scripts\TempGeneration.cs" />
     <Compile Include="Assets\Scripts\Temporary Scripts\TestModularShip.cs" />
+    <Compile Include="Assets\Scripts\UI\AnimateBeaconFlash.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\DropWeapons.cs" />
     <Compile Include="Assets\Scripts\UI\Enemy\EnemyDetection.cs" />
+    <Compile Include="Assets\Scripts\UI\HealthBarFormatting.cs" />
     <Compile Include="Assets\Scripts\UI\InventoryItemResize.cs" />
     <Compile Include="Assets\Scripts\UI\LootDetection.cs" />
     <Compile Include="Assets\Scripts\UI\ModularShip\DisplayOptions.cs" />
@@ -254,31 +254,31 @@
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformCompute.compute" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/awebb4/Documents/GitHub/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/jjbrewer/Documents/GitKraken/hyperTEC/Codename - Junker (Unity Project)/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

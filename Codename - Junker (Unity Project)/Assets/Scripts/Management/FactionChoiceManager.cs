@@ -11,6 +11,10 @@ public class FactionChoiceManager : MonoBehaviour
     [SerializeField]
     private EngineData traderEngine, explorerEngine, constructionEngine;
     [SerializeField]
+    private WeaponData weaponData;
+    [SerializeField]
+    private GameObject m_weaponLootParent;
+    [SerializeField]
     private GameObject m_engineLootParent;
 
     private bool m_readyForInput;
@@ -149,6 +153,7 @@ public class FactionChoiceManager : MonoBehaviour
                         this.gameObject.SetActive(false);
                         break;
                 }
+                SpawnStartedGuns();
             }
         }
     }
@@ -182,5 +187,27 @@ public class FactionChoiceManager : MonoBehaviour
         GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(constructionEngine);
         _tempEngine.transform.SetParent(_lootParent.transform);
         _tempEngine.transform.localPosition = Vector3.zero;
+    }
+
+    void SpawnStartedGuns()
+    {
+        GameObject _lootParent = Instantiate(m_weaponLootParent);
+        _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 25) + (Vector3.right * 10);
+        GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(weaponData);
+        _leftGun.GetComponent<WeaponGenerator>().statBlock = weaponData;
+        _leftGun.transform.SetParent(_lootParent.transform);
+        _leftGun.transform.localPosition = Vector3.zero;
+        _leftGun.transform.localRotation = Quaternion.identity;
+        _leftGun.transform.localScale = new Vector3(1, 1, 1);
+
+        _lootParent = Instantiate(m_weaponLootParent);
+        _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 20) - (Vector3.right * 10);
+        GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(weaponData);
+        _rightGun.GetComponent<WeaponGenerator>().statBlock = weaponData;
+        _rightGun.transform.SetParent(_lootParent.transform);
+        _rightGun.transform.position = Vector3.zero;
+        _rightGun.transform.localPosition = Vector3.zero;
+        _rightGun.transform.localRotation = Quaternion.identity;
+        _rightGun.transform.localScale = new Vector3(-1, 1, 1);
     }
 }
