@@ -421,7 +421,7 @@ public class PlayerMovement : MonoBehaviour
             m_rbPlayer.AddForce(transform.up * GameManager.Instance.GameSpeed * m_uiCorrection / 80f);
         }
 
-        if (!m_boostOn && !m_engageBoost)
+        if (!m_boostOn)
         {
             // This takes the total torque of pitch, yaw and roll and applies it as a force to the player rigidbody
             m_rbPlayer.AddTorque(torque * GameManager.Instance.GameSpeed);

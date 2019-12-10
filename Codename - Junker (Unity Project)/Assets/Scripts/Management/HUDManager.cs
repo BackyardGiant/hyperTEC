@@ -127,6 +127,7 @@ public class HUDManager : MonoBehaviour
     public int LootViewDistance { get => m_lootViewDistance; }
     public GameObject ClosetEnemy { get => m_closestEnemy; set => m_closestEnemy = value; }
     public Vector2 ClosestEnemyScreenPos { get => m_closestEnemyScreenPos; set => m_closestEnemyScreenPos = value; }
+    public int QuestViewDistance { get => m_questViewDistance; set => m_questViewDistance = value; }
     #endregion
 
     void Start()
@@ -497,7 +498,7 @@ public class HUDManager : MonoBehaviour
 
         //moveit
         float _distancePercentage =  1 - Vector3.Distance(Player.transform.position, _enemy.GetComponent<Transform>().position) / m_viewDistance;
-        float _finalSize = 0.1f + _distancePercentage * m_enemyTargetSize ;
+        float _finalSize = 0.1f + _distancePercentage * m_enemyTargetSize;
 
 
 
@@ -1226,7 +1227,19 @@ public class HUDManager : MonoBehaviour
             _beacon.QuestTarget = _beaconObject;
         }
         //moveit
-        _targetImage.rectTransform.localScale = new Vector3(m_questTargetSize, m_questTargetSize, m_questTargetSize);
+        //moveit
+        float _distancePercentage = 1 - Vector3.Distance(Player.transform.position, _beacon.GetComponent<Transform>().position) / m_questViewDistance;
+        float _finalSize = 0.1f + _distancePercentage * m_questTargetSize;
+
+
+
+
+
+        _targetImage.rectTransform.localScale = new Vector3(_finalSize, _finalSize, _finalSize);
+
+
+
+
         _targetImage.sprite = TargetSprite;
         _targetImage.transform.position = _screenPos;
         _targetImage.transform.localEulerAngles = Vector3.zero;

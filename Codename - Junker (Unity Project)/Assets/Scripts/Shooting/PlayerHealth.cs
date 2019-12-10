@@ -9,7 +9,7 @@ public class PlayerHealth : MonoBehaviour
     private GameEvent m_playerDeath;
 
     [SerializeField]
-    private IntVariable[] m_playerHealth = new IntVariable[4];
+    private FloatVariable[] m_playerHealth = new FloatVariable[4];
 
     [SerializeField]
     private int m_healthMax;
@@ -62,7 +62,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (m_timeSinceDamage > m_rechargePeriod && m_playerHealth[_currentSave].Value != m_healthMax && !_isDead)
         {
-            m_playerHealth[_currentSave].Value += (int)m_rechargeRate;
+            m_playerHealth[_currentSave].Value += (m_rechargeRate * 50 * Time.deltaTime);
             HUDManager.Instance.Healthbar.fillAmount = (float)m_playerHealth[_currentSave].Value / m_healthMax;
         }
 
@@ -74,9 +74,9 @@ public class PlayerHealth : MonoBehaviour
         m_testing.sendCombatPos();
         if (m_playerHealth[_currentSave].Value - _dmg > 0)
         {
-            m_playerHealth[_currentSave].Value -= (int)_dmg;
+            m_playerHealth[_currentSave].Value -= _dmg;
             AudioManager.Instance.PlayWorld("PlayerTakeDamage", this.gameObject, false, true);
-            HUDManager.Instance.Healthbar.fillAmount = (float)m_playerHealth[_currentSave].Value / m_healthMax;
+            HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[_currentSave].Value / m_healthMax;
             m_timeSinceDamage = 0;
             //Debug.Log("<color=green>CURRENT HEALTH : </color>" + m_playerHealth[_currentSave].Value);
             CameraShake.Instance.Shake(0.15f, 0.3f);
@@ -118,7 +118,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void ResetHealth()
     {
-        foreach(IntVariable healthBar in m_playerHealth)
+        foreach(FloatVariable healthBar in m_playerHealth)
         {
             healthBar.Value = m_healthMax;
         }
