@@ -225,7 +225,7 @@ public class SelectionManager : MonoBehaviour
 
                     for (int i = 0; i < m_takenIndexes.Length; i++)
                     {
-                        if(display.ModulesList.Count == 1 || m_currentlySelectedIndex == m_takenIndexes[i])
+                        if((PlayerInventoryManager.Instance.AvailableWeapons.Count == 1 && PlayerInventoryManager.Instance.AvailableEngines.Count == 1) || m_currentlySelectedIndex == m_takenIndexes[i])
                         {
                             _equipped = true;
                             break;
