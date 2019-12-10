@@ -1,4 +1,4 @@
-<a rel="Logo" href="http://backyardgiant.co.uk/img/darkpng.png">
+<a rel="Logo" href="https://backyardgiant.co.uk"><img alt="Creative Commons License" style="border-width:0" src="http://backyardgiant.co.uk/img/darkpng.png" /></a>
 This is the repository for the SOFT 354 project of the team Backyard Giant
 
 <h2>Team members:</h2>
