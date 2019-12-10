@@ -72,15 +72,18 @@ public class SelectionManager : MonoBehaviour
             //display.UpdateEquippedIndividual(m_takenIndexes[2], "right");
         }
             
-        display.UpdateHighlightPosition();
-        display.UpdateEquipped(m_takenIndexes);
-        DisplayEquipped();
+        if(display.ModulesList.Count > 0)
+        {
+            display.UpdateHighlightPosition();
+            display.UpdateEquipped(m_takenIndexes);
+            DisplayEquipped();
 
-        PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
+            PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);
 
-        m_bottomIndex = display.NumItemsOnScreen;
+            m_bottomIndex = display.NumItemsOnScreen;
 
-        m_filled = true;
+            m_filled = true;
+        }       
     }
 
     private void ScrollUpInput()
@@ -222,7 +225,7 @@ public class SelectionManager : MonoBehaviour
 
                     for (int i = 0; i < m_takenIndexes.Length; i++)
                     {
-                        if(display.ModulesList.Count == 1 || m_currentlySelectedIndex == m_takenIndexes[i])
+                        if((PlayerInventoryManager.Instance.AvailableWeapons.Count == 1 && PlayerInventoryManager.Instance.AvailableEngines.Count == 1) || m_currentlySelectedIndex == m_takenIndexes[i])
                         {
                             _equipped = true;
                             break;
