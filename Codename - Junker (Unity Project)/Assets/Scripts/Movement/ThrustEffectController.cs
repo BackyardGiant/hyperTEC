@@ -396,26 +396,29 @@ public class ThrustEffectController : MonoBehaviour
         }
     }
 
-    private void ResetParticles()
+    public void ResetParticles()
     {
-        m_engineOff = false;
-
-        var _emissionMain = m_engineParticles[0].main;
-        for (int i = 0; i < m_engineParticles.Length; i++)
+        if (player != null)
         {
-            _emissionMain = m_engineParticles[i].main;
-            _emissionMain.simulationSpeed = 1f;
-            _emissionMain.startLifetime = m_emissionLifetime[i];
-        }
+            m_engineOff = false;
 
-        //Boost High speed 
-        var _highSpeedEmissionMain = m_highSpeedEngineParticles[0].main;
-        for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
-        {
-            _highSpeedEmissionMain = m_highSpeedEngineParticles[i].main;
-            _highSpeedEmissionMain.simulationSpeed = 1f;
-            _highSpeedEmissionMain.startLifetime = m_highSpeedEmissionLifetime[i];
+            var _emissionMain = m_engineParticles[0].main;
+            for (int i = 0; i < m_engineParticles.Length; i++)
+            {
+                _emissionMain = m_engineParticles[i].main;
+                _emissionMain.simulationSpeed = 1f;
+                _emissionMain.startLifetime = m_emissionLifetime[i];
+            }
+
+            //Boost High speed 
+            var _highSpeedEmissionMain = m_highSpeedEngineParticles[0].main;
+            for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
+            {
+                _highSpeedEmissionMain = m_highSpeedEngineParticles[i].main;
+                _highSpeedEmissionMain.simulationSpeed = 1f;
+                _highSpeedEmissionMain.startLifetime = m_highSpeedEmissionLifetime[i];
+            }
+            m_currentlyBoosting = false;
         }
-        m_currentlyBoosting = false;
     }
 }

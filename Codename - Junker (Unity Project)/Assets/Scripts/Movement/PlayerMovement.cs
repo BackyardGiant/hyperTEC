@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -97,11 +98,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float m_minimumOpimalTiming;
     [SerializeField]
+    private float m_minimumOpimalTimingOffset;
+    [SerializeField]
     private float m_maximumOpimalTiming;
     [SerializeField]
-    private float m_pefectTimingRange;
+    private float m_perfectTimingRange;
     [SerializeField]
-    private float m_pefectTiming;
+    private float m_perfectTiming;
     [SerializeField]
     private float m_boostTimer;
 
@@ -110,12 +113,22 @@ public class PlayerMovement : MonoBehaviour
     private bool m_canBoost = true;
 
     private bool m_APressed = false;
+
+    [SerializeField]
+    private GameObject m_superBoostHUD;
+    [SerializeField]
+    private GameObject m_superBoostPointer;
+    [SerializeField]
+    private GameObject m_perfectBoostObject;
+    [SerializeField]
+    private GameObject m_xboxAPrompt;
     #endregion
 
     #region Engine Particle System
     [Header("Particle System Events")]
     public GameEvent boostOn;
     public GameEvent engineOff;
+    public GameEvent engineOn;
     #endregion
 
     [SerializeField, Header("Controls and Engine")]
@@ -149,6 +162,7 @@ public class PlayerMovement : MonoBehaviour
 
         m_rbPlayer = gameObject.GetComponent<Rigidbody>();
         m_playerCam = Camera.main;
+        m_superBoostHUD.SetActive(false);
     }
 
     private void Start()
@@ -188,7 +202,12 @@ public class PlayerMovement : MonoBehaviour
 
             if (Input.GetAxis("MacroEngine") > 0.1f && m_killedEngine && m_canBoost)
             {
-                m_pefectTiming = Random.Range(m_minimumOpimalTiming + m_pefectTimingRange, m_maximumOpimalTiming - m_pefectTimingRange);
+                m_superBoostHUD.SetActive(true);
+                m_perfectTiming = Random.Range(m_minimumOpimalTiming + m_perfectTimingRange + m_minimumOpimalTimingOffset, m_maximumOpimalTiming - m_perfectTimingRange);
+                float xPos = m_perfectTiming * 48.6666666666666f;
+                m_perfectBoostObject.GetComponent<RectTransform>().localPosition = new Vector3(xPos - 73, -50, 0);
+                m_xboxAPrompt.GetComponent<RectTransform>().localPosition = new Vector3(xPos - 73, -75, 0);
+                m_boostTimer = 0;
                 m_killedEngine = false;
                 m_engageBoost = true;
             }
@@ -240,16 +259,48 @@ public class PlayerMovement : MonoBehaviour
         if (m_engageBoost)
         {
             m_boostTimer += Time.deltaTime;
+            float xPos = m_boostTimer * 48.6666666666666f;
+            xPos = Mathf.Clamp(xPos, 0, 146);
+            m_superBoostPointer.GetComponent<RectTransform>().localPosition = new Vector3(xPos - 73, -50, 0);
+            Color targetColour = new Color(1, 1, 1, 1);
+
+            if (m_boostTimer > 3)
+            {
+                m_perfectBoost = false;
+                m_canBoost = false;
+                m_engageBoost = false;
+                engineOn.Raise();
+                StartCoroutine(boostCooldown());
+                m_superBoostHUD.SetActive(false);
+            }
+            else if (m_boostTimer < m_minimumOpimalTiming || m_boostTimer > m_maximumOpimalTiming)
+            {
+                targetColour = new Color(1,1,1,0.2f);
+            }
+            else if (m_boostTimer < (m_perfectTiming - m_perfectTimingRange) || m_boostTimer > (m_perfectTiming + m_perfectTimingRange))
+            {
+                targetColour = new Color(1, 1, 1, 0.6f);
+            }
+            else
+            {
+                targetColour = new Color(1, 1, 1, 1);
+            }
+
+            m_xboxAPrompt.GetComponent<RawImage>().color = Color.Lerp(m_xboxAPrompt.GetComponent<RawImage>().color, targetColour, 0.5f);
 
             if (m_APressed)
             {
                 m_APressed = false;
+                m_superBoostHUD.SetActive(false);
                 if (m_boostTimer < m_minimumOpimalTiming || m_boostTimer > m_maximumOpimalTiming)
                 {
-                    m_boostScale = 0;
-                    m_perfectBoost = true;
+                    m_perfectBoost = false;
+                    m_canBoost = false;
+                    m_engageBoost = false;
+                    engineOn.Raise();
+                    StartCoroutine(boostCooldown());
                 }
-                else if (m_boostTimer < (m_pefectTiming - m_pefectTimingRange) || m_boostTimer > (m_pefectTiming + m_pefectTimingRange))
+                else if (m_boostTimer < (m_perfectTiming - m_perfectTimingRange) || m_boostTimer > (m_perfectTiming + m_perfectTimingRange))
                 {
                     m_boostScale = 0.75f;
                     m_perfectBoost = true;
@@ -349,8 +400,20 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_boostOn)
         {
-            m_playerCam.fieldOfView = Mathf.Lerp(m_playerCam.fieldOfView, m_topFOV, 0.01f);
-            CameraShake.Instance.Shake(0.2f, 0.2f);
+            if (m_boostScale == 1)
+            {
+                m_playerCam.fieldOfView = Mathf.Lerp(m_playerCam.fieldOfView, m_topFOV, 0.01f);
+                CameraShake.Instance.Shake(0.4f, 0.4f);
+            }
+            else if (m_boostScale == 0.75f)
+            {
+                m_playerCam.fieldOfView = Mathf.Lerp(m_playerCam.fieldOfView, m_topFOV - 20, 0.01f);
+                CameraShake.Instance.Shake(0.2f, 0.2f);
+            }
+            else
+            {
+                CameraShake.Instance.Shake(0.05f, 0.05f);
+            }
             if (m_rbPlayer.velocity.magnitude < m_maxBoostSpeed)
             {
                 m_rbPlayer.AddForce(m_boostScale * m_boostSpeed * transform.forward * GameManager.Instance.GameSpeed);
