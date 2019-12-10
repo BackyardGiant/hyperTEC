@@ -1,4 +1,4 @@
-# HYPERTEC
+<a rel="Logo" href="http://backyardgiant.co.uk/img/darkpng.png">
 This is the repository for the SOFT 354 project of the team Backyard Giant
 
 <h2>Team members:</h2>
