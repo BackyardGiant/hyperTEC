@@ -159,12 +159,12 @@ public class PauseMenuManagement : MonoBehaviour
     private void AnimateBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
-        _bar.fillAmount += 2f * Time.deltaTime;
+        _bar.fillAmount += 3.5f * Time.deltaTime;
     }
     private void CloseBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
-        _bar.fillAmount -= 3f * Time.deltaTime;
+        _bar.fillAmount -= 2f * Time.deltaTime;
     }
     private void InstantiatePlayerPrefs()
     {

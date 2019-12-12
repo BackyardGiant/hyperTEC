@@ -43,6 +43,7 @@ public class EnemyStats : MonoBehaviour
 
     public void TakeDamage(float _damageTaken)
     {
+        compareFaction();
         m_currentHealth -= _damageTaken;
 
         /////////////////////////////////////////////
@@ -124,4 +125,48 @@ public class EnemyStats : MonoBehaviour
 
         enemyCollider.enabled = false;
     }
+
+    private bool compareFaction()
+    {
+        bool _value;
+        if (returnPlayerFaction() == this.m_currentFaction.ToString())
+        {
+            _value = true;
+            try { HUDManager.Instance.DisplayWarningSetAmount("Friendly Fire", 1); } catch { }
+        }
+        else
+        {
+            _value = false;
+        }
+
+
+        return _value;
+    }
+
+    private string returnPlayerFaction()
+    {
+        string _result = "NotSet";
+
+        string _saveName = PlayerPrefs.GetString("CurrentSave", "NoSave");
+        char _saveIndex = _saveName[4];
+        string _factionName = PlayerPrefs.GetString("ChosenFaction" + _saveIndex);
+
+        switch (_factionName)
+        {
+            case "initial":
+                _result = "initial";
+                break;
+            case "trader":
+                _result = "trader";
+                break;
+            case "exploratory":
+                _result = "explorer";
+                break;
+            case "construction":
+                _result = "construction";
+                break;
+        }
+        return _result;
+    }
+
 }

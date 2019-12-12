@@ -89,6 +89,7 @@ public class PlayerHealth : MonoBehaviour
             m_playerDeath.Raise();
 
             HUDManager.Instance.Healthbar.fillAmount = 0;
+            HUDManager.Instance.HideWarning();
 
             GetComponent<Rigidbody>().velocity = Vector3.zero;
 

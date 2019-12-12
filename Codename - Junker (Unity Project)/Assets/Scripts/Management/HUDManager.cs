@@ -14,6 +14,7 @@ public class HUDManager : MonoBehaviour
     public GameObject Explosion;
     public Transform WaypointsAndMarkers;
     public Image Healthbar;
+    public TerrainGenerator terrain;
 
     //public Inventory playerInv;
 
@@ -111,6 +112,7 @@ public class HUDManager : MonoBehaviour
     private bool m_enableQuestPickup;
     private bool m_currentlyClosingQuestScan = false;
     private bool m_currentlyQuestScanning = false;
+    private bool m_warningActive = false;
     private GameObject m_displayDismissed;
     private GameObject m_currentTarget;
     private GameObject m_prevTarget;
@@ -461,6 +463,9 @@ public class HUDManager : MonoBehaviour
 
         #endregion
         DisplayActiveQuest();
+
+        //Checks the player is within the play area.
+        warnPlayerRange();
     }
 
     #region Enemy Detection Methods
@@ -1423,18 +1428,57 @@ public class HUDManager : MonoBehaviour
             m_warningObject.SetActive(true);
         }
     }
-
     public void HideWarning()
     {
         m_warningObject.SetActive(false);
     }
+    public void DisplayWarningSetAmount(string _warningText, int _timesToDisplay)
+    {
+        Debug.Log("Warning is on : " + m_warningActive);
+        if(m_warningActive == false)
+        {
+            if (m_warningObject.activeSelf == true)
+            {
+                Debug.LogWarning("Warning is already active.");
+            }
+            else
+            {
+                m_warningObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _warningText;
+                m_warningObject.SetActive(true);
+                Invoke("HideWarning", _timesToDisplay);
+                Invoke("setWarningInactive", _timesToDisplay);
+            }
+        }
+    }
+    private void setWarningInactive()
+    {
+        m_warningActive = false;
+    }
+    public bool warningActive()
+    {
+        return m_warningActive;
+    }
+    public void warnPlayerRange()
+    {
+        float safeDistance = (float) terrain.usableEnvironmentSize;
+        float currentDistance = Vector3.Distance(Vector3.zero, Player.transform.position);
+
+        if (currentDistance > safeDistance)
+        {
+            Debug.Log("Warning");
+            DisplayWarningSetAmount("Leaving Area", 1);
+        }
+    }
+
 
     #endregion
-
     public void playHitmarker()
     {
         m_hitmarkerObject.GetComponent<Animator>().Play("HitmarkerFlash");
     }
+
+
+
     #region Universal Methods
     private bool IsVisibleFrom(Renderer renderer, Camera camera)
     {

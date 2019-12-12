@@ -21,7 +21,7 @@ public class HealthBarFormatting : MonoBehaviour
             transform.GetComponent<Image>().color = Color.Lerp(transform.GetComponent<Image>().color, m_idleColour, 0.1f);
             m_secondHealthBar.color = Color.Lerp(transform.GetComponent<Image>().color, m_idleColour, 0.1f);
         }
-        if (currentHealthPercentage < 1.0f && currentHealthPercentage > 0.3f)
+        if (currentHealthPercentage < 1.0f && currentHealthPercentage > 0.5f)
         {
             transform.GetComponent<Image>().color = Color.Lerp(transform.GetComponent<Image>().color,m_normalColour,0.1f);
             m_secondHealthBar.color = Color.Lerp(transform.GetComponent<Image>().color, m_normalColour, 0.1f);
@@ -30,6 +30,10 @@ public class HealthBarFormatting : MonoBehaviour
         {
             transform.GetComponent<Image>().color = Color.Lerp(transform.GetComponent<Image>().color, m_criticalColour, 0.1f);
             m_secondHealthBar.color = Color.Lerp(transform.GetComponent<Image>().color, m_criticalColour, 0.1f);
+        }
+        if(currentHealthPercentage < 0.4f)
+        {
+            try { HUDManager.Instance.DisplayWarningSetAmount("Low Health", 1); } catch { }
         }
 
     }
