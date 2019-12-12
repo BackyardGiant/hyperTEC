@@ -6,6 +6,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.Globalization;
+using TMPro;
 
 public class DisplayUsabilityData : MonoBehaviour
 {
@@ -25,22 +26,54 @@ public class DisplayUsabilityData : MonoBehaviour
     private List<string> comp4Types = new List<string>();
     private List<Vector3> comp4Pos = new List<Vector3>();
 
-
-
     private static string returnCSV1;
     private static string returnCSV2;
     private static string returnCSV3;
     private static string returnCSV4;
+
+
+    private bool m_display1,m_display2, m_display3, m_display4;
+
+    public GameObject m_text1, m_text2, m_text3, m_text4;
+
 
     private Vector3 m_startPosition;
 
     // Update is called once per frame
     void Start()
     {
+        m_display1 = true;
+        m_display2 = true;
+        m_display3 = true;
+        m_display4 = true;
+
         InvokeRepeating("LoadComputer1Data",0,3);
         InvokeRepeating("LoadComputer2Data", 0,3);
         InvokeRepeating("LoadComputer3Data", 0, 3);
         InvokeRepeating("LoadComputer4Data", 0, 3);
+    }
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            m_display1 = !m_display1;
+            if(m_text1.activeInHierarchy == true) { m_text1.SetActive(false); } else { m_text1.SetActive(true); }
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            m_display2 = !m_display2;
+            if (m_text2.activeInHierarchy == true) { m_text2.SetActive(false); } else { m_text2.SetActive(true); }
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            m_display3 = !m_display3;
+            if (m_text3.activeInHierarchy == true) { m_text3.SetActive(false); } else { m_text3.SetActive(true); }
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            m_display4 = !m_display4;
+            if (m_text4.activeInHierarchy == true) { m_text4.SetActive(false); } else { m_text4.SetActive(true); }
+        }
     }
 
     void OnDrawGizmos()
@@ -55,6 +88,10 @@ public class DisplayUsabilityData : MonoBehaviour
 
     void LoadComputer1Data()
     {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Destroy(transform.GetChild(i).gameObject);
+        }
         try
         {
             StartCoroutine(DownloadCSVCoroutine("1DQ_SnzBHfzTird2qjwDbvJIREqaF07XmuxDBdNoOMKM", 1));
@@ -106,16 +143,15 @@ public class DisplayUsabilityData : MonoBehaviour
                     i += 1;
                 }
             }
-            ShowComputer1Data();
+            if (m_display1 == true)
+            {
+                ShowComputer1Data();
+            }
         }
         catch { Debug.LogWarning("Error Loading Computer 1 Data"); }
     }
     void ShowComputer1Data()
     {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Destroy(transform.GetChild(i).gameObject);
-        }
 
         GameObject _new = new GameObject();
         _new.transform.parent = this.transform;
@@ -198,7 +234,10 @@ public class DisplayUsabilityData : MonoBehaviour
                     i += 1;
                 }
             }
-            ShowComputer2Data();
+            if (m_display2 == true)
+            {
+                ShowComputer2Data();
+            }
         }
         catch { Debug.LogWarning("Error Loading Computer 2 Data"); }
     }
@@ -252,7 +291,6 @@ public class DisplayUsabilityData : MonoBehaviour
             }
         }
     }
-
     void LoadComputer3Data()
     {
         try
@@ -287,7 +325,10 @@ public class DisplayUsabilityData : MonoBehaviour
                     i += 1;
                 }
             }
-            ShowComputer3Data();
+            if(m_display3 == true)
+            {
+                ShowComputer3Data();
+            }
         }
         catch { Debug.LogWarning("Error Loading Computer 3 Data"); }
     }
@@ -341,7 +382,6 @@ public class DisplayUsabilityData : MonoBehaviour
             }
         }
     }
-
     void LoadComputer4Data()
     {
         try
@@ -376,7 +416,10 @@ public class DisplayUsabilityData : MonoBehaviour
                     i += 1;
                 }
             }
-            ShowComputer4Data();
+            if(m_display4 == true)
+            {
+                ShowComputer4Data();
+            }
         }
         catch { Debug.LogWarning("Error Loading Computer 3 Data"); }
     }
