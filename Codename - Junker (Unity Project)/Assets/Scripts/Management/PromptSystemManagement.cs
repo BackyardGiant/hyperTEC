@@ -8,7 +8,7 @@ public class PromptSystemManagement : MonoBehaviour
     private static PromptSystemManagement s_instance;
     public static PromptSystemManagement Instance { get => s_instance; set => s_instance = value; }
 
-    public enum PromptType { QuestPickup, ItemPickup };
+    public enum PromptType { QuestPickup, ItemPickup , InventoryWarning};
 
 
     [SerializeField]
@@ -50,28 +50,33 @@ public class PromptSystemManagement : MonoBehaviour
                 if (m_currentType == PromptType.QuestPickup)
                 {
                     
-                    m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "   Quest Collected";
+                    m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Quest Collected";
                 }
                 else if(m_currentType == PromptType.ItemPickup)
                 {
-                    m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "   Item Collected";
+                    m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Item Collected";
+
+                }
+                else if (m_currentType == PromptType.InventoryWarning)
+                {
+                    m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Item currently equipped";
                 }
 
-                m_promptObject.SetActive(true);
+            m_promptObject.SetActive(true);
                 Invoke("HidePrompt", 2.5f);
         }
         else if(m_promptActive == true)
         {
             if (m_currentType == PromptType.QuestPickup)
             {
-                m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "   " + m_currentPromptCount + "x Quest Collected";
+                m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = m_currentPromptCount + "x Quest Collected";
                 CancelInvoke();
                 m_promptAnimator.Play("ContinuePrompt");
                 Invoke("HidePrompt", 2.5f);
             }
             else if (m_currentType == PromptType.ItemPickup)
             {
-                m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "   " + m_currentPromptCount + "x Item Collected";
+                m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = m_currentPromptCount + "x Item Collected";
                 CancelInvoke();
                 m_promptAnimator.Play("ContinuePrompt");
                 Invoke("HidePrompt", 2.5f);
