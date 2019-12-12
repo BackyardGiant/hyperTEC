@@ -36,6 +36,7 @@ public class MainMenuManagement : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = false;
         latestSave();
         m_selectedIndex = 0;
         m_onMenu = false;
@@ -73,7 +74,7 @@ public class MainMenuManagement : MonoBehaviour
         {
             m_mainMenuAnimator.speed = 1000;
             m_logoAnimator.speed = 1000;
-            Invoke("allowInputs", 1.5f);
+            Invoke("allowInputs",0f);
         }
 
         if (m_onMenu == true)
@@ -188,12 +189,12 @@ public class MainMenuManagement : MonoBehaviour
     private void AnimateBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
-        _bar.fillAmount += 2f * Time.deltaTime;
+        _bar.fillAmount += 3.5f * Time.deltaTime;
     }
     private void CloseBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
-        _bar.fillAmount -= 3f * Time.deltaTime;
+        _bar.fillAmount -= 2f * Time.deltaTime;
     }
     private void InstantiatePlayerPrefs()
     {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public class TerrainGenerator : MonoBehaviour
 {
+    public int usableEnvironmentSize;
+
     [Header ("Environment Variables"), Tooltip("The range at which clusters will generate.")]
     [SerializeField] private int m_environmentSize;
     [SerializeField] private int m_ambientAsteroids;
@@ -83,6 +85,14 @@ public class TerrainGenerator : MonoBehaviour
     }
 
     #region Helpful Methods
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(Vector3.zero, usableEnvironmentSize);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(Vector3.zero, m_environmentSize);
+    }
     private bool chanceRoll(float _chance)
     {
         float _random = Random.Range(0.0f, 1.0f);
