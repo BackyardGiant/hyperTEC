@@ -122,7 +122,7 @@ public class PlayerShooting : MonoBehaviour
                     m_target.position = (m_aimingCamera.transform.position + (m_aimingCamera.transform.TransformDirection(Vector3.forward) * m_range));
                 }
 
-                if (HUDManager.Instance.ClosetEnemy != null)
+                if (HUDManager.Instance.ClosetEnemy != null && HUDManager.Instance.ClosetEnemy.GetComponent<EnemyStats>().m_currentFaction.ToString() != returnFaction())
                 {
                     if (Vector2.Distance(HUDManager.Instance.ClosestEnemyScreenPos, new Vector2(Screen.width / 2, Screen.height / 2)) < m_autoAimDistance)
                     {
@@ -147,8 +147,8 @@ public class PlayerShooting : MonoBehaviour
                 m_spawnLocations[0].transform.LookAt(m_target.position + (offset1 * (1 - m_rightBulletAccuracy)));
                 m_spawnLocations[1].transform.LookAt(m_target.position + (offset2 * (1 - m_leftBulletAccuracy)));
 
-                float _random1 = Random.Range(1f, 2f);
-                float _random2 = Random.Range(1f, 2f);
+                float _random1 = Random.Range(0.85f, 2f);
+                float _random2 = Random.Range(0.85f, 2f);
 
                 if (Input.GetAxis("RightTrigger") > 0.1f && m_rightWeaponActive && m_playerCanShoot && PlayerInventoryManager.Instance.EquippedRightWeapon != null)
                 {
@@ -345,5 +345,31 @@ public class PlayerShooting : MonoBehaviour
 
 
         }
+    }
+
+    private string returnFaction()
+    {
+        string _result = "NotSet";
+
+        string _saveName = PlayerPrefs.GetString("CurrentSave", "NoSave");
+        char _saveIndex = _saveName[4];
+        string _factionName = PlayerPrefs.GetString("ChosenFaction" + _saveIndex);
+
+        switch (_factionName)
+        {
+            case "initial":
+                _result = "initial";
+                break;
+            case "trader":
+                _result = "trader";
+                break;
+            case "exploratory":
+                _result = "explorer";
+                break;
+            case "construction":
+                _result = "construction";
+                break;
+        }
+        return _result;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -92,12 +93,42 @@ public class PlayerMovement : MonoBehaviour
     private bool m_killedEngine;
     private bool m_engageBoost;
     private bool m_boostOn;
+    private bool m_perfectBoost;
+    private float m_boostScale;
+    [SerializeField]
+    private float m_minimumOpimalTiming;
+    [SerializeField]
+    private float m_minimumOpimalTimingOffset;
+    [SerializeField]
+    private float m_maximumOpimalTiming;
+    [SerializeField]
+    private float m_perfectTimingRange;
+    [SerializeField]
+    private float m_perfectTiming;
+    [SerializeField]
+    private float m_boostTimer;
+
+    [SerializeField]
+    private float m_boostCooldown;
+    private bool m_canBoost = true;
+
+    private bool m_APressed = false;
+
+    [SerializeField]
+    private GameObject m_superBoostHUD;
+    [SerializeField]
+    private GameObject m_superBoostPointer;
+    [SerializeField]
+    private GameObject m_perfectBoostObject;
+    [SerializeField]
+    private GameObject m_xboxAPrompt;
     #endregion
 
     #region Engine Particle System
     [Header("Particle System Events")]
     public GameEvent boostOn;
     public GameEvent engineOff;
+    public GameEvent engineOn;
     #endregion
 
     [SerializeField, Header("Controls and Engine")]
@@ -108,6 +139,14 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField]
     private bool m_inUserTesting;
+
+    private Camera m_playerCam;
+    [SerializeField]
+    private float m_topFOV;
+    [SerializeField]
+    private float m_normalFOV;
+
+
 
     public float CurrentSpeed { get => m_currentSpeed; }
     public float MaxAcceleration { get => m_maxAcceleration; }
@@ -120,11 +159,14 @@ public class PlayerMovement : MonoBehaviour
         {
             m_invertScale = -1;
         }
+
+        m_rbPlayer = gameObject.GetComponent<Rigidbody>();
+        m_playerCam = Camera.main;
+        m_superBoostHUD.SetActive(false);
     }
 
     private void Start()
     {
-        m_rbPlayer = gameObject.GetComponent<Rigidbody>();
         m_rbPlayer.inertiaTensor = new Vector3(0.2f, 0.2f, 0.2f); //Used to make the player always react the same to torque no matter the size or shape of the collider
         if (PlayerPrefs.GetInt("ControlScheme") == 0)
         {
@@ -140,6 +182,10 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (m_invertY)
+        {
+            m_invertScale = -1;
+        }
         if (GameManager.Instance.GameSpeed != 0 && PlayerInventoryManager.Instance.EquippedEngine != null)
         {
             // Restets posative force application to the ship (If you let go of go forwards it stops applying force)
@@ -154,13 +200,19 @@ public class PlayerMovement : MonoBehaviour
                 m_negativeSpeed = 0;
             }
 
-            if (Input.GetAxis("MacroEngine") > 0.1f && m_killedEngine)
+            if (Input.GetAxis("MacroEngine") > 0.1f && m_killedEngine && m_canBoost)
             {
+                m_superBoostHUD.SetActive(true);
+                m_perfectTiming = Random.Range(m_minimumOpimalTiming + m_perfectTimingRange + m_minimumOpimalTimingOffset, m_maximumOpimalTiming - m_perfectTimingRange);
+                float xPos = m_perfectTiming * 48.6666666666666f;
+                m_perfectBoostObject.GetComponent<RectTransform>().localPosition = new Vector3(xPos - 73, -50, 0);
+                m_xboxAPrompt.GetComponent<RectTransform>().localPosition = new Vector3(xPos - 73, -75, 0);
+                m_boostTimer = 0;
                 m_killedEngine = false;
                 m_engageBoost = true;
             }
 
-            if (Input.GetAxis("MacroEngine") < -0.1f && !m_killedEngine && !m_boostOn && !m_engageBoost)
+            if (Input.GetAxis("MacroEngine") < -0.1f && !m_killedEngine && !m_boostOn && !m_engageBoost && m_canBoost)
             {
                 engineOff.Raise();
                 m_killedEngine = true;
@@ -173,6 +225,10 @@ public class PlayerMovement : MonoBehaviour
 
                 m_currentSpeed = m_posativeClampedSpeed * m_maxAcceleration;
 
+                if (m_engageBoost)
+                {
+                    m_APressed = true;
+                }
             }
             if (Input.GetButton("Throttle Down"))
             {
@@ -202,9 +258,69 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_engageBoost)
         {
+            m_boostTimer += Time.deltaTime;
+            float xPos = m_boostTimer * 48.6666666666666f;
+            xPos = Mathf.Clamp(xPos, 0, 146);
+            m_superBoostPointer.GetComponent<RectTransform>().localPosition = new Vector3(xPos - 73, -50, 0);
+            Color targetColour = new Color(1, 1, 1, 1);
+
+            if (m_boostTimer > 3)
+            {
+                m_perfectBoost = false;
+                m_canBoost = false;
+                m_engageBoost = false;
+                engineOn.Raise();
+                StartCoroutine(boostCooldown());
+                m_superBoostHUD.SetActive(false);
+            }
+            else if (m_boostTimer < m_minimumOpimalTiming || m_boostTimer > m_maximumOpimalTiming)
+            {
+                targetColour = new Color(1,1,1,0.2f);
+            }
+            else if (m_boostTimer < (m_perfectTiming - m_perfectTimingRange) || m_boostTimer > (m_perfectTiming + m_perfectTimingRange))
+            {
+                targetColour = new Color(1, 1, 1, 0.6f);
+            }
+            else
+            {
+                targetColour = new Color(1, 1, 1, 1);
+            }
+
+            m_xboxAPrompt.GetComponent<RawImage>().color = Color.Lerp(m_xboxAPrompt.GetComponent<RawImage>().color, targetColour, 0.5f);
+
+            if (m_APressed)
+            {
+                m_APressed = false;
+                m_superBoostHUD.SetActive(false);
+                if (m_boostTimer < m_minimumOpimalTiming || m_boostTimer > m_maximumOpimalTiming)
+                {
+                    m_perfectBoost = false;
+                    m_canBoost = false;
+                    m_engageBoost = false;
+                    engineOn.Raise();
+                    StartCoroutine(boostCooldown());
+                }
+                else if (m_boostTimer < (m_perfectTiming - m_perfectTimingRange) || m_boostTimer > (m_perfectTiming + m_perfectTimingRange))
+                {
+                    m_boostScale = 0.75f;
+                    m_perfectBoost = true;
+                }
+                else
+                {
+                    m_boostScale = 1f;
+                    m_perfectBoost = true;
+                }
+            }
+        }
+
+        if (m_perfectBoost)
+        {
+            m_perfectBoost = false;
+            m_canBoost = false;
+            StartCoroutine(boostCooldown());
             boostOn.Raise();
             m_boostOn = true;
-            m_rbPlayer.velocity = new Vector3(0,0,0);
+            m_rbPlayer.velocity = new Vector3(0, 0, 0);
             m_engageBoost = false;
             StartCoroutine(boostTimer());
         }
@@ -284,17 +400,32 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_boostOn)
         {
+            if (m_boostScale == 1)
+            {
+                m_playerCam.fieldOfView = Mathf.Lerp(m_playerCam.fieldOfView, m_topFOV, 0.01f);
+                CameraShake.Instance.Shake(0.4f, 0.4f);
+            }
+            else if (m_boostScale == 0.75f)
+            {
+                m_playerCam.fieldOfView = Mathf.Lerp(m_playerCam.fieldOfView, m_topFOV - 20, 0.01f);
+                CameraShake.Instance.Shake(0.2f, 0.2f);
+            }
+            else
+            {
+                CameraShake.Instance.Shake(0.05f, 0.05f);
+            }
             if (m_rbPlayer.velocity.magnitude < m_maxBoostSpeed)
             {
-                m_rbPlayer.AddForce(m_boostSpeed * transform.forward * GameManager.Instance.GameSpeed);
+                m_rbPlayer.AddForce(m_boostScale * m_boostSpeed * transform.forward * GameManager.Instance.GameSpeed);
             }
             m_rbPlayer.AddForce(transform.up * GameManager.Instance.GameSpeed * m_uiCorrection / 80f);
         }
 
-        if (!m_boostOn && !m_engageBoost)
+        if (!m_boostOn)
         {
             // This takes the total torque of pitch, yaw and roll and applies it as a force to the player rigidbody
             m_rbPlayer.AddTorque(torque * GameManager.Instance.GameSpeed);
+            m_playerCam.fieldOfView = Mathf.Lerp(m_playerCam.fieldOfView, m_normalFOV, 0.01f);
         }
 
         if (!m_boostOn && !m_killedEngine && !m_engageBoost)
@@ -407,5 +538,11 @@ public class PlayerMovement : MonoBehaviour
             m_handling = m_handlingLow + (_handlingPercentage * _rangeHandling);
 
         }
+    }
+
+    public IEnumerator boostCooldown()
+    {
+        yield return new WaitForSeconds(m_boostCooldown);
+        m_canBoost = true;
     }
 }

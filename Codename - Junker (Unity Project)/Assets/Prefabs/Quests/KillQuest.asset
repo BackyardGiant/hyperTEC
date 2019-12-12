@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2088ec2f427a32c41922b7614d87dc12, type: 3}
   m_Name: KillQuest
   m_EditorClassIdentifier: 
-  m_name: KILL BOIS
-  m_description: Go ahead and just kill a few things
+  m_name: DESTROY THE ENEMY
+  m_description: Kill 15 enemies for our faction
   m_reward: {fileID: 0}
-  m_rewardName: 23 Gibblets
+  m_rewardName: A crisp high five
   m_questType: 0
-  m_size: 10
+  m_size: 15

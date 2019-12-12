@@ -239,17 +239,20 @@ public class ThrustEffectController : MonoBehaviour
                 {
                     Color _emissionColour = m_planeMaterial[i].color;
                     float _transparency = 2 + _powerPercentage * 255;
+                    if (_transparency > 255)
+                    {
+                        _transparency = 255;
+                    }
                     Color _beforeColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _emissionColour.a);
-                    Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, _transparency);
-                    if (_emissionColour.a <= _transparency)
+                    Color _afterColor = new Color(_emissionColour.r, _emissionColour.g, _emissionColour.b, 255);
+                    if(m_planeMaterial[i].color.a < 255)
                     {
-                        m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed);
+                        if (_emissionColour.a < _transparency)
+                        {
+                            m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.4f);
+                        }
+                        else { m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.2f); }
                     }
-                    else
-                    {
-                        m_planeMaterial[i].color = Color.Lerp(_beforeColor, _afterColor, m_lerpSpeed * 0.4f);
-                    }
-
                 }
 
 
@@ -361,7 +364,7 @@ public class ThrustEffectController : MonoBehaviour
             {
                 _emission = m_engineParticles[i].emission;
                 _emissionMain = m_engineParticles[i].main;
-                _emission.rateOverTime = 1000;
+                _emission.rateOverTime = 800;
                 _emissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
                 _emissionMain.simulationSpeed = 2.5f;
             }
@@ -373,7 +376,7 @@ public class ThrustEffectController : MonoBehaviour
             {
                 _highSpeedEmission = m_highSpeedEngineParticles[i].emission;
                 _highSpeedEmissionMain = m_highSpeedEngineParticles[i].main;
-                _highSpeedEmission.rateOverTime = 800;
+                _highSpeedEmission.rateOverTime = 500;
                 _highSpeedEmissionMain.startLifetime = _emissionMain.startLifetime.constant * 2f;
                 _highSpeedEmissionMain.simulationSpeed = 2.5f;
             }
@@ -393,26 +396,29 @@ public class ThrustEffectController : MonoBehaviour
         }
     }
 
-    private void ResetParticles()
+    public void ResetParticles()
     {
-        m_engineOff = false;
-
-        var _emissionMain = m_engineParticles[0].main;
-        for (int i = 0; i < m_engineParticles.Length; i++)
+        if (player != null)
         {
-            _emissionMain = m_engineParticles[i].main;
-            _emissionMain.simulationSpeed = 1f;
-            _emissionMain.startLifetime = m_emissionLifetime[i];
-        }
+            m_engineOff = false;
 
-        //Boost High speed 
-        var _highSpeedEmissionMain = m_highSpeedEngineParticles[0].main;
-        for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
-        {
-            _highSpeedEmissionMain = m_highSpeedEngineParticles[i].main;
-            _highSpeedEmissionMain.simulationSpeed = 1f;
-            _highSpeedEmissionMain.startLifetime = m_highSpeedEmissionLifetime[i];
+            var _emissionMain = m_engineParticles[0].main;
+            for (int i = 0; i < m_engineParticles.Length; i++)
+            {
+                _emissionMain = m_engineParticles[i].main;
+                _emissionMain.simulationSpeed = 1f;
+                _emissionMain.startLifetime = m_emissionLifetime[i];
+            }
+
+            //Boost High speed 
+            var _highSpeedEmissionMain = m_highSpeedEngineParticles[0].main;
+            for (int i = 0; i < m_highSpeedEngineParticles.Length; i++)
+            {
+                _highSpeedEmissionMain = m_highSpeedEngineParticles[i].main;
+                _highSpeedEmissionMain.simulationSpeed = 1f;
+                _highSpeedEmissionMain.startLifetime = m_highSpeedEmissionLifetime[i];
+            }
+            m_currentlyBoosting = false;
         }
-        m_currentlyBoosting = false;
     }
 }

@@ -109,6 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17b0c6947dd8254cb35c34cb42a6484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_asteroidExplosion: {fileID: 9084401648041963869, guid: 2b7d397f53f81a546a5759c4a686aee4,
+    type: 3}
   m_target: Enemy
 --- !u!54 &6525519829275005308
 Rigidbody:

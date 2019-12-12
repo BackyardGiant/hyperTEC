@@ -44,15 +44,32 @@ public class PlayerInventoryManager : MonoBehaviour
         }
     }
 
+    public void RemoveEngine(int _index)
+    {
+        AvailableEngines.RemoveAt(_index);
+    }
+
+    public void RemoveWeapon(int _index)
+    {
+        AvailableWeapons.RemoveAt(_index - AvailableEngines.Count);
+    }
+
+    public void FixEquippedIndex(int[] _taken)
+    {
+        EquippedEngineIndex = _taken[0];
+        EquippedLeftIndex = _taken[1] - AvailableEngines.Count;
+        EquippedRightIndex = _taken[2] - AvailableEngines.Count;
+    }
+
     public void WipeInventory()
     {
-        WeaponData DefaultLeft = m_availableWeapons[0];
-        WeaponData DefaultRight = m_availableWeapons[1];
+        //WeaponData DefaultLeft = m_availableWeapons[0];
+        //WeaponData DefaultRight = m_availableWeapons[1];
 
         m_availableEngines = new List<EngineData>();
         m_availableWeapons = new List<WeaponData>();
-        m_availableWeapons.Add(DefaultLeft);
-        m_availableWeapons.Add(DefaultRight);
+        //m_availableWeapons.Add(DefaultLeft);
+        //m_availableWeapons.Add(DefaultRight);
 
         m_equippedEngineIndex = new int();
         m_equippedLeftIndex = new int();

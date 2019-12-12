@@ -8,6 +8,10 @@ public class TempEnemyInstantiate : MonoBehaviour
 
     public Transform[] spawnPoints;
 
+    public GameObject traderPrefab;
+    public GameObject explorerPrefab;
+    public GameObject constructionPrefab;
+
     public GameObject enemyPrefab;
 
     public int enemyLimit;
@@ -16,23 +20,38 @@ public class TempEnemyInstantiate : MonoBehaviour
 
     private void Start()
     {
+        enemyPrefab = constructionPrefab;
         for (int i = 0; i < enemyLimit; i++)
         {
             if (i < 5)
             {
-                SpawnEnemy(spawnPoints[0]);
+                enemyPrefab = constructionPrefab;
+                SpawnEnemy(spawnPoints[0], 3, 0);
             }
             else if (i < 10)
             {
-                SpawnEnemy(spawnPoints[1]);
+                enemyPrefab = traderPrefab;
+                SpawnEnemy(spawnPoints[1], 2, 1);
             }
             else if (i < 15)
             {
-                SpawnEnemy(spawnPoints[2]);
+                enemyPrefab = explorerPrefab;
+                SpawnEnemy(spawnPoints[2], 0, 2);
             }
             else if (i < 20)
             {
-                SpawnEnemy(spawnPoints[3]);
+                enemyPrefab = traderPrefab;
+                SpawnEnemy(spawnPoints[3], 2, 3);
+            }
+            else if (i < 25)
+            {
+                enemyPrefab = explorerPrefab;
+                SpawnEnemy(spawnPoints[4], 0, 4);
+            }
+            else if (i < 30)
+            {
+                enemyPrefab = constructionPrefab;
+                SpawnEnemy(spawnPoints[5], 3, 5);
             }
         }
     }
@@ -46,28 +65,31 @@ public class TempEnemyInstantiate : MonoBehaviour
         //}
     }
 
-    private void SpawnEnemy(Transform _spawnPoint)
+    private void SpawnEnemy(Transform _spawnPoint, int factionIndex, int index)
     {
-        GameObject _tempEnemy = Instantiate(enemyPrefab, _spawnPoint.position + (Random.insideUnitSphere * 300), _spawnPoint.rotation);
+        GameObject _tempEnemy = Instantiate(enemyPrefab, _spawnPoint.position + (Random.insideUnitSphere * 400), _spawnPoint.rotation);
 
-        // Currently all are construction
-        _tempEnemy.GetComponent<EnemyStats>().m_currentFaction = faction.construction;
-        //
+        _tempEnemy.GetComponent<EnemyStats>().m_currentFaction = (faction)factionIndex;
 
         _tempEnemy.GetComponent<AdvancedEnemyMovement>().StartPosition = _spawnPoint.position;
+        _tempEnemy.GetComponent<EnemyManager>().enemySpawnPointIndex = index;
 
-        Transform _leftSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("LeftSnap");
-        Transform _rightSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("RightSnap");
-        Transform _engineSnap = _tempEnemy.transform.Find("ConstructionShip#1").Find("EngineSnap");
+        Transform _leftSnap = _tempEnemy.transform.Find("Ship").Find("LeftSnap");
+        Transform _rightSnap = _tempEnemy.transform.Find("Ship").Find("RightSnap");
+        Transform _engineSnap = _tempEnemy.transform.Find("Ship").Find("EngineSnap");
 
         EngineData _tempEngineBlock = ModuleManager.Instance.CreateEngineBlock((int)_tempEnemy.GetComponent<EnemyStats>().m_currentFaction);
         GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(_tempEngineBlock);
         _tempEngine.GetComponent<EngineGenerator>().engineStatBlock = _tempEngineBlock;
+
+        ThrustEffectController thrust = _tempEngine.GetComponentInChildren<ThrustEffectController>();
+        thrust.enabled = false;
+
         _tempEngine.transform.SetParent(_engineSnap);
 
         _tempEngine.transform.localPosition = Vector3.zero;
 
-        WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock();
+        WeaponData _temp1 = ModuleManager.Instance.CreateStatBlock(factionIndex);
         GameObject _tempLeftGun = ModuleManager.Instance.GenerateWeapon(_temp1); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _leftSnap);
         _tempLeftGun.GetComponent<WeaponGenerator>().statBlock = _temp1;
         _tempLeftGun.transform.SetParent(_leftSnap);
@@ -76,7 +98,7 @@ public class TempEnemyInstantiate : MonoBehaviour
         _tempLeftGun.transform.localScale = m_scale;
         //_tempLeftGun.GetComponent<WeaponGenerator>().GenerateGun();
 
-        WeaponData _temp2 = ModuleManager.Instance.CreateStatBlock();
+        WeaponData _temp2 = ModuleManager.Instance.CreateStatBlock(factionIndex);
         GameObject _tempRightGun = ModuleManager.Instance.GenerateWeapon(_temp2); //Instantiate(weaponBodies[Random.Range(0, weaponBodies.Length - 1)], _rightSnap);
         _tempRightGun.GetComponent<WeaponGenerator>().statBlock = _temp2;
         _tempRightGun.transform.SetParent(_rightSnap);

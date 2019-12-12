@@ -15,11 +15,11 @@ MonoBehaviour:
   engineName: Construct Engine
   description: 
   currentFaction: 3
-  thumbnail: {fileID: 21300000, guid: bf9d19a657d83a347b9957e6b288b17a, type: 3}
+  thumbnail: {fileID: 21300000, guid: 79789e0ea40d04a45990a523b8d0680d, type: 3}
   value: 0
-  topSpeed: 0
-  acceleration: 0
-  boostPower: 0
-  handling: 0
+  topSpeed: 30
+  acceleration: 50
+  boostPower: 50
+  handling: 40
   engineId: 0
-  seed: 30000000000000000
+  seed: 30300500300300000

@@ -15,11 +15,11 @@ MonoBehaviour:
   engineName: Trader Engine
   description: 
   currentFaction: 2
-  thumbnail: {fileID: 21300000, guid: bf9d19a657d83a347b9957e6b288b17a, type: 3}
+  thumbnail: {fileID: 21300000, guid: 157e2703c74dabd4688bb5ef9ba38bf3, type: 3}
   value: 0
-  topSpeed: 0
-  acceleration: 0
-  boostPower: 0
-  handling: 0
+  topSpeed: 50
+  acceleration: 20
+  boostPower: 50
+  handling: 40
   engineId: 0
-  seed: 20000000000000000
+  seed: 20500200500400000

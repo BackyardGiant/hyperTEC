@@ -7,6 +7,10 @@ using UnityEngine.Audio;
 
 public class PauseMenuManagement : MonoBehaviour
 {
+
+    [SerializeField]
+    private UsabilityTestingController m_playsessionController;
+
     [SerializeField, Tooltip("Settings Menu Object")]
     private GameObject m_settingsMenu;
     [SerializeField, Tooltip("LoadGame Menu Object")]
@@ -144,6 +148,7 @@ public class PauseMenuManagement : MonoBehaviour
                         settings();
                         break;
                     case 4:
+                        m_playsessionController.SavePlaysession();
                         mainMenu();
                         break;
                 }

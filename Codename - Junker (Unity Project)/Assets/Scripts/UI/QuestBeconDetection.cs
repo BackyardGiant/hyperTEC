@@ -36,7 +36,7 @@ public class QuestBeconDetection : MonoBehaviour
         float _playerDistance = Vector3.Distance(m_player.position, transform.position);
         m_screenPos = m_camera.WorldToScreenPoint(this.transform.position);
 
-        if (_playerDistance < HUDManager.Instance.LootViewDistance && IsVisibleFrom(GetComponent<Renderer>(), Camera.main))
+        if (_playerDistance < HUDManager.Instance.QuestViewDistance && IsVisibleFrom(GetComponent<Renderer>(), Camera.main))
         {
             HUDManager.Instance.DrawBeaconTarget(m_screenPos, this);
         }

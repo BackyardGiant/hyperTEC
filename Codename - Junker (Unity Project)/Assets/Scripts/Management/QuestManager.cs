@@ -124,6 +124,6 @@ public class QuestManager : MonoBehaviour
 
     public void CompleteQuest(Quest _completedQuest)
     {
-
+        GameManager.Instance.SaveGame();
     }
 }

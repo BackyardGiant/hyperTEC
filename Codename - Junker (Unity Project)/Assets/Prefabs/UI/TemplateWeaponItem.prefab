@@ -419,6 +419,10 @@ MonoBehaviour:
   name: {fileID: 8653508449830888075}
   thumbnail: {fileID: 5625411668726338498}
   data: {fileID: 0}
+  m_constructionGun: {fileID: 21300000, guid: 9d2877cbab5de894097a151cd26ea37b, type: 3}
+  m_defaultGun: {fileID: 21300000, guid: 9d2b6e912e6cbc743998bbe3804b8458, type: 3}
+  m_traderGun: {fileID: 21300000, guid: fbc09001efeae3f4ea870fdc2e87716e, type: 3}
+  m_explorerGun: {fileID: 21300000, guid: c8cb44a41a6117c468d943137dba038f, type: 3}
 --- !u!114 &7839638724027116395
 MonoBehaviour:
   m_ObjectHideFlags: 0

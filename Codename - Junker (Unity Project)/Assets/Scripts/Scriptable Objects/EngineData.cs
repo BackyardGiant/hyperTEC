@@ -34,6 +34,86 @@ public class EngineData : ScriptableObject
     [SerializeField]
     private string seed;
 
+    [ContextMenu("Generate Seed")]
+    private void generateSeed()
+    {
+        string _maxSpeedString;
+        string _accelerationString;
+        string _boostPowerString;
+        string _handlingString;
+        string _valueString;
+
+        #region Creating corecctly formated string
+        if (topSpeed < 10)
+        {
+            _maxSpeedString = "00" + topSpeed;
+        }
+        else if (topSpeed < 100)
+        {
+            _maxSpeedString = "0" + topSpeed;
+        }
+        else
+        {
+            _maxSpeedString = topSpeed.ToString();
+        }
+
+        if (acceleration < 10)
+        {
+            _accelerationString = "00" + acceleration;
+        }
+        else if (acceleration < 100)
+        {
+            _accelerationString = "0" + acceleration;
+        }
+        else
+        {
+            _accelerationString = acceleration.ToString();
+        }
+
+        if (boostPower < 10)
+        {
+            _boostPowerString = "00" + boostPower;
+        }
+        else if (boostPower < 100)
+        {
+            _boostPowerString = "0" + boostPower;
+        }
+        else
+        {
+            _boostPowerString = boostPower.ToString();
+        }
+
+        if (handling < 10)
+        {
+            _handlingString = "00" + handling;
+        }
+        else if (handling < 100)
+        {
+            _handlingString = "0" + handling;
+        }
+        else
+        {
+            _handlingString = handling.ToString();
+        }
+
+        if (value < 10)
+        {
+            _valueString = "00" + value;
+        }
+        else if (value < 100)
+        {
+            _valueString = "0" + value;
+        }
+        else
+        {
+            _valueString = value.ToString();
+        }
+        #endregion
+
+        seed = (int)currentFaction + _maxSpeedString + _accelerationString + _boostPowerString + _handlingString + _valueString + engineId;
+    }
+
+
     public string Name { get => engineName; set => engineName = value; }
     public string Description { get => description; set => description = value; }
     public Sprite Thumbnail { get => thumbnail; set => thumbnail = value; }

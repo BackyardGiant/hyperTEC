@@ -62,12 +62,20 @@ public class DisplayOptions : MonoBehaviour
             m_modulesList.Add(_goTempWeaponElement);
         }
 
-        RectTransform _targetBlock = m_modulesList[0].GetComponent<RectTransform>();
-        statsPanel.sizeDelta = new Vector2(_targetBlock.sizeDelta.x /3,_targetBlock.sizeDelta.y * 1.7f);
+        if(m_modulesList.Count > 0)
+        {
+            RectTransform _targetBlock = m_modulesList[0].GetComponent<RectTransform>();
+            statsPanel.sizeDelta = new Vector2(_targetBlock.sizeDelta.x / 3, _targetBlock.sizeDelta.y * 1.7f);
 
-        index = 0;
-        UpdateHighlightPosition();
-        m_statsPanelUpdate = statsPanel.GetComponent<PopulateStatDisplay>();
+            index = 0;
+            UpdateHighlightPosition();
+            m_statsPanelUpdate = statsPanel.GetComponent<PopulateStatDisplay>();
+        }
+        else
+        {
+            statsPanel.gameObject.SetActive(false);
+        }
+        
 
         m_finishedLoad = true;
 
@@ -81,7 +89,7 @@ public class DisplayOptions : MonoBehaviour
 
     private void Update()
     {
-        if (m_finishedLoad)
+        if (m_finishedLoad && m_modulesList.Count > 0)
         {
             RectTransform _targetBlock = m_modulesList[index].GetComponent<RectTransform>();
             Vector2 _statsDisplayPosition = statsPanel.position;
@@ -89,7 +97,7 @@ public class DisplayOptions : MonoBehaviour
 
             if (index != 0)
             {
-                _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 0.9f, _targetBlock.position.y);
+                _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 1.1f, _targetBlock.position.y);
                 _statsDisplayPosition.y = Mathf.Clamp(_statsDisplayPosition.y, statsPanel.sizeDelta.y, Screen.height - statsPanel.sizeDelta.y);
                 if (_statsDisplayPosition != _statsDisplayRequiredPosition)
                 {
@@ -98,7 +106,7 @@ public class DisplayOptions : MonoBehaviour
             }
             else
             {
-                _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 0.9f, +_targetBlock.position.y - _targetBlock.sizeDelta.y * 0.4f);
+                _statsDisplayRequiredPosition = new Vector2(_targetBlock.position.x + _targetBlock.sizeDelta.x * 1.1f, +_targetBlock.position.y - _targetBlock.sizeDelta.y * 0.4f);
                 if (_statsDisplayPosition != _statsDisplayRequiredPosition)
                 {
                     statsPanel.position = Vector2.Lerp(_statsDisplayPosition, _statsDisplayRequiredPosition, 0.1f);
@@ -152,6 +160,59 @@ public class DisplayOptions : MonoBehaviour
                 }
             }
         }
+
+    }
+
+    /// <summary>
+    /// Updates the equipped status of an individual item
+    /// </summary>
+    /// <param name="_equippedIndex"> The index (in modules list) of the item to be updated </param>
+    /// <param name="_location"> string, either "engine" "left" or "right" </param>
+    public void UpdateEquippedIndividual(int _equippedIndex, string _location)
+    {
+        switch (_location)
+        {
+            case "engine":
+                if(_equippedIndex != -1)
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOn("Equipped");
+                }
+                else
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOff();
+                }               
+                break;
+            case "left":
+                if (_equippedIndex != -1)
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOn("Equipped Left");
+                }
+                else
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOff();
+                }
+                break;
+            case "right":
+                if (_equippedIndex != -1)
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOn("Equipped Right");
+                }
+                else
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOff();
+                }
+                break;
+            default:
+                if (_equippedIndex != -1)
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOn("Equipped Unknown");
+                }
+                else
+                {
+                    ModulesList[_equippedIndex].GetComponent<ToggleElements>().EquippedOff();
+                }
+                break;
+        }   
     }
 
     public void ScrollUpToSelected(int _diffBetweenTopAndBottom)
