@@ -129,6 +129,7 @@
     <Compile Include="Assets\Scripts\Management\PauseGame.cs" />
     <Compile Include="Assets\Scripts\Management\PauseMenuManagement.cs" />
     <Compile Include="Assets\Scripts\Management\PlayerInventoryManager.cs" />
+    <Compile Include="Assets\Scripts\Management\PromptSystemManagement.cs" />
     <Compile Include="Assets\Scripts\Management\Quest.cs" />
     <Compile Include="Assets\Scripts\Management\QuestManager.cs" />
     <Compile Include="Assets\Scripts\Management\QuestManagerTEMPCREATION.cs" />

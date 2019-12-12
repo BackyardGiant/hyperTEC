@@ -209,6 +209,7 @@ public class HUDManager : MonoBehaviour
                         }
                     }
 
+                    PromptSystemManagement.Instance.DisplayPrompt(PromptSystemManagement.PromptType.ItemPickup);
                     IncrementPlayerPref("WeaponsCollected");
                     Debug.Log("Pickup Loot.");
 
@@ -400,7 +401,7 @@ public class HUDManager : MonoBehaviour
                     }
 
                     Debug.Log("Quest Collected");
-
+                    PromptSystemManagement.Instance.DisplayPrompt(PromptSystemManagement.PromptType.QuestPickup);
                     Destroy(m_currentTarget);
                     ClearBeaconDisplay();
                     ClearBeaconTarget(m_currentTarget.GetComponent<QuestBeconDetection>());
