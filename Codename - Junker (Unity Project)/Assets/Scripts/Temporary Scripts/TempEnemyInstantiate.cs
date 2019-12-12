@@ -102,6 +102,7 @@ public class TempEnemyInstantiate : MonoBehaviour
         _tempEnemy.GetComponent<EnemyStats>().m_currentFaction = (faction)factionIndex;
 
         _tempEnemy.GetComponent<AdvancedEnemyMovement>().StartPosition = _spawnPoint.position;
+        _tempEnemy.GetComponent<EnemyManager>().enemySpawnPoint = _spawnPoint;
         _tempEnemy.GetComponent<EnemyManager>().enemySpawnPointIndex = index;
 
         Transform _leftSnap = _tempEnemy.transform.Find("Ship").Find("LeftSnap");

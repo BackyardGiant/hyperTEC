@@ -814,6 +814,8 @@ public class GameManager : MonoBehaviour
 
             GameObject _newEnemy = Instantiate(spawner.enemyPrefab, _enemyPos, _enemyRot);
 
+            _newEnemy.GetComponent<EnemyManager>().enabled = true;
+
             _newEnemy.GetComponent<EnemyStats>().m_currentFaction = _newEnemyFaction;
             _newEnemy.GetComponent<EnemyManager>().enemySpawnPoint = spawner.spawnPoints[int.Parse(_savedEnemy.spawnIndex)];
             _newEnemy.GetComponent<EnemyManager>().enemySpawnPointIndex = int.Parse(_savedEnemy.spawnIndex);

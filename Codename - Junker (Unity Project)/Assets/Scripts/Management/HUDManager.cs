@@ -251,7 +251,7 @@ public class HUDManager : MonoBehaviour
                     m_buttonHoldTime = 0;
                     LootDisplay.GetComponent<Animator>().Play("DisplayStats");
 
-                    Invoke("togglePickup", .2f);
+                    Invoke("togglePickup", 1.2f);
                 }
 
                 //Full close complete, close and animate display.
@@ -265,7 +265,7 @@ public class HUDManager : MonoBehaviour
                     LootDisplay.GetComponent<Animator>().Play("HideStats");
                     m_currentlyClosingScan = true;
 
-                    Invoke("togglePickup", .2f);
+                    Invoke("togglePickup", 1.2f);
                 }
 
                 //Dismiss being held down fills in the button.
