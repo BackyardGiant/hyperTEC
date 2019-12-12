@@ -53,6 +53,36 @@ public class TempEnemyInstantiate : MonoBehaviour
                 enemyPrefab = constructionPrefab;
                 SpawnEnemy(spawnPoints[5], 3, 5);
             }
+            else if (i < 35)
+            {
+                enemyPrefab = explorerPrefab;
+                SpawnEnemy(spawnPoints[6], 0, 6);
+            }
+            else if (i < 40)
+            {
+                enemyPrefab = explorerPrefab;
+                SpawnEnemy(spawnPoints[7], 0, 7);
+            }
+            else if (i < 45)
+            {
+                enemyPrefab = constructionPrefab;
+                SpawnEnemy(spawnPoints[8], 3, 8);
+            }
+            else if (i < 50)
+            {
+                enemyPrefab = traderPrefab;
+                SpawnEnemy(spawnPoints[9], 2, 9);
+            }
+            else if (i < 55)
+            {
+                enemyPrefab = traderPrefab;
+                SpawnEnemy(spawnPoints[10], 2, 10);
+            }
+            else if (i < 60)
+            {
+                enemyPrefab = constructionPrefab;
+                SpawnEnemy(spawnPoints[11], 3, 11);
+            }
         }
     }
 
