@@ -191,6 +191,7 @@ public class FactionChoiceManager : MonoBehaviour
 
     void SpawnStartedGuns()
     {
+        PromptSystemManagement.Instance.CustomPrompt("Welcome To The Quarry Sector");
         GameObject _lootParent = Instantiate(m_weaponLootParent);
         _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 25) + (Vector3.right * 10);
         GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(weaponData);
