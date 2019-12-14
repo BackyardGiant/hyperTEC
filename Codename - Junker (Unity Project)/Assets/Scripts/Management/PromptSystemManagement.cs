@@ -8,7 +8,7 @@ public class PromptSystemManagement : MonoBehaviour
     private static PromptSystemManagement s_instance;
     public static PromptSystemManagement Instance { get => s_instance; set => s_instance = value; }
 
-    public enum PromptType { QuestPickup, ItemPickup , InventoryWarning};
+    public enum PromptType { QuestPickup, ItemPickup};
 
 
     [SerializeField]
@@ -43,10 +43,10 @@ public class PromptSystemManagement : MonoBehaviour
     public void DisplayPrompt(PromptType _type)
     {
         m_currentPromptCount += 1;
+        m_currentType = _type;
         if (m_promptActive == false)
         {
                 m_promptActive = true;
-                m_currentType = _type;
                 if (m_currentType == PromptType.QuestPickup)
                 {
                     
@@ -56,10 +56,6 @@ public class PromptSystemManagement : MonoBehaviour
                 {
                     m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Item Collected";
 
-                }
-                else if (m_currentType == PromptType.InventoryWarning)
-                {
-                    m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Item currently equipped";
                 }
 
             m_promptObject.SetActive(true);
@@ -82,6 +78,13 @@ public class PromptSystemManagement : MonoBehaviour
                 Invoke("HidePrompt", 2.5f);
             }
         }
+    }
+
+    public void CustomPrompt(string _text)
+    {
+        m_promptObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _text;
+        m_promptObject.SetActive(true);
+        Invoke("HidePrompt", 2.5f);
     }
 
     private void HidePrompt()

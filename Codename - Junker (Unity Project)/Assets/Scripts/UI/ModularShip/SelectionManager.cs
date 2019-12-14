@@ -228,7 +228,7 @@ public class SelectionManager : MonoBehaviour
                         if((PlayerInventoryManager.Instance.AvailableWeapons.Count == 1 && PlayerInventoryManager.Instance.AvailableEngines.Count == 1) || m_currentlySelectedIndex == m_takenIndexes[i])
                         {
                             _equipped = true;
-                            PromptSystemManagement.Instance.DisplayPrompt(PromptSystemManagement.PromptType.InventoryWarning);
+                            PromptSystemManagement.Instance.CustomPrompt("Item currently equipped");
                             break;
                         }
                     }
