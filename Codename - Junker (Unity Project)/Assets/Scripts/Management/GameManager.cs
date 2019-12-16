@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public Image blackOut;
     public Animator fadeAnimator;
     public DisplayOptions display;
-    public FactionChoiceManager choiceManager;
+    public TutorialManagement tutorialManager;
 
     public GameObject questBeacon;
 
@@ -749,7 +749,7 @@ public class GameManager : MonoBehaviour
 
             _player.GetComponent<PlayerMovement>().UpdateValues();
 
-            choiceManager.onLoad();
+            tutorialManager.onLoad();
 
             HUDManager.Instance.ClearAllDisplays();
 
@@ -1166,7 +1166,7 @@ public class GameManager : MonoBehaviour
         _player.GetComponent<PlayerShooting>().buildWeapons();
         _player.GetComponent<PlayerMovement>().UpdateValues();
 
-        choiceManager.onLoad();
+        tutorialManager.onLoad();
 
         HUDManager.Instance.ClearAllDisplays();
 
