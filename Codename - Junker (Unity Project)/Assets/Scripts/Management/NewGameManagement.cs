@@ -198,6 +198,7 @@ public class NewGameManagement : MonoBehaviour
     {
         PlayerPrefs.SetString("CurrentSave","Save" + m_saveIndex);
         PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "initial");
+        PlayerPrefs.SetInt("TutorialProgress" + m_saveIndex, 0);
         string _fileName = PlayerPrefs.GetString("CurrentSave") + ".giant";
         File.Delete(_fileName);
         SceneManager.LoadScene("MainScene");
@@ -206,6 +207,7 @@ public class NewGameManagement : MonoBehaviour
     {
         PlayerPrefs.SetString("CurrentSave", "Save" + m_saveIndex);
         PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "initial");
+        PlayerPrefs.SetInt("TutorialProgress" + m_saveIndex, 0);
         SceneManager.LoadScene("MainScene");
     }
 
