@@ -23,12 +23,8 @@ public class TutorialManagement : MonoBehaviour
     private bool m_spawnedGuns;
     private bool m_spawnedEngine;
     private bool m_allowSkip = false;
-
-
-
-
-
-
+    private bool m_continued = false;
+    
 
     // Start is called before the first frame update
     public void onLoad()
@@ -50,9 +46,11 @@ public class TutorialManagement : MonoBehaviour
         m_factionChoice.SetActive(false);
         m_skipPrompt.SetActive(false);
         int _currentTutorialProgress = PlayerPrefs.GetInt("TutorialProgress" + m_saveIndex, 0);
+        GameManager.Instance.InTutorial = true;
         if (_currentTutorialProgress == 9)
         {
             this.gameObject.SetActive(false);
+            GameManager.Instance.InTutorial = false;
         }
 
 #if UNITY_EDITOR
@@ -78,7 +76,7 @@ public class TutorialManagement : MonoBehaviour
     void Update()
     {
         int _currentTutorialProgress = PlayerPrefs.GetInt("TutorialProgress" + m_saveIndex, 0);
-        if (_currentTutorialProgress == 0)
+        if (_currentTutorialProgress == 0 && !m_continued)
         {
             GameManager.Instance.SetSlowMo(0);
             //Welcome to Hypertec
@@ -86,6 +84,7 @@ public class TutorialManagement : MonoBehaviour
         }
         if (_currentTutorialProgress == 0 && Input.GetButtonDown("Throttle Up"))
         {
+            GameManager.Instance.SetNormalSpeed();
             //Start off with guns
             m_prompt1.SetActive(false);
             m_prompt2.SetActive(true);
@@ -94,6 +93,8 @@ public class TutorialManagement : MonoBehaviour
                 m_spawnedGuns = true;
                 SpawnStartingGuns();
             }
+
+            m_continued = true;
             PlayerPrefs.SetInt("TutorialProgress" + m_saveIndex, 1);
         }
         if (_currentTutorialProgress == 1 && Input.GetButtonDown("XboxX"))
@@ -181,12 +182,14 @@ public class TutorialManagement : MonoBehaviour
         }
         if(_currentTutorialProgress == 9)
         {
+            GameManager.Instance.InTutorial = false;
             this.gameObject.SetActive(false);
         }
         Debug.Log(Input.GetAxis("RightLeftDPad"));
         if (Input.GetAxis("RightLeftDPad") > 0.3f && m_allowSkip == true)
         {
             PlayerPrefs.SetInt("TutorialProgress" + m_saveIndex, 9);
+            GameManager.Instance.InTutorial = false;
             this.gameObject.SetActive(false);
         }
 
@@ -201,6 +204,10 @@ public class TutorialManagement : MonoBehaviour
         }
 #endif
 
+        if (_currentTutorialProgress == 1 || _currentTutorialProgress == 2 || _currentTutorialProgress == 3 || _currentTutorialProgress == 5 || _currentTutorialProgress == 6)
+        {
+            GameManager.Instance.SetNormalSpeed();
+        }
 
     }
 
