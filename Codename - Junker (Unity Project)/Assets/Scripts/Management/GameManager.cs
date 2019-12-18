@@ -37,11 +37,14 @@ public class GameManager : MonoBehaviour
 
     private float m_passedSpeed;
 
+    private bool m_inTutorial;
+
     public static GameManager Instance { get => s_instance; set => s_instance = value; }
     public float GameSpeed { get => m_gameSpeed; private set => m_gameSpeed = value; }
     public int EnemiesKilledSoFar { get => m_enemiesKilledSoFar; set => m_enemiesKilledSoFar = value; }
     public PlayerMovement PlayerMove { get => m_playerMove; set => m_playerMove = value; }
     public bool CanLeaveScene { get => m_canLeaveScene; set => m_canLeaveScene = value; }
+    public bool InTutorial { get => m_inTutorial; set => m_inTutorial = value; }
 
     private void Awake()
     {
