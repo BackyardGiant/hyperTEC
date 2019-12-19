@@ -165,8 +165,11 @@ public class GameManager : MonoBehaviour
 
     public void SetNormalSpeed()
     {
-        m_gameSpeed = 1f;
-        normalSpeed.Raise();
+        if (m_gameSpeed != 1)
+        {
+            m_gameSpeed = 1f;
+            normalSpeed.Raise();
+        }
     }
 
     private IEnumerator waitForStuff()
