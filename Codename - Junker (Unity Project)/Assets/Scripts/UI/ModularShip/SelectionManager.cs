@@ -23,12 +23,21 @@ public class SelectionManager : MonoBehaviour
     [SerializeField]
     private int m_bottomIndex;
 
+    [SerializeField, Tooltip("UI sounds. First should be the scroll, second should be select")]
+    private AudioClip[] m_sounds;
+    private AudioSource m_UIAudio;
+
     private bool m_filled = false;
     private int m_engineLength;
 
     private float m_timeDestroyHeld;
     [SerializeField]
     private Image m_destroyFill;
+
+    private void Start()
+    {
+        m_UIAudio = this.GetComponent<AudioSource>();
+    }
 
     // Initialise all to "null" (-1)
     public void FillMenu()
@@ -161,6 +170,9 @@ public class SelectionManager : MonoBehaviour
                     display.Index = m_currentlySelectedIndex;
                     display.UpdateHighlightPosition();
                     m_readyForInput = false;
+
+                    m_UIAudio.clip = m_sounds[0];
+                    m_UIAudio.Play();
                 }
 
                 if ((Input.GetAxis("MacroEngine") > 0) || (Input.GetAxis("Vertical") > 0))
@@ -187,6 +199,9 @@ public class SelectionManager : MonoBehaviour
                     display.Index = m_currentlySelectedIndex;
                     display.UpdateHighlightPosition();
                     m_readyForInput = false;
+
+                    m_UIAudio.clip = m_sounds[0];
+                    m_UIAudio.Play();
                 }
             }
 
@@ -199,10 +214,16 @@ public class SelectionManager : MonoBehaviour
                 if (m_leftSideSelected)
                 {
                     currentPreviewtext.text = "Currently Previewing: Left Side";
+
+                    m_UIAudio.clip = m_sounds[3];
+                    m_UIAudio.Play();
                 }
                 else
                 {
                     currentPreviewtext.text = "Currently Previewing: Right Side";
+
+                    m_UIAudio.clip = m_sounds[4];
+                    m_UIAudio.Play();
                 }
 
                 if (!CheckIfAlreadyEquipped())
@@ -275,6 +296,11 @@ public class SelectionManager : MonoBehaviour
 
                         FillMenu();
                         display.UpdateEquipped(m_takenIndexes);
+                    }
+                    else
+                    {
+                        m_UIAudio.clip = m_sounds[2];
+                        m_UIAudio.Play();
                     }
                 }
             }
@@ -395,6 +421,9 @@ public class SelectionManager : MonoBehaviour
 
                 PreviewSelected(display.ModulesList[m_currentlySelectedIndex]);              
                 display.UpdateEquipped(m_takenIndexes);
+
+                m_UIAudio.clip = m_sounds[1];
+                m_UIAudio.Play();
             }
         }
     }
