@@ -459,12 +459,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1896071596892646473}
-  m_RootOrder: 4
+  m_Father: {fileID: 1896071597241356907}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -19.799957}
+  m_AnchoredPosition: {x: 0, y: 0.00002670288}
   m_SizeDelta: {x: 301.15, y: 301.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1896071595561193250
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.07075471, g: 1, b: 0.9612333, a: 0.3137255}
+  m_Color: {r: 1, g: 0.9490196, b: 0, a: 0.78431374}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -535,7 +535,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1896071597422771454}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -692,6 +692,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1896071596767014803}
   - {fileID: 1896071595692490873}
   - {fileID: 1896071596139718853}
   - {fileID: 1896071596963000607}
@@ -771,7 +772,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1896071595682659443}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -929,7 +930,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1896071596892646473}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -1087,7 +1088,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1896071597241356907}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1162,7 +1163,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1896071595682659443}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1197,8 +1198,13 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: An automated fleet of construction vehicles, these weaponized workhorses
-    can deal damage as well as they can take it.
+  m_text: '+ Good Fire Rate and Accuracy
+
+    - Lower Damage
+
+    + Better Acceleration and Boost Power
+
+    - Lower Handling and Speed'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e15476fb9db2af468eaa0f615f65c8a, type: 2}
   m_sharedMaterial: {fileID: -3790811676352246218, guid: 5e15476fb9db2af468eaa0f615f65c8a,
@@ -1265,12 +1271,12 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -1.6730574, y: 0, z: -0.9061777, w: -11.368846}
+  m_margin: {x: -6.247483, y: 0, z: -8.486908, w: -11.368846}
   m_textInfo:
     textComponent: {fileID: 1896071596139718858}
-    characterCount: 117
+    characterCount: 109
     spriteCount: 0
-    spaceCount: 18
+    spaceCount: 19
     wordCount: 19
     linkCount: 0
     lineCount: 4
@@ -1321,7 +1327,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1896071597241356907}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1553,12 +1559,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1896071596892646473}
-  m_RootOrder: 3
+  m_Father: {fileID: 1896071597422771454}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -250, y: -19.799957}
+  m_AnchoredPosition: {x: 0, y: 0.000051498413}
   m_SizeDelta: {x: 301.15, y: 301.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1896071596489204393
@@ -1582,7 +1588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.07075471, g: 1, b: 0.9612333, a: 0.3137255}
+  m_Color: {r: 1, g: 0.95084643, b: 0, a: 0.78431374}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1703,12 +1709,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1896071596892646473}
-  m_RootOrder: 5
+  m_Father: {fileID: 1896071595682659443}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 250, y: -19.799957}
+  m_AnchoredPosition: {x: 0, y: 0.00002670288}
   m_SizeDelta: {x: 301.15, y: 301.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1896071596767014801
@@ -1732,7 +1738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.07075471, g: 1, b: 0.9612333, a: 0.3137255}
+  m_Color: {r: 1, g: 0.9490196, b: 0, a: 0.78431374}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1779,7 +1785,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1896071597422771454}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1856,9 +1862,6 @@ RectTransform:
   - {fileID: 1896071597422771454}
   - {fileID: 1896071597241356907}
   - {fileID: 1896071595682659443}
-  - {fileID: 1896071596489204395}
-  - {fileID: 1896071595561193180}
-  - {fileID: 1896071596767014803}
   - {fileID: 1896071596060604580}
   m_Father: {fileID: 3109670374674039336}
   m_RootOrder: 1
@@ -1936,7 +1939,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1896071595682659443}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2010,6 +2013,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1896071595561193180}
   - {fileID: 1896071596326901928}
   - {fileID: 5773160781119719038}
   - {fileID: 1896071596076335497}
@@ -2247,6 +2251,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1896071596489204395}
   - {fileID: 1896071596834694448}
   - {fileID: 7746731612627444779}
   - {fileID: 1896071595578167579}
@@ -3973,7 +3978,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1896071597241356907}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4008,9 +4013,13 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Specialising in exploration and long distance travel, these customised ships
-    are a favourite for quick transport and mapping. Rapid movement and fast fire
-    rates are their most notable qualities.
+  m_text: '+ High Fire Rate
+
+    - Low Accuracy and Damage
+
+    + High Agility
+
+    - Slower Overall'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e15476fb9db2af468eaa0f615f65c8a, type: 2}
   m_sharedMaterial: {fileID: -3790811676352246218, guid: 5e15476fb9db2af468eaa0f615f65c8a,
@@ -4080,12 +4089,12 @@ MonoBehaviour:
   m_margin: {x: -1.6730574, y: 0, z: -0.9061777, w: -17.70862}
   m_textInfo:
     textComponent: {fileID: 6563426115614174253}
-    characterCount: 194
+    characterCount: 74
     spriteCount: 0
-    spaceCount: 28
-    wordCount: 29
+    spaceCount: 14
+    wordCount: 14
     linkCount: 0
-    lineCount: 5
+    lineCount: 4
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -4119,7 +4128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3109670374674039336
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4351,7 +4360,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1896071597422771454}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4386,9 +4395,13 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Money, power, the syndicate collects it all. Their ships are sleek, refined
-    and definitely not cheap. Their weaponry focuses on efficient and accurate long
-    range combat.
+  m_text: '+ High Accuracy and Damage
+
+    - Low Fire Rate
+
+    + High Top Speeds
+
+    - Low Acceleration and Handling'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e15476fb9db2af468eaa0f615f65c8a, type: 2}
   m_sharedMaterial: {fileID: -3790811676352246218, guid: 5e15476fb9db2af468eaa0f615f65c8a,
@@ -4434,7 +4447,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 156
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -4458,12 +4471,12 @@ MonoBehaviour:
   m_margin: {x: -1.6730574, y: 0, z: -0.9061777, w: -11.368846}
   m_textInfo:
     textComponent: {fileID: 4289833773825701296}
-    characterCount: 169
+    characterCount: 92
     spriteCount: 0
-    spaceCount: 25
-    wordCount: 26
+    spaceCount: 17
+    wordCount: 17
     linkCount: 0
-    lineCount: 5
+    lineCount: 4
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0

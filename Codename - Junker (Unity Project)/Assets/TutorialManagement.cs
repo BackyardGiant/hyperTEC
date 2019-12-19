@@ -198,6 +198,7 @@ public class TutorialManagement : MonoBehaviour
         {
             SpawnExplorationEngine();
             SpawnStartingGuns();
+            GameManager.Instance.InTutorial = false;
             PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "exploratory");
             PlayerPrefs.SetInt("TutorialProgress" + m_saveIndex, 9);
             this.gameObject.SetActive(false);
