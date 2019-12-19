@@ -32,7 +32,7 @@ public class MainMenuManagement : MonoBehaviour
     private bool m_readyForInput;
     private string m_recentSave;
     private int m_selectedIndex;
-    private AudioSource m_UIAudio;
+    public AudioSource m_UIAudio;
 
     private void Start()
     {
@@ -58,8 +58,6 @@ public class MainMenuManagement : MonoBehaviour
         m_mixer.SetFloat("fxVol", -80 + PlayerPrefs.GetInt("fxVolume"));
         m_mixer.SetFloat("uiVol", -80 + PlayerPrefs.GetInt("uiVolume"));
 
-
-        m_UIAudio = this.GetComponent<AudioSource>();
         m_selectedIndex = 0;
         m_onMenu = false;
         m_inputAllowed = false;
