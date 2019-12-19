@@ -1290,7 +1290,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 19.55
+  m_fontSize: 32.75
   m_fontSizeBase: 25.3
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2195,7 +2195,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 15.1
+  m_fontSize: 28.4
   m_fontSizeBase: 25.3
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2504,7 +2504,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 23.85
+  m_fontSize: 39.9
   m_fontSizeBase: 25.18
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3247,10 +3247,10 @@ RectTransform:
   m_Father: {fileID: 2138395524}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000061989, y: 0.00000023842}
-  m_SizeDelta: {x: 33.91, y: 33.91}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.00009918213, y: 0.00020599365}
+  m_SizeDelta: {x: 0.0739975, y: -0.28700256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1712595834486210446
 CanvasRenderer:
@@ -3285,9 +3285,9 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &519033714176257637
@@ -3779,6 +3779,7 @@ GameObject:
   - component: {fileID: 4184237703054802603}
   - component: {fileID: 4184237703054802604}
   - component: {fileID: 2020980498}
+  - component: {fileID: 4408249793324913625}
   m_Layer: 5
   m_Name: ModularShipCanvas
   m_TagString: Untagged
@@ -3914,6 +3915,12 @@ MonoBehaviour:
   previewMaterial: {fileID: 2100000, guid: 55f9135dcea6e8844a85a27f3b5f473c, type: 2}
   m_currentlySelectedIndex: 0
   m_bottomIndex: 0
+  m_sounds:
+  - {fileID: 8300000, guid: 3e8dd43abaed9f14c8b2a7cc3e6c5d85, type: 3}
+  - {fileID: 8300000, guid: 70ec1d91922317b44893ef22539ebb35, type: 3}
+  - {fileID: 8300000, guid: bcbd3a67e1fe8304f807b74035dacd3b, type: 3}
+  - {fileID: 8300000, guid: 7e9d286ab3aca4b4eaf3ec013565c734, type: 3}
+  - {fileID: 8300000, guid: e48c0b8d7914c774685b7558338b2209, type: 3}
   m_destroyFill: {fileID: 8064794239526014410}
 --- !u!114 &2020980498
 MonoBehaviour:
@@ -3929,6 +3936,103 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InventoryManager: {fileID: 8751166865296910840, guid: 3e5fd941f7015db468ae2f40ea29b1a9,
     type: 3}
+--- !u!82 &4408249793324913625
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4184237703054802602}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -1865234789856240357, guid: 57be78bc14380a64f8d5d54333ee278b,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4184237703302082746
 GameObject:
   m_ObjectHideFlags: 0
@@ -4338,7 +4442,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 19.55
+  m_fontSize: 32.75
   m_fontSizeBase: 25.3
   m_fontWeight: 400
   m_enableAutoSizing: 1

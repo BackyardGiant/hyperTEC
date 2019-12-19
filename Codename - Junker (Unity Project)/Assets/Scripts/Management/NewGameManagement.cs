@@ -30,6 +30,7 @@ public class NewGameManagement : MonoBehaviour
     private bool m_readyForInput;
     private int m_selectedIndex;
     private int m_saveIndex;
+    [SerializeField]
     private AudioSource m_UIAudio;
     private bool m_overrideCheck;
 
@@ -42,7 +43,6 @@ public class NewGameManagement : MonoBehaviour
 
         displaySaveStats(false);
 
-        m_UIAudio = this.GetComponent<AudioSource>();
         m_selectedIndex = 0;
     }
     private void Update()
