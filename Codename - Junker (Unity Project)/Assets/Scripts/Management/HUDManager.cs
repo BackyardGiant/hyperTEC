@@ -381,7 +381,7 @@ public class HUDManager : MonoBehaviour
                     switch (m_currentTarget.GetComponent<QuestBeconDetection>().QuestType)
                     {
                         case QuestType.kill:
-                            QuestManager.Instance.CreateKillQuest(_quest.Size, _quest.Name, _quest.Description);
+                            QuestManager.Instance.CreateKillQuest(_quest.Size, _quest.Name, _quest.Description, _quest.Factions);
                             break;
                         case QuestType.collect:
                             //QuestManager.Instance.CreateCollectQuest(_quest.)

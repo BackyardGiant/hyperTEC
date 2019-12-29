@@ -390,7 +390,14 @@ public class GameManager : MonoBehaviour
 
         foreach (Quest _quest in QuestManager.Instance.CurrentQuests)
         {
-            QuestSavingObject _savedQuest = new QuestSavingObject(_quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.PercentageComplete.ToString(), _quest.Size.ToString(), _quest.CurrentAmountCompleted.ToString());
+            string[] factions = new string[_quest.Factions.Length];
+            int i = 0;
+            foreach(QuestFactions faction in _quest.Factions)
+            {
+                factions[i] = faction.ToString();
+                i++;
+            }
+            QuestSavingObject _savedQuest = new QuestSavingObject(_quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.PercentageComplete.ToString(), _quest.Size.ToString(), _quest.CurrentAmountCompleted.ToString(), factions);
             _questSavingObjects.Add(_savedQuest);
         }
 
@@ -426,7 +433,14 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                BeaconSavingObject _savedBeacon = new BeaconSavingObject(_questBeacon.transform.position, _questBeacon.transform.rotation, _quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.Size.ToString(), _quest.RewardName);
+                string[] factions = new string[_quest.Factions.Length];
+                int i = 0;
+                foreach (QuestFactions faction in _quest.Factions)
+                {
+                    factions[i] = faction.ToString();
+                    i++;
+                }
+                BeaconSavingObject _savedBeacon = new BeaconSavingObject(_questBeacon.transform.position, _questBeacon.transform.rotation, _quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.Size.ToString(), _quest.RewardName, factions);
                 _beaconSaves.Add(_savedBeacon);
             }
         }
@@ -613,7 +627,14 @@ public class GameManager : MonoBehaviour
 
         foreach (Quest _quest in QuestManager.Instance.CurrentQuests)
         {
-            QuestSavingObject _savedQuest = new QuestSavingObject(_quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.PercentageComplete.ToString(), _quest.Size.ToString(), _quest.CurrentAmountCompleted.ToString());
+            string[] factions = new string[_quest.Factions.Length];
+            int i = 0;
+            foreach (QuestFactions faction in _quest.Factions)
+            {
+                factions[i] = faction.ToString();
+                i++;
+            }
+            QuestSavingObject _savedQuest = new QuestSavingObject(_quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.PercentageComplete.ToString(), _quest.Size.ToString(), _quest.CurrentAmountCompleted.ToString(), factions);
             _questSavingObjects.Add(_savedQuest);
         }
 
@@ -649,7 +670,14 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                BeaconSavingObject _savedBeacon = new BeaconSavingObject(_questBeacon.transform.position, _questBeacon.transform.rotation, _quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.Size.ToString(), _quest.RewardName);
+                string[] factions = new string[_quest.Factions.Length];
+                int i = 0;
+                foreach (QuestFactions faction in _quest.Factions)
+                {
+                    factions[i] = faction.ToString();
+                    i++;
+                }
+                BeaconSavingObject _savedBeacon = new BeaconSavingObject(_questBeacon.transform.position, _questBeacon.transform.rotation, _quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.Size.ToString(), _quest.RewardName, factions);
                 _beaconSaves.Add(_savedBeacon);
             }
         }
@@ -1127,8 +1155,23 @@ public class GameManager : MonoBehaviour
             switch ((QuestType)int.Parse(_quest.questType))
             {
                 case QuestType.kill:
-                    QuestManager.Instance.CreateKillQuest(int.Parse(_quest.size), _quest.name, _quest.description);
-                    QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
+                    if (_quest.factions.Length != 0)
+                    {
+                        QuestFactions[] factions = new QuestFactions[_quest.factions.Length];
+                        int k = 0;
+                        foreach(string faction in _quest.factions)
+                        {
+                            factions[i] = (QuestFactions)System.Enum.Parse(typeof(QuestFactions), faction);
+                            k++;
+                        }
+                        QuestManager.Instance.CreateKillQuest(int.Parse(_quest.size), _quest.name, _quest.description, factions);
+                        QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
+                    }
+                    else
+                    {
+                        QuestManager.Instance.CreateKillQuest(int.Parse(_quest.size), _quest.name, _quest.description);
+                        QuestManager.Instance.CurrentQuests[QuestManager.Instance.CurrentQuests.Count - 1].QuestIncrement(int.Parse(_quest.currentAmountCompleted));
+                    }
                     break;
                 case QuestType.control:
                     QuestManager.Instance.CreateControlQuest(int.Parse(_quest.size), _quest.name, _quest.description);
@@ -1162,6 +1205,15 @@ public class GameManager : MonoBehaviour
             _quest.Size = int.Parse(_beacon.size);
             _quest.RewardName = _beacon.rewardName;
             _quest.QuestType = (QuestType)int.Parse(_beacon.questType);
+
+            QuestFactions[] factions = new QuestFactions[_beacon.factions.Length];
+            int k = 0;
+            foreach (string faction in _beacon.factions)
+            {
+                factions[i] = (QuestFactions)System.Enum.Parse(typeof(QuestFactions), faction);
+                k++;
+            }
+            _quest.Factions = factions;
 
             GameObject _newBeacon = Instantiate(questBeacon, new Vector3(float.Parse(_beacon.positionX), float.Parse(_beacon.positionY), float.Parse(_beacon.positionZ)), new Quaternion(float.Parse(_beacon.rotationX), float.Parse(_beacon.rotationY), float.Parse(_beacon.rotationZ), float.Parse(_beacon.rotationW)));
             _newBeacon.GetComponent<QuestBeconDetection>().Quest = _quest;
@@ -1303,5 +1355,31 @@ public class GameManager : MonoBehaviour
     public void ReturnToMenuDelayed(float _delay)
     {
         Invoke("ReturnToMenu", _delay);
+    }
+
+    public string returnFaction()
+    {
+        string _result = "NotSet";
+
+        string _saveName = PlayerPrefs.GetString("CurrentSave", "NoSave");
+        char _saveIndex = _saveName[4];
+        string _factionName = PlayerPrefs.GetString("ChosenFaction" + _saveIndex);
+
+        switch (_factionName)
+        {
+            case "initial":
+                _result = "initial";
+                break;
+            case "trader":
+                _result = "trader";
+                break;
+            case "exploratory":
+                _result = "explorer";
+                break;
+            case "construction":
+                _result = "construction";
+                break;
+        }
+        return _result;
     }
 }
