@@ -7,6 +7,11 @@ public enum QuestType
     kill, collect, control, recon, targets 
 }
 
+public enum QuestFactions
+{
+    explorer, initial, trader, construction, enemy
+}
+
 public class QuestManager : MonoBehaviour
 {
     private static QuestManager s_instance;
@@ -38,6 +43,12 @@ public class QuestManager : MonoBehaviour
         m_currentQuests.Add(newKillQuest);
     }
 
+    public void CreateKillQuest(int _numberOfKills, string _name, string _description, QuestFactions[] factions)
+    {
+        Quest newKillQuest = new Quest(QuestType.kill, _numberOfKills, _name, _description, factions);
+        m_currentQuests.Add(newKillQuest);
+    }
+
     public void CreateCollectQuest(GameObject _objectToCollect, string _name, string _description)
     {
         Quest newCollectQuest = new Quest(QuestType.collect, _objectToCollect, _name, _description);
@@ -64,13 +75,31 @@ public class QuestManager : MonoBehaviour
     #endregion
 
     #region Quest Progression
-    public void IncrementKillQuests()
+    public void IncrementKillQuests(string _passedFaction)
     {
         foreach (Quest _quest in m_currentQuests)
         {
+            bool _shouldIncrement = false;
             if (_quest.QuestType == QuestType.kill)
             {
-                _quest.QuestIncrement(1);
+                if(_quest.Factions.Length >= 1)
+                {
+                    foreach(QuestFactions faction in _quest.Factions)
+                    {
+                        if(faction.ToString() == _passedFaction)
+                        {
+                            _shouldIncrement = true;
+                        }
+                        if(faction.ToString() == "enemy" && _passedFaction != GameManager.Instance.returnFaction())
+                        {
+                            _shouldIncrement = true;
+                        }
+                    }
+                }
+                if (_shouldIncrement)
+                {
+                    _quest.QuestIncrement(1);
+                }
             }
         }
     }

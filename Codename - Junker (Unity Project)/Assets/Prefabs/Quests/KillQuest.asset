@@ -17,4 +17,5 @@ MonoBehaviour:
   m_reward: {fileID: 0}
   m_rewardName: A crisp high five
   m_questType: 0
+  m_factions: 04000000
   m_size: 15

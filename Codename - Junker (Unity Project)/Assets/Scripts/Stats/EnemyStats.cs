@@ -95,7 +95,7 @@ public class EnemyStats : MonoBehaviour
 
             Destroy(gameObject);
 
-            QuestManager.Instance.IncrementKillQuests();
+            QuestManager.Instance.IncrementKillQuests(m_currentFaction.ToString());
 
             string _save = PlayerPrefs.GetString("CurrentSave");
             int _value;

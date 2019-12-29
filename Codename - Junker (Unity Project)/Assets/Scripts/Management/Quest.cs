@@ -15,6 +15,8 @@ public class Quest : ScriptableObject
     private string m_rewardName;
     [SerializeField]
     private QuestType m_questType;
+    [SerializeField]
+    private QuestFactions[] m_factions;
     private bool m_complete;
     private float m_percentageComplete;
     [SerializeField]
@@ -30,6 +32,7 @@ public class Quest : ScriptableObject
     public string Description { get => m_description; set => m_description = value; }
     public string RewardName { get => m_rewardName; set => m_rewardName = value; }
     public GameObject Reward { get => m_reward; set => m_reward = value; }
+    public QuestFactions[] Factions { get => m_factions; set => m_factions = value; }
 
     public Quest(QuestType _questType, int _size, string _name, string _description)
     {
@@ -37,6 +40,15 @@ public class Quest : ScriptableObject
         m_size = _size;
         m_name = _name;
         m_description = _description;
+    }
+
+    public Quest(QuestType _questType, int _size, string _name, string _description, QuestFactions[] factions)
+    {
+        m_questType = _questType;
+        m_size = _size;
+        m_name = _name;
+        m_description = _description;
+        m_factions = factions;
     }
 
     public Quest(QuestType _questType, GameObject _objective, string _name, string _description)

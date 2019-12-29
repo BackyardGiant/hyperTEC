@@ -11,8 +11,9 @@ public class QuestSavingObject
     public string percentageComplete;
     public string size;
     public string currentAmountCompleted;
+    public string[] factions;
 
-    public QuestSavingObject(string _name, string _description, string _type, string _percentageComplete, string _size, string _currentAmountComplete)
+    public QuestSavingObject(string _name, string _description, string _type, string _percentageComplete, string _size, string _currentAmountComplete, string[] _factions)
     {
        name = _name;
        description = _description;
@@ -20,5 +21,6 @@ public class QuestSavingObject
        percentageComplete = _percentageComplete;
        size = _size;
        currentAmountCompleted = _currentAmountComplete;
+       factions = _factions;
     }
 }
