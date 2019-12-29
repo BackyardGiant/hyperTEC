@@ -185,7 +185,6 @@ public class TutorialManagement : MonoBehaviour
             GameManager.Instance.InTutorial = false;
             this.gameObject.SetActive(false);
         }
-        Debug.Log(Input.GetAxis("RightLeftDPad"));
         if (Input.GetAxis("RightLeftDPad") > 0.3f && m_allowSkip == true)
         {
             PlayerPrefs.SetInt("TutorialProgress" + m_saveIndex, 9);

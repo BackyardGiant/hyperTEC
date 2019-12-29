@@ -20,7 +20,8 @@ public class FactionChoiceManager : MonoBehaviour
 
     private bool m_readyForInput;
     private int m_selectedIndex;
-    private int m_saveIndex;
+    [SerializeField]
+    private int m_saveIndex = 0;
     [SerializeField]
     private AudioSource m_UIAudio;
 
@@ -97,6 +98,8 @@ public class FactionChoiceManager : MonoBehaviour
             }
             if (Input.GetButtonDown("XboxA"))
             {
+                string _fileName = PlayerPrefs.GetString("CurrentSave", "NoSave");
+                m_saveIndex = int.Parse(_fileName[4].ToString());
                 m_UIAudio.clip = m_sounds[1];
                 m_UIAudio.Play();
                 switch (m_selectedIndex)
@@ -105,21 +108,21 @@ public class FactionChoiceManager : MonoBehaviour
                         break;
                     case 1:
                         Debug.Log("Chosen Trader");
-                        //factionChosen.Raise();
+                        factionChosen.Raise();
                         PlayerPrefs.SetString("ChosenFaction" + m_saveIndex,"trader");
                         m_tutorial.chosenFaction = "Trader";
                         this.gameObject.SetActive(false);
                         break;
                     case 2:
                         Debug.Log("Exploration");
-                        //factionChosen.Raise();
+                        factionChosen.Raise();
                         PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "exploratory");
                         m_tutorial.chosenFaction = "Exploration";
                         this.gameObject.SetActive(false);
                         break;
                     case 3:
                         Debug.Log("Construction");
-                        //factionChosen.Raise();
+                        factionChosen.Raise();
                         PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "construction");
                         m_tutorial.chosenFaction = "Construction";
                         this.gameObject.SetActive(false);

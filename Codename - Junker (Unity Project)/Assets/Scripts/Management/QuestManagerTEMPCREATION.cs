@@ -23,14 +23,14 @@ public class QuestManagerTEMPCREATION : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (PlayerPrefs.GetInt("CreatedQuest") == 0 || m_inEditor == true)
-        {
-            Debug.Log("Created Quest");
-            DontDestroyOnLoad(this);
-            PlayerPrefs.SetInt("CreatedQuest", 1);
-            QuestManager.Instance.CreateKillQuest(15, "Control the Sector!", "Kill 15 Enemies to Control the Sector.");
+        //if (PlayerPrefs.GetInt("CreatedQuest") == 0 || m_inEditor == true)
+        //{
+        //    Debug.Log("Created Quest");
+        //    DontDestroyOnLoad(this);
+        //    PlayerPrefs.SetInt("CreatedQuest", 1);
+        //    QuestManager.Instance.CreateKillQuest(15, "Control the Sector!", "Kill 15 Enemies to Control the Sector.");
       
-        }
+        //}
     }
 
     // Update is called once per frame

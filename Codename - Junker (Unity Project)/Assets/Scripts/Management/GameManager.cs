@@ -390,12 +390,16 @@ public class GameManager : MonoBehaviour
 
         foreach (Quest _quest in QuestManager.Instance.CurrentQuests)
         {
-            string[] factions = new string[_quest.Factions.Length];
-            int i = 0;
-            foreach(QuestFactions faction in _quest.Factions)
+            string[] factions = new string[0];
+            if (_quest.Factions != null)
             {
-                factions[i] = faction.ToString();
-                i++;
+                factions = new string[_quest.Factions.Length];
+                int i = 0;
+                foreach (QuestFactions faction in _quest.Factions)
+                {
+                    factions[i] = faction.ToString();
+                    i++;
+                }
             }
             QuestSavingObject _savedQuest = new QuestSavingObject(_quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.PercentageComplete.ToString(), _quest.Size.ToString(), _quest.CurrentAmountCompleted.ToString(), factions);
             _questSavingObjects.Add(_savedQuest);
@@ -627,12 +631,16 @@ public class GameManager : MonoBehaviour
 
         foreach (Quest _quest in QuestManager.Instance.CurrentQuests)
         {
-            string[] factions = new string[_quest.Factions.Length];
-            int i = 0;
-            foreach (QuestFactions faction in _quest.Factions)
+            string[] factions = new string[0];
+            if (_quest.Factions != null)
             {
-                factions[i] = faction.ToString();
-                i++;
+                factions = new string[_quest.Factions.Length];
+                int i = 0;
+                foreach (QuestFactions faction in _quest.Factions)
+                {
+                    factions[i] = faction.ToString();
+                    i++;
+                }
             }
             QuestSavingObject _savedQuest = new QuestSavingObject(_quest.Name, _quest.Description, ((int)_quest.QuestType).ToString(), _quest.PercentageComplete.ToString(), _quest.Size.ToString(), _quest.CurrentAmountCompleted.ToString(), factions);
             _questSavingObjects.Add(_savedQuest);

@@ -394,12 +394,6 @@ public class HUDManager : MonoBehaviour
                             break;
                     }
 
-
-                    if (m_currentTarget.GetComponent<QuestBeconDetection>().QuestType == QuestType.kill)
-                    {
-                        QuestManager.Instance.CreateKillQuest(_quest.Size, _quest.Name, _quest.Description);
-                    }
-
                     Debug.Log("Quest Collected");
                     PromptSystemManagement.Instance.DisplayPrompt(PromptSystemManagement.PromptType.QuestPickup);
                     Destroy(m_currentTarget);
