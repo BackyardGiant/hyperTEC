@@ -204,7 +204,7 @@ public class TutorialManagement : MonoBehaviour
         }
 #endif
 
-        if (_currentTutorialProgress == 1 || _currentTutorialProgress == 2 || _currentTutorialProgress == 3 || _currentTutorialProgress == 5 || _currentTutorialProgress == 6)
+        if (_currentTutorialProgress == 1 || _currentTutorialProgress == 2 || _currentTutorialProgress == 3 || _currentTutorialProgress == 5 || _currentTutorialProgress == 6 || _currentTutorialProgress == 9)
         {
             GameManager.Instance.SetNormalSpeed();
         }
