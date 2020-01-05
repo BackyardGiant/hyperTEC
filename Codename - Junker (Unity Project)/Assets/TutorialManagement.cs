@@ -78,7 +78,7 @@ public class TutorialManagement : MonoBehaviour
         int _currentTutorialProgress = PlayerPrefs.GetInt("TutorialProgress" + m_saveIndex, 0);
         if (_currentTutorialProgress == 0 && !m_continued)
         {
-            GameManager.Instance.SetSlowMo(0);
+            //GameManager.Instance.SetSlowMo(0);
             //Welcome to Hypertec
             m_prompt1.SetActive(true);
         }
