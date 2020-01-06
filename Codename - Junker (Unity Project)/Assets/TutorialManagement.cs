@@ -178,6 +178,7 @@ public class TutorialManagement : MonoBehaviour
         {
             m_prompt9.SetActive(false);
             this.gameObject.SetActive(false);
+            GameManager.Instance.InTutorial = false;
             PlayerPrefs.SetInt("TutorialProgress" + m_saveIndex, 9);
         }
         if(_currentTutorialProgress == 9)
@@ -204,9 +205,9 @@ public class TutorialManagement : MonoBehaviour
         }
 #endif
 
-        if (_currentTutorialProgress == 1 || _currentTutorialProgress == 2 || _currentTutorialProgress == 3 || _currentTutorialProgress == 5 || _currentTutorialProgress == 6 || _currentTutorialProgress == 9)
+        if (_currentTutorialProgress == 8 || _currentTutorialProgress == 9)
         {
-            GameManager.Instance.SetNormalSpeed();
+            GameManager.Instance.InTutorial = false;
         }
 
     }
