@@ -51,7 +51,6 @@ public class EnemyManager : MonoBehaviour
     private void Awake()
     {
         m_player = GameObject.FindGameObjectWithTag("Player");
-        enemySpawnPoint = GameObject.Find("EnemySpawnPoint").transform;
     }
 
     // Start is called before the first frame update

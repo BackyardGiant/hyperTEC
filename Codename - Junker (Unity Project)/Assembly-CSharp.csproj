@@ -129,6 +129,7 @@
     <Compile Include="Assets\Scripts\Management\PauseGame.cs" />
     <Compile Include="Assets\Scripts\Management\PauseMenuManagement.cs" />
     <Compile Include="Assets\Scripts\Management\PlayerInventoryManager.cs" />
+    <Compile Include="Assets\Scripts\Management\PromptSystemManagement.cs" />
     <Compile Include="Assets\Scripts\Management\Quest.cs" />
     <Compile Include="Assets\Scripts\Management\QuestManager.cs" />
     <Compile Include="Assets\Scripts\Management\QuestManagerTEMPCREATION.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Assets\Scripts\UI\PopulateStatDisplay.cs" />
     <Compile Include="Assets\Scripts\UI\QuestBeconDetection.cs" />
     <Compile Include="Assets\Scripts\UI\ScrollerScript.cs" />
+    <Compile Include="Assets\TutorialManagement.cs" />
     <Compile Include="Assets\Usability Testing\FlightTestRecordCollision.cs" />
     <Compile Include="Assets\Usability Testing\IncrementFlightChallenge.cs" />
     <Compile Include="Assets\Usability Testing\MovementUsabilityTestingManager.cs" />

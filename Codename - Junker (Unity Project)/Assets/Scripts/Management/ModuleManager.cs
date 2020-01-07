@@ -565,38 +565,70 @@ public class ModuleManager : MonoBehaviour
     {
         string _seed = "";
 
-        float _maxSpeed = Random.Range(1, 100);
+        float _maxSpeed = 0;
+        float _acceleration = 0;
+        float _boostPower = 0;
+        float _handling = 0;
+        float _value = 0;
+        
+        int _factionData = _factionIndex;
+        EngineData.faction _faction = (EngineData.faction)_factionData;
+
+        switch (_faction)
+        {
+            case EngineData.faction.explorer:
+                _maxSpeed = Random.Range(25, 50);
+                _acceleration = Random.Range(25, 50);
+                _boostPower = Random.Range(25, 50);
+                _handling = Random.Range(60, 85);
+                _value = Random.Range(25, 50);
+                break;
+
+            case EngineData.faction.trader:
+                _maxSpeed = Random.Range(60, 85);
+                _acceleration = Random.Range(10, 30);
+                _boostPower = Random.Range(25, 50);
+                _handling = Random.Range(30, 50);
+                _value = Random.Range(85, 96);
+                break;
+
+            case EngineData.faction.construction:
+                _maxSpeed = Random.Range(20, 40);
+                _acceleration = Random.Range(40, 70);
+                _boostPower = Random.Range(40, 70);
+                _handling = Random.Range(30, 50);
+                _value = Random.Range(85, 96);
+                break;
+
+            case EngineData.faction.initial:
+                _maxSpeed = 30;
+                _acceleration = 30;
+                _boostPower = 30;
+                _handling = 30;
+                _value = 30;
+                break;
+        }
+
         string _maxSpeedString;
-
-        float _acceleration = Random.Range(1, 100);
         string _accelerationString;
-
-        float _boostPower = Random.Range(1, 100);
         string _boostPowerString;
-
-        float _handling = Random.Range(1, 100);
         string _handlingString;
-
-        float _value = Random.Range(1, 100);
         string _valueString;
 
         int _engineId;
 
-        int _factionData = _factionIndex;
-        WeaponData.faction _faction = (WeaponData.faction)_factionData;
-
         switch (_faction)
         {
-            case WeaponData.faction.explorer:
+            case EngineData.faction.explorer:
                 _engineId = Random.Range(0, explorerEngines.Count);
                 break;
-            case WeaponData.faction.construction:
+            case EngineData.faction.construction:
                 _engineId = Random.Range(0, constructEngine.Count);
                 break;
-            case WeaponData.faction.initial:
+            case EngineData.faction.initial:
                 _engineId = Random.Range(0, defaultEngines.Count);
                 break;
-            case WeaponData.faction.trader:
+            case EngineData.faction.trader:
                 _engineId = Random.Range(0, traderEngines.Count);
                 break;
             default:

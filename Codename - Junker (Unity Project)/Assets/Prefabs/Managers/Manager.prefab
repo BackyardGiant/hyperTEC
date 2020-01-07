@@ -53,6 +53,7 @@ MonoBehaviour:
   blackOut: {fileID: 0}
   fadeAnimator: {fileID: 0}
   display: {fileID: 0}
+  choiceManager: {fileID: 0}
   questBeacon: {fileID: 0}
   m_gameSpeed: 1
 --- !u!114 &647031814

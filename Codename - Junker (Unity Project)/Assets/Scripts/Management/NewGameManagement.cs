@@ -30,6 +30,7 @@ public class NewGameManagement : MonoBehaviour
     private bool m_readyForInput;
     private int m_selectedIndex;
     private int m_saveIndex;
+    [SerializeField]
     private AudioSource m_UIAudio;
     private bool m_overrideCheck;
 
@@ -42,7 +43,6 @@ public class NewGameManagement : MonoBehaviour
 
         displaySaveStats(false);
 
-        m_UIAudio = this.GetComponent<AudioSource>();
         m_selectedIndex = 0;
     }
     private void Update()
@@ -198,6 +198,7 @@ public class NewGameManagement : MonoBehaviour
     {
         PlayerPrefs.SetString("CurrentSave","Save" + m_saveIndex);
         PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "initial");
+        PlayerPrefs.SetInt("TutorialProgress" + m_saveIndex, 0);
         string _fileName = PlayerPrefs.GetString("CurrentSave") + ".giant";
         File.Delete(_fileName);
         SceneManager.LoadScene("MainScene");
@@ -206,6 +207,7 @@ public class NewGameManagement : MonoBehaviour
     {
         PlayerPrefs.SetString("CurrentSave", "Save" + m_saveIndex);
         PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "initial");
+        PlayerPrefs.SetInt("TutorialProgress" + m_saveIndex, 0);
         SceneManager.LoadScene("MainScene");
     }
 
@@ -226,12 +228,12 @@ public class NewGameManagement : MonoBehaviour
     private void AnimateBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
-        _bar.fillAmount += 2f * Time.deltaTime;
+        _bar.fillAmount += 3.5f * Time.deltaTime;
     }
     private void CloseBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
-        _bar.fillAmount -= 3f * Time.deltaTime;
+        _bar.fillAmount -= 2f * Time.deltaTime;
     }
     private void mainMenu()
     {

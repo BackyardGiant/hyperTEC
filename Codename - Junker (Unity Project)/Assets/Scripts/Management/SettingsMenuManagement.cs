@@ -33,7 +33,7 @@ public class SettingsMenuManagement : MonoBehaviour
 
     private bool m_readyForInput;
     private int m_selectedIndex;
-    private AudioSource m_UIAudio;
+    public AudioSource m_UIAudio;
     private bool m_audioCooldown;
 
     // Start is called before the first frame update
@@ -42,7 +42,6 @@ public class SettingsMenuManagement : MonoBehaviour
         m_selectedIndex = 0;
         m_audioCooldown = false;
         m_selectedIndex = 0;
-        m_UIAudio = this.GetComponent<AudioSource>();
 
         m_values[0].text = PlayerPrefs.GetInt("masterVolume").ToString();
         m_values[1].text = PlayerPrefs.GetInt("musicVolume").ToString();
@@ -306,12 +305,12 @@ public class SettingsMenuManagement : MonoBehaviour
     private void AnimateBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
-        _bar.fillAmount += 2f * Time.deltaTime;
+        _bar.fillAmount += 3.5f * Time.deltaTime;
     }
     private void CloseBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
-        _bar.fillAmount -= 3f * Time.deltaTime;
+        _bar.fillAmount -= 2f * Time.deltaTime;
     }
     IEnumerator audioCooldown()
     {

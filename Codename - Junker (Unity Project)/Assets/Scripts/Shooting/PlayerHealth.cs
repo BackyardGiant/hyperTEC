@@ -19,7 +19,7 @@ public class PlayerHealth : MonoBehaviour
 
     private float m_timeSinceDamage;
 
-    private int _currentSave;
+    private int m_currentSave;
 
     private bool _isRecharging = false;
     private bool _isDead = false;
@@ -41,29 +41,29 @@ public class PlayerHealth : MonoBehaviour
         switch(PlayerPrefs.GetString("CurrentSave"))
         {
             case "Save1":
-                _currentSave = 0;
+                m_currentSave = 0;
                 break;
             case "Save2":
-                _currentSave = 1;
+                m_currentSave = 1;
                 break;
             case "Save3":
-                _currentSave = 2;
+                m_currentSave = 2;
                 break;
             case "Save4":
-                _currentSave = 3;
+                m_currentSave = 3;
                 break;
         }
         ResetHealth();
         _isDead = false;
-        HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[_currentSave].Value;
+        HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[m_currentSave].Value;
     }
 
     private void Update()
     {
-        if (m_timeSinceDamage > m_rechargePeriod && m_playerHealth[_currentSave].Value != m_healthMax && !_isDead)
+        if (m_timeSinceDamage > m_rechargePeriod && m_playerHealth[m_currentSave].Value <= m_healthMax && !_isDead)
         {
-            m_playerHealth[_currentSave].Value += (m_rechargeRate * 50 * Time.deltaTime);
-            HUDManager.Instance.Healthbar.fillAmount = (float)m_playerHealth[_currentSave].Value / m_healthMax;
+            m_playerHealth[m_currentSave].Value += (m_rechargeRate * 50 * Time.deltaTime);
+            HUDManager.Instance.Healthbar.fillAmount = (float)m_playerHealth[m_currentSave].Value / m_healthMax;
         }
 
         m_timeSinceDamage += Time.deltaTime;
@@ -72,23 +72,27 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float _dmg)
     {
         m_testing.sendCombatPos();
-        if (m_playerHealth[_currentSave].Value - _dmg > 0)
+        if (m_playerHealth[m_currentSave].Value - _dmg > 0)
         {
-            m_playerHealth[_currentSave].Value -= _dmg;
+            m_playerHealth[m_currentSave].Value -= _dmg;
             AudioManager.Instance.PlayWorld("PlayerTakeDamage", this.gameObject, false, true);
-            HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[_currentSave].Value / m_healthMax;
+            HUDManager.Instance.Healthbar.fillAmount = m_playerHealth[m_currentSave].Value / m_healthMax;
             m_timeSinceDamage = 0;
-            //Debug.Log("<color=green>CURRENT HEALTH : </color>" + m_playerHealth[_currentSave].Value);
+            //Debug.Log("<color=green>CURRENT HEALTH : </color>" + m_playerHealth[m_currentSave].Value);
             CameraShake.Instance.Shake(0.15f, 0.3f);
         }
         else
         {
-
+            if (HUDManager.Instance.isActiveAndEnabled)
+            {
+                HUDManager.Instance.enabled = false;
+            }
             _isDead = true;
             GameManager.Instance.SaveGame(_isDead);
             m_playerDeath.Raise();
 
             HUDManager.Instance.Healthbar.fillAmount = 0;
+            HUDManager.Instance.HideWarning();
 
             GetComponent<Rigidbody>().velocity = Vector3.zero;
 

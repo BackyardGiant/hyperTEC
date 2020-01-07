@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FactionChoiceManager : MonoBehaviour
 {
+    [SerializeField] private TutorialManagement m_tutorial;
     [SerializeField]
     private GameObject m_player, m_traderHighlight, m_explorationHighlight, m_constructionHighlight;
     [SerializeField]
@@ -19,38 +20,14 @@ public class FactionChoiceManager : MonoBehaviour
 
     private bool m_readyForInput;
     private int m_selectedIndex;
-    private int m_saveIndex;
+    [SerializeField]
+    private int m_saveIndex = 0;
     [SerializeField]
     private AudioSource m_UIAudio;
 
     [SerializeField]
     GameEvent factionChosen;
- 
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-        
 
-    //}
-
-    public void onLoad()
-    {
-        Debug.Log(PlayerPrefs.GetString("CurrentSave"));
-        m_selectedIndex = 0;
-        if (PlayerPrefs.GetString("CurrentSave") == "Save1") { m_saveIndex = 1; }
-        else if (PlayerPrefs.GetString("CurrentSave") == "Save2") { m_saveIndex = 2; }
-        else if (PlayerPrefs.GetString("CurrentSave") == "Save3") { m_saveIndex = 3; }
-        else if (PlayerPrefs.GetString("CurrentSave") == "Save4") { m_saveIndex = 4; }
-        else { Debug.LogWarning("Faction Selection : Save not properly configured. Did you go through the Main Menu?"); }
-
-        Debug.Log("Save index is" + m_saveIndex);
-        Debug.LogWarning(PlayerPrefs.GetString("ChosenFaction" + m_saveIndex));
-        if (PlayerPrefs.GetString("ChosenFaction" + m_saveIndex) != "initial") { GameManager.Instance.SetNormalSpeed(); this.gameObject.SetActive(false); }
-        else
-        {
-            GameManager.Instance.SetSlowMo(0);
-        }
-    }
 
     // Update is called once per frame
     void Update()
@@ -60,7 +37,6 @@ public class FactionChoiceManager : MonoBehaviour
         {
             m_readyForInput = true;
         }
-
         if (m_readyForInput)
         {
             //If you've added an item to the menu and it's not selecting, it's because it doesn't exist here.
@@ -122,6 +98,8 @@ public class FactionChoiceManager : MonoBehaviour
             }
             if (Input.GetButtonDown("XboxA"))
             {
+                string _fileName = PlayerPrefs.GetString("CurrentSave", "NoSave");
+                m_saveIndex = int.Parse(_fileName[4].ToString());
                 m_UIAudio.clip = m_sounds[1];
                 m_UIAudio.Play();
                 switch (m_selectedIndex)
@@ -130,84 +108,29 @@ public class FactionChoiceManager : MonoBehaviour
                         break;
                     case 1:
                         Debug.Log("Chosen Trader");
-                        SpawnTraderEngine();
                         factionChosen.Raise();
                         PlayerPrefs.SetString("ChosenFaction" + m_saveIndex,"trader");
-                        GameManager.Instance.SetNormalSpeed();
+                        m_tutorial.chosenFaction = "Trader";
                         this.gameObject.SetActive(false);
                         break;
                     case 2:
                         Debug.Log("Exploration");
-                        SpawnExplorationEngine();
                         factionChosen.Raise();
                         PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "exploratory");
-                        GameManager.Instance.SetNormalSpeed();
+                        m_tutorial.chosenFaction = "Exploration";
                         this.gameObject.SetActive(false);
                         break;
                     case 3:
                         Debug.Log("Construction");
-                        SpawnConstructionEngine();
                         factionChosen.Raise();
                         PlayerPrefs.SetString("ChosenFaction" + m_saveIndex, "construction");
-                        GameManager.Instance.SetNormalSpeed();
+                        m_tutorial.chosenFaction = "Construction";
                         this.gameObject.SetActive(false);
                         break;
                 }
-                SpawnStartedGuns();
             }
         }
     }
 
 
-    void SpawnTraderEngine()
-    {
-        GameObject _lootParent = Instantiate(m_engineLootParent);
-        _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 20);
-
-        GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(traderEngine);
-        _tempEngine.transform.SetParent(_lootParent.transform);
-        _tempEngine.transform.localPosition = Vector3.zero;
-    }
-
-    void SpawnExplorationEngine()
-    {
-        GameObject _lootParent = Instantiate(m_engineLootParent);
-        _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 20);
-
-        GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(explorerEngine);
-        _tempEngine.transform.SetParent(_lootParent.transform);
-        _tempEngine.transform.localPosition = Vector3.zero;
-    }
-
-    void SpawnConstructionEngine()
-    {
-        GameObject _lootParent = Instantiate(m_engineLootParent);
-        _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 20);
-
-        GameObject _tempEngine = ModuleManager.Instance.GenerateEngine(constructionEngine);
-        _tempEngine.transform.SetParent(_lootParent.transform);
-        _tempEngine.transform.localPosition = Vector3.zero;
-    }
-
-    void SpawnStartedGuns()
-    {
-        GameObject _lootParent = Instantiate(m_weaponLootParent);
-        _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 25) + (Vector3.right * 10);
-        GameObject _leftGun = ModuleManager.Instance.GenerateWeapon(weaponData);
-        _leftGun.GetComponent<WeaponGenerator>().statBlock = weaponData;
-        _leftGun.transform.SetParent(_lootParent.transform);
-        _leftGun.transform.localPosition = Vector3.zero;
-        _leftGun.transform.localRotation = Quaternion.identity;
-        _leftGun.transform.localScale = new Vector3(1, 1, 1);
-
-        _lootParent = Instantiate(m_weaponLootParent);
-        _lootParent.transform.localPosition = m_player.transform.position + (Vector3.forward * 20) - (Vector3.right * 10);
-        GameObject _rightGun = ModuleManager.Instance.GenerateWeapon(weaponData);
-        _rightGun.GetComponent<WeaponGenerator>().statBlock = weaponData;
-        _rightGun.transform.SetParent(_lootParent.transform);
-        _rightGun.transform.position = Vector3.zero;
-        _rightGun.transform.localPosition = Vector3.zero;
-        _rightGun.transform.localRotation = Quaternion.identity;
-        _rightGun.transform.localScale = new Vector3(-1, 1, 1);
-    }
 }

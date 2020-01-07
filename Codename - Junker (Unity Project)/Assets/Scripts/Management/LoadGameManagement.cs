@@ -27,7 +27,7 @@ public class LoadGameManagement : MonoBehaviour
     private bool m_readyForInput;
     private int m_selectedIndex;
     private int m_saveIndex;
-    private AudioSource m_UIAudio;
+    public AudioSource m_UIAudio;
 
     private void Start()
     {
@@ -37,7 +37,6 @@ public class LoadGameManagement : MonoBehaviour
         displaySaveStats(false);
         m_mainMenu.SetActive(false);
 
-        m_UIAudio = this.GetComponent<AudioSource>();
         m_selectedIndex = 0;
     }
     private void Update()
@@ -192,12 +191,12 @@ public class LoadGameManagement : MonoBehaviour
     private void AnimateBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
-        _bar.fillAmount += 2f * Time.deltaTime;
+        _bar.fillAmount += 3.5f * Time.deltaTime;
     }
     private void CloseBar(int _item)
     {
         Image _bar = m_menuOptions[_item].GetComponent<Image>();
-        _bar.fillAmount -= 3f * Time.deltaTime;
+        _bar.fillAmount -= 2f * Time.deltaTime;
     }
     private void mainMenu()
     {

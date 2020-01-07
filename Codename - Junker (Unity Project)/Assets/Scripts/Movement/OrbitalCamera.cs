@@ -35,27 +35,27 @@ public class OrbitalCamera : MonoBehaviour
 
     private void Update()
     {
-        if (Mathf.Abs(Input.GetAxis("LookX")) > 0 || Mathf.Abs(Input.GetAxis("LookY")) > 0)
-        {
-            CurrentY += Input.GetAxis("LookX") * turningSpeed;
-            CurrentX += Input.GetAxis("LookY") * turningSpeed;
-            if (HUDManager.Instance.isActiveAndEnabled)
-            {
-                HUDManager.Instance.enabled = false;
-            }
-        }
-        else
-        {
-            CurrentY = Mathf.Lerp(CurrentY, 0, snapSpeed / 100);
-            CurrentX = Mathf.Lerp(CurrentX, 0, snapSpeed / 100);
-            if (!HUDManager.Instance.isActiveAndEnabled)
-            {
-                HUDManager.Instance.enabled = true;
-            }
-        }
+        //if (Mathf.Abs(Input.GetAxis("LookX")) > 0 || Mathf.Abs(Input.GetAxis("LookY")) > 0)
+        //{
+        //    CurrentY += Input.GetAxis("LookX") * turningSpeed;
+        //    CurrentX += Input.GetAxis("LookY") * turningSpeed;
+        //    if (HUDManager.Instance.isActiveAndEnabled)
+        //    {
+        //        HUDManager.Instance.enabled = false;
+        //    }
+        //}
+        //else
+        //{
+        //    CurrentY = Mathf.Lerp(CurrentY, 0, snapSpeed / 100);
+        //    CurrentX = Mathf.Lerp(CurrentX, 0, snapSpeed / 100);
+        //    if (!HUDManager.Instance.isActiveAndEnabled)
+        //    {
+        //        HUDManager.Instance.enabled = true;
+        //    }
+        //}
 
-        CurrentY = Mathf.Clamp(currentY, Y_ANGLE_MIN, Y_ANGLE_MAX);
-        CurrentX = Mathf.Clamp(currentX, X_ANGLE_MIN, X_ANGLE_MAX);
+        //CurrentY = Mathf.Clamp(currentY, Y_ANGLE_MIN, Y_ANGLE_MAX);
+        //CurrentX = Mathf.Clamp(currentX, X_ANGLE_MIN, X_ANGLE_MAX);
     }
 
     private void LateUpdate()
