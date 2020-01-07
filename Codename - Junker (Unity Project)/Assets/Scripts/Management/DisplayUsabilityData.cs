@@ -30,6 +30,10 @@ public class DisplayUsabilityData : MonoBehaviour
     private static string returnCSV2;
     private static string returnCSV3;
     private static string returnCSV4;
+    private string computer1ConnectionString = "1URQqDRVewUqw_jZgu6tdvcpP-WtGyGzQ8wM_GqO5T1U";
+    private string computer2ConnectionString = "1nrj5u50YLpGGNVFZRALp8Qfh2-U1Yf5l-GwRBC3l310";
+    private string computer3ConnectionString = "1XPAKsYDcGN5YarZD4pPBeS92NfLMS1ebh8OmxW79Gd4";
+    private string computer4ConnectionString = "1hiBXILKYGPM75zUMS25yL2yF6HEBL2qkPZHzhhTw5jA";
 
 
     private bool m_display1,m_display2, m_display3, m_display4;
@@ -94,7 +98,7 @@ public class DisplayUsabilityData : MonoBehaviour
         }
         try
         {
-            StartCoroutine(DownloadCSVCoroutine("1DQ_SnzBHfzTird2qjwDbvJIREqaF07XmuxDBdNoOMKM", 1));
+            StartCoroutine(DownloadCSVCoroutine(computer1ConnectionString, 1));
             List<String> _seperatedCSV = new List<string>();
             _seperatedCSV = returnCSV1.Split(',').ToList();
             comp1Pos = new List<Vector3>();
@@ -203,7 +207,7 @@ public class DisplayUsabilityData : MonoBehaviour
     {
         try
         {
-            StartCoroutine(DownloadCSVCoroutine("1DEK3zs54rDlG1K9eOUdx3LKpOr2qiYlNBNLyYG1FnX0", 2));
+            StartCoroutine(DownloadCSVCoroutine(computer2ConnectionString, 2));
             List<String> _seperatedCSV = new List<string>();
             _seperatedCSV = returnCSV2.Split(',').ToList();
             comp2Pos = new List<Vector3>();
@@ -295,7 +299,7 @@ public class DisplayUsabilityData : MonoBehaviour
     {
         try
         {
-            StartCoroutine(DownloadCSVCoroutine("1wrQjNiztX9p05JZvF0tGi2cLVBx96bxYLpas9HOcTaE", 3));
+            StartCoroutine(DownloadCSVCoroutine(computer3ConnectionString, 3));
             List<String> _seperatedCSV = new List<string>();
             _seperatedCSV = returnCSV3.Split(',').ToList();
             comp3Pos = new List<Vector3>();
@@ -386,7 +390,7 @@ public class DisplayUsabilityData : MonoBehaviour
     {
         try
         {
-            StartCoroutine(DownloadCSVCoroutine("1ZSkbxNEaUR9ronil0Fpbpv5glyaJ0MPzfrD5f4MbeXk", 4));
+            StartCoroutine(DownloadCSVCoroutine(computer4ConnectionString, 4));
             List<String> _seperatedCSV = new List<string>();
             _seperatedCSV = returnCSV4.Split(',').ToList();
             comp4Pos = new List<Vector3>();
@@ -421,7 +425,7 @@ public class DisplayUsabilityData : MonoBehaviour
                 ShowComputer4Data();
             }
         }
-        catch { Debug.LogWarning("Error Loading Computer 3 Data"); }
+        catch { Debug.LogWarning("Error Loading Computer 4 Data"); }
     }
     void ShowComputer4Data()
     {
