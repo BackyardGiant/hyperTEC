@@ -65,6 +65,7 @@ public class PlayerInventoryManager : MonoBehaviour
     {
         //WeaponData DefaultLeft = m_availableWeapons[0];
         //WeaponData DefaultRight = m_availableWeapons[1];
+        //Code from BYG
 
         m_availableEngines = new List<EngineData>();
         m_availableWeapons = new List<WeaponData>();

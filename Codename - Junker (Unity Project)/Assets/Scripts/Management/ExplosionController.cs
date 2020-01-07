@@ -10,6 +10,7 @@ public class ExplosionController : MonoBehaviour
     private GameObject m_ring;
 
     // Start is called before the first frame update
+    //Property of BackyardGiant
     void Start()
     {
         float _randomX = Random.Range(0f, 360f);

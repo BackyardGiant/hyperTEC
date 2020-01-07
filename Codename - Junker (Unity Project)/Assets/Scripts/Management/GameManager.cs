@@ -132,7 +132,8 @@ public class GameManager : MonoBehaviour
             fadeAnimator.Play("FadeOut");
             Invoke("LoadOut",0.5f);
         }
-        else if((Input.GetButtonDown("Inventory") || Input.GetButtonDown("XboxB")) && _sceneName == "ModularShip" && m_canLeaveScene && m_gameSpeed != 0)
+        //Property of BackyardGiant
+        else if ((Input.GetButtonDown("Inventory") || Input.GetButtonDown("XboxB")) && _sceneName == "ModularShip" && m_canLeaveScene && m_gameSpeed != 0)
         {
             fadeAnimator.Play("FadeOut");
             Invoke("InventoryLoadOut", 0.5f);
@@ -452,6 +453,7 @@ public class GameManager : MonoBehaviour
         string _amountOfBeacons = _beaconSaves.Count.ToString();
 
         //byte[] _saveLineBytes = System.Text.Encoding.UTF8.GetBytes(_saveLine);
+        //Property of BackyardGiant
 
         string _fileName = PlayerPrefs.GetString("CurrentSave") + ".giant";
 
@@ -618,6 +620,7 @@ public class GameManager : MonoBehaviour
 
         InventorySavingObject _inventory = new InventorySavingObject(_weaponSeeds, _engineSeeds, PlayerInventoryManager.Instance.EquippedEngineIndex.ToString(), PlayerInventoryManager.Instance.EquippedLeftIndex.ToString(), PlayerInventoryManager.Instance.EquippedRightIndex.ToString());
 
+        //Property of BackyardGiant
         string _amountOfLoot = _lootSaves.Count.ToString();
 
         _saveLine = JsonUtility.ToJson(_playerSave);
