@@ -1,6 +1,14 @@
 # HYPERTEC
 This is the repository for the SOFT 354 project of the team Backyard Giant
 
+## Introduction to project
+In this game you will be playing as a spaceship which can fly around in a series of enclosed spaces called sectors or regions. Within these areas you will be dogfighting enemy ships which will belong to 3 different factions.
+
+Use the fluid movement system to avoid enemy fire and get the upper hand in this high octane space shooter. Your eneimes are relentless and if you let them surround you they'll destroy any chance you have of victory. Use the unique boost mechanic to maneuver into their blind spots and take them out.
+
+HYPERTEC is a voxel style dogfighter, where you control a spaceship with components! You can attach unique weapons and engines that you collect from enemies, improving your ship as you go.
+The weapons are procedurally generated from a selection of different pieces, allowing for over 240 different weapons! You will be completing quests for you chosen faction, and eventually claiming the sector as your own.
+
 <h2>Team members:</h2>
 
 Aden Webb<br/>
