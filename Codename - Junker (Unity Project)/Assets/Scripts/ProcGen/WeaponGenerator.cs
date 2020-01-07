@@ -112,7 +112,7 @@ public class WeaponGenerator : MonoBehaviour
         _tempMagazine.transform.localPosition = Vector3.zero;
         _tempMagazine.transform.localEulerAngles = m_magRotation;
     }
-
+    //Code from BYG
     private void InstantiateTargeting()
     {
         GameObject _tempTargeting = Instantiate(m_selectedTargeting, TargetingSnap);

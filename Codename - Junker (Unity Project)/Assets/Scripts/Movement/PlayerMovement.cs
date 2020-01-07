@@ -32,6 +32,10 @@ public class PlayerMovement : MonoBehaviour
     private float m_posativeClampedSpeed; // Forward force being applied
     private float m_negativeClampedSpeed; // Backwards force being applied
 
+    #region
+    //Property of BackyardGiant
+    #endregion
+
 
     #endregion
 
@@ -531,6 +535,8 @@ public class PlayerMovement : MonoBehaviour
             _maxAcclerationPercentage = _engine.Acceleration / 100;
             _boostPercentage = _engine.BoostPower / 100;
             _handlingPercentage = _engine.Handling / 100;
+
+            //Property of BackyardGiant
 
             m_maxSpeed = m_maxSpeedLow + (_maxSpeedPercentage * _rangeMaxSpeed);
             m_maxAcceleration = m_maxAccelerationLow + (_maxAcclerationPercentage * _rangeMaxAccleration);
