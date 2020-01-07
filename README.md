@@ -1,7 +1,7 @@
 # HYPERTEC
 This is the repository for the SOFT 354 project of the team Backyard Giant
 
-<h2> Introduction to project <h2>
+<h2> Introduction to project </h2>
 In this game you will be playing as a spaceship which can fly around in a series of enclosed spaces called sectors or regions. Within these areas you will be dogfighting enemy ships which will belong to 3 different factions.
 
 Use the fluid movement system to avoid enemy fire and get the upper hand in this high octane space shooter. Your eneimes are relentless and if you let them surround you they'll destroy any chance you have of victory. Use the unique boost mechanic to maneuver into their blind spots and take them out.
